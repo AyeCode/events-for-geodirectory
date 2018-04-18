@@ -1,0 +1,1 @@
+# geodir_event_manager-v2
