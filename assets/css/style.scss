@@ -1,0 +1,698 @@
+body .geodir-none {
+	display: none;
+}
+
+.eventdateto {
+    width: auto!important;
+    margin: 1px 5px;
+}
+
+#geodir_wrapper .geodir-company_info .geodir-event-day {
+    border-bottom: 1px solid #EEEEEE;
+    margin: 5px 0 10px;
+    padding: 5px 0 15px;
+}
+
+.geodir_form_row .event-single-dateto-inner {
+    float: left;
+    width: 100px;
+}
+
+.show_different_times_div {
+    margin-left: 30%;
+}
+
+.event-multiple-times {
+    padding-bottom: 5px;
+}
+
+.event-multiple-times .event-multiple-dateto-inner {
+    float: left;
+}
+
+.event-multiple-times .event-multiple-dateto {
+    width: 20%!important;
+    margin: 1px 5px;
+}
+
+.event-multiple-times .event-multiple-start {
+    width: auto!important;
+    margin: 1px 5px;
+}
+
+.event-multiple-times .event-multiple-end {
+    width: auto!important;
+    margin: 1px 5px;
+}
+
+.geodir-event-filter select {
+    min-width: 150px;
+}
+
+.geodir-company_info.geodir_event_dates_display .geodir_event_schedule {
+    height: 180px;
+    overflow: auto;
+}
+
+#geodir_wrapper .geodir-company_info.geodir_event_dates_display p {
+    margin: 0px;
+}
+
+.geodir-company_info.geodir_event_dates_display .geodir_event_schedule p {
+    padding: 0px;
+}
+
+#geodir_content .geodir_event_listing {
+    padding: 0px;
+}
+
+
+/*  CALENDAR WIDGET STARTS */
+
+.geodir_cal_prev,
+.geodir_cal_next {
+    min-height: 20px;
+    min-width: 15px;
+}
+
+.geodir_event_calendar {
+    line-height: 12px;
+}
+
+.geodir_event_cal_widget table.gd_cal_nav {
+    background: #D0D0D0;
+    border: 1px #bbb solid;
+    cursor: pointer;
+}
+
+.geodir_event_cal_widget table.gd_cal_nav tr td {
+    padding: 10px;
+}
+
+.geodir_event_cal_widget table.gd_cal_nav tr td .geodir_event_loading {
+    margin-top: -10px
+}
+
+.geodir_event_cal_widget table.gd_cal_nav {
+    margin-bottom: 0px;
+}
+
+.geodir_event_calendar #cal_title {
+    margin-top: -24px;
+    display: block;
+    text-align: center;
+    padding-bottom: 11px;
+}
+
+.geodir_event_calendar .calendar_widget {
+    background: #e6e6e6;
+    border: 1px #bbb solid;
+}
+
+.geodir_event_calendar .calendar_widget tr td.days {
+    text-align: center;
+    background: #ccc;
+    border-top: 1px #fff solid;
+    border-right: 1px #bbb solid;
+}
+
+.geodir_event_calendar .calendar_widget tr.cal_day_nums {
+    border: 1px #bbb solid;
+}
+
+.geodir_event_calendar .calendar_widget tr.cal_day_nums td.gd_cal_sat {
+    text-align: center;
+    border-right: 1px #bbb solid;
+}
+
+.geodir_event_calendar .calendar_widget tr.cal_day_nums td.gd_cal_nsat {
+    text-align: center;
+    border-right: 1px #bbb solid;
+}
+
+.geodir_event_calendar .calendar_widget tr.cal_day_nums td.gd_cal_nsat a {
+    color: #000;
+    background: #cfcfcf;
+    display: block
+}
+
+.geodir_event_calendar .calendar_widget tr.cal_day_nums td.gd_cal_nsat span {
+    display: block
+}
+
+.geodir_event_calendar .calendar_widget tr td a,
+.geodir_event_calendar .calendar_widget tr td span,
+.geodir_event_calendar .calendar_widget tr td strong {
+    padding-bottom: 10px;
+    padding-top: 10px;
+    display: block;
+}
+
+.gd-div-loader {
+	display: none;
+	position: absolute;
+	left: 49%;
+	top: 49%;
+	z-index: 1;
+}
+
+.geodir-calendar-loading {
+	position: relative;
+	min-height: 90px;
+}
+
+.geodir-calendar-loading .gd-div-loader {
+	display: block;
+}
+
+.geodir-calendar-loading .calendar_widget {
+	opacity: .66;
+	filter: alpha(opacity=66)
+}
+
+
+/* DETAIL PAGE LINKED EVENTS TAB */
+
+#link_businessTab .geodir_location_listing {
+    clear: both
+}
+
+#link_businessTab .geodir_category_list_view li {
+    margin-left: 0;
+}
+
+#link_businessTab .geodir-entry-header {
+    border-bottom: none;
+}
+
+#link_businessTab .geodir_category_list_view li .geodir-content p.geodir-event-meta {
+    margin-bottom: 0
+}
+
+#link_businessTab .geodir_category_list_view header.geodir-entry-header {
+    padding-bottom: .5em
+}
+
+#link_businessTab a.geodir-viewall-linked {
+    text-align: right;
+    display: block;
+    margin-top: 5px;
+    margin-right: 5px
+}
+
+
+/* RECURRING EVENT DATES */
+
+.geodir_event_schedule .gde-recurring-cont {}
+
+.geodir_event_schedule .gde-recurr-link {
+    display: block
+}
+
+.geodir_event_schedule a.gde-recurr-act {
+    cursor: default
+}
+
+#link_businessTab .geodir_category_list_view li.geodir-listview {
+    margin-bottom: 10px
+}
+
+#link_businessTab .geodir_category_list_view li.geodir-listview header.geodir-entry-header,
+#link_businessTab .geodir_category_list_view li.geodir-listview footer.geodir-entry-meta {
+    padding: 0;
+    margin: 0;
+    border: none
+}
+
+#link_businessTab .geodir_category_list_view li.geodir-listview .geodir-entry-content p {
+    margin: 0
+}
+
+.geodir-tabs-content.entry-content #link_businessTab li {
+    margin: auto;
+    margin-bottom: 15px
+}
+
+/* EVENT AYI STARTS */
+
+.geodir-ayi-section-title {
+    margin-top: 10px;
+}
+
+.geodir-ayi-cur-user-interested {
+    margin: 5px 0;
+}
+
+.geodir-ayi-list-users .item-avatar img {
+    border-radius: 4px;
+}
+
+.geodir-ayi-list-users li .item {
+    clear: both;
+}
+
+.geodir-ayi-buttons {
+    padding-bottom: 10px;
+}
+
+.geodir-ayi-buttons ul {
+    overflow: hidden;
+    margin: 0;
+}
+
+.geodir-ayi-buttons ul li {
+    margin: 0;
+}
+
+.geodir-ayi-btn {
+    cursor: pointer;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0;
+    padding: 7px 16px;
+    border: 1px solid;
+    border-color: #cdcdcd;
+    border-color: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 1.28571em;
+    font-weight: bold;
+    text-align: center;
+    color: #333;
+    background: #f8f8f8;
+    background: -webkit-linear-gradient(white, #eee);
+    background: linear-gradient(white, #eee);
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1), inset 0 -2px 2px rgba(0, 0, 0, 0.05), inset 0 -1px 1px white;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1), inset 0 -2px 2px rgba(0, 0, 0, 0.05), inset 0 -1px 1px white;
+    text-shadow: none;
+}
+
+.geodir-ayi-btn-small {
+    padding: 5px 8px;
+    font-size: 12px;
+    line-height: 1.5em;
+    height: auto;
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.geodir-ayi-inline-layout>li {
+    float: left;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 50%;
+    padding: 0 3px;
+    margin: 3px 0;
+    min-height: 0;
+}
+
+.geodir-ayi-btn-full {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.geodir-ayi-wid ul.geodir-ayi-list-users li {
+    float: left;
+    border-bottom: none;
+    margin: 5px;
+    padding: 0;
+}
+
+.geodir-ayi-wid ul.geodir-ayi-item-list li img.avatar {
+    float: left;
+    margin: 0 10px 0 0;
+}
+
+.geodir-ayi-wid ul.geodir-ayi-item-list {
+    width: 100%;
+    list-style: none;
+    clear: both;
+    margin: 0;
+    padding: 0;
+}
+
+.geodir-ayi-wid h3 a {
+    color: #e34f43;
+}
+
+.geodir-ayi-wid ul.geodir-ayi-list-users li {
+    width: 54px;
+}
+
+.geodir-ayi-wid h3 {
+    font-size: 14px;
+    margin: 0 0 6px;
+}
+
+.geodir-ayi-border-bottom {
+    border-bottom: 1px solid #e5e5e1;
+    padding-bottom: 17px;
+    clear: both;
+    overflow: hidden;
+}
+
+p.geodir-ayi-noone {
+    margin: 10px;
+    color: #aaa;
+}
+
+h3.geodir-ayi-section-title span {
+    text-align: right;
+    float: right;
+    display: block;
+    font-size: 12px;
+    line-height: 12px;
+    color: #444;
+    font-weight: normal;
+    padding: 6px;
+}
+
+
+/* EVENTS BUDDYPRESS TAB */
+
+.event-content-avatar-inner .geodir_thumbnail {
+    width: 90px;
+    height: 90px;
+    border-radius: 4px;
+}
+
+.geodir-ayi-events-content>li {
+    margin: 0;
+    border-bottom: 1px solid #e5e5e1;
+    padding: 18px 0 17px;
+    overflow: hidden;
+}
+
+.geodir-ayi-events-content>li:last-child {
+    border-bottom: none;
+}
+
+.event-content-avatar {
+    border-right: 12px solid transparent;
+    float: left;
+    width: 15%;
+}
+
+.event-content-body {
+    float: left;
+    width: 85%;
+}
+
+.event-title {
+    width: 78%;
+    float: left;
+}
+
+.event-title a {
+    font-weight: bold;
+}
+
+.event-address {
+    font-size: 12px;
+    line-height: 1.4em;
+}
+
+.event-author {
+    width: 22%;
+    float: right;
+}
+
+.event-submitted-by {
+    width: 70%;
+    float: left;
+    text-align: right;
+    white-space: nowrap;
+    font-size: 12px;
+    line-height: 16px;
+}
+
+.event-submitted-by a {
+    font-weight: bold;
+}
+
+.event-submitted-by-avatar {
+    width: 30%;
+    float: right;
+    border-left: 6px solid transparent;
+    text-align: right;
+}
+
+.event-submitted-by-avatar img {
+    border-radius: 4px;
+}
+
+.event-content-body-bottom {
+    display: table;
+    width: 100%;
+}
+
+.event-interested {
+    display: table-cell;
+    text-align: right;
+    vertical-align: bottom;
+    font-size: 12px;
+    line-height: 1.5em;
+    color: #999;
+    font-weight: normal;
+}
+
+.geodir-ayi-tabs ul li.current {
+    cursor: default;
+    border-radius: 3px;
+    background: #efefed;
+    -webkit-box-shadow: inset 0 1px 0 rgba(40, 40, 21, 0.18);
+    box-shadow: inset 0 1px 0 rgba(40, 40, 21, 0.18);
+}
+
+.geodir-ayi-tabs {
+    font-size: 12px;
+    line-height: 18px;
+}
+
+.geodir-ayi-tabs ul {
+    margin: 5px 0 0;
+}
+
+.geodir-ayi-tabs ul li {
+    padding: 0 6px;
+    cursor: pointer;
+    float: left;
+    margin: 0;
+    list-style: none;
+}
+
+.geodir-ayi-tabs ul li a {
+    padding: 0;
+    display: block;
+    text-decoration: none;
+}
+
+.geodir-ayi-tabs ul li.current a {
+    background-color: transparent;
+    color: #333;
+    opacity: 1;
+    font-weight: bold;
+}
+
+.geodir-ayi-event-header-wrap h3 {
+    display: inline-block;
+    float: left;
+    margin: 5px 0;
+}
+
+.geodir-ayi-tabs {
+    display: inline-block;
+    float: right;
+}
+
+.geodir-ayi-event-header-wrap .geodir-ayi-title-and-count {
+    width: 100%;
+    float: none;
+    overflow: hidden;
+}
+
+.geodir-ayi-no-events {
+    text-align: center;
+    padding-top: 20px;
+}
+
+.geodir-ayi-no-events i {
+    font-size: 30px;
+}
+
+.geodir-ayi-event-photo-inner img {
+    max-width: 100%;
+}
+
+.ayi-interested-users {
+    list-style: outside none none;
+    padding: 0;
+    margin: 0;
+    clear: both;
+}
+
+.ayi-interested-users-user {
+    margin: 0 0 20px;
+    padding: 10px;
+    padding-bottom: 20px;
+    overflow: hidden;
+    list-style: none;
+    border: 1px solid #ccc;
+    display: inline-block;
+    text-align: center;
+    margin-bottom: 0;
+}
+
+.ayi-interested-users-user-avatar {
+    display: block;
+    position: relative;
+}
+
+.ayi-interested-users li {
+    width: 24%;
+    width: -webkit-calc(25% - 5px);
+    width: -moz-calc(25% - 5px);
+    width: calc(25% - 5px);
+}
+
+.ayi-interested-users-user-name a {
+    text-decoration: none !important;
+    box-shadow: none !important;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: block;
+    border-bottom: none;
+}
+
+.ayi-interested-users-user-avatar img {
+    -webkit-border-radius: 100px;
+    -moz-border-radius: 100px;
+    border-radius: 100px;
+}
+
+.ayi-pagination {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.ayi-pagination ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+}
+
+.ayi-pagination ul li {
+    list-style-type: none;
+    float: left;
+}
+
+.ayi-pagination ul li a,
+.ayi-pagination ul li span.dots,
+.ayi-pagination ul li span.current {
+    border: 1px solid #555;
+    color: #555;
+    margin-right: 5px;
+    padding: 0 7px;
+    text-decoration: none;
+}
+
+.ayi-pagination ul li span.current {
+    background-color: #ccc;
+}
+
+/* EVENT AYI ENDS */
+
+/* ADD EVENT FORM STARTS */
+
+.geodir_form_row .geodir_textfield.geodir-w200 {
+	width: 200px;
+}
+
+.geodir_form_row .geodir_textfield.geodir-w110 {
+	width: 110px;
+}
+
+.geodir-event-field .geodir-inline-fields input,
+.geodir-event-field .geodir-inline-fields label {
+	float: none;
+	width: auto;
+	display: inline-block;
+	vertical-align: middle;
+	margin-top: 0;
+}
+
+.geodir_form_row .event-single-dateto-inners {
+    float: left;
+    width: 100px;
+}
+
+.geodir_form_row .lbl-event-end-time {
+	margin-left: 10px;
+}
+
+#geodir_event_repeat_days_row .select2-container,
+#geodir_event_repeat_weeks_row .select2-container {
+	min-width: 200px;
+	max-width: calc(70% - 1px);
+}
+
+.geodir_form_row #event_yui_calendar {
+	width: calc(70% - 1px);
+	float: left;
+	padding: 10px 0;
+}
+
+.geodir_form_row #geodir_event_multi_dates_cal,
+.geodir_form_row #geodir_event_selected_dates_row_c {
+	float: left;
+}
+
+#event_yui_calendar #geodir_event_selected_dates_row_h {
+	font-weight: bold;
+	border-bottom: solid 1px #eee;
+	white-space: nowrap;
+}
+
+#event_yui_calendar .yui-panel-container.shadow #geodir_event_selected_dates_row {
+    background-color: #FFFFFF;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+    visibility: inherit;
+    width: 125px;
+	overflow-x: auto;
+	max-height: 300px;
+}
+
+#event_yui_calendar .bd #geodir_event_selected_dates span {
+    display: block;
+    font-size: inherit;
+	padding: 3px 9px;
+    border-bottom: 1px #E5E5E5 solid;
+}
+
+#event_yui_calendar .yui-panel-container.shadow .hd {
+    line-height: 2;
+    padding: 2px 9px
+}
+
+#event_yui_calendar .yui-calendar th,
+#event_yui_calendar .yui-calendar td {
+	text-transform: inherit;
+	font-size: inherit;
+}
+
+#event_yui_calendar.yui-skin-sam .yui-calcontainer {
+	border-color: #ccc;
+}
+
+/* ADD EVENT FORM ENDS */

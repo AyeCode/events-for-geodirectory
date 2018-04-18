@@ -1,0 +1,107 @@
+body .geodir-none {
+	display: none;
+}
+.show_different_times_div {
+    margin-left: 30%;
+}
+
+.event-multiple-times {
+    padding-bottom: 5px;
+}
+
+.event-multiple-times .event-multiple-dateto-inner {
+    float: left;
+}
+
+.event-multiple-times .event-multiple-dateto {
+    width: 20%!important;
+    margin: 7px 5px;
+}
+
+.event-multiple-times .event-multiple-start {
+    width: auto!important;
+    margin: 7px 5px;
+}
+
+.event-multiple-times .event-multiple-end {
+    width: auto!important;
+    margin: 7px 5px;
+}
+
+/* ADD EVENT FORM STARTS */
+.geodir_form_row .geodir_textfield.geodir-w200 {
+	width: 200px;
+}
+
+.geodir_form_row .geodir_textfield.geodir-w110 {
+	width: 110px;
+}
+
+.geodir-event-field .geodir-inline-fields input,
+.geodir-event-field .geodir-inline-fields label {
+	float: none;
+	width: auto;
+	display: inline-block;
+	vertical-align: middle;
+	margin-top: 0;
+}
+
+.geodir_form_row .event-single-dateto-inners {
+    float: left;
+    width: 100px;
+}
+
+.geodir_form_row .lbl-event-end-time {
+	margin-left: 10px;
+}
+
+#geodir_event_repeat_days_row .select2-container,
+#geodir_event_repeat_weeks_row .select2-container {
+	min-width: 200px;
+	max-width: calc(70% - 1px);
+}
+
+.geodir_form_row #event_yui_calendar {
+	width: calc(70% - 1px);
+	float: left;
+	padding: 10px 0;
+}
+
+.geodir_form_row #geodir_event_multi_dates_cal,
+.geodir_form_row #geodir_event_selected_dates_row_c {
+	float: left;
+}
+
+#event_yui_calendar #geodir_event_selected_dates_row_h {
+	font-weight: bold;
+	border-bottom: solid 1px #eee;
+	white-space: nowrap;
+}
+
+#event_yui_calendar .yui-panel-container.shadow #geodir_event_selected_dates_row {
+    background-color: #FFFFFF;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+    visibility: inherit;
+    width: 125px;
+	overflow-x: auto;
+	max-height: 300px;
+}
+
+#event_yui_calendar .bd #geodir_event_selected_dates span {
+    display: block;
+    font-size: inherit;
+	padding: 3px 9px;
+    border-bottom: 1px #E5E5E5 solid
+}
+
+#event_yui_calendar .yui-panel-container.shadow .hd {
+    line-height: 2;
+    padding: 2px 9px
+}
+
+#event_yui_calendar.yui-skin-sam .yui-calcontainer {
+	border-color: #ccc;
+}
+
+/* ADD EVENT FORM ENDS */

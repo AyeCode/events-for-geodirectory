@@ -1,0 +1,446 @@
+<?php
+/**
+ * Event Schedules class
+ *
+ *
+ * @link       https://wpgeodirectory.com
+ * @since      1.0.0
+ *
+ * @package    GeoDir_Event_Manager
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly
+}
+
+/**
+ * GeoDir_Event_Schedules class
+ *
+ * @class       GeoDir_Event_Schedules
+ * @version     2.0.0
+ * @package     GeoDir_Event_Manager/Classes
+ * @category    Class
+ */
+class GeoDir_Event_Schedules {
+
+    public function __construct() {
+	}
+
+	public static function init() {
+		add_action( 'delete_post', array( __CLASS__, 'delete_schedules' ), 10, 1 );
+	}
+
+	public static function save_schedules( $event_data, $post_id ) {
+		if ( empty( $event_data ) || empty( $post_id ) ) {
+			return false;
+		}
+
+		$format 				= geodir_event_field_date_format();
+		$default_start_date 	= date_i18n( $format );
+
+		$data					= maybe_unserialize( $event_data );
+		$recurring 				= ! empty( $data['recurring'] ) ? true : false;
+		$all_day 				= ! empty( $data['all_day'] ) ? true : false;
+		$start_date 			= ! empty( $data['start_date'] ) ? $data['start_date'] : '';
+		$end_date 				= ! empty( $data['end_date'] ) ? $data['end_date'] : $start_date;
+		$start_time 			= ! $all_day && ! empty( $data['start_time'] ) ? $data['start_time'] : '';
+		$end_time 				= ! $all_day && ! empty( $data['end_time'] ) ? $data['end_time'] : '';
+
+		$schedules = array();
+		if ( $recurring ) {
+			$duration 			= isset( $data['duration_x'] ) && (int)$data['duration_x'] > 0 ? (int)$data['duration_x'] : 1;
+			$repeat_type 		= !empty( $data['repeat_type'] ) ? $data['repeat_type'] : 'custom';
+			$different_times 	= !empty( $data['different_times'] ) ? true : false;
+			$start_times 		= $different_times && ! $all_day && isset( $data['start_times'] ) ? $data['start_times'] : array();
+			$end_times 			= $different_times && ! $all_day && isset( $data['end_times'] ) && !empty( $data['end_times'] ) ? $data['end_times'] : array();
+			$duration--;
+
+			if ( $repeat_type == 'custom' ) {
+				$recurring_dates = $data['recurring_dates'];
+			} else {
+				$recurring_dates = GeoDir_Event_Schedules::get_occurrences( $repeat_type, $start_date, $end_date, $data['repeat_x'], $data['max_repeat'], $data['repeat_end'], $data['repeat_days'], $data['repeat_weeks'] );
+			}
+
+			if ( empty( $recurring_dates ) ) {
+				$recurring_dates = array( $start_date );
+			}
+
+			foreach ( $recurring_dates as $key => $date ) {
+				if ( $data['repeat_type'] == 'custom' && $different_times ) {
+					$duration 		= 0;
+					$start_time 	= ! empty( $start_times[ $key ] ) ? $start_times[ $key ] : '';
+					$end_time 		= ! empty( $end_times[ $key ] ) ? $end_times[ $key ] : '';
+				}
+				if ( $all_day == 1 ) {
+					$start_time = '';
+					$end_time 	= '';
+				}
+				$start_date 	= $date;
+				$end_date 		= date_i18n( 'Y-m-d', strtotime( $start_date . ' + ' . $duration . ' day' ) );
+
+				$schedules[] = array(
+					'event_id' 		=> $post_id,
+					'start_date' 	=> $start_date,
+					'end_date' 		=> $end_date,
+					'start_time' 	=> $start_time,
+					'end_time' 		=> $end_time,
+					'all_day' 		=> $all_day,
+					'recurring' 	=> $recurring,
+				);
+			}
+		} else {
+			$schedules[] = array(
+				'event_id' 		=> $post_id,
+				'start_date' 	=> $start_date,
+				'end_date' 		=> $end_date,
+				'start_time' 	=> $start_time,
+				'end_time' 		=> $end_time,
+				'all_day' 		=> $all_day,
+				'recurring' 	=> $recurring,
+			);
+		}
+
+		if ( ! empty( $schedules ) ) {
+			return self::create_schedules( $schedules, $post_id );
+		}
+
+		return false;
+	}
+
+	public static function create_schedules( $schedules, $post_id ) {
+		global $wpdb;
+
+		if ( empty( $schedules ) || empty( $post_id ) ) {
+			return false;
+		}
+
+		self::delete_schedules( $post_id, 'gd_event' );
+
+		foreach( $schedules as $schedule ) {
+			$wpdb->insert( GEODIR_EVENT_SCHEDULES_TABLE, $schedule, array( '%d', '%s', '%s', '%s', '%s', '%d', '%d' ) );
+		}
+
+		return true;
+	}
+
+	public static function delete_schedules( $post_id, $post_type = '' ) {
+		global $wpdb;
+
+		if ( empty( $post_id ) ) {
+			return false;
+		}
+
+		if ( empty( $post_type ) ) {
+			$post_type = get_post_type( $post_id );
+		}
+
+		if ( $post_type != 'gd_event' ) {
+			return false;
+		}
+
+		$return = $wpdb->query( $wpdb->prepare( "DELETE FROM " . GEODIR_EVENT_SCHEDULES_TABLE . " WHERE event_id = %d", array( $post_id ) ) );
+		if ( $return ) {
+			do_action( 'geodir_event_deleted_schedules', $post_id, $post_type );
+		}
+
+		return $return;
+	}
+
+	public static function get_occurrences( $type = 'year', $start_date, $end_date = '', $interval = 1, $limit = '', $repeat_end = '', $repeat_days = array(), $repeat_weeks = array() ) {
+		$dates = array();
+		$start_time = strtotime( $start_date );
+		$end_time = strtotime( $repeat_end );
+
+		switch ( $type ) {
+			case 'year': {
+				if ( $repeat_end != '' && geodir_event_is_date( $repeat_end ) ) {
+					for ( $time = $start_time; $time <= $end_time; $time = strtotime( date_i18n( 'Y-m-d', $time ) . '+' . $interval . ' year' ) ) {
+						$year 	= date_i18n( 'Y', $time );
+						$month 	= date_i18n( 'm', $time );
+						$day 	= date_i18n( 'd', $time );
+
+						$date_occurrence = $year . '-' . $month . '-' . $day;
+						$time_occurrence = strtotime( $date_occurrence );
+
+						if ( $time_occurrence <= $end_time ) {
+							$dates[] = $date_occurrence;
+						}
+					}
+				} else {
+					$dates[] = date_i18n( 'Y-m-d', $start_time );
+
+					if ( $limit > 0 ) {
+						for ( $i = 1; $i < $limit ; $i++ ) {
+							$every 	= $interval * $i;
+							$time 	= strtotime( $start_date . '+' . $every . ' year' );
+
+							$year 	= date_i18n( 'Y', $time );
+							$month 	= date_i18n( 'm', $time );
+							$day 	= date_i18n( 'd', $time );
+
+							$date_occurrence = $year . '-' . $month . '-' . $day;
+
+							$dates[] = $date_occurrence;
+						}
+					}
+				}
+			}
+			break;
+			case 'month': {
+				if ( $repeat_end != '' && geodir_event_is_date( $repeat_end ) ) {
+					for ( $time = $start_time; $time <= $end_time; $time = strtotime( date_i18n( 'Y-m-d', $time ) . '+' . $interval . ' month' ) ) {
+						$year 	= date_i18n( 'Y', $time );
+						$month 	= date_i18n( 'm', $time );
+						$day 	= date_i18n( 'd', $time );
+
+						$date_occurrence = $year . '-' . $month . '-' . $day;
+						$time_occurrence = strtotime( $date_occurrence );
+
+						if ( !empty( $repeat_days ) || !empty( $repeat_weeks ) ) {
+							$month_days = cal_days_in_month( CAL_GREGORIAN, $month, $year );												
+							for ( $d = 1; $d <= $month_days; $d++ ) {
+								$recurr_time = strtotime( $year . '-' . $month . '-' . $d );
+								$week_day = date_i18n( 'w', $recurr_time );
+								$week_diff = ( $recurr_time - strtotime( $year . '-' . $month . '-01' ) );
+								$week_num = $week_diff > 0 ? (int)( $week_diff / ( DAY_IN_SECONDS * 7 ) ) : 0;
+								$week_num++;														
+
+								if ( $recurr_time >= $start_time && $recurr_time <= $end_time ) {
+									if ( empty( $repeat_days ) && !empty( $repeat_weeks ) && in_array( $week_num, $repeat_weeks ) ) {
+										$dates[] = date_i18n( 'Y-m-d', $recurr_time );
+									} else if ( !empty( $repeat_days ) && empty( $repeat_weeks ) && in_array( $week_day, $repeat_days ) ) {
+										$dates[] = date_i18n( 'Y-m-d', $recurr_time );
+									} else if ( !empty( $repeat_weeks ) && in_array( $week_num, $repeat_weeks ) && !empty( $repeat_days ) && in_array( $week_day, $repeat_days ) ) {
+										$dates[] = date_i18n( 'Y-m-d', $recurr_time );
+									}
+								}
+							}
+						} else {
+							$dates[] = $date_occurrence;
+						}
+					}
+				} else {
+					$dates[] = date_i18n( 'Y-m-d', $start_time );
+
+					if ( $limit > 0 ) {
+						if ( !empty( $repeat_days ) || !empty( $repeat_weeks ) ) {
+							$dates = array();
+							$week_dates = array();
+							$days_limit = 0;
+
+							$i = 0;
+							while ( $days_limit <= $limit ) {
+								$time = strtotime( $start_date . '+' . ( $interval * $i ) . ' month' );
+								$year = date_i18n( 'Y', $time );
+								$month = date_i18n( 'm', $time );
+								$day = date_i18n( 'd', $time );
+
+								$month_days = cal_days_in_month( CAL_GREGORIAN, $month, $year );
+								for ( $d = 1; $d <= $month_days; $d++ ) {
+									$recurr_time = strtotime( $year . '-' . $month . '-' . $d );
+									$week_day = date_i18n( 'w', $recurr_time );
+									$week_diff = ( $recurr_time - strtotime( $year . '-' . $month . '-01' ) );
+									$week_num = $week_diff > 0 ? (int)( $week_diff / ( DAY_IN_SECONDS * 7 ) ) : 0;
+									$week_num++;
+
+									if ( $recurr_time >= $start_time && in_array( $week_day, $repeat_days ) ) {
+										$week_date = '';
+
+										if ( empty( $repeat_days ) && !empty( $repeat_weeks ) && in_array( $week_num, $repeat_weeks ) ) {
+											$week_date = date_i18n( 'Y-m-d', $recurr_time );
+										} else if ( !empty( $repeat_days ) && empty( $repeat_weeks ) && in_array( $week_day, $repeat_days ) ) {
+											$week_date = date_i18n( 'Y-m-d', $recurr_time );
+										} else if ( !empty( $repeat_weeks ) && in_array( $week_num, $repeat_weeks ) && !empty( $repeat_days ) && in_array( $week_day, $repeat_days ) ) {
+											$week_date = date_i18n( 'Y-m-d', $recurr_time );
+										}
+										if ( $week_date != '' ) {
+											$dates[] = $week_date;
+											$days_limit++;
+										}
+
+										if ( count( $dates ) == $limit ) {
+											break 2;
+										}
+									}
+								}
+								$i++;
+							}
+							$dates = !empty( $dates ) ? $dates : date_i18n( 'Y-m-d', $start_time );
+						} else {
+							for ( $i = 1; $i < $limit ; $i++ ) {
+								$every 	= $interval * $i;
+								$time 	= strtotime( $start_date . '+' . $every . ' month' );
+								$year 	= date_i18n( 'Y', $time );
+								$month 	= date_i18n( 'm', $time );
+								$day 	= date_i18n( 'd', $time );
+
+								$date_occurrence = $year . '-' . $month . '-' . $day;
+
+								$dates[] = $date_occurrence;
+							}
+						}
+					}
+				}
+			}
+			break;
+			case 'week': {
+				if ( $repeat_end != '' && geodir_event_is_date( $repeat_end ) ) {
+					for ( $time = $start_time; $time <= $end_time; $time = strtotime( date_i18n( 'Y-m-d', $time ) . '+' . $interval . ' week' ) ) {
+						$year 	= date_i18n( 'Y', $time );
+						$month 	= date_i18n( 'm', $time );
+						$day 	= date_i18n( 'd', $time );
+
+						$date_occurrence = $year . '-' . $month . '-' . $day;
+						$time_occurrence = strtotime( $date_occurrence );
+
+						if ( $time_occurrence <= $end_time ) {
+							if ( !empty( $repeat_days ) ) {
+								for ( $d = 0; $d <= 6; $d++ ) {
+									$recurr_time 	= strtotime( $date_occurrence . '+' . $d . ' day' );
+									$week_day 		= date_i18n( 'w', $recurr_time );
+
+									if ( in_array( $week_day, $repeat_days ) ) {
+										$dates[] = date_i18n( 'Y-m-d', $recurr_time );
+									}
+								}
+							} else {
+								$dates[] = $date_occurrence;
+							}
+						}
+					}
+				} else {
+					$dates[] = date_i18n( 'Y-m-d', $start_time );
+
+					if ( $limit > 0 ) {
+						if ( !empty( $repeat_days ) ) {
+							$dates = array();
+							$week_dates = array();
+							$days_limit = 0;
+
+							$i = 0;
+							while ( $days_limit <= $limit ) {
+								$time 		= strtotime( $start_date . '+' . ( $interval * $i ) . ' week' );
+								$year 		= date_i18n( 'Y', $time );
+								$month 		= date_i18n( 'm', $time );
+								$day 		= date_i18n( 'd', $time );
+
+								$date_occurrence = $year . '-' . $month . '-' . $day;
+
+								for ( $d = 0; $d <= 6; $d++ ) {
+									$recurr_time 	= strtotime( $date_occurrence . '+' . $d . ' day' );
+									$week_day 		= date_i18n( 'w', $recurr_time );
+
+									if ( in_array( $week_day, $repeat_days ) ) {
+										$week_dates[] 	= date_i18n( 'Y-m-d', $recurr_time );
+										$dates[] 		= date_i18n( 'Y-m-d', $recurr_time );
+										$days_limit++;
+
+										if ( count( $dates ) == $limit ) {
+											break 2;
+										}
+									}
+								}
+								$i++;
+							}
+
+							$dates = !empty( $dates ) ? $dates : date_i18n( 'Y-m-d', $start_time );
+						} else {
+							for ( $i = 1; $i < $limit ; $i++ ) {
+								$every 		= $interval * $i;
+								$time 		= strtotime( $start_date . '+' . $every . ' week' );
+								$year 		= date_i18n( 'Y', $time );
+								$month 		= date_i18n( 'm', $time );
+								$day 		= date_i18n( 'd', $time );
+
+								$date_occurrence = $year . '-' . $month . '-' . $day;
+
+								$dates[] = $date_occurrence;
+							}
+						}
+					}
+				}
+			}
+			break;
+			case 'day': {
+				if ( $repeat_end != '' && geodir_event_is_date( $repeat_end ) ) {
+					for ( $time = $start_time; $time <= $end_time; $time = strtotime( date_i18n( 'Y-m-d', $time ) . '+' . $interval . ' day' ) ) {
+						$year 		= date_i18n( 'Y', $time );
+						$month 		= date_i18n( 'm', $time );
+						$day 		= date_i18n( 'd', $time );
+						
+						$date_occurrence = $year . '-' . $month . '-' . $day;
+						$time_occurrence = strtotime( $date_occurrence );
+						
+						if ( $time_occurrence <= $end_time ) {
+							$dates[] = $date_occurrence;
+						}
+					}
+				} else {
+					$dates[] = date_i18n( 'Y-m-d', $start_time );
+					
+					if ( $limit > 0 ) {
+						for ( $i = 1; $i < $limit ; $i++ ) {
+							$every 	= $interval * $i;
+							$time 	= strtotime( $start_date . '+' . $every . ' day' );
+							$year 	= date_i18n( 'Y', $time );
+							$month 	= date_i18n( 'm', $time );
+							$day 	= date_i18n( 'd', $time );
+							
+							$date_occurrence = $year . '-' . $month . '-' . $day;
+							
+							$dates[] = $date_occurrence;
+						}
+					}
+				}
+			}
+			break;
+		}
+
+		$dates = !empty( $dates ) ? array_unique( $dates ) : $dates;
+		return $dates;
+	}
+
+	public static function get_schedules( $post_id, $event_type = '', $limit = 0 ) {
+		global $wpdb;
+
+		if ( empty( $post_id ) ) {
+			return false;
+		}
+
+		$where = array( 'event_id = %d' );
+		if ( ( $condition = GeoDir_Event_Schedules::event_type_condition( $event_type ) ) ) {
+			$where[] = $condition;
+		}
+
+		$limit = absint( $limit ) > 0 ? " LIMIT 0, " . absint( $limit ) : '';
+		$where = implode( ' AND ', $where );
+
+		$schedules = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM " . GEODIR_EVENT_SCHEDULES_TABLE . " WHERE {$where} ORDER BY start_date ASC, start_time ASC{$limit}", array( $post_id ) ) );
+
+		return $schedules;
+	}
+
+	public static function event_type_condition( $event_type, $alias = NULL, $date = '' ) {
+		if ( $alias === NULL ) {
+			$alias = GEODIR_EVENT_SCHEDULES_TABLE;
+		}
+
+		if ( ! empty( $alias ) ) {
+			$alias = $alias . '.';
+		}
+		if ( empty( $date ) ) {
+			$date = date_i18n( 'Y-m-d' );
+		}
+
+		if ( $event_type == 'past' ) {
+			$where = "{$alias}start_date < '" . $date . "' ";
+		} elseif ( $event_type == 'today' ) {
+			$where = "( {$alias}start_date = '" . $date . "' OR ( {$alias}start_date <= '" . $date . "' AND {$alias}end_date >= '" . $date . "' ) ) ";
+		} elseif ( $event_type == 'upcoming' ) {
+			$where = "( {$alias}start_date >= '" . $date . "' OR ( {$alias}start_date <= '" . $date . "' AND {$alias}end_date >= '" . $date . "' ) ) ";
+		} else {
+			$where = "";
+		}
+		return $where;
+	}
+}
