@@ -1,6 +1,6 @@
 <?php
 /**
- * GeoDirectory Events dummy data for standard events.
+ * GeoDirectory Events dummy data for recurring events.
  *
  * @since 2.0.0
  * @package GeoDirectory_Event_Manager
@@ -75,13 +75,25 @@ There is so much great eating in and around the Italian Market that you&acute;ll
 	"website"       => 'http://www.italianmarketfestival.com',
 	"twitter"       => 'http://twitter.com/italianmarketfestival',
 	"facebook"      => 'http://facebook.com/italianmarketfestival',
-	"recurring"		=> 0,
+	"recurring"		=> 1,
 	"event_dates"	=> array(
-		'start_date' 	=> date_i18n( 'Y-m-d', strtotime( "+30 days" ) ),
-		'end_date' 		=> '',
-		'start_time' 	=> '10:00',
-		'end_time' 		=> '12:00',
-		'all_day' 		=> '',
+		'start_date' 		=> date_i18n( 'Y-m-d', strtotime( "+30 days" ) ),
+		'end_date' 			=> '',
+		'start_time' 		=> '10:00',
+		'end_time' 			=> '12:00',
+		'all_day' 			=> '',
+		'duration_x'		=> '1',
+		'repeat_type'		=> 'month',
+		'repeat_x'			=> '1',
+		'repeat_end_type'	=> '1',
+		'max_repeat'		=> '',
+		'repeat_end'		=> date_i18n( 'Y-m-d', strtotime( "+4 months" ) ),
+		'recurring_dates'	=> '',
+		'different_times'	=> '',
+		'start_times'		=> '',
+		'end_times'			=> '',
+		'repeat_days'		=> array( '6' ),
+		'repeat_weeks'		=> array( '1', '3' )
 	),
 	"post_dummy"    => '1'
 );
@@ -120,13 +132,25 @@ Admission is free for all PECO Multicultural Series events. PECO presents a seri
 	"website"       => 'http://www.pennslandingcorp.com',
 	"twitter"       => 'http://twitter.com/pennslandingcorp',
 	"facebook"      => 'http://facebook.com/pennslandingcorp',
-	"recurring"		=> 0,
+	"recurring"		=> 1,
 	"event_dates"	=> array(
-		'start_date' 	=> date_i18n( 'Y-m-d', strtotime( "+7 days" ) ),
-		'end_date' 		=> '',
-		'start_time' 	=> '08:00',
-		'end_time' 		=> '21:00',
-		'all_day' 		=> '',
+		'start_date' 		=> date_i18n( 'Y-m-d', strtotime( "+7 days" ) ),
+		'end_date' 			=> '',
+		'start_time' 		=> '08:00',
+		'end_time' 			=> '21:00',
+		'all_day' 			=> '',
+		'duration_x'		=> '1',
+		'repeat_type'		=> 'year',
+		'repeat_x'			=> '1',
+		'repeat_end_type'	=> '0',
+		'max_repeat'		=> '3',
+		'repeat_end'		=> '',
+		'recurring_dates'	=> '',
+		'different_times'	=> '',
+		'start_times'		=> '',
+		'end_times'			=> '',
+		'repeat_days'		=> '',
+		'repeat_weeks'		=> ''
 	),
 	"post_dummy"    => '1'
 );
@@ -244,13 +268,25 @@ Admission is free for all PECO Multicultural Series events. PECO presents a seri
 	"website"       => 'http://www.pennslandingcorp.com',
 	"twitter"       => 'http://twitter.com/pennslandingcorp',
 	"facebook"      => 'http://facebook.com/pennslandingcorp',
-	"recurring"		=> 0,
+	"recurring"		=> 1,
 	"event_dates"	=> array(
-		'start_date' 	=> date_i18n( 'Y-m-d', strtotime( "+5 days" ) ),
-		'end_date' 		=> '',
-		'start_time' 	=> '',
-		'end_time' 		=> '',
-		'all_day' 		=> '1',
+		'start_date' 		=> date_i18n( 'Y-m-d', strtotime( "+5 days" ) ),
+		'end_date' 			=> '',
+		'start_time' 		=> '',
+		'end_time' 			=> '',
+		'all_day' 			=> '1',
+		'duration_x'		=> '1',
+		'repeat_type'		=> 'week',
+		'repeat_x'			=> '1',
+		'repeat_end_type'	=> '0',
+		'max_repeat'		=> '7',
+		'repeat_end'		=> '',
+		'recurring_dates'	=> '',
+		'different_times'	=> '',
+		'start_times'		=> '',
+		'end_times'			=> '',
+		'repeat_days'		=> array( '0' ),
+		'repeat_weeks'		=> ''
 	),
 	"post_dummy"    => '1'
 );
@@ -332,13 +368,25 @@ Amish buggy rides and horse drawn wagon rides around the Market, as well as coun
 	"website"       => 'http://www.readingterminalmarket.com',
 	"twitter"       => 'http://twitter.com/readingterminalmarket',
 	"facebook"      => 'http://facebook.com/readingterminalmarket',
-	"recurring"		=> 0,
+	"recurring"		=> 1,
 	"event_dates"	=> array(
-		'start_date' 	=> date_i18n( 'Y-m-d', strtotime( "+10 days" ) ),
-		'end_date' 		=> '',
-		'start_time' 	=> '10:30',
-		'end_time' 		=> '12:30',
-		'all_day' 		=> '',
+		'start_date' 		=> date_i18n( 'Y-m-d', strtotime( "+10 days" ) ),
+		'end_date' 			=> '',
+		'start_time' 		=> '10:30',
+		'end_time' 			=> '12:30',
+		'all_day' 			=> '',
+		'duration_x'		=> '1',
+		'repeat_type'		=> 'day',
+		'repeat_x'			=> '2',
+		'repeat_end_type'	=> '0',
+		'max_repeat'		=> '5',
+		'repeat_end'		=> '',
+		'recurring_dates'	=> '',
+		'different_times'	=> '',
+		'start_times'		=> '',
+		'end_times'			=> '',
+		'repeat_days'		=> '',
+		'repeat_weeks'		=> ''
 	),
 	"post_dummy"    => '1'
 );
@@ -509,19 +557,31 @@ Make the most of Revolutionary Germantown Festival by purchasing a Passport that
 	"website"       => 'http://www.peddlersvillage.com',
 	"twitter"       => 'http://twitter.com/peddlersvillage',
 	"facebook"      => 'http://facebook.com/peddlersvillage',
-	"recurring"		=> 0,
+	"recurring"		=> 1,
 	"event_dates"	=> array(
-		'start_date' 	=> date_i18n( 'Y-m-d', strtotime( "+14 days" ) ),
-		'end_date' 		=> '',
-		'start_time' 	=> '09:00',
-		'end_time' 		=> '16:00',
-		'all_day' 		=> '',
+		'start_date' 		=> date_i18n( 'Y-m-d', strtotime( "+14 days" ) ),
+		'end_date' 			=> '',
+		'start_time' 		=> '09:00',
+		'end_time' 			=> '16:00',
+		'all_day' 			=> '',
+		'duration_x'		=> '1',
+		'repeat_type'		=> 'custom',
+		'repeat_x'			=> '',
+		'repeat_end_type'	=> '0',
+		'max_repeat'		=> '',
+		'repeat_end'		=> '',
+		'recurring_dates'	=> array( date_i18n( 'Y-m-d', strtotime( "+6 days" ) ), date_i18n( 'Y-m-d', strtotime( "+9 days" ) ), date_i18n( 'Y-m-d', strtotime( "+13 days" ) ) ),
+		'different_times'	=> '1',
+		'start_times'		=> array( '09:30', '10:00', '10:30' ),
+		'end_times'			=> array( '16:30', '17:00', '17:30' ),
+		'repeat_days'		=> '',
+		'repeat_weeks'		=> ''
 	),
 	"post_dummy"    => '1'
 );
  
  
-function geodir_event_extra_custom_fields_standard_events( $fields, $post_type, $package_id ) {
+function geodir_event_extra_custom_fields_recurring_events( $fields, $post_type, $package_id ) {
 	if ( $post_type != 'gd_event' ) {
 		return $fields;
 	}

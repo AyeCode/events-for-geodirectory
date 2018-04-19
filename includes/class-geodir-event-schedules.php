@@ -420,6 +420,57 @@ class GeoDir_Event_Schedules {
 		return $schedules;
 	}
 
+	public static function get_schedules_html( $schedules ) {
+		if ( empty( $schedules ) ) {
+			return NULL;
+		}
+
+		$date_time_format 	= geodir_event_date_time_format();
+		$date_format 		= geodir_event_date_format();
+		$time_format		= geodir_event_time_format();
+
+		$html		= '';
+		foreach ( $schedules as $key => $row ) {
+			if ( ! empty( $row->start_date ) && $row->start_date != '0000-00-00' ) {
+				$start_date		= $row->start_date;
+				$end_date		= ! empty( $row->end_date ) && $row->end_date != '0000-00-00' ? $row->end_date : $start_date;
+				$start_time		= ! empty( $row->start_time ) ? $row->start_time : '00:00:00';
+				$end_time		= ! empty( $row->end_time ) ? $row->end_time : '00:00:00';
+				$all_day		= ! empty( $row->all_day ) ? true : false;
+
+				$schedule = '<div class="geodir-schedule">';
+				if ( empty( $all_day ) ) {
+					if ( $start_date == $end_date && $start_time == $end_time && $end_time == '00:00:00' ) {
+						$end_date = date_i18n( 'Y-m-d', strtotime( $start_date . ' ' . $start_time . ' +1 day' ) );
+					}
+
+					if ( $start_date == $end_date ) {
+						$schedule .= date_i18n( $date_format, strtotime( $start_date ) );
+						$schedule .= ', ' . date_i18n( $time_format, strtotime( $start_time ) );
+						$schedule .= ' - ' . date_i18n( $time_format, strtotime( $end_time ) );
+					} else {
+						$schedule .= date_i18n( $date_time_format, strtotime( $start_date . ' '. $start_time ) );
+						$schedule .= ' - ';
+						$schedule .= date_i18n( $date_time_format, strtotime( $end_date . ' '. $end_time ) );
+					}
+				} else {
+					$schedule .= date_i18n( $date_format, strtotime( $start_date ) );
+					if ( $start_date != $end_date ) {
+						$schedule .= ' - ' . date_i18n( $date_format, strtotime( $end_date ) );
+					}
+				}
+				$schedule .= '</div>';
+
+				$html .= $schedule;
+			}
+		}
+		if ( ! empty( $html ) ) {
+			$html = '<div class="geodir-schedules">' . $html . '</div>';
+		}
+
+		return $html;
+	}
+
 	public static function event_type_condition( $event_type, $alias = NULL, $date = '' ) {
 		if ( $alias === NULL ) {
 			$alias = GEODIR_EVENT_SCHEDULES_TABLE;

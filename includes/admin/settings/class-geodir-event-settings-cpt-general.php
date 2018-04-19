@@ -168,7 +168,7 @@ if ( ! class_exists( 'GeoDir_Event_Settings_CPT_General', false ) ) :
 					),
 					array(
 						'type' => 'select',
-						'id' => 'event_feild_date_format',
+						'id' => 'event_field_date_format',
 						'name' => __( 'Input date format', 'geodirevents' ),
 						'desc' => __( 'Date format to use in the add event form.', 'geodirevents' ),
 						'class' => 'geodir-select',
