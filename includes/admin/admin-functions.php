@@ -1,0 +1,135 @@
+<?php
+/**
+ * Adds events to active plugin list.
+ *
+ * @since 1.0.0
+ * @package GeoDirectory_Events
+ *
+ * @param string $plugin Plugin basename.
+ */
+
+/**
+ * Deactivate gdevent
+ */
+function geodir_event_inactive_posttype() {
+	global $wpdb, $plugin_prefix;
+	
+	update_option( "gdevents_installed", 0 );
+	
+	$posttype = 'gd_event';
+	
+	$geodir_taxonomies = geodir_get_option('geodir_taxonomies');
+	
+	if (array_key_exists($posttype.'category', $geodir_taxonomies))
+	{
+		unset($geodir_taxonomies[$posttype.'category']);
+		geodir_update_option( 'geodir_taxonomies', $geodir_taxonomies );
+	}
+	
+	if (array_key_exists($posttype.'_tags', $geodir_taxonomies))
+	{
+		unset($geodir_taxonomies[$posttype.'_tags']);
+		geodir_update_option( 'geodir_taxonomies', $geodir_taxonomies );
+	}
+	
+	
+	$geodir_post_types = geodir_get_option( 'geodir_post_types' );
+	
+	if (array_key_exists($posttype, $geodir_post_types))
+	{
+		unset($geodir_post_types[$posttype]);
+		geodir_update_option( 'geodir_post_types', $geodir_post_types );
+	}
+	 
+	//UPDATE SHOW POST TYPES NAVIGATION OPTIONS 
+	
+	$get_posttype_settings_options = array('geodir_add_posttype_in_listing_nav','geodir_allow_posttype_frontend','geodir_add_listing_link_add_listing_nav','geodir_add_listing_link_user_dashboard','geodir_listing_link_user_dashboard');
+	
+	foreach($get_posttype_settings_options as $get_posttype_settings_options_obj)
+	{
+		$geodir_post_types_listing = geodir_get_option( $get_posttype_settings_options_obj );
+		
+		if (in_array($posttype, $geodir_post_types_listing))
+		{
+			$geodir_update_post_type_nav = array_diff($geodir_post_types_listing, array($posttype));
+			geodir_update_option( $get_posttype_settings_options_obj, $geodir_update_post_type_nav );
+		}
+	}
+}
+// @todo
+function geodir_event_deactivation() {
+	geodir_event_inactive_posttype();
+	
+	delete_option( 'geodir_event_recurring_feature');
+	delete_option( 'gdevents_installed');
+}
+
+function geodir_event_business_setting(){
+	
+	global $post,$post_id,$post_info;  
+	
+	wp_nonce_field( plugin_basename( __FILE__ ), 'geodir_event_business_noncename' );
+	
+	do_action('geodir_event_business_fields_on_metabox');
+	
+}
+
+function geodir_event_admin_menu_order( $menu_order ) {
+	
+	// Initialize our custom order array
+	$gdevents_menu_order = array();
+	$gdevents_menu_order[] = 'edit.php?post_type=gd_event';
+	
+	// Get index of deals menu
+	$gdevents_events = array_search( 'edit.php?post_type=gd_event', $menu_order );
+	
+	if($gdevents_separator = array_search( 'separator-geodirectory', $menu_order )){
+		array_splice( $menu_order, $gdevents_separator + 1, 0, $gdevents_menu_order ); 
+		unset( $menu_order[$gdevents_events] );
+	}	
+	
+	// Return order
+	return $menu_order;
+}
+
+
+function geodir_event_admin_custom_menu_order() {
+	if ( !current_user_can( 'manage_options' ) ) return false;
+	return true;
+}
+
+/* Admin init loader */
+
+//add_action('menu_order', 'geodir_event_admin_menu_order',12); // @todo
+
+//add_action('custom_menu_order', 'geodir_event_admin_custom_menu_order'); // @todo
+
+/**
+ * Replace schema types for even categories.
+ *
+ * @since 1.4.5
+ * @param $schemas
+ * @return array
+ */
+function geodir_event_filter_schemas( $schemas ) {
+	if ( isset( $_REQUEST['taxonomy'] ) && $_REQUEST['taxonomy'] == 'gd_eventcategory' ) {
+		$schemas = geodir_event_get_schema_types();
+	}
+	return $schemas;
+}
+
+function geodir_event_custom_sort_options( $fields, $post_type ) {
+	if ( $post_type == 'gd_event' ) {
+		$fields['event_dates'] = array(
+			'post_type'      => $post_type,
+			'data_type'      => '',
+			'field_type'     => 'datetime',
+			'frontend_title' => __( 'Event date', 'geodirevents' ),
+			'htmlvar_name'   => 'event_dates',
+			'field_icon'     => 'fa fa-calendar',
+			'description'    => __( 'Sort by event date', 'geodirevents' )
+		);
+	}
+
+	return $fields;
+}
