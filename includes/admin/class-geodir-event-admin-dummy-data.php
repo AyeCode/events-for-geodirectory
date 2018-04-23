@@ -41,7 +41,7 @@ class GeoDir_Event_Admin_Dummy_Data {
 				'count' => 10
 			),
 			'recurring_events'   => array(
-				'name'  => __( 'With Recurring Events', 'geodirectory' ),
+				'name'  => __( 'With Recurring Events', 'geodirevents' ),
 				'count' => 10
 			)
 		);

@@ -57,6 +57,7 @@ class GeoDir_Event_Fields {
 		add_filter( 'geodir_custom_field_output_event', array( __CLASS__, 'cf_event' ), 10, 3 );
 		add_filter( 'geodir_custom_field_output_event_var_event_dates', array( __CLASS__, 'output_event_dates' ), 10, 4 ); // Schedules
 		add_filter( 'geodir_custom_field_output_event_loc_listing', array( __CLASS__, 'output_event_date' ), 10, 3 ); // Single date
+		add_filter( 'geodir_custom_field_output_event_var_link_business', array( __CLASS__, 'output_link_business' ), 10, 4 ); // Link business
 	}
 
 	public static function enable_event_dates_in_owntab( $return, $field_type, $field ) {
@@ -902,7 +903,7 @@ class GeoDir_Event_Fields {
 
 		$htmlvar_name = $cf['htmlvar_name'];
 
-		if ( empty( $html ) && ! empty( $the_post->{$htmlvar_name} ) ) {
+		if ( $htmlvar_name == 'event_dates' && empty( $html ) && ! empty( $the_post->{$htmlvar_name} ) ) {
 			if ( $location == 'mapbubble' ) {
 				$event_type = geodir_get_option( 'event_map_popup_dates', 'upcoming' );
 				$count		= geodir_get_option( 'event_map_popup_count' );
@@ -950,7 +951,7 @@ class GeoDir_Event_Fields {
 
 		$htmlvar_name = $cf['htmlvar_name'];
 
-		if ( ! empty( $the_post->{$htmlvar_name} ) ) {
+		if ( $htmlvar_name == 'event_dates' && ! empty( $the_post->{$htmlvar_name} ) ) {
 			$event_post 	= isset( $the_post->start_date ) ? $the_post : $post;
 			$schedule		= array();
 			if ( ! empty( $event_post->start_date ) ) {
@@ -1014,6 +1015,44 @@ class GeoDir_Event_Fields {
 				$html = '<div class="geodir_post_meta geodir-field-' . $htmlvar_name . ' ' . trim( $date_class ) . '" style="clear:both;"><meta itemprop="startDate" content="' . $meta_startDate . '"><span class="geodir-i-datepicker" style="' . $field_icon . '">' . $field_icon_af;
 				//$html .= $field_label . ' ';
 				$html .= '</span>' . $date . '</div>';
+			} else {
+				$html = '<div style="display:none"></div>';
+			}
+		}
+
+		return $html;
+	}
+
+	public static function output_link_business( $html, $location, $cf, $the_post = array() ) {
+		if ( empty( $the_post ) || empty( $cf ) ) {
+			return $html;
+		}
+
+		$htmlvar_name = $cf['htmlvar_name'];
+
+		if ( $htmlvar_name == 'link_business' && ! empty( $the_post->{$htmlvar_name} ) ) {
+			$post_id = (int)$the_post->{$htmlvar_name};
+			if ( get_post_status( $post_id ) == 'publish' ) {
+				$url = get_permalink( $post_id );
+				$rel = strpos( $url, get_site_url() ) !== false ? '' : ' rel="nofollow"';
+				$value = '<a href="' . $url . '" target="_blank"' . $rel . '>' . get_the_title( $post_id ) . '</a>';
+
+				$field_label = ! empty( $cf['frontend_title'] ) ? apply_filters( 'geodir_event_link_business_field_label', __( $cf['frontend_title'], 'geodirevents' ), $the_post, $cf, $location ) : '';
+				$field_icon = geodir_field_icon_proccess( $cf );
+				if ( strpos( $field_icon, 'http' ) !== false ) {
+					$field_icon_af = '';
+				} elseif ( $field_icon == '' ) {
+					$field_icon_af = '';
+				} else {
+					$field_icon_af = $field_icon;
+					$field_icon = '';
+				}
+
+				$html = '<div class="geodir_post_meta geodir-field-' . $htmlvar_name . '" style="clear:both;"><span class="geodir-i-website" style="' . $field_icon . '">' . $field_icon_af;
+				if ( $field_label != '' ) {
+					$html .= $field_label . ': ';
+				}
+				$html .= '</span>' . $value . '</div>';
 			} else {
 				$html = '<div style="display:none"></div>';
 			}

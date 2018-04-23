@@ -91,7 +91,7 @@ class GeoDir_Event_Query {
 			}
 		}
 
-		if ( $gd_session->get('all_near_me' ) ) {			
+		if ( $gd_session->get('all_near_me' ) ) {
 			$radius = geodir_getDistanceRadius( geodir_get_option( 'search_distance_long' ) );
 			$latitude = $gd_session->get('user_lat');
 			$longitude = $gd_session->get('user_lon');
@@ -116,6 +116,24 @@ class GeoDir_Event_Query {
 				$max_longitude = is_numeric( max( $lon1, $lon2 ) ) ? max( $lon1, $lon2 ) : '';
 
 				$where .= " AND ( " . $table . ".latitude BETWEEN " . $min_latitude . " AND " . $max_latitude . " ) AND ( " . $table . ".longitude BETWEEN " . $min_longitude . " AND " . $max_longitude . " )";
+			}
+		}
+		
+		$venue = get_query_var( 'venue' );
+		if ( empty( $venue ) && ! empty( $_REQUEST['venue'] ) ) {
+			$venue = sanitize_text_field( $_REQUEST['venue'] );
+		}
+
+		if ( ! empty( $venue ) ) {
+			$venue = explode( '-', $venue, 2);
+			if ( ! empty( $venue[0] ) && (int)$venue[0] > 0 ) {
+				if ( geodir_is_gd_post_type( get_post_type( (int)$venue[0] ) ) ) {
+					$link_business = (int)$venue[0];
+				} else {
+					$link_business = '-1';
+				}
+
+				$where .= " AND " . $table . ".link_business = " . (int)$link_business;
 			}
 		}
 

@@ -986,7 +986,7 @@ function geodir_event_function_widget_events_where( $where ) {
 	$date_now = date_i18n( 'Y-m-d' );
 	
 	if ( !empty( $gd_query_args ) && !empty( $gd_query_args['event_related_id'] ) ) {
-		$where .= " AND " . $table . ".geodir_link_business = " . (int)$gd_query_args['event_related_id'];
+		$where .= " AND " . $table . ".link_business = " . (int)$gd_query_args['event_related_id'];
 	}
 	
 	if ( !empty( $gd_query_args ) && isset( $gd_query_args['gd_event_type'] ) ) {
@@ -1027,97 +1027,6 @@ function geodir_event_function_widget_events_limit( $limit ) {
 	}
 	
 	return $limit;
-}
-
-function geodir_calender_event_details_after_post_title() {
-	global $post, $wpdb, $condition_date, $geodir_post_type, $geodir_is_link_business, $geodir_event_widget_listview;
-
-	$is_post_type_event = !empty( $post ) && isset( $post->post_type ) && $post->post_type == 'gd_event' && isset( $post->start_date ) && $post->start_date ? true : false;
-	
-	if ( ( ( is_main_query() && $geodir_post_type == 'gd_event' ) || get_query_var( 'geodir_event_listing_filter' ) || ( isset( $geodir_is_link_business ) && $geodir_is_link_business ) || ( isset( $geodir_event_widget_listview ) && $geodir_event_widget_listview ) ) && $is_post_type_event ) {
-		global $geodir_date_time_format, $geodir_date_format, $geodir_time_format;
-	?>
-	<p style="clear:both;" class="geodir-event-meta">
-		<span class="geodir-i-datepicker"><i class="fa fa-calendar-o"></i> <?php _e( 'Date:', 'geodirevents' ); ?></span>
-		<?php echo date_i18n( $geodir_date_format, strtotime( $post->start_date ) );
-
-        if($post->end_date!='' && $post->end_date!='0000-00-00' && date_i18n( $geodir_date_format, strtotime( $post->end_date) )!= date_i18n( $geodir_date_format, strtotime( $post->start_date ) )){
-            echo ' - '. date_i18n( $geodir_date_format, strtotime( $post->end_date ) );
-        }
-        ?>
-	</p>
-	<?php if ( ( isset( $post->all_day ) && $post->all_day != '1' ) && ( ( isset( $post->start_time ) && !empty( $post->start_time ) ) || ( isset( $post->end_time ) && !empty( $post->end_time ) ) ) ) {  ?>
-	<p style="clear:both;" class="geodir-event-meta">
-		<span class="geodir-i-time"><i class="fa fa-clock-o"></i> <?php _e('Time:', 'geodirevents'); ?> </span>
-		<?php 
-		if ( isset( $post->start_time ) && !empty( $post->start_time ) ) {
-			echo date_i18n( $geodir_time_format, strtotime( $post->start_time ) ). ' ' ;
-		}	
-		if ( isset( $post->end_time ) && !empty( $post->end_time ) ) {
-			echo __( ' to', 'geodirevents' ).' '. date_i18n( $geodir_time_format, strtotime( $post->end_time ) );
-		}											
-		?>
-	</p>
-		<?php
-		}
-	}			
-}
-
-function geodir_event_get_link_business( $listings = array() ) {
-	global $post, $gridview_columns, $geodir_is_link_business, $character_count, $gd_session;
-	
-	if( empty ( $listings ) ) {
-		return NULL;
-	}
-
-	$template = apply_filters( "geodir_template_part-link-business-listview", WP_PLUGIN_DIR . '/geodir_event_manager/link-business-listview.php', 'gd_event' );
-	
-	$event_type = geodir_get_option( 'geodir_event_linked_event_type' );
-		
-	$view_all_params = array();
-	if ( $event_type == 'today' || $event_type == 'past' || $event_type == 'upcoming' ) {
-		$view_all_params['etype'] = $event_type;
-	}
-	$venue_name = $post->post_title;
-	$view_all_params['venue'] = $post->ID . '-' . $venue_name;
-	$view_all_url = geodir_getlink( get_post_type_archive_link( 'gd_event' ), $view_all_params );
-	$view_all_url = apply_filters( 'geodir_event_linked_event_link', $view_all_url, $post->ID );
-	
-	$gd_listing_view_set = $gd_session->get('gd_listing_view') ? true : false;
-	$gd_listing_view = '';
-	if ( $gd_listing_view_set ) {
-		$gd_listing_view = $gd_session->get('gd_listing_view');
-		$gd_session->un_set('gd_listing_view');
-	}
-	
-	ob_start();
-	?>
-	<div class="geodir_locations geodir_location_listing">
-		<a class="geodir-viewall geodir-viewall-linked clearfix" href="<?php echo esc_url( $view_all_url );?>" title="<?php echo esc_attr( sprintf( __('View all events in "%s"', 'geodirevents' ), $venue_name ) );?>"><?php echo sprintf( __('View all events in "%s"', 'geodirevents' ), $venue_name ); ?></a>
-	<?php
-	if ( !$character_count ) {
-		$character_count = 20;
-	}
-	$linked_listings = $listings;
-	$related_posts = true;
-	$current_post = $post;
-	$geodir_is_link_business = true;
-	include( $template );
-	$GLOBALS['post'] = $current_post;
-	setup_postdata( $current_post );
-	$geodir_is_link_business = false;
-	
-	if ( $gd_listing_view_set ) {
-		$gd_session->set('gd_listing_view', $gd_listing_view);
-	}
-	?>
-	</div>
-	<?php
-	wp_reset_query();
-	
-	$content = ob_get_clean();
-	
-	return $content;
 }
 
 function geodir_event_filter_title_meta_vars($settings) {
@@ -1245,3 +1154,117 @@ function geodir_event_display_event_type_filter( $post_type ) {
 	echo $content;
 }
 add_action( 'geodir_extra_loop_actions', 'geodir_event_display_event_type_filter', 10, 1 );
+
+function geodir_event_link_business_tab( $tabs = array() ) {
+	global $post, $wpdb, $plugin_prefix, $character_count, $gridview_columns, $gd_query_args;
+
+	if ( ! empty( $post ) && ! empty( $post->post_type ) && $post->post_type != 'gd_event' && geodir_is_gd_post_type( $post->post_type ) && geodir_is_page( 'detail' ) ) {
+		$old_character_count = $character_count;
+		$old_gridview_columns = $gridview_columns;
+		$old_gd_query_args = $gd_query_args;
+		
+		$event_type = geodir_get_option( 'geodir_event_linked_event_type', 'all' );
+		$list_sort = geodir_get_option( 'geodir_event_linked_sortby', 'latest' );
+		$post_number = geodir_get_option( 'geodir_event_linked_count', '5' );
+		$gridview_columns = geodir_get_option( 'geodir_event_linked_listing_view', 'gridview_onehalf' );
+		$character_count = geodir_get_option( 'geodir_event_linked_post_excerpt', '20' );
+		
+		if ( empty( $gd_query_args ) ) {
+			$gd_query_args = array();
+		}
+		$gd_query_args['is_geodir_loop'] = true;
+
+		$listing_ids = geodir_event_link_businesses( $post->ID, $post->post_type );
+		if ( !empty( $listing_ids ) ) {
+			$listings = geodir_event_link_businesses_data( $listing_ids, $event_type, $list_sort, $post_number );
+			if ( !empty( $listings ) ) {
+				$tab_content = geodir_event_get_link_business_html( $listings );
+				if ( $tab_content ) {
+					$post->link_business = '';
+					$tabs['link_business'] = array( 
+						'heading_text' => __( 'Events', 'geodirevents' ),
+						'is_active_tab' => false,
+						'is_display' => apply_filters('geodir_detail_page_tab_is_display', true, 'link_business'),
+						'tab_content' => $tab_content
+					);
+				}
+			}
+		}
+		
+		global $character_count, $gridview_columns;
+		$old_gd_query_args = $gd_query_args;
+		$character_count = $old_character_count;
+		$gridview_columns = $old_gridview_columns;
+	}
+	return $tabs;
+}
+add_filter( 'geodir_detail_page_tab_list_extend', 'geodir_event_link_business_tab', 10, 1 );
+
+function geodir_event_get_link_business_html( $widget_listings = array() ) {
+	global $post, $gridview_columns, $character_count, $gd_session, $gd_layout_class;
+	
+	if ( empty ( $widget_listings ) ) {
+		return NULL;
+	}
+
+	$event_type = geodir_get_option( 'geodir_event_linked_event_type' );
+
+	$view_all_params = array();
+	if ( $event_type == 'today' || $event_type == 'past' || $event_type == 'upcoming' ) {
+		$view_all_params['etype'] = $event_type;
+	}
+	$venue_name = $post->post_title;
+	$view_all_params['venue'] = $post->ID . '-' . $venue_name;
+	$view_all_url = geodir_getlink( get_post_type_archive_link( 'gd_event' ), $view_all_params );
+	$view_all_url = apply_filters( 'geodir_event_linked_event_link', $view_all_url, $post->ID );
+
+	$layout = $gridview_columns;
+
+	if ( isset( $post ) ) {
+		$reset_post = $post;
+	}
+	if ( isset( $gd_post ) ) {
+		$reset_gd_post = $gd_post;
+	}
+	$geodir_is_widget_listing = true;
+
+	if ( strstr( $layout, 'gridview' ) ) {
+		$listing_view_exp        = explode( '_', $layout );
+		$gd_layout_class = $layout;
+		$layout                  = $listing_view_exp[0];
+	} else {
+		$gd_layout_class = '';
+	}
+	if ( ! isset( $character_count ) ) {
+		/**
+		 * Filter the widget's excerpt character count.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param int $instance ['character_count'] Excerpt character count.
+		 */
+		$character_count = $character_count == '' ? 50 : apply_filters( 'widget_character_count', $character_count );
+	}
+	
+	ob_start();
+	?>
+	<div class="geodir_locations geodir_location_listing">
+		<a class="geodir-viewall geodir-viewall-linked clearfix" href="<?php echo esc_url( $view_all_url );?>" title="<?php echo esc_attr( wp_sprintf( __( 'View all events in "%s"', 'geodirevents' ), $venue_name ) );?>"><?php echo wp_sprintf( __( 'View all events in "%s"', 'geodirevents' ), $venue_name ); ?></a>
+		<?php geodir_get_template( 'content-widget-listing.php', array( 'widget_listings' => $widget_listings ) ); ?>
+	</div>
+	<?php
+	$geodir_is_widget_listing = false;
+	if ( isset( $reset_post ) ) {
+		if ( ! empty( $reset_post ) ) {
+			setup_postdata( $reset_post );
+		}
+		$post = $reset_post;
+	}
+	if ( isset( $reset_gd_post ) ) {
+		$gd_post = $reset_gd_post;
+	}
+	
+	$content = ob_get_clean();
+	
+	return $content;
+}

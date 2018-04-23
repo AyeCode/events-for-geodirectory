@@ -420,6 +420,40 @@ class GeoDir_Event_Schedules {
 		return $schedules;
 	}
 
+	public static function get_upcoming_schedule( $post_id, $date = '' ) {
+		global $wpdb;
+
+		if ( empty( $post_id ) ) {
+			return false;
+		}
+
+		$where = array( 'event_id = %d' );
+		if ( ( $condition = self::event_type_condition( 'upcoming', '', $date ) ) ) {
+			$where[] = $condition;
+		}
+
+		$where = implode( ' AND ', $where );
+
+		$schedules = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM " . GEODIR_EVENT_SCHEDULES_TABLE . " WHERE {$where} ORDER BY start_date ASC, start_time ASC LIMIT 1", array( $post_id ) ) );
+
+		return $schedules;
+	}
+
+	public static function get_start_schedule( $post_id ) {
+		global $wpdb;
+
+		if ( empty( $post_id ) ) {
+			return false;
+		}
+
+		$where = array( 'event_id = %d' );
+		$where = implode( ' AND ', $where );
+
+		$schedules = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM " . GEODIR_EVENT_SCHEDULES_TABLE . " WHERE {$where} ORDER BY start_date ASC, start_time ASC LIMIT 1", array( $post_id ) ) );
+
+		return $schedules;
+	}
+
 	public static function get_schedules_html( $schedules ) {
 		if ( empty( $schedules ) ) {
 			return NULL;

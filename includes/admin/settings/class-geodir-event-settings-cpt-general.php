@@ -213,11 +213,10 @@ if ( ! class_exists( 'GeoDir_Event_Settings_CPT_General', false ) ) :
 						'id' => 'geodir_event_date_format_settings'
 					),
 					array( 
-						'name' => __( 'Other', 'geodirevents' ), 
+						'name' => __( 'Link Business', 'geodirevents' ), 
 						'type' => 'title',
 						'desc' => '', 
-						'id' => 'geodir_event_other_settings',
-						'advanced' => true						
+						'id' => 'geodir_event_link_business_settings',					
 					),
 					array(
 						'type' => 'checkbox',
@@ -228,8 +227,72 @@ if ( ! class_exists( 'GeoDir_Event_Settings_CPT_General', false ) ) :
 						'advanced' => true
 					),
 					array(
+						'type' => 'number',
+						'id' => 'geodir_event_linked_count',
+						'name' => __('Posts to show', 'geodirevents'),
+						'desc' => __('The number of posts to show by default.', 'geodirevents'),
+						'default'  => '5',
+						'desc_tip' => true,
+						'advanced' => false
+					),
+					array(
+						'type' => 'select',
+						'id' => 'geodir_event_linked_event_type',
+						'name' => __( 'Event filter', 'geodirevents' ),
+						'desc' => __( 'Set the event filter.', 'geodirevents' ),
+						'class' => 'geodir-select',
+						'default'  => 'upcoming',
+						'placeholder' => __( 'Select', 'geodirevents' ),
+						'options' => array( 
+							'all' => __( 'All', 'geodirevents' ),
+							'today' => __( 'Today', 'geodirevents' ),
+							'upcoming' => __( 'Upcoming', 'geodirevents' ),
+							'past' => __( 'Past', 'geodirevents' )
+						),
+						'desc_tip' => true,
+						'advanced' => true,
+					),
+					array(
+						'type' => 'select',
+						'id' => 'geodir_event_linked_sortby',
+						'name' => __( 'Sort by', 'geodirevents' ),
+						'desc' => __( 'Set the linked event listing sorting.', 'geodirevents' ),
+						'class' => 'geodir-select',
+						'default'  => 'latest',
+						'placeholder' => __( 'Select', 'geodirevents' ),
+						'options' => array( 
+							'az' => __( 'A-Z', 'geodirevents' ),
+							'latest' => __( 'Latest', 'geodirevents' ),
+							'featured' => __( 'Featured', 'geodirevents' ),
+							'high_review' => __( 'Review', 'geodirevents' ),
+							'high_rating' => __( 'Rating', 'geodirevents' ),
+							'random' => __( 'Random', 'geodirevents' ),
+							'upcoming' => __( 'Upcoming', 'geodirevents' ),
+						),
+						'desc_tip' => true,
+						'advanced' => true,
+					),
+					array(
+						'type' => 'select',
+						'name' => __('Layout', 'geodirevents'),
+						'id' => 'geodir_event_linked_listing_view',
+						'desc' => __('How the listings should laid out by default.', 'geodirevents'),
+						'class' => 'geodir-select',
+						'default'  => 'gridview_onehalf',
+						'placeholder' => __( 'Select', 'geodirevents' ),
+						'options'   =>  array(
+							"gridview_onehalf" => __('Grid View (Two Columns)', 'geodirevents'),
+							"gridview_onethird" => __('Grid View (Three Columns)', 'geodirevents'),
+							"gridview_onefourth" => __('Grid View (Four Columns)', 'geodirevents'),
+							"gridview_onefifth" => __('Grid View (Five Columns)', 'geodirevents'),
+							"list" => __('List view', 'geodirevents'),
+						),
+						'desc_tip' => true,
+						'advanced' => true
+					),
+					array(
 						'type' => 'sectionend', 
-						'id' => 'geodir_event_other_settings',
+						'id' => 'geodir_event_link_business_settings',
 						'advanced' => true	
 					)
 				)
