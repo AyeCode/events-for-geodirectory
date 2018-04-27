@@ -27,9 +27,6 @@ class GeoDir_Event_Fields {
     }
 
 	public static function init() {
-		if ( is_admin() ) {
-			add_filter( 'geodir_enable_field_type_in_owntab', array( __CLASS__, 'enable_event_dates_in_owntab' ), 10, 3 );
-		}
 	
 		add_filter( 'geodir_default_custom_fields', array( __CLASS__, 'default_custom_fields' ), 10, 3 );
 		add_filter( 'geodir_custom_fields_predefined', array( __CLASS__, 'predefined_fields' ), 10, 2 );
@@ -58,13 +55,8 @@ class GeoDir_Event_Fields {
 		add_filter( 'geodir_custom_field_output_event_var_event_dates', array( __CLASS__, 'output_event_dates' ), 10, 4 ); // Schedules
 		add_filter( 'geodir_custom_field_output_event_loc_listing', array( __CLASS__, 'output_event_date' ), 10, 3 ); // Single date
 		add_filter( 'geodir_custom_field_output_event_var_link_business', array( __CLASS__, 'output_link_business' ), 10, 4 ); // Link business
-	}
-
-	public static function enable_event_dates_in_owntab( $return, $field_type, $field ) {
-		if ( $field->htmlvar_name == 'event_dates' ) {
-			$return = true;
-		}
-		return $return;
+		
+		add_filter( 'geodir_cpt_settings_tabs_predefined_fields', array( __CLASS__, 'event_predefined_tabs' ), 10, 2 );
 	}
 
 	public static function default_custom_fields( $fields, $post_type, $package_id ) {
@@ -913,10 +905,10 @@ class GeoDir_Event_Fields {
 			}
 
 			$schedules 		= GeoDir_Event_Schedules::get_schedules( $the_post->ID, $event_type, $count );
-			$schedules_html = GeoDir_Event_Schedules::get_schedules_html( $schedules );
+			$schedules_html = GeoDir_Event_Schedules::get_schedules_html( $schedules, ! empty( $the_post->recurring ) );
 
 			if ( ! empty( $schedules_html ) ) {
-				$field_label = _n( 'Date:', 'Dates:', count( $schedules ), 'geodirevents' );
+				$field_label = _n( 'Date', 'Dates', count( $schedules ), 'geodirevents' );
 				$field_icon = geodir_field_icon_proccess( $cf );
 				if ( strpos( $field_icon, 'http' ) !== false ) {
 					$field_icon_af = '';
@@ -932,7 +924,9 @@ class GeoDir_Event_Fields {
 				$date_class .= count( $schedules ) > 1 ? ' geodir-schedules-meta' : ' geodir-schedule-meta';
 
 				$html = '<div class="geodir_post_meta geodir-field-' . $htmlvar_name . ' ' . trim( $date_class ) . '" style="clear:both;"><span class="geodir-i-datepicker" style="' . $field_icon . '">' . $field_icon_af;
-				$html .= $field_label . ' ';
+				if ( $field_label != '' ) {
+					$html .= $field_label . ': ';
+				}
 				$html .= '</span>' . $schedules_html . '</div>';
 			} else {
 				$html = '';
@@ -962,43 +956,20 @@ class GeoDir_Event_Fields {
 				$schedule		= $schedules[0];
 			}
 
-			if ( ! empty( $schedule ) ) {
-				$date_time_format 	= geodir_event_date_time_format();
-				$date_format 		= geodir_event_date_format();
-				$time_format		= geodir_event_time_format();
+			if ( ! empty( $schedule->start_date ) ) {
+				$row = array(
+					'schedule_id' => ( ! empty( $schedule->schedule_id ) ? $schedule->schedule_id : $event_post->ID ),
+					'event_id' => ( ! empty( $schedule->event_id ) ? $schedule->event_id : $event_post->ID ),
+					'start_date' => $schedule->start_date,
+					'end_date' => ( ! empty( $schedule->end_date ) && $schedule->end_date != '0000-00-00' ? $schedule->end_date : $start_date ),
+					'start_time' => ( ! empty( $schedule->start_time ) ? $schedule->start_time : '00:00:00' ),
+					'end_time' => ( ! empty( $schedule->end_time ) ? $schedule->end_time : '00:00:00' ),
+					'all_day' => ( ! empty( $schedule->all_day ) ? true : false )
+				);
 
-				$start_date			= $schedule->start_date;
-				$end_date			= ! empty( $schedule->end_date ) && $schedule->end_date != '0000-00-00' ? $schedule->end_date : $start_date;
-				$start_time			= ! empty( $schedule->start_time ) ? $schedule->start_time : '00:00:00';
-				$end_time			= ! empty( $schedule->end_time ) ? $schedule->end_time : '00:00:00';
-				$all_day			= ! empty( $schedule->all_day ) ? true : false;
+				$value = GeoDir_Event_Schedules::get_schedules_html( array( (object)$schedule ), false );
 
-				if ( empty( $all_day ) ) {
-					$date = '';
-					if ( $start_date == $end_date && $start_time == $end_time && $end_time == '00:00:00' ) {
-						$end_date = date_i18n( 'Y-m-d', strtotime( $start_date . ' ' . $start_time . ' +1 day' ) );
-					}
-
-					if ( $start_date == $end_date ) {
-						$date = date_i18n( $date_format, strtotime( $start_date ) );
-						$date .= ', ' . date_i18n( $time_format, strtotime( $start_time ) );
-						$date .= ' - ' . date_i18n( $time_format, strtotime( $end_time ) );
-					} else {
-						$date = date_i18n( $date_time_format, strtotime( $start_date . ' '. $start_time ) );
-						$date .= ' - ';
-						$date .= date_i18n( $date_time_format, strtotime( $end_date . ' '. $end_time ) );
-					}
-					$meta_startDate = $start_date . 'T' . date_i18n( 'H:i:s', strtotime( $start_time ) );
-				} else {
-					$date = date_i18n( $date_format, strtotime( $start_date ) );
-					if ( $start_date != $end_date ) {
-						$date .= ' - ' . date_i18n( $date_format, strtotime( $end_date ) );
-					}
-					$meta_startDate = $start_date . 'T00:00:00';
-				}
-				$meta_startDate .= geodir_gmt_offset();
-
-				$field_label = __( 'Date:', 'geodirevents' );
+				$field_label = __( 'Date', 'geodirevents' );
 				$field_icon = geodir_field_icon_proccess( $cf );
 				if ( strpos( $field_icon, 'http' ) !== false ) {
 					$field_icon_af = '';
@@ -1011,10 +982,13 @@ class GeoDir_Event_Fields {
 
 				$date_class = $cf['css_class'];
 				$date_class .= 'geodir-schedule-meta geodir-edate-' . $cf['css_class'];
+				$field_label = '';
 
-				$html = '<div class="geodir_post_meta geodir-field-' . $htmlvar_name . ' ' . trim( $date_class ) . '" style="clear:both;"><meta itemprop="startDate" content="' . $meta_startDate . '"><span class="geodir-i-datepicker" style="' . $field_icon . '">' . $field_icon_af;
-				//$html .= $field_label . ' ';
-				$html .= '</span>' . $date . '</div>';
+				$html = '<div class="geodir_post_meta geodir-field-' . $htmlvar_name . ' ' . trim( $date_class ) . '" style="clear:both;"><span class="geodir-i-datepicker" style="' . $field_icon . '">' . $field_icon_af;
+				if ( $field_label != '' ) {
+					$html .= $field_label . ': ';
+				}
+				$html .= '</span>' . $value . '</div>';
 			} else {
 				$html = '<div style="display:none"></div>';
 			}
@@ -1075,5 +1049,18 @@ class GeoDir_Event_Fields {
 		}
 		
 		return $value;
+	}
+
+	public static function event_predefined_tabs( $fields, $post_type ) {
+		if ( $post_type == 'gd_place' && ( $cf = geodir_get_field_infoby( 'htmlvar_name', 'link_business', 'gd_event' ) ) ) {
+			$fields[] = array(
+				'tab_type'   => 'standard',
+				'tab_name'   => __( 'Events','geodirevents' ),
+				'tab_icon'   => 'fa-calendar',
+				'tab_key'    => 'events',
+				'tab_content'=> ''
+			);
+		}
+		return $fields;
 	}
 }

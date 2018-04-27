@@ -22,6 +22,10 @@ class GeoDir_Event_Admin {
 	 * Constructor.
 	 */
 	public function __construct() {
+		global $pagenow;
+
+		$post_action = ! empty( $_POST['action'] ) ? $_POST['action'] : '';
+
 		add_action( 'init', array( $this, 'includes' ) );
 		add_action( 'admin_init', array( $this, 'admin_redirects' ) );
 		add_filter( 'geodir_get_settings_pages', array( $this, 'load_settings_page' ), 9, 1 );

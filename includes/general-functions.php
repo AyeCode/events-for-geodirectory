@@ -662,68 +662,6 @@ function geodir_event_get_my_listings( $post_type = 'all', $search = '', $limit 
 	return $rows;
 }
 
-add_filter('geodir_filter_widget_listings_fields','geodir_filter_event_widget_listings_fields',10,3);
-function geodir_filter_event_widget_listings_fields($fields,$table,$post_type){
-	global $plugin_prefix;
-	if($post_type=='gd_event'){
-	$fields .= ", ".GEODIR_EVENT_SCHEDULES_TABLE.".* ";	
-	}
-	return $fields;
-}
-
-add_filter('geodir_filter_widget_listings_join','geodir_filter_event_widget_listings_join',10,2);
-function geodir_filter_event_widget_listings_join($join,$post_type){
-	global $plugin_prefix,$wpdb;
-	if($post_type=='gd_event'){
-	$join .= " INNER JOIN ".GEODIR_EVENT_SCHEDULES_TABLE." ON (".GEODIR_EVENT_SCHEDULES_TABLE.".event_id = $wpdb->posts.ID) ";	
-	}
-	return $join;
-}
-
-add_filter( 'geodir_filter_widget_listings_where', 'geodir_filter_event_widget_listings_where', 10, 2 );
-function geodir_filter_event_widget_listings_where( $where, $post_type ) {
-	global $plugin_prefix, $wpdb, $gd_query_args_widgets;
-	if ( $post_type == 'gd_event' ) {
-		$current_date = date_i18n('Y-m-d');
-		
-		if (!empty($gd_query_args_widgets) && isset($gd_query_args_widgets['geodir_event_listing_filter'])) {
-			$filter = $gd_query_args_widgets['geodir_event_listing_filter'];
-			if ( $filter == 'today' ) {
-				$where .= " AND ( " . GEODIR_EVENT_SCHEDULES_TABLE . ".start_date = '" . $current_date . "' OR ( " . GEODIR_EVENT_SCHEDULES_TABLE . ".start_date <= '" . $current_date . "' AND " . GEODIR_EVENT_SCHEDULES_TABLE . ".end_date >= '" . $current_date . "' ) ) ";
-			}
-				
-			if ( $filter == 'upcoming' ) {
-				$where .= " AND ( " . GEODIR_EVENT_SCHEDULES_TABLE . ".start_date >= '" . $current_date . "' OR ( " . GEODIR_EVENT_SCHEDULES_TABLE . ".start_date <= '" . $current_date . "' AND " . GEODIR_EVENT_SCHEDULES_TABLE . ".end_date >= '" . $current_date . "' ) ) ";
-			}
-			
-			if ( $filter == 'past' ) {
-				$where .= " AND " . GEODIR_EVENT_SCHEDULES_TABLE . ".start_date < '" . $current_date . "' ";
-			}
-		} else {
-			$where .= " AND ( " . GEODIR_EVENT_SCHEDULES_TABLE . ".start_date >= '" . $current_date . "' OR ( " . GEODIR_EVENT_SCHEDULES_TABLE . ".start_date <= '" . $current_date . "' AND " . GEODIR_EVENT_SCHEDULES_TABLE . ".end_date >= '" . $current_date . "' ) ) ";
-		}
-	}
-	return $where;
-}
-
-add_filter('geodir_filter_widget_listings_orderby','geodir_filter_event_widget_listings_orderby', 10, 3);
-function geodir_filter_event_widget_listings_orderby($orderby,$table,$post_type) {
-	global $plugin_prefix, $wpdb, $gd_query_args_widgets;
-	
-	if ($post_type == 'gd_event') {
-		if (!empty($gd_query_args_widgets) && isset($gd_query_args_widgets['order_by'])) {
-			if ($gd_query_args_widgets['order_by'] == 'upcoming') {
-				$orderby = " ".GEODIR_EVENT_SCHEDULES_TABLE.".start_date asc,".GEODIR_EVENT_SCHEDULES_TABLE.".start_time asc, $wpdb->posts.post_date desc";
-			} else {
-				$orderby .= " ".GEODIR_EVENT_SCHEDULES_TABLE.".start_date asc,".GEODIR_EVENT_SCHEDULES_TABLE.".start_time asc, $wpdb->posts.post_date desc";
-			}
-		} else {
-			$orderby = " ".GEODIR_EVENT_SCHEDULES_TABLE.".start_date asc,".GEODIR_EVENT_SCHEDULES_TABLE.".start_time asc, $wpdb->posts.post_date desc";
-		}
-	}
-	return $orderby;
-}
-
 function geodir_event_postview_output($args='', $instance='') {
 	global $gd_session;
 	// prints the widget
@@ -1978,15 +1916,6 @@ function geodir_event_get_schedule_dates($post, $preview = false, $event_type = 
 	return $results;
 }
 
-add_filter('geodir_filter_widget_listings_groupby','geodir_event_filter_widget_listings_groupby',10,2);
-function geodir_event_filter_widget_listings_groupby($groupby, $post_type){
-
-    if($post_type=='gd_event'){
-        $groupby .= ' ,'.GEODIR_EVENT_SCHEDULES_TABLE.'.start_date ';
-    }
-    return $groupby;
-}
-
 function geodir_event_home_map_marker_query_join($join = '') {
 	global $plugin_prefix;
 	
@@ -2249,17 +2178,6 @@ if ( !is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
 	add_filter( 'get_terms', 'geodir_event_get_terms', 20, 3 );
 	
 	add_filter( 'geodir_category_term_link', 'geodir_event_category_term_link', 20, 3 );
-}
-
-//gd core bestof widget
-add_action('geodir_bestof_get_widget_listings_before', 'geodir_bestof_remove_event_filters');
-function geodir_bestof_remove_event_filters() {
-    remove_filter('geodir_filter_widget_listings_orderby','geodir_filter_event_widget_listings_orderby',10,3);
-}
-
-add_action('geodir_bestof_get_widget_listings_after', 'geodir_bestof_after_event_filters');
-function geodir_bestof_after_event_filters() {
-    add_filter('geodir_filter_widget_listings_orderby','geodir_filter_event_widget_listings_orderby',10,3);
 }
 
 add_action('wp_loaded', 'geodir_event_review_count_force_update');
@@ -2550,4 +2468,14 @@ function geodir_event_date_to_ymd( $date, $from_format ) {
 function geodir_event_array_insert ( $array, $position, $insert_array ) {
 	$first_array = array_splice ( $array, 0, $position );
 	return array_merge ( $first_array, $insert_array, $array );
-} 
+}
+
+function geodir_event_filter_options() {
+	$options = array(
+		'all' => __( 'All Events', 'geodirevents' ),
+		'today' => __( 'Today', 'geodirevents' ),
+		'upcoming' => __( 'Upcoming', 'geodirevents' ),
+		'past' => __( 'Past', 'geodirevents' )
+	);
+	return apply_filters( 'geodir_event_filter_options', $options );
+}

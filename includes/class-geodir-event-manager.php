@@ -157,6 +157,7 @@ final class GeoDir_Event_Manager {
 		GeoDir_Event_Fields::init();
 		GeoDir_Event_Schedules::init();
 		GeoDir_Event_AYI::init();
+		GeoDir_Event_Widgets::init();
 
         require_once( GEODIR_EVENT_PLUGIN_DIR . 'includes/general-functions.php' );
 		require_once( GEODIR_EVENT_PLUGIN_DIR . 'includes/shortcode-functions.php' );

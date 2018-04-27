@@ -173,27 +173,27 @@ body .geodir-none {
 
 /* DETAIL PAGE LINKED EVENTS TAB */
 
-#link_businessTab .geodir_location_listing {
+#eventsTab .geodir_location_listing {
     clear: both
 }
 
-#link_businessTab .geodir_category_list_view li {
+#eventsTab .geodir_category_list_view li {
     margin-left: 0;
 }
 
-#link_businessTab .geodir-entry-header {
+#eventsTab .geodir-entry-header {
     border-bottom: none;
 }
 
-#link_businessTab .geodir_category_list_view li .geodir-content p.geodir-event-meta {
+#eventsTab .geodir_category_list_view li .geodir-content p.geodir-event-meta {
     margin-bottom: 0
 }
 
-#link_businessTab .geodir_category_list_view header.geodir-entry-header {
+#eventsTab .geodir_category_list_view header.geodir-entry-header {
     padding-bottom: .5em
 }
 
-#link_businessTab a.geodir-viewall-linked {
+#eventsTab a.geodir-viewall-linked {
     text-align: right;
     display: block;
     margin-top: 5px;
@@ -213,22 +213,22 @@ body .geodir-none {
     cursor: default
 }
 
-#link_businessTab .geodir_category_list_view li.geodir-listview {
+#eventsTab .geodir_category_list_view li.geodir-listview {
     margin-bottom: 10px
 }
 
-#link_businessTab .geodir_category_list_view li.geodir-listview header.geodir-entry-header,
-#link_businessTab .geodir_category_list_view li.geodir-listview footer.geodir-entry-meta {
+#eventsTab .geodir_category_list_view li.geodir-listview header.geodir-entry-header,
+#eventsTab .geodir_category_list_view li.geodir-listview footer.geodir-entry-meta {
     padding: 0;
     margin: 0;
     border: none
 }
 
-#link_businessTab .geodir_category_list_view li.geodir-listview .geodir-entry-content p {
+#eventsTab .geodir_category_list_view li.geodir-listview .geodir-entry-content p {
     margin: 0
 }
 
-.geodir-tabs-content.entry-content #link_businessTab li {
+.geodir-tabs-content.entry-content #eventsTab li {
     margin: auto;
     margin-bottom: 15px
 }
@@ -708,3 +708,43 @@ h3.geodir-ayi-section-title span {
 	vertical-align: middle;
 }
 /* ADD EVENT FORM ENDS */
+
+/* BEGIN SCHEDULE DATES */
+.geodir-schedule-meta {
+	.geodir-schedules {
+		display: inline;
+
+		.geodir-schedule {
+			display: inline;
+		}
+	}
+
+	.geodir-schedule-start {
+		.fa {
+			display: none;
+		}
+	}
+}
+
+.geodir-schedule {
+	.geodir-schedule-start,
+	.geodir-schedule-end,
+	.geodir-schedule-sep {
+		display: inline;
+	}
+
+	.geodir-schedule-sep {
+		padding: 0 5px;
+	}
+}
+.geodir-schedule-current {
+	.geodir-schedule-start,
+	.geodir-schedule-end {
+		color: #333
+	}
+
+	a {
+		cursor: default;
+	}
+}
+/* END SCHEDULE DATES */

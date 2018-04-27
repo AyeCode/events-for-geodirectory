@@ -454,14 +454,23 @@ class GeoDir_Event_Schedules {
 		return $schedules;
 	}
 
-	public static function get_schedules_html( $schedules ) {
+	public static function get_schedules_html( $schedules, $link = true ) {
+		global $schedule_links;
+
 		if ( empty( $schedules ) ) {
 			return NULL;
+		}
+
+		if ( empty( $schedule_links ) ) {
+			$schedule_links = array();
 		}
 
 		$date_time_format 	= geodir_event_date_time_format();
 		$date_format 		= geodir_event_date_format();
 		$time_format		= geodir_event_time_format();
+		$schedule_seperator = apply_filters( 'geodir_event_schedule_start_end_seperator', '<div class="geodir-schedule-sep">-</div>' );
+		$gmt_offset			= geodir_gmt_offset();
+		$current			= ! empty( $_REQUEST['gde'] ) ? $_REQUEST['gde'] : '';
 
 		$html		= '';
 		foreach ( $schedules as $key => $row ) {
@@ -472,7 +481,7 @@ class GeoDir_Event_Schedules {
 				$end_time		= ! empty( $row->end_time ) ? $row->end_time : '00:00:00';
 				$all_day		= ! empty( $row->all_day ) ? true : false;
 
-				$schedule = '<div class="geodir-schedule">';
+				$schedule = '<div class="geodir-schedule-start"><i class="fa fa-caret-right"></i>';
 				if ( empty( $all_day ) ) {
 					if ( $start_date == $end_date && $start_time == $end_time && $end_time == '00:00:00' ) {
 						$end_date = date_i18n( 'Y-m-d', strtotime( $start_date . ' ' . $start_time . ' +1 day' ) );
@@ -481,21 +490,43 @@ class GeoDir_Event_Schedules {
 					if ( $start_date == $end_date ) {
 						$schedule .= date_i18n( $date_format, strtotime( $start_date ) );
 						$schedule .= ', ' . date_i18n( $time_format, strtotime( $start_time ) );
-						$schedule .= ' - ' . date_i18n( $time_format, strtotime( $end_time ) );
+						$schedule .= '</div>' . $schedule_seperator . '<div class="geodir-schedule-end">';
+						$schedule .= date_i18n( $time_format, strtotime( $end_time ) );
 					} else {
 						$schedule .= date_i18n( $date_time_format, strtotime( $start_date . ' '. $start_time ) );
-						$schedule .= ' - ';
+						$schedule .= '</div>' . $schedule_seperator . '<div class="geodir-schedule-end">';
 						$schedule .= date_i18n( $date_time_format, strtotime( $end_date . ' '. $end_time ) );
 					}
+					$meta_startDate = $start_date . 'T' . date_i18n( 'H:i:s', strtotime( $start_time ) );
+					$meta_endDate = $end_date . 'T' . date_i18n( 'H:i:s', strtotime( $end_time ) );
 				} else {
 					$schedule .= date_i18n( $date_format, strtotime( $start_date ) );
 					if ( $start_date != $end_date ) {
-						$schedule .= ' - ' . date_i18n( $date_format, strtotime( $end_date ) );
+						$schedule .= '</div>' . $schedule_seperator . '<div class="geodir-schedule-end">';
+						$schedule .= date_i18n( $date_format, strtotime( $end_date ) );
+						$meta_endDate = $end_date . 'T00:00:00';
+					} else {
+						$meta_endDate = date_i18n( 'Y-m-d', strtotime( $start_date . ' 00:00:00 +1 day' ) ) . 'T00:00:00';
 					}
+					$meta_startDate = $start_date . 'T00:00:00';
 				}
 				$schedule .= '</div>';
 
-				$html .= $schedule;
+				if ( $link ) {
+					if ( ! empty( $schedule_links[ $row->event_id ] ) ) {
+						$schedule_url = $schedule_links[ $row->event_id ];
+					} else {
+						$schedule_url = get_permalink( $row->event_id );
+						$schedule_links[ $row->event_id ] = $schedule_url;
+					}
+					$schedule_url = add_query_arg( array( 'gde' => $start_date ), $schedule_url );
+					$schedule_url = apply_filters( 'geodir_event_recurring_schedule_url', $schedule_url, $row->event_id, $row );
+
+					$schedule = '<a href="' . esc_url( $schedule_url ) . '">' . $schedule . '</a>';
+				}
+
+				$class = $current == $start_date ? ' geodir-schedule-current' : '';
+				$html .= '<div class="geodir-schedule' . $class . '"><meta itemprop="startDate" content="' . $meta_startDate . $gmt_offset . '"><meta itemprop="endDate" content="' . $meta_endDate . $gmt_offset . '">' . $schedule . '</div>';
 			}
 		}
 		if ( ! empty( $html ) ) {

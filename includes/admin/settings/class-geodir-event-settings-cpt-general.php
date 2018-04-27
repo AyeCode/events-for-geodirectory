@@ -105,12 +105,7 @@ if ( ! class_exists( 'GeoDir_Event_Settings_CPT_General', false ) ) :
 						'class' => 'geodir-select',
 						'default'  => 'upcoming',
 						'placeholder' => __( 'Select', 'geodirevents' ),
-						'options' => array( 
-							'all' => __( 'All', 'geodirevents' ),
-							'today' => __( 'Today', 'geodirevents' ),
-							'upcoming' => __( 'Upcoming', 'geodirevents' ),
-							'past' => __( 'Past', 'geodirevents' )
-						),
+						'options' => geodir_event_filter_options(),
 						'desc_tip' => true,
 						'advanced' => false,
 					),
@@ -147,12 +142,7 @@ if ( ! class_exists( 'GeoDir_Event_Settings_CPT_General', false ) ) :
 						'class' => 'geodir-select',
 						'default'  => 'upcoming',
 						'placeholder' => __( 'Select', 'geodirevents' ),
-						'options' => array( 
-							'all' => __( 'All', 'geodirevents' ),
-							'today' => __( 'Today', 'geodirevents' ),
-							'upcoming' => __( 'Upcoming', 'geodirevents' ),
-							'past' => __( 'Past', 'geodirevents' )
-						),
+						'options' => geodir_event_filter_options(),
 						'desc_tip' => true,
 						'advanced' => false,
 					),
@@ -220,7 +210,7 @@ if ( ! class_exists( 'GeoDir_Event_Settings_CPT_General', false ) ) :
 					),
 					array(
 						'type' => 'checkbox',
-						'id'   => 'event_use_custom_format',
+						'id'   => 'event_link_any_user',
 						'name' => __( 'Any linking Author?', 'geodirevents' ),
 						'desc' => __( 'Allow linking to any post not just users own posts?', 'geodirevents' ),
 						'default' => '0',
@@ -243,12 +233,7 @@ if ( ! class_exists( 'GeoDir_Event_Settings_CPT_General', false ) ) :
 						'class' => 'geodir-select',
 						'default'  => 'upcoming',
 						'placeholder' => __( 'Select', 'geodirevents' ),
-						'options' => array( 
-							'all' => __( 'All', 'geodirevents' ),
-							'today' => __( 'Today', 'geodirevents' ),
-							'upcoming' => __( 'Upcoming', 'geodirevents' ),
-							'past' => __( 'Past', 'geodirevents' )
-						),
+						'options' => geodir_event_filter_options(),
 						'desc_tip' => true,
 						'advanced' => true,
 					),

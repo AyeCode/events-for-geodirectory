@@ -101,12 +101,7 @@ function geodir_event_display_filter_options(){
 	
 	if(isset($_REQUEST['etype'])) $filter_by = $_REQUEST['etype'];
 	
-	$event_filters_opt = apply_filters( 'geodir_event_filter_options', array(
-		'all' => __('All Events', 'geodirevents'),
-		'today' => __('Today', 'geodirevents'),
-		'upcoming' => __('Upcoming', 'geodirevents'),
-		'past' => __('Past', 'geodirevents'),
-	) );
+	$event_filters_opt = geodir_event_filter_options();
 	
 	if($filter_by == '')
 		$filter_by = geodir_get_option( 'event_defalt_filter' );
@@ -1124,12 +1119,7 @@ function geodir_event_display_event_type_filter( $post_type ) {
 		return;
 	}
 
-	$event_types = apply_filters( 'geodir_event_filter_options', array(
-		'all' => __( 'All Events', 'geodirevents' ),
-		'today' => __( 'Today', 'geodirevents' ),
-		'upcoming' => __( 'Upcoming', 'geodirevents' ),
-		'past' => __( 'Past', 'geodirevents' ),
-	) );
+	$event_types = geodir_event_filter_options();
 
 	if ( empty( $event_types ) ) {
 		return;
@@ -1199,6 +1189,43 @@ function geodir_event_link_business_tab( $tabs = array() ) {
 	return $tabs;
 }
 add_filter( 'geodir_detail_page_tab_list_extend', 'geodir_event_link_business_tab', 10, 1 );
+
+function geodir_event_link_business_posts( $tab ) {
+	if ( ! empty( $tab->tab_key ) && $tab->tab_key == 'events' ) {
+		global $gd_post, $wpdb, $plugin_prefix, $character_count, $gridview_columns, $gd_query_args;
+
+		if ( ! empty( $gd_post ) && ! empty( $gd_post->post_type ) && $gd_post->post_type != 'gd_event' && geodir_is_gd_post_type( $gd_post->post_type ) ) {
+			$old_character_count = $character_count;
+			$old_gridview_columns = $gridview_columns;
+			$old_gd_query_args = $gd_query_args;
+			
+			$event_type = geodir_get_option( 'geodir_event_linked_event_type', 'all' );
+			$list_sort = geodir_get_option( 'geodir_event_linked_sortby', 'latest' );
+			$post_number = geodir_get_option( 'geodir_event_linked_count', '5' );
+			$gridview_columns = geodir_get_option( 'geodir_event_linked_listing_view', 'gridview_onehalf' );
+			$character_count = geodir_get_option( 'geodir_event_linked_post_excerpt', '20' );
+			
+			if ( empty( $gd_query_args ) ) {
+				$gd_query_args = array();
+			}
+			$gd_query_args['is_geodir_loop'] = true;
+
+			$listing_ids = geodir_event_link_businesses( $gd_post->ID, $gd_post->post_type );
+			if ( !empty( $listing_ids ) ) {
+				$listings = geodir_event_link_businesses_data( $listing_ids, $event_type, $list_sort, $post_number );
+				if ( !empty( $listings ) ) {
+					echo geodir_event_get_link_business_html( $listings );
+				}
+			}
+
+			global $character_count, $gridview_columns;
+			$old_gd_query_args = $gd_query_args;
+			$character_count = $old_character_count;
+			$gridview_columns = $old_gridview_columns;
+		}
+	}
+}
+add_action( 'geodir_standard_tab_content', 'geodir_event_link_business_posts', 10, 2 );
 
 function geodir_event_get_link_business_html( $widget_listings = array() ) {
 	global $post, $gridview_columns, $character_count, $gd_session, $gd_layout_class;
