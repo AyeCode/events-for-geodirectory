@@ -34,12 +34,40 @@ class GeoDir_Event_Query {
 		if ( wp_doing_ajax() ) {
 			add_action( 'pre_get_posts', array( __CLASS__, 'filter_calender_posts' ), 10, 2 );
 		}
+		add_action( 'pre_get_posts', array( __CLASS__, 'filter_rest_api_posts' ), 10, 1 );
 
 		add_filter( 'geodir_filter_widget_listings_fields', array( __CLASS__, 'widget_posts_fields' ), 1, 3 );
 		add_filter( 'geodir_filter_widget_listings_join', array( __CLASS__, 'widget_posts_join' ), 1, 2 );
 		add_filter( 'geodir_filter_widget_listings_where', array( __CLASS__, 'widget_posts_where' ), 1, 2 );
 		add_filter( 'geodir_filter_widget_listings_groupby', array( __CLASS__, 'widget_posts_groupby' ), 1, 2 );
 		add_filter( 'geodir_filter_widget_listings_orderby', array( __CLASS__, 'widget_posts_orderby' ), 1, 3 );
+	}
+
+	public static function filter_calender_posts( $query ) {
+		if ( get_query_var( 'post_type' ) == 'gd_event' && get_query_var( 'gd_event_calendar' ) ) {
+			add_filter( 'posts_fields', array( __CLASS__, 'calendar_posts_fields' ), 10, 2 );
+			add_filter( 'posts_join', array( __CLASS__, 'calendar_posts_join' ), 10, 2 );
+			add_filter( 'posts_where', array( __CLASS__, 'calendar_posts_where' ), 10, 2 );
+			add_filter( 'posts_groupby', array( __CLASS__, 'calendar_posts_groupby' ), 10, 2 );
+			add_filter( 'posts_orderby', array( __CLASS__, 'calendar_posts_orderby' ), 10, 2 );
+		}
+	}
+
+	public static function is_rest( $query ) {
+		if ( defined( 'REST_REQUEST' ) && REST_REQUEST && ! empty( $query->query_vars ) && $query->query_vars['post_type'] == 'gd_event' ) {
+			return true;
+		}
+		return false;
+	}
+
+	public static function filter_rest_api_posts( $query ) {
+		if ( self::is_rest( $query ) ) {
+			add_filter( 'geodir_rest_posts_clauses_fields', array( __CLASS__, 'rest_posts_fields' ), 11, 3 );
+			add_filter( 'geodir_rest_posts_clauses_join', array( __CLASS__, 'rest_posts_join' ), 11, 3 );
+			add_filter( 'geodir_rest_posts_clauses_where', array( __CLASS__, 'geodir_rest_posts_clauses_where' ), 11, 3 );
+			add_filter( 'geodir_rest_posts_clauses_groupby', array( __CLASS__, 'geodir_rest_posts_clauses_groupby' ), 11, 3 );
+			add_filter( 'geodir_rest_posts_clauses_orderby', array( __CLASS__, 'geodir_rest_posts_clauses_orderby' ), 11, 3 );
+		}
 	}
 
 	public static function widget_posts_fields( $fields, $table, $post_type ) {
@@ -259,16 +287,6 @@ class GeoDir_Event_Query {
 		return $orderby;
 	}
 
-	public static function filter_calender_posts( $query ) {
-		if ( get_query_var( 'post_type' ) == 'gd_event' && get_query_var( 'gd_event_calendar' ) ) {
-			add_filter( 'posts_fields', array( __CLASS__, 'calendar_posts_fields' ), 10, 2 );
-			add_filter( 'posts_join', array( __CLASS__, 'calendar_posts_join' ), 10, 2 );
-			add_filter( 'posts_where', array( __CLASS__, 'calendar_posts_where' ), 10, 2 );
-			add_filter( 'posts_groupby', array( __CLASS__, 'calendar_posts_groupby' ), 10, 2 );
-			add_filter( 'posts_orderby', array( __CLASS__, 'calendar_posts_orderby' ), 10, 2 );
-		}
-	}
-
 	public static function calendar_posts_fields( $fields, $query = array() ) {
 		global $wpdb, $gd_session;
 
@@ -329,6 +347,70 @@ class GeoDir_Event_Query {
 	}
 
 	public static function calendar_posts_orderby( $orderby, $query = array() ) {
+
+		return $orderby;
+	}
+
+	public static function rest_posts_fields( $fields, $wp_query, $post_type ) {
+		if ( ! self::is_rest( $wp_query ) ) {
+			return $fields;
+		}
+		
+		$schedules_table = GEODIR_EVENT_SCHEDULES_TABLE;
+
+		$fields .= ", {$schedules_table}.*";
+
+		return $fields;
+	}
+
+	public static function rest_posts_join( $join, $wp_query, $post_type ) {
+		global $wpdb;
+
+		if ( ! self::is_rest( $wp_query ) ) {
+			return $join;
+		}
+		
+		$schedules_table = GEODIR_EVENT_SCHEDULES_TABLE;
+
+		$join .= " LEFT JOIN {$schedules_table} ON {$schedules_table}.event_id = {$wpdb->posts}.ID";
+
+		return $join;
+	}
+
+	public static function geodir_rest_posts_clauses_where( $where, $wp_query, $post_type ) {
+		if ( ! self::is_rest( $wp_query ) ) {
+			return $where;
+		}
+
+		$event_type = ! empty( $wp_query->query_vars['gd_event_type'] ) ? $wp_query->query_vars['gd_event_type'] : geodir_get_option( 'event_defalt_filter' );
+
+		if ( ( $condition = GeoDir_Event_Schedules::event_type_condition( $event_type ) ) ) {
+			$where .= " AND " . $condition;
+		}
+
+		return $where;
+	}
+
+	public static function geodir_rest_posts_clauses_groupby( $groupby, $wp_query, $post_type ) {
+		if ( ! self::is_rest( $wp_query ) ) {
+			return $groupby;
+		}
+
+		$schedules_table = GEODIR_EVENT_SCHEDULES_TABLE;
+
+		if ( ! empty( $wp_query->query_vars['single_event'] ) ) {
+			$groupby = "{$schedules_table}.event_id";
+		} else {
+			$groupby = "{$schedules_table}.schedule_id";
+		}
+
+		return $groupby;
+	}
+
+	public static function geodir_rest_posts_clauses_orderby( $orderby, $wp_query, $post_type ) {
+		if ( ! self::is_rest( $wp_query ) ) {
+			return $orderby;
+		}
 
 		return $orderby;
 	}

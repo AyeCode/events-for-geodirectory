@@ -163,6 +163,8 @@ final class GeoDir_Event_Manager {
 		require_once( GEODIR_EVENT_PLUGIN_DIR . 'includes/shortcode-functions.php' );
 		require_once( GEODIR_EVENT_PLUGIN_DIR . 'includes/template-functions.php' );		
 		require_once( GEODIR_EVENT_PLUGIN_DIR . 'includes/widget-functions.php' );
+		
+		GeoDir_Event_API::init();
 
         if ( $this->is_request( 'admin' ) || $this->is_request( 'test' ) || $this->is_request( 'cli' ) ) {
             new GeoDir_Event_Admin();
