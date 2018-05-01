@@ -27,7 +27,6 @@ class GeoDir_Event_API {
 		add_filter( 'rest_gd_event_collection_params', array( __CLASS__, 'event_collection_params' ), 10, 2 );
 		add_filter( 'rest_gd_event_query', array( __CLASS__, 'event_query' ), 10, 2 );
 		add_filter( 'geodir_rest_post_custom_fields_schema', array( __CLASS__, 'event_feild_schema' ), 10, 6 );
-		add_filter( 'geodir_listing_item_schema', array( __CLASS__, 'event_item_schema' ), 10, 6 );
 		add_filter( 'geodir_rest_get_post_data', array( __CLASS__, 'event_post_data' ), 10, 4 );
 	}
 
@@ -73,6 +72,125 @@ class GeoDir_Event_API {
 			$args['type']   = 'integer';
 		} else if ( $field['name'] == 'event_dates' ) {
 			$args['type']   = 'object';
+			$args['properties'] = array(
+				'start_date' => array(
+					'description' => __( "Event start date, in the site's timezone." ),
+					'type'        => 'string',
+					'context'     => array( 'view', 'edit' ),
+					'format'       => 'date',
+					'field_type'   => 'event'
+				),
+				'end_date' => array(
+					'description' => __( "Event end date, in the site's timezone." ),
+					'type'        => 'string',
+					'context'     => array( 'view', 'edit' ),
+					'format'       => 'date',
+					'field_type'   => 'event'
+				),
+				'duration_x' => array(
+					'description' => __( "Event duration (days)." ),
+					'type'        => 'integer',
+					'context'     => array( 'view', 'edit' ),
+					'field_type'   => 'event'
+				),
+				'repeat_type' => array(
+					'description' => __( "Recurring type." ),
+					'type'        => 'string',
+					'context'     => array( 'view', 'edit' ),
+					'enum'		  => array( 'day', 'week', 'month', 'year', 'custom' ),
+					'default'	  => 'custom',
+					'field_type'  => 'event'
+				),
+				'repeat_x' => array(
+					'description' => __( "Recurring interval" ),
+					'type'        => 'integer',
+					'context'     => array( 'view', 'edit' ),
+					'enum'		  => range( 1, 30 ),
+					'default'	  => 1,
+					'field_type'  => 'event'
+				),
+				'repeat_days' => array(
+					'description' => __( "Repeat on days." ),
+					'type'        => 'array',
+					'context'     => array( 'view', 'edit' ),
+					'enum'		  => range( 0, 6 ),
+					'field_type'  => 'event'
+				),
+				'repeat_weeks' => array(
+					'description' => __( "Repeat on weeks." ),
+					'type'        => 'array',
+					'context'     => array( 'view', 'edit' ),
+					'enum'		  => range( 1, 5 ),
+					'field_type'  => 'event'
+				),
+				'repeat_end_type' => array(
+					'description' => __( "Recurring end type." ),
+					'type'        => 'integer',
+					'context'     => array( 'view', 'edit' ),
+					'enum'		  => range( 0, 1 ),
+					'default'	  => 0,
+					'field_type'  => 'event'
+				),
+				'max_repeat' => array(
+					'description' => __( "Max repeat." ),
+					'type'        => 'integer',
+					'context'     => array( 'view', 'edit' ),
+					'field_type'  => 'event'
+				),
+				'repeat_end' => array(
+					'description' => __( "Recurring end date." ),
+					'type'        => 'string',
+					'context'     => array( 'view', 'edit' ),
+					'format'      => 'date',
+					'field_type'  => 'event'
+				),
+				'recurring_dates' => array(
+					'description' => __( "Custom recurring dates." ),
+					'type'        => 'array',
+					'context'     => array( 'view', 'edit' ),
+					'field_type'  => 'event'
+				),
+				'all_day' => array(
+					'description'  => __( "All day event?" ),
+					'type'         => 'boolean',
+					'context'      => array( 'view', 'edit' ),
+					'field_type'   => 'event'
+				),
+				'start_time' => array(
+					'description'  => __( "Event start time." ),
+					'type'         => 'string',
+					'format'       => 'time',
+					'context'      => array( 'view', 'edit' ),
+					'field_type'   => 'event'
+				),
+				'end_time' => array(
+					'description'  => __( "Event end time." ),
+					'type'         => 'string',
+					'format'       => 'time',
+					'context'      => array( 'view', 'edit' ),
+					'field_type'   => 'event'
+				),
+				'different_times' => array(
+					'description'  => __( "Different event times?" ),
+					'type'         => 'boolean',
+					'context'      => array( 'view', 'edit' ),
+					'field_type'   => 'event'
+				),
+				'start_times' => array(
+					'description'  => __( "Event start times." ),
+					'type'         => 'array',
+					'format'       => 'time',
+					'context'      => array( 'view', 'edit' ),
+					'field_type'   => 'event'
+				),
+				'end_times' => array(
+					'description'  => __( "Event end times." ),
+					'type'         => 'array',
+					'format'       => 'time',
+					'context'      => array( 'view', 'edit' ),
+					'field_type'   => 'event'
+				)
+			);
 		} else {
 			return $empty;
 		}
@@ -80,82 +198,76 @@ class GeoDir_Event_API {
 		return $args;
 	}
 
-	public static function event_item_schema( $schema, $post_type, $package_id, $default ) {
-		if ( $post_type != 'gd_event' ) {
-			return $schema;
-		}
+	public static function event_post_data( $data, $post, $request, $controller ) {
+		if ( isset( $post->event_dates ) ) {
+			$event_type = geodir_get_option( 'event_hide_past_dates' ) ? 'upcoming' : 'all';
 
-		$new_schema = array();
-		foreach ( $schema as $key => $data ) {
-			if ( $key == 'event_dates' ) {
-				$new_schema[ $key ] = $data;
-				$new_schema['start_date'] = array(
-					'description'  => __( "Event start date, in the site's timezone." ),
-					'type'         => 'string',
-					'format'       => 'date',
-					'context'      => array( 'view', 'edit', 'embed' ),
-					'field_type'   => 'event'
-				);
-				$new_schema['start_time'] = array(
-					'description'  => __( "Event start time." ),
-					'type'         => 'string',
-					'format'       => 'time',
-					'context'      => array( 'view', 'edit', 'embed' ),
-					'field_type'   => 'event'
-				);
-				$new_schema['end_date'] = array(
-					'description'  => __( "Event end date, in the site's timezone." ),
-					'type'         => 'string',
-					'format'       => 'date',
-					'context'      => array( 'view', 'edit', 'embed' ),
-					'field_type'   => 'event'
-				);
-				$new_schema['end_time'] = array(
-					'description'  => __( "Event end time." ),
-					'type'         => 'string',
-					'format'       => 'time',
-					'context'      => array( 'view', 'edit', 'embed' ),
-					'field_type'   => 'event'
-				);
-				$new_schema['all_day'] = array(
-					'description'  => __( "All day event?" ),
-					'type'         => 'boolean',
-					'context'      => array( 'view', 'edit', 'embed' ),
-					'field_type'   => 'event'
-				);
+			$data['event_dates'] = maybe_unserialize( $post->event_dates );
+
+			$event_data = self::prepare_schedule_response( $post );
+
+			$schedules 	= GeoDir_Event_Schedules::get_schedules( $post->ID, $event_type );
+			$event_schedules = array();
+			foreach ( $schedules as $schedule ) {
+				$event_schedules[] = self::prepare_schedule_response( $schedule );
 			}
+			$event_data['event_schedules'] = $event_schedules;
+
+			$data = geodir_array_splice_assoc( $data, ( array_search( 'event_dates', array_keys( $data ) ) + 1 ), 0, $event_data );
 		}
 
-		return $new_schema;
+		return $data;
 	}
 
-	public static function event_post_data( $data, $post, $request, $controller ) {
-		if ( isset( $post->start_date ) && isset( $post->end_date ) ) {
-			$date_format = geodir_event_date_time_format();
-
-			$start_date = $post->start_date;
-			$end_date = $post->end_date;
-			$start_time = $post->start_time;
-			$end_time = $post->end_time;
-			if ( ! empty( $post->all_day ) ) {
-				$start_time = '00:00:00';
-				$end_time = '00:00:00';
-				$data['start_time'] = $start_time;
-				$data['end_time'] = $end_time;
-			}
-
-			$data['event_dates'] = array(
-				'start_datetime' => array(
-					'raw'		=> self::prepare_date_response( $start_date . ' '. $start_time ),
-					'rendered' 	=> date_i18n( $date_format, strtotime( $start_date . ' '. $start_time ) )
-				),
-				'end_datetime' => array(
-					'raw'		=> self::prepare_date_response( $end_date . ' '. $end_time ),
-					'rendered' 	=> date_i18n( $date_format, strtotime( $end_date . ' '. $end_time ) )
-				)
-			);
+	public static function prepare_schedule_response( $item ) {
+		if ( empty( $item->start_date ) ) {
+			return array();
 		}
-		return $data;
+
+		$date_format = geodir_event_date_format();
+		$time_format = geodir_event_time_format();
+		$date_time_format = geodir_event_date_time_format();
+
+		$start_date = $item->start_date;
+		$end_date = $item->end_date;
+		if ( empty( $item->all_day ) ) {
+			$start_time = $item->start_time;
+			$end_time = $item->end_time;
+		} else {
+			$start_time = '00:00:00';
+			$end_time = '00:00:00';
+		}
+
+		$schedule = array();
+		if ( isset( $item->schedule_id ) ) {
+			$schedule['schedule_id'] = $item->schedule_id;
+		}
+		$schedule['start_date'] = array(
+			'raw'		=> $start_date,
+			'rendered' 	=> date_i18n( $date_format, strtotime( $start_date ) )
+		);
+		$schedule['start_time'] = array(
+			'raw'		=> $start_time,
+			'rendered' 	=> date_i18n( $time_format, strtotime( $start_time ) )
+		);
+		$schedule['end_date'] = array(
+			'raw'		=> $end_date,
+			'rendered' 	=> date_i18n( $date_format, strtotime( $end_date ) )
+		);
+		$schedule['end_time'] = array(
+			'raw'		=> $end_time,
+			'rendered' 	=> date_i18n( $time_format, strtotime( $end_time ) )
+		);
+		$schedule['all_day'] = $item->all_day;
+		$schedule['start_datetime'] = array(
+			'raw'		=> self::prepare_date_response( $start_date . ' '. $start_time ),
+			'rendered' 	=> date_i18n( $date_time_format, strtotime( $start_date . ' '. $start_time ) )
+		);
+		$schedule['end_datetime'] = array(
+			'raw'		=> self::prepare_date_response( $end_date . ' '. $end_time ),
+			'rendered' 	=> date_i18n( $date_time_format, strtotime( $end_date . ' '. $end_time ) )
+		);
+		return $schedule;
 	}
 
 	public static function prepare_date_response( $date_gmt, $date = null ) {

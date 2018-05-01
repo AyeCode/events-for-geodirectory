@@ -475,7 +475,7 @@ class GeoDir_Event_Fields {
 				<option value="<?php echo $i;?>" <?php selected( $repeat_x, $i ); ?>><?php echo $i;?></option>
 				<?php } ?>
 			</select>
-			<span class="geodir_message_error"><?php _e( 'Please select recurring type', 'geodirevents' );?></span>
+			<span class="geodir_message_error"><?php _e( 'Please select recurring interval', 'geodirevents' );?></span>
         </div>
 		<div id="geodir_event_repeat_days_row" class="geodir_form_row clearfix gd-fieldset-details geodir-event-field <?php echo $recurring_class; ?>">
             <label for="event_repeat_days"><?php echo __( 'Repeat on', 'geodirevents' ); ?></label>
