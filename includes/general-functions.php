@@ -536,98 +536,6 @@ function geodir_wp_default_date_time_format()
 	return get_option('date_format'). ' ' .	get_option('time_format');
 }
 
-
-
-function geodir_event_link_businesses( $post_id, $post_type, $arr = false ) {
-	global $wpdb, $plugin_prefix;
-	
-	$table = $plugin_prefix . 'gd_event_detail';
-	
-	$sql = $wpdb->prepare(
-		"SELECT post_id FROM " . $table . " WHERE post_status=%s AND link_business=%d", array( 'publish', $post_id )
-	);
-	
-	$rows = $wpdb->get_results($sql);
-	
-	$result = array();
-	if ( !empty( $rows ) ) {
-		foreach ($rows as $row) {
-			$result[] = $row->post_id;
-		}
-	}
-		
-	return $result;
-}
-
-function geodir_event_link_businesses_data( $post_ids, $event_type = 'all', $list_sort = 'latest', $post_number = 5 ) {
-	global $wpdb, $plugin_prefix;
-	
-	$table = $plugin_prefix . 'gd_event_detail';
-	if ( $post_ids == '' || ( is_array( $post_ids ) && empty( $post_ids ) ) ) {
-		return NULL;
-	}
-	$post_ids = is_array( $post_ids ) ? implode( "','", $post_ids ) : '';
-	
-	$current_date = date_i18n( 'Y-m-d', current_time( 'timestamp' ) );
-	$limit = $post_number < 1 || $post_number > 100 ? 5 : $post_number;
-	
-	$orderby = geodir_event_widget_events_get_order( array( 'order_by' => $list_sort ) );
-	
-	if ($list_sort == 'upcoming') {
-		$orderby = '';
-	} 
-	
-	$where = '';
-	switch( $event_type ) {
-		case 'today':
-			$where .= " AND ( " . GEODIR_EVENT_SCHEDULES_TABLE . ".start_date LIKE '" . $current_date . "%%' OR ( " . GEODIR_EVENT_SCHEDULES_TABLE . ".start_date <= '" . $current_date . "' AND " . GEODIR_EVENT_SCHEDULES_TABLE . ".end_date >= '" . $current_date . "' ) ) ";
-		break;
-		case 'upcoming':
-			$where .= " AND ( " . GEODIR_EVENT_SCHEDULES_TABLE . ".start_date >= '" . $current_date . "' OR ( " . GEODIR_EVENT_SCHEDULES_TABLE . ".start_date <= '" . $current_date . "' AND " . GEODIR_EVENT_SCHEDULES_TABLE . ".end_date >= '" . $current_date . "' ) ) ";
-		break;
-		case 'past':
-			$where .= " AND " . GEODIR_EVENT_SCHEDULES_TABLE . ".start_date < '" . $current_date . "' ";
-		break;
-	}
-
-	$sql =  $wpdb->prepare( "SELECT SQL_CALC_FOUND_ROWS " . $wpdb->posts . ".*, " . $table . ".*, " . GEODIR_EVENT_SCHEDULES_TABLE . ".*
-		FROM " . $wpdb->posts . "
-		INNER JOIN " . $table ." ON (" . $table . ".post_id = " . $wpdb->posts . ".ID)
-		INNER JOIN " . GEODIR_EVENT_SCHEDULES_TABLE . " AS " . GEODIR_EVENT_SCHEDULES_TABLE . " ON (" . GEODIR_EVENT_SCHEDULES_TABLE . ".event_id = " . $wpdb->posts . ".ID)
-		WHERE " . $wpdb->posts . ".ID IN ('" . $post_ids . "')
-			AND " . $wpdb->posts . ".post_type = 'gd_event'
-			AND " . $wpdb->posts . ".post_status = 'publish'
-			" . $where . "
-		ORDER BY " . $orderby . " (CASE WHEN DATEDIFF(DATE(" . GEODIR_EVENT_SCHEDULES_TABLE . ".start_date), '" . $current_date . "') < 0 THEN 1 ELSE 0 END), ABS(DATEDIFF(DATE(" . GEODIR_EVENT_SCHEDULES_TABLE . ".start_date), '" . $current_date . "')) ASC, " . GEODIR_EVENT_SCHEDULES_TABLE . ".start_time ASC, " . $wpdb->posts . ".post_title ASC
-		LIMIT %d", array( $limit) );
-
-	$rows = $wpdb->get_results($sql);
-	
-	return $rows;
-}
-
-function geodir_event_display_link_business() {
-	global $post;
-	$post_type = geodir_get_current_posttype();
-	$all_postypes = geodir_get_posttypes();
-		
-	if ( !empty( $post ) && $post_type == 'gd_event' && geodir_is_page( 'detail' ) && isset( $post->link_business ) && !empty( $post->link_business ) ) {
-		$linked_post_id = $post->link_business;
-		$linked_post_info = get_post($linked_post_id);
-		if( !empty( $linked_post_info ) ) {
-			$linked_post_type_info = in_array( $linked_post_info->post_type, $all_postypes ) ? geodir_get_posttype_info( $linked_post_info->post_type )  : array();
-			if( !empty( $linked_post_type_info ) ) {
-				$linked_post_title = !empty( $linked_post_info->post_title ) ? $linked_post_info->post_title : __( 'Listing', 'geodirevents' );
-				$linked_post_url = get_permalink($linked_post_id);
-				
-				$html_link_business = '<div class="geodir_more_info geodir_more_info_even link_business"><span class="geodir-i-website"><i class="fa fa-link"></i> <a title="' . esc_attr( $linked_post_title ) . '" href="'.$linked_post_url.'">' . wp_sprintf( __( 'Go to: %s', 'geodirevents' ), $linked_post_title ) . '</a></span></div>';
-				
-				echo apply_filters( 'geodir_more_info_link_business', $html_link_business, $linked_post_id, $linked_post_url );
-			}
-		}
-	}
-}
-
 function geodir_event_get_my_listings( $post_type = 'all', $search = '', $limit = 5 ) {
 	global $wpdb, $current_user;
 	
@@ -2086,9 +1994,6 @@ function geodir_diagnose_multisite_conversion_events($table_arr){
 	$table_arr['geodir_event_schedule'] = __('Event schedule','geodirevents');
 	return $table_arr;
 }
-
-// display link business on event detail page to go back to the linked listing
-add_action( 'geodir_after_detail_page_more_info', 'geodir_event_display_link_business' );
 
 // add date to title for recurring event
 function geodir_event_title_recurring_event( $title, $post_id = null ) {

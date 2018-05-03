@@ -1058,7 +1058,7 @@ class GeoDir_Event_Fields {
 				'tab_name'   => __( 'Events','geodirevents' ),
 				'tab_icon'   => 'fa-calendar',
 				'tab_key'    => 'events',
-				'tab_content'=> ''
+				'tab_content'=> '[gd_linked_events]'
 			);
 		}
 		return $fields;

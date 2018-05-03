@@ -174,7 +174,6 @@ class GeoDir_Event_AJAX {
 					$fields[ $name ] = apply_filters( 'geodir_event_fill_business_field_data', $data, $field, $post );
 				}
 			}
-			//geodir_error_log( $fields, 'fields', __FILE__, __LINE__ );
 
 			$data = array( 'fields' => $fields );
 			wp_send_json_success( $data );

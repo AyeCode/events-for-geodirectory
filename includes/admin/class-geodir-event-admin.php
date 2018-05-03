@@ -28,24 +28,13 @@ class GeoDir_Event_Admin {
 
 		add_action( 'init', array( $this, 'includes' ) );
 		add_action( 'admin_init', array( $this, 'admin_redirects' ) );
-		add_filter( 'geodir_get_settings_pages', array( $this, 'load_settings_page' ), 9, 1 );
-		add_filter( 'parent_file', array( $this, 'set_parent_file' ), 10, 1 );
+		add_filter( 'geodir_get_settings_pages', array( $this, 'load_settings_page' ), 10.2, 1 );
 		add_filter( 'geodir_cat_schemas', 'geodir_event_filter_schemas', 10, 1 );
 		add_filter( 'geodir_add_custom_sort_options', 'geodir_event_custom_sort_options', 10, 2 );
 
 		// Dummy data
 		add_filter( 'geodir_dummy_data_types' , array( 'GeoDir_Event_Admin_Dummy_Data', 'dummy_data_types' ), 10, 2 );
 		add_action( 'geodir_dummy_data_include_file' , array( 'GeoDir_Event_Admin_Dummy_Data', 'include_file' ), 10, 4 );
-	}
-
-	/**
-	 * Highlights the correct top level admin menu item for post type add screens.
-	 */
-	public function set_parent_file( $parent_file ) {
-		if ( ! empty( $_REQUEST['page'] ) && $_REQUEST['page'] == 'gd-cpt-settings' && ! empty( $_REQUEST['post_type'] ) && $_REQUEST['post_type'] == 'gd_event' ) {
-			$parent_file  = 'edit.php?post_type=gd_event';
-		}
-		return $parent_file;
 	}
 
 	/**
@@ -79,8 +68,8 @@ class GeoDir_Event_Admin {
 	}
 
 	public static function load_settings_page( $settings_pages ) {
-		if ( ! empty( $_REQUEST['page'] ) && $_REQUEST['page'] == 'gd-cpt-settings' && ! empty( $_REQUEST['post_type'] ) && $_REQUEST['post_type'] == 'gd_event' ) {
-			$settings_pages[] = include( GEODIR_EVENT_PLUGIN_DIR . 'includes/admin/settings/class-geodir-event-settings-cpt-general.php' );
+		if ( ! ( isset( $_REQUEST['page'] ) && $_REQUEST['page'] == 'gd-cpt-settings' ) ) {
+			$settings_pages[] = include( GEODIR_EVENT_PLUGIN_DIR . 'includes/admin/settings/class-geodir-event-settings-events.php' );
 		}
 
 		return $settings_pages;

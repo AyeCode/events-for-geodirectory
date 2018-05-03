@@ -12,21 +12,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
-if ( ! class_exists( 'GeoDir_Event_Settings_CPT_General', false ) ) :
+if ( ! class_exists( 'GeoDir_Event_Settings_Events', false ) ) :
 
 	/**
-	 * GeoDir_Location_Settings_General.
+	 * GeoDir_Event_Settings_Events.
 	 */
-	class GeoDir_Event_Settings_CPT_General extends GeoDir_Settings_Page {
+	class GeoDir_Event_Settings_Events extends GeoDir_Settings_Page {
 
 		/**
 		 * Constructor.
 		 */
 		public function __construct() {
-			$this->id    = 'event_general';
-			$this->label = __( 'General', 'geodirevents' );
+			$this->id    = 'events';
+			$this->label = __( 'Events', 'geodirevents' );
 
-			add_filter( 'geodir_settings_tabs_array', array( $this, 'add_settings_page' ), 19 );
+			add_filter( 'geodir_settings_tabs_array', array( $this, 'add_settings_page' ), 20 );
 			add_action( 'geodir_settings_' . $this->id, array( $this, 'output' ) );
 			add_action( 'geodir_sections_' . $this->id, array( $this, 'output_toggle_advanced' ) );
 
@@ -43,7 +43,7 @@ if ( ! class_exists( 'GeoDir_Event_Settings_CPT_General', false ) ) :
 		 */
 		public function get_sections() {
 			$sections = array(
-				''	=> __( 'General Settings', 'geodirevents' ),
+				''	=> __( 'General', 'geodirevents' ),
 			);
 
 			return apply_filters( 'geodir_get_sections_' . $this->id, $sections );
@@ -89,8 +89,60 @@ if ( ! class_exists( 'GeoDir_Event_Settings_CPT_General', false ) ) :
 				$display_date_options[$format] = $format . ' ( ' . date_i18n( $format, time() ) . ' )';
 			}
 
-			$settings = apply_filters( 'geodir_event_settings_cpt_general_options', 
+			$settings = apply_filters( 'geodir_event_settings_general_options', 
 				array(
+					array( 
+						'name' => __( 'Date Format', 'geodirevents' ), 
+						'type' => 'title',
+						'desc' => '', 
+						'id' => 'geodir_event_date_format_settings' 
+					),
+					array(
+						'type' => 'select',
+						'id' => 'event_field_date_format',
+						'name' => __( 'Input date format', 'geodirevents' ),
+						'desc' => __( 'Date format to use in the add event form.', 'geodirevents' ),
+						'class' => 'geodir-select',
+						'default'  => 'Y-m-d',
+						'placeholder' => __( 'Select', 'geodirevents' ),
+						'options' => array_unique( $input_date_options ),
+						'desc_tip' => true,
+						'advanced' => false,
+					),
+					array(
+						'type' => 'select',
+						'id' => 'event_display_date_format',
+						'name' => __( 'Display date format', 'geodirevents' ),
+						'desc' => __( 'Date format to display event dates.', 'geodirevents' ),
+						'class' => 'geodir-select',
+						'default'  => get_option( 'date_format' ),
+						'placeholder' => __( 'Select', 'geodirevents' ),
+						'options' => array_unique( $display_date_options ),
+						'desc_tip' => true,
+						'advanced' => false,
+					),
+					array(
+						'type' => 'checkbox',
+						'id'   => 'event_use_custom_format',
+						'name' => '',
+						'desc' => __( 'OR use custom date form setting for display event dates.', 'geodirevents' ),
+						'default' => '0',
+						'advanced' => true
+					),
+					array(
+						'type' => 'text',
+						'id'   => 'event_custom_date_format',
+						'name' => '',
+						'desc' => __( 'Set the custom date format to display event dates.', 'geodirevents' ),
+						'css'  => 'min-width:300px;',
+						'default'  => '',
+						'desc_tip' => true,
+						'advanced' => true
+					),
+					array(
+						'type' => 'sectionend', 
+						'id' => 'geodir_event_date_format_settings'
+					),
 					array( 
 						'name' => __( 'Listings', 'geodirevents' ), 
 						'type' => 'title', 
@@ -151,58 +203,6 @@ if ( ! class_exists( 'GeoDir_Event_Settings_CPT_General', false ) ) :
 						'id' => 'geodir_event_listing_settings'
 					),
 					array( 
-						'name' => __( 'Date Format', 'geodirevents' ), 
-						'type' => 'title',
-						'desc' => '', 
-						'id' => 'geodir_event_date_format_settings' 
-					),
-					array(
-						'type' => 'select',
-						'id' => 'event_field_date_format',
-						'name' => __( 'Input date format', 'geodirevents' ),
-						'desc' => __( 'Date format to use in the add event form.', 'geodirevents' ),
-						'class' => 'geodir-select',
-						'default'  => 'Y-m-d',
-						'placeholder' => __( 'Select', 'geodirevents' ),
-						'options' => array_unique( $input_date_options ),
-						'desc_tip' => true,
-						'advanced' => false,
-					),
-					array(
-						'type' => 'select',
-						'id' => 'event_display_date_format',
-						'name' => __( 'Display date format', 'geodirevents' ),
-						'desc' => __( 'Date format to display event dates.', 'geodirevents' ),
-						'class' => 'geodir-select',
-						'default'  => get_option( 'date_format' ),
-						'placeholder' => __( 'Select', 'geodirevents' ),
-						'options' => array_unique( $display_date_options ),
-						'desc_tip' => true,
-						'advanced' => false,
-					),
-					array(
-						'type' => 'checkbox',
-						'id'   => 'event_use_custom_format',
-						'name' => '',
-						'desc' => __( 'OR use custom date form setting for display event dates.', 'geodirevents' ),
-						'default' => '0',
-						'advanced' => true
-					),
-					array(
-						'type' => 'text',
-						'id'   => 'event_custom_date_format',
-						'name' => '',
-						'desc' => __( 'Set the custom date format to display event dates.', 'geodirevents' ),
-						'css'  => 'min-width:300px;',
-						'default'  => '',
-						'desc_tip' => true,
-						'advanced' => true
-					),
-					array(
-						'type' => 'sectionend', 
-						'id' => 'geodir_event_date_format_settings'
-					),
-					array( 
 						'name' => __( 'Link Business', 'geodirevents' ), 
 						'type' => 'title',
 						'desc' => '', 
@@ -238,6 +238,14 @@ if ( ! class_exists( 'GeoDir_Event_Settings_CPT_General', false ) ) :
 						'advanced' => true,
 					),
 					array(
+						'type' => 'checkbox',
+						'id'   => 'geodir_event_linked_single_event',
+						'name' => __( 'Show single listing?', 'geodirevents' ),
+						'desc' => __( 'Show single listing for recurring event.', 'geodirevents' ),
+						'default' => '0',
+						'advanced' => true
+					),
+					array(
 						'type' => 'select',
 						'id' => 'geodir_event_linked_sortby',
 						'name' => __( 'Sort by', 'geodirevents' ),
@@ -245,15 +253,7 @@ if ( ! class_exists( 'GeoDir_Event_Settings_CPT_General', false ) ) :
 						'class' => 'geodir-select',
 						'default'  => 'latest',
 						'placeholder' => __( 'Select', 'geodirevents' ),
-						'options' => array( 
-							'az' => __( 'A-Z', 'geodirevents' ),
-							'latest' => __( 'Latest', 'geodirevents' ),
-							'featured' => __( 'Featured', 'geodirevents' ),
-							'high_review' => __( 'Review', 'geodirevents' ),
-							'high_rating' => __( 'Rating', 'geodirevents' ),
-							'random' => __( 'Random', 'geodirevents' ),
-							'upcoming' => __( 'Upcoming', 'geodirevents' ),
-						),
+						'options' => $this->get_sort_options(),
 						'desc_tip' => true,
 						'advanced' => true,
 					),
@@ -298,8 +298,33 @@ if ( ! class_exists( 'GeoDir_Event_Settings_CPT_General', false ) ) :
 
 			return 'post';
 		}
+
+		public function get_sort_options($post_type = 'gd_event'){
+			$options = array(
+				"az"			=>  __('A-Z', 'geodirevents'),
+				"latest"        =>  __('Latest', 'geodirevents'),
+				"high_review"   =>  __('Most reviews', 'geodirevents'),
+				"high_rating"   =>  __('Highest rating', 'geodirevents'),
+				"random"        =>  __('Random', 'geodirevents'),
+				"distance_asc" 	=>  __('Distance to current post', 'geodirevents'),
+			);
+
+			$sort_options = geodir_get_sort_options( $post_type );
+			if(!empty($sort_options)){
+				foreach($sort_options as $sort_option){
+					if(!empty($sort_option->sort_asc) && !empty($sort_option->asc_title)){
+						$options[$sort_option->htmlvar_name."_asc"] = __($sort_option->asc_title,'geodirectory');
+					}
+					if(!empty($sort_option->sort_desc) && !empty($sort_option->desc_title)){
+						$options[$sort_option->htmlvar_name."_desc"] = __($sort_option->desc_title,'geodirectory');
+					}
+				}
+			}
+
+			return $options;
+		}
 	}
 
 endif;
 
-return new GeoDir_Event_Settings_CPT_General();
+return new GeoDir_Event_Settings_Events();

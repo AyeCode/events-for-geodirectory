@@ -299,7 +299,7 @@ class GeoDir_Event_Schedules {
 									$recurr_time 	= strtotime( $date_occurrence . '+' . $d . ' day' );
 									$week_day 		= date_i18n( 'w', $recurr_time );
 
-									if ( in_array( $week_day, $repeat_days ) ) {
+									if ( in_array( $week_day, $repeat_days ) && $recurr_time <= $end_time ) {
 										$dates[] = date_i18n( 'Y-m-d', $recurr_time );
 									}
 								}

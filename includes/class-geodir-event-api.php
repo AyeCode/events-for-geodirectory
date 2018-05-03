@@ -71,17 +71,19 @@ class GeoDir_Event_API {
 		} else if ( $field['name'] == 'recurring' ) {
 			$args['type']   = 'integer';
 		} else if ( $field['name'] == 'event_dates' ) {
+			$times = array_keys( geodir_event_get_times() );
+
 			$args['type']   = 'object';
 			$args['properties'] = array(
 				'start_date' => array(
-					'description' => __( "Event start date, in the site's timezone." ),
+					'description' => __( "Event start date (Y-m-d)." ),
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit' ),
 					'format'       => 'date',
 					'field_type'   => 'event'
 				),
 				'end_date' => array(
-					'description' => __( "Event end date, in the site's timezone." ),
+					'description' => __( "Event end date (Y-m-d)." ),
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit' ),
 					'format'       => 'date',
@@ -138,7 +140,7 @@ class GeoDir_Event_API {
 					'field_type'  => 'event'
 				),
 				'repeat_end' => array(
-					'description' => __( "Recurring end date." ),
+					'description' => __( "Recurring end date (Y-m-d)." ),
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit' ),
 					'format'      => 'date',
@@ -157,17 +159,19 @@ class GeoDir_Event_API {
 					'field_type'   => 'event'
 				),
 				'start_time' => array(
-					'description'  => __( "Event start time." ),
+					'description'  => __( "Event start time (H:i)." ),
 					'type'         => 'string',
 					'format'       => 'time',
 					'context'      => array( 'view', 'edit' ),
+					'enum'		   => $times,
 					'field_type'   => 'event'
 				),
 				'end_time' => array(
-					'description'  => __( "Event end time." ),
+					'description'  => __( "Event end time (H:i)." ),
 					'type'         => 'string',
 					'format'       => 'time',
 					'context'      => array( 'view', 'edit' ),
+					'enum'		   => $times,
 					'field_type'   => 'event'
 				),
 				'different_times' => array(
@@ -177,17 +181,19 @@ class GeoDir_Event_API {
 					'field_type'   => 'event'
 				),
 				'start_times' => array(
-					'description'  => __( "Event start times." ),
+					'description'  => __( "Event start times (H:i)." ),
 					'type'         => 'array',
 					'format'       => 'time',
 					'context'      => array( 'view', 'edit' ),
+					'enum'		   => $times,
 					'field_type'   => 'event'
 				),
 				'end_times' => array(
-					'description'  => __( "Event end times." ),
+					'description'  => __( "Event end times (H:i)." ),
 					'type'         => 'array',
 					'format'       => 'time',
 					'context'      => array( 'view', 'edit' ),
+					'enum'		   => $times,
 					'field_type'   => 'event'
 				)
 			);
@@ -198,15 +204,15 @@ class GeoDir_Event_API {
 		return $args;
 	}
 
-	public static function event_post_data( $data, $post, $request, $controller ) {
-		if ( isset( $post->event_dates ) ) {
+	public static function event_post_data( $data, $gd_post, $request, $controller ) {
+		if ( isset( $gd_post->event_dates ) ) {
 			$event_type = geodir_get_option( 'event_hide_past_dates' ) ? 'upcoming' : 'all';
 
-			$data['event_dates'] = maybe_unserialize( $post->event_dates );
+			$data['event_dates'] = maybe_unserialize( $gd_post->event_dates );
 
-			$event_data = self::prepare_schedule_response( $post );
+			$event_data = self::prepare_schedule_response( $gd_post );
 
-			$schedules 	= GeoDir_Event_Schedules::get_schedules( $post->ID, $event_type );
+			$schedules 	= GeoDir_Event_Schedules::get_schedules( $gd_post->ID, $event_type );
 			$event_schedules = array();
 			foreach ( $schedules as $schedule ) {
 				$event_schedules[] = self::prepare_schedule_response( $schedule );
@@ -247,7 +253,7 @@ class GeoDir_Event_API {
 			'rendered' 	=> date_i18n( $date_format, strtotime( $start_date ) )
 		);
 		$schedule['start_time'] = array(
-			'raw'		=> $start_time,
+			'raw'		=> date_i18n( 'H:i', strtotime( $start_time ) ),
 			'rendered' 	=> date_i18n( $time_format, strtotime( $start_time ) )
 		);
 		$schedule['end_date'] = array(
@@ -255,7 +261,7 @@ class GeoDir_Event_API {
 			'rendered' 	=> date_i18n( $date_format, strtotime( $end_date ) )
 		);
 		$schedule['end_time'] = array(
-			'raw'		=> $end_time,
+			'raw'		=> date_i18n( 'H:i', strtotime( $end_time ) ),
 			'rendered' 	=> date_i18n( $time_format, strtotime( $end_time ) )
 		);
 		$schedule['all_day'] = $item->all_day;

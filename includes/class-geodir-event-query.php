@@ -95,6 +95,9 @@ class GeoDir_Event_Query {
 			if ( isset( $gd_query_args_widgets['event_type'] ) && ( $condition = GeoDir_Event_Schedules::event_type_condition( $gd_query_args_widgets['event_type'] ) ) ) {
 				$where .= " AND " . $condition;
 			}
+			if ( ! empty( $gd_query_args_widgets['link_business'] ) ) {
+				$where .= " AND " . GEODIR_EVENT_DETAIL_TABLE . ".link_business = " . (int)$gd_query_args_widgets['link_business'];
+			}
 		}
 		return $where;
 	}
