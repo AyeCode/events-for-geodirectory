@@ -196,8 +196,10 @@ function geodir_event_get_times() {
 /**
  *
  * @since 1.4.6 Same day events should just show date and from - to time.
+ *
+ * @depreciated No longer needed.
  */
-function geodir_event_show_shedule_date() {
+function geodir_event_show_schedule_date() {
     global $post, $geodir_date_time_format, $geodir_date_format, $geodir_time_format;
     
     if ( geodir_is_page( 'preview' ) ) {
