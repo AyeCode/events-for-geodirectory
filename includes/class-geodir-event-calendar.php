@@ -303,10 +303,6 @@ class GeoDir_Event_Calendar {
 		}
 
 		$search_url = geodir_search_page_base_url();
-		if ( geodir_is_wpml() && wp_doing_ajax() ) {
-			global $sitepress;
-			$search_url = $sitepress->convert_url( $search_url );
-		}
 		$search_args = array(
 			'geodir_search' => 1,
 			'etype' => 'all',

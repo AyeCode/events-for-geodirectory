@@ -155,14 +155,18 @@ function geodir_event_time_options( $default = '' ) {
 
 function geodir_event_get_times() {
 	$time_increment = apply_filters( 'geodir_event_time_increment' , 15 ) ;
+	$am = __( '%s AM', 'geodirevents' );
+	$pm = __( '%s PM', 'geodirevents' );
+
+
 	$event_time_array = array();
 	for ( $i = 0; $i < 24; $i++ ) {
 		 for ( $j = 0; $j < 60; $j += $time_increment ) {
 		 	$time_hr_abs = $i;
-		 	$time_am_pm = ' AM';
+		 	$time_am_pm = $am;
 
 			if ( $i >= 12) {
-				$time_am_pm = ' PM';
+				$time_am_pm = $pm;
 			}
 
 			if ( $i > 12 ) {
@@ -186,7 +190,7 @@ function geodir_event_get_times() {
 				$time_hr_index = $i;
 			}
 
-		 	$event_time_array[ $time_hr_index  . ":" . $time_min ] = $time_hr . ":" . $time_min . $time_am_pm;
+		 	$event_time_array[ $time_hr_index  . ":" . $time_min ] = wp_sprintf( $time_am_pm, $time_hr . ":" . $time_min );
 		 }
 	}
 
@@ -847,29 +851,10 @@ function geodir_event_get_widget_events( $query_args, $count_only = false ) {
 	$join = "INNER JOIN " . $table ." ON (" . $table .".post_id = " . $wpdb->posts . ".ID)";
 	$join .= " INNER JOIN " . GEODIR_EVENT_SCHEDULES_TABLE ." ON (" . GEODIR_EVENT_SCHEDULES_TABLE .".event_id = " . $wpdb->posts . ".ID)";
 	
-	########### WPML ###########
-    $lang_code = '';
-    if (geodir_wpml_is_post_type_translated($post_type)) {
-        global $sitepress;
-        $lang_code = ICL_LANGUAGE_CODE;
-        if ($lang_code) {
-            $join .= " JOIN " . $wpdb->prefix . "icl_translations icl_t ON icl_t.element_id = " . $wpdb->posts . ".ID";
-        }
-    }
-    ########### WPML ###########
-	
 	$join = apply_filters( 'geodir_event_filter_widget_events_join', $join );
 	
 	$post_status = is_super_admin() ? " OR " . $wpdb->posts . ".post_status = 'private'" : '';
     $where = " AND ( " . $wpdb->posts . ".post_status = 'publish' " . $post_status . " ) AND " . $wpdb->posts . ".post_type = '" . $post_type . "'";
-	
-	########### WPML ###########
-    if (geodir_wpml_is_post_type_translated($post_type)) {
-        if ($lang_code) {
-            $where .= " AND icl_t.language_code = '$lang_code' AND icl_t.element_type = 'post_$post_type' ";
-        }
-    }
-    ########### WPML ###########
 	
 	$where = apply_filters( 'geodir_event_filter_widget_events_where', $where );
 	$where = $where != '' ? " WHERE 1=1 " . $where : '';
