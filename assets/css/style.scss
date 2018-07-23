@@ -173,27 +173,27 @@ body .geodir-none {
 
 /* DETAIL PAGE LINKED EVENTS TAB */
 
-#link_businessTab .geodir_location_listing {
+#eventsTab .geodir_location_listing {
     clear: both
 }
 
-#link_businessTab .geodir_category_list_view li {
+#eventsTab .geodir_category_list_view li {
     margin-left: 0;
 }
 
-#link_businessTab .geodir-entry-header {
+#eventsTab .geodir-entry-header {
     border-bottom: none;
 }
 
-#link_businessTab .geodir_category_list_view li .geodir-content p.geodir-event-meta {
+#eventsTab .geodir_category_list_view li .geodir-content p.geodir-event-meta {
     margin-bottom: 0
 }
 
-#link_businessTab .geodir_category_list_view header.geodir-entry-header {
+#eventsTab .geodir_category_list_view header.geodir-entry-header {
     padding-bottom: .5em
 }
 
-#link_businessTab a.geodir-viewall-linked {
+#eventsTab a.geodir-viewall-linked {
     text-align: right;
     display: block;
     margin-top: 5px;
@@ -213,22 +213,22 @@ body .geodir-none {
     cursor: default
 }
 
-#link_businessTab .geodir_category_list_view li.geodir-listview {
+#eventsTab .geodir_category_list_view li.geodir-listview {
     margin-bottom: 10px
 }
 
-#link_businessTab .geodir_category_list_view li.geodir-listview header.geodir-entry-header,
-#link_businessTab .geodir_category_list_view li.geodir-listview footer.geodir-entry-meta {
+#eventsTab .geodir_category_list_view li.geodir-listview header.geodir-entry-header,
+#eventsTab .geodir_category_list_view li.geodir-listview footer.geodir-entry-meta {
     padding: 0;
     margin: 0;
     border: none
 }
 
-#link_businessTab .geodir_category_list_view li.geodir-listview .geodir-entry-content p {
+#eventsTab .geodir_category_list_view li.geodir-listview .geodir-entry-content p {
     margin: 0
 }
 
-.geodir-tabs-content.entry-content #link_businessTab li {
+.geodir-tabs-content.entry-content #eventsTab li {
     margin: auto;
     margin-bottom: 15px
 }
@@ -240,7 +240,7 @@ body .geodir-none {
 }
 
 .geodir-ayi-cur-user-interested {
-    margin: 5px 0;
+    margin: 5px 0 !important;
 }
 
 .geodir-ayi-list-users .item-avatar img {
@@ -252,7 +252,7 @@ body .geodir-none {
 }
 
 .geodir-ayi-buttons {
-    padding-bottom: 10px;
+    padding-bottom: 20px;
 }
 
 .geodir-ayi-buttons ul {
@@ -290,6 +290,7 @@ body .geodir-none {
     -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1), inset 0 -2px 2px rgba(0, 0, 0, 0.05), inset 0 -1px 1px white;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1), inset 0 -2px 2px rgba(0, 0, 0, 0.05), inset 0 -1px 1px white;
     text-shadow: none;
+	text-decoration: none;
 }
 
 .geodir-ayi-btn-small {
@@ -372,7 +373,7 @@ h3.geodir-ayi-section-title span {
     line-height: 12px;
     color: #444;
     font-weight: normal;
-    padding: 6px;
+    padding: 0;
 }
 
 
@@ -695,4 +696,55 @@ h3.geodir-ayi-section-title span {
 	border-color: #ccc;
 }
 
+.geodir_form_row select#link_business {
+	width: calc( 70% - 180px );
+}
+
+.geodir_form_row button.geodir-fill-business,
+.geodir_form_row button.geodir-fill-business:focus {
+	min-width: 150px;
+	display: inline-block;
+	margin-left: 15px;
+	vertical-align: middle;
+}
 /* ADD EVENT FORM ENDS */
+
+/* BEGIN SCHEDULE DATES */
+.geodir-schedule-meta {
+	.geodir-schedules {
+		display: inline;
+
+		.geodir-schedule {
+			display: inline;
+		}
+	}
+
+	.geodir-schedule-start {
+		.fa {
+			display: none;
+		}
+	}
+}
+
+.geodir-schedule {
+	.geodir-schedule-start,
+	.geodir-schedule-end,
+	.geodir-schedule-sep {
+		display: inline;
+	}
+
+	.geodir-schedule-sep {
+		padding: 0 5px;
+	}
+}
+.geodir-schedule-current {
+	.geodir-schedule-start,
+	.geodir-schedule-end {
+		color: #333
+	}
+
+	a {
+		cursor: default;
+	}
+}
+/* END SCHEDULE DATES */

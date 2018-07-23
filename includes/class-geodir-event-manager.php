@@ -157,11 +157,14 @@ final class GeoDir_Event_Manager {
 		GeoDir_Event_Fields::init();
 		GeoDir_Event_Schedules::init();
 		GeoDir_Event_AYI::init();
+		GeoDir_Event_Widgets::init();
 
         require_once( GEODIR_EVENT_PLUGIN_DIR . 'includes/general-functions.php' );
 		require_once( GEODIR_EVENT_PLUGIN_DIR . 'includes/shortcode-functions.php' );
 		require_once( GEODIR_EVENT_PLUGIN_DIR . 'includes/template-functions.php' );		
 		require_once( GEODIR_EVENT_PLUGIN_DIR . 'includes/widget-functions.php' );
+		
+		GeoDir_Event_API::init();
 
         if ( $this->is_request( 'admin' ) || $this->is_request( 'test' ) || $this->is_request( 'cli' ) ) {
             new GeoDir_Event_Admin();

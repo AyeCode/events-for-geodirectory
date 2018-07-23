@@ -8,37 +8,37 @@
 
 function geodir_event_yui_calendar_params() {
 	$params = array(
-		'month_long_1' => __( 'January','geodirevents' ),
-		'month_long_2' => __( 'February','geodirevents' ),
-		'month_long_3' => __( 'March','geodirevents' ),
-		'month_long_4' => __( 'April','geodirevents' ),
-		'month_long_5' => __( 'May','geodirevents' ),
-		'month_long_6' => __( 'June','geodirevents' ),
-		'month_long_7' => __( 'July','geodirevents' ),
-		'month_long_8' => __( 'August','geodirevents' ),
-		'month_long_9' => __( 'September','geodirevents' ),
-		'month_long_10' => __( 'October' ,'geodirevents'),
-		'month_long_11' => __( 'November' ,'geodirevents'),
-		'month_long_12' => __( 'December' ,'geodirevents'),
-		'month_s_1' => __( 'Jan','geodirevents' ),
-		'month_s_2' => __( 'Feb','geodirevents' ),
-		'month_s_3' => __( 'Mar','geodirevents' ),
-		'month_s_4' => __( 'Apr' ,'geodirevents'),
-		'month_s_5' => __( 'May' ,'geodirevents'),
-		'month_s_6' => __( 'Jun' ,'geodirevents'),
-		'month_s_7' => __( 'Jul','geodirevents' ),
-		'month_s_8' => __( 'Aug' ,'geodirevents'),
-		'month_s_9' => __( 'Sep' ,'geodirevents'),
-		'month_s_10' => __( 'Oct' ,'geodirevents'),
-		'month_s_11' => __( 'Nov','geodirevents' ),
-		'month_s_12' => __( 'Dec','geodirevents' ),
-		'day_s1_1' => __( 'S' ,'geodirevents'),
-		'day_s1_2' => __( 'M' ,'geodirevents'),
-		'day_s1_3' => __( 'T' ,'geodirevents'),
-		'day_s1_4' => __( 'W' ,'geodirevents'),
-		'day_s1_5' => __( 'T' ,'geodirevents'),
-		'day_s1_6' => __( 'F' ,'geodirevents'),
-		'day_s1_7' => __( 'S' ,'geodirevents'),
+		'month_long_1' => __( 'January' ),
+		'month_long_2' => __( 'February' ),
+		'month_long_3' => __( 'March' ),
+		'month_long_4' => __( 'April' ),
+		'month_long_5' => __( 'May' ),
+		'month_long_6' => __( 'June' ),
+		'month_long_7' => __( 'July' ),
+		'month_long_8' => __( 'August' ),
+		'month_long_9' => __( 'September' ),
+		'month_long_10' => __( 'October' ),
+		'month_long_11' => __( 'November' ),
+		'month_long_12' => __( 'December' ),
+		'month_s_1' => _x( 'Jan','January abbreviation' ),
+		'month_s_2' => _x( 'Feb','February abbreviation' ),
+		'month_s_3' => _x( 'Mar','March abbreviation' ),
+		'month_s_4' => _x( 'Apr' ,'April abbreviation'),
+		'month_s_5' => _x( 'May' ,'May abbreviation'),
+		'month_s_6' => _x( 'Jun' ,'June abbreviation'),
+		'month_s_7' => _x( 'Jul','July abbreviation' ),
+		'month_s_8' => _x( 'Aug' ,'August abbreviation'),
+		'month_s_9' => _x( 'Sep' ,'September abbreviation'),
+		'month_s_10' => _x( 'Oct' ,'October abbreviation'),
+		'month_s_11' => _x( 'Nov','November abbreviation' ),
+		'month_s_12' => _x( 'Dec','December abbreviation' ),
+		'day_s1_1' => _x( 'S' ,'Sunday initial'),
+		'day_s1_2' => _x( 'M' ,'Monday initial'),
+		'day_s1_3' => _x( 'T' ,'Tuesday initial'),
+		'day_s1_4' => _x( 'W' ,'Wednesday initial'),
+		'day_s1_5' => _x( 'T' ,'Friday initial'),
+		'day_s1_6' => _x( 'F' ,'Thursday initial'),
+		'day_s1_7' => _x( 'S' ,'Saturday initial'),
 		'day_s2_1' => __( 'Su' ,'geodirevents'),
 		'day_s2_2' => __( 'Mo' ,'geodirevents'),
 		'day_s2_3' => __( 'Tu','geodirevents' ),
@@ -46,20 +46,20 @@ function geodir_event_yui_calendar_params() {
 		'day_s2_5' => __( 'Th','geodirevents' ),
 		'day_s2_6' => __( 'Fr' ,'geodirevents'),
 		'day_s2_7' => __( 'Sa' ,'geodirevents'),
-		'day_s3_1' => __( 'Sun','geodirevents' ),
-		'day_s3_2' => __( 'Mon' ,'geodirevents'),
-		'day_s3_3' => __( 'Tue' ,'geodirevents'),
-		'day_s3_4' => __( 'Wed','geodirevents' ),
-		'day_s3_5' => __( 'Thu' ,'geodirevents'),
-		'day_s3_6' => __( 'Fri' ,'geodirevents'),
-		'day_s3_7' => __( 'Sat' ,'geodirevents'),
-		'day_s5_1' => __( 'Sunday','geodirevents' ),
-		'day_s5_2' => __( 'Monday' ,'geodirevents'),
-		'day_s5_3' => __( 'Tuesday','geodirevents' ),
-		'day_s5_4' => __( 'Wednesday','geodirevents' ),
-		'day_s5_5' => __( 'Thursday','geodirevents' ),
-		'day_s5_6' => __( 'Friday' ,'geodirevents'),
-		'day_s5_7' => __( 'Saturday' ,'geodirevents'),
+		'day_s3_1' => __( 'Sun' ),
+		'day_s3_2' => __( 'Mon' ),
+		'day_s3_3' => __( 'Tue' ),
+		'day_s3_4' => __( 'Wed' ),
+		'day_s3_5' => __( 'Thu' ),
+		'day_s3_6' => __( 'Fri' ),
+		'day_s3_7' => __( 'Sat' ),
+		'day_s5_1' => __( 'Sunday' ),
+		'day_s5_2' => __( 'Monday' ),
+		'day_s5_3' => __( 'Tuesday' ),
+		'day_s5_4' => __( 'Wednesday' ),
+		'day_s5_5' => __( 'Thursday' ),
+		'day_s5_6' => __( 'Friday' ),
+		'day_s5_7' => __( 'Saturday' ),
 		's_previousMonth' => __( 'Previous Month' ),
 		's_nextMonth' => __( 'Next Month' ),
 		's_close' => __( 'Close' )
@@ -101,12 +101,7 @@ function geodir_event_display_filter_options(){
 	
 	if(isset($_REQUEST['etype'])) $filter_by = $_REQUEST['etype'];
 	
-	$event_filters_opt = apply_filters( 'geodir_event_filter_options', array(
-		'all' => __('All Events', 'geodirevents'),
-		'today' => __('Today', 'geodirevents'),
-		'upcoming' => __('Upcoming', 'geodirevents'),
-		'past' => __('Past', 'geodirevents'),
-	) );
+	$event_filters_opt = geodir_event_filter_options();
 	
 	if($filter_by == '')
 		$filter_by = geodir_get_option( 'event_defalt_filter' );
@@ -160,14 +155,18 @@ function geodir_event_time_options( $default = '' ) {
 
 function geodir_event_get_times() {
 	$time_increment = apply_filters( 'geodir_event_time_increment' , 15 ) ;
+	$am = __( '%s AM', 'geodirevents' );
+	$pm = __( '%s PM', 'geodirevents' );
+
+
 	$event_time_array = array();
 	for ( $i = 0; $i < 24; $i++ ) {
 		 for ( $j = 0; $j < 60; $j += $time_increment ) {
 		 	$time_hr_abs = $i;
-		 	$time_am_pm = ' AM';
+		 	$time_am_pm = $am;
 
 			if ( $i >= 12) {
-				$time_am_pm = ' PM';
+				$time_am_pm = $pm;
 			}
 
 			if ( $i > 12 ) {
@@ -191,7 +190,7 @@ function geodir_event_get_times() {
 				$time_hr_index = $i;
 			}
 
-		 	$event_time_array[ $time_hr_index  . ":" . $time_min ] = $time_hr . ":" . $time_min . $time_am_pm;
+		 	$event_time_array[ $time_hr_index  . ":" . $time_min ] = wp_sprintf( $time_am_pm, $time_hr . ":" . $time_min );
 		 }
 	}
 
@@ -201,8 +200,10 @@ function geodir_event_get_times() {
 /**
  *
  * @since 1.4.6 Same day events should just show date and from - to time.
+ *
+ * @depreciated No longer needed.
  */
-function geodir_event_show_shedule_date() {
+function geodir_event_show_schedule_date() {
     global $post, $geodir_date_time_format, $geodir_date_format, $geodir_time_format;
     
     if ( geodir_is_page( 'preview' ) ) {
@@ -850,29 +851,10 @@ function geodir_event_get_widget_events( $query_args, $count_only = false ) {
 	$join = "INNER JOIN " . $table ." ON (" . $table .".post_id = " . $wpdb->posts . ".ID)";
 	$join .= " INNER JOIN " . GEODIR_EVENT_SCHEDULES_TABLE ." ON (" . GEODIR_EVENT_SCHEDULES_TABLE .".event_id = " . $wpdb->posts . ".ID)";
 	
-	########### WPML ###########
-    $lang_code = '';
-    if (geodir_wpml_is_post_type_translated($post_type)) {
-        global $sitepress;
-        $lang_code = ICL_LANGUAGE_CODE;
-        if ($lang_code) {
-            $join .= " JOIN " . $wpdb->prefix . "icl_translations icl_t ON icl_t.element_id = " . $wpdb->posts . ".ID";
-        }
-    }
-    ########### WPML ###########
-	
 	$join = apply_filters( 'geodir_event_filter_widget_events_join', $join );
 	
 	$post_status = is_super_admin() ? " OR " . $wpdb->posts . ".post_status = 'private'" : '';
     $where = " AND ( " . $wpdb->posts . ".post_status = 'publish' " . $post_status . " ) AND " . $wpdb->posts . ".post_type = '" . $post_type . "'";
-	
-	########### WPML ###########
-    if (geodir_wpml_is_post_type_translated($post_type)) {
-        if ($lang_code) {
-            $where .= " AND icl_t.language_code = '$lang_code' AND icl_t.element_type = 'post_$post_type' ";
-        }
-    }
-    ########### WPML ###########
 	
 	$where = apply_filters( 'geodir_event_filter_widget_events_where', $where );
 	$where = $where != '' ? " WHERE 1=1 " . $where : '';
@@ -986,7 +968,7 @@ function geodir_event_function_widget_events_where( $where ) {
 	$date_now = date_i18n( 'Y-m-d' );
 	
 	if ( !empty( $gd_query_args ) && !empty( $gd_query_args['event_related_id'] ) ) {
-		$where .= " AND " . $table . ".geodir_link_business = " . (int)$gd_query_args['event_related_id'];
+		$where .= " AND " . $table . ".link_business = " . (int)$gd_query_args['event_related_id'];
 	}
 	
 	if ( !empty( $gd_query_args ) && isset( $gd_query_args['gd_event_type'] ) ) {
@@ -1027,97 +1009,6 @@ function geodir_event_function_widget_events_limit( $limit ) {
 	}
 	
 	return $limit;
-}
-
-function geodir_calender_event_details_after_post_title() {
-	global $post, $wpdb, $condition_date, $geodir_post_type, $geodir_is_link_business, $geodir_event_widget_listview;
-
-	$is_post_type_event = !empty( $post ) && isset( $post->post_type ) && $post->post_type == 'gd_event' && isset( $post->start_date ) && $post->start_date ? true : false;
-	
-	if ( ( ( is_main_query() && $geodir_post_type == 'gd_event' ) || get_query_var( 'geodir_event_listing_filter' ) || ( isset( $geodir_is_link_business ) && $geodir_is_link_business ) || ( isset( $geodir_event_widget_listview ) && $geodir_event_widget_listview ) ) && $is_post_type_event ) {
-		global $geodir_date_time_format, $geodir_date_format, $geodir_time_format;
-	?>
-	<p style="clear:both;" class="geodir-event-meta">
-		<span class="geodir-i-datepicker"><i class="fa fa-calendar-o"></i> <?php _e( 'Date:', 'geodirevents' ); ?></span>
-		<?php echo date_i18n( $geodir_date_format, strtotime( $post->start_date ) );
-
-        if($post->end_date!='' && $post->end_date!='0000-00-00' && date_i18n( $geodir_date_format, strtotime( $post->end_date) )!= date_i18n( $geodir_date_format, strtotime( $post->start_date ) )){
-            echo ' - '. date_i18n( $geodir_date_format, strtotime( $post->end_date ) );
-        }
-        ?>
-	</p>
-	<?php if ( ( isset( $post->all_day ) && $post->all_day != '1' ) && ( ( isset( $post->start_time ) && !empty( $post->start_time ) ) || ( isset( $post->end_time ) && !empty( $post->end_time ) ) ) ) {  ?>
-	<p style="clear:both;" class="geodir-event-meta">
-		<span class="geodir-i-time"><i class="fa fa-clock-o"></i> <?php _e('Time:', 'geodirevents'); ?> </span>
-		<?php 
-		if ( isset( $post->start_time ) && !empty( $post->start_time ) ) {
-			echo date_i18n( $geodir_time_format, strtotime( $post->start_time ) ). ' ' ;
-		}	
-		if ( isset( $post->end_time ) && !empty( $post->end_time ) ) {
-			echo __( ' to', 'geodirevents' ).' '. date_i18n( $geodir_time_format, strtotime( $post->end_time ) );
-		}											
-		?>
-	</p>
-		<?php
-		}
-	}			
-}
-
-function geodir_event_get_link_business( $listings = array() ) {
-	global $post, $gridview_columns, $geodir_is_link_business, $character_count, $gd_session;
-	
-	if( empty ( $listings ) ) {
-		return NULL;
-	}
-
-	$template = apply_filters( "geodir_template_part-link-business-listview", WP_PLUGIN_DIR . '/geodir_event_manager/link-business-listview.php', 'gd_event' );
-	
-	$event_type = geodir_get_option( 'geodir_event_linked_event_type' );
-		
-	$view_all_params = array();
-	if ( $event_type == 'today' || $event_type == 'past' || $event_type == 'upcoming' ) {
-		$view_all_params['etype'] = $event_type;
-	}
-	$venue_name = $post->post_title;
-	$view_all_params['venue'] = $post->ID . '-' . $venue_name;
-	$view_all_url = geodir_getlink( get_post_type_archive_link( 'gd_event' ), $view_all_params );
-	$view_all_url = apply_filters( 'geodir_event_linked_event_link', $view_all_url, $post->ID );
-	
-	$gd_listing_view_set = $gd_session->get('gd_listing_view') ? true : false;
-	$gd_listing_view = '';
-	if ( $gd_listing_view_set ) {
-		$gd_listing_view = $gd_session->get('gd_listing_view');
-		$gd_session->un_set('gd_listing_view');
-	}
-	
-	ob_start();
-	?>
-	<div class="geodir_locations geodir_location_listing">
-		<a class="geodir-viewall geodir-viewall-linked clearfix" href="<?php echo esc_url( $view_all_url );?>" title="<?php echo esc_attr( sprintf( __('View all events in "%s"', 'geodirevents' ), $venue_name ) );?>"><?php echo sprintf( __('View all events in "%s"', 'geodirevents' ), $venue_name ); ?></a>
-	<?php
-	if ( !$character_count ) {
-		$character_count = 20;
-	}
-	$linked_listings = $listings;
-	$related_posts = true;
-	$current_post = $post;
-	$geodir_is_link_business = true;
-	include( $template );
-	$GLOBALS['post'] = $current_post;
-	setup_postdata( $current_post );
-	$geodir_is_link_business = false;
-	
-	if ( $gd_listing_view_set ) {
-		$gd_session->set('gd_listing_view', $gd_listing_view);
-	}
-	?>
-	</div>
-	<?php
-	wp_reset_query();
-	
-	$content = ob_get_clean();
-	
-	return $content;
 }
 
 function geodir_event_filter_title_meta_vars($settings) {
@@ -1215,12 +1106,7 @@ function geodir_event_display_event_type_filter( $post_type ) {
 		return;
 	}
 
-	$event_types = apply_filters( 'geodir_event_filter_options', array(
-		'all' => __( 'All Events', 'geodirevents' ),
-		'today' => __( 'Today', 'geodirevents' ),
-		'upcoming' => __( 'Upcoming', 'geodirevents' ),
-		'past' => __( 'Past', 'geodirevents' ),
-	) );
+	$event_types = geodir_event_filter_options();
 
 	if ( empty( $event_types ) ) {
 		return;

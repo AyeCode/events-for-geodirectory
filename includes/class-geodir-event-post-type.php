@@ -136,16 +136,16 @@ class GeoDir_Event_Post_Type {
 			$listing_slug = 'events';
 
 			$labels = array(
-				'name'               => __( 'Events', 'geodirectory' ),
-				'singular_name'      => __( 'Event', 'geodirectory' ),
-				'add_new'            => __( 'Add New', 'geodirectory' ),
-				'add_new_item'       => __( 'Add New Event', 'geodirectory' ),
-				'edit_item'          => __( 'Edit Event', 'geodirectory' ),
-				'new_item'           => __( 'New Event', 'geodirectory' ),
-				'view_item'          => __( 'View Event', 'geodirectory' ),
-				'search_items'       => __( 'Search Events', 'geodirectory' ),
-				'not_found'          => __( 'No Event Found', 'geodirectory' ),
-				'not_found_in_trash' => __( 'No Event Found In Trash', 'geodirectory' )
+				'name'               => __( 'Events', 'geodirevents' ),
+				'singular_name'      => __( 'Event', 'geodirevents' ),
+				'add_new'            => __( 'Add New', 'geodirevents' ),
+				'add_new_item'       => __( 'Add New Event', 'geodirevents' ),
+				'edit_item'          => __( 'Edit Event', 'geodirevents' ),
+				'new_item'           => __( 'New Event', 'geodirevents' ),
+				'view_item'          => __( 'View Event', 'geodirevents' ),
+				'search_items'       => __( 'Search Events', 'geodirevents' ),
+				'not_found'          => __( 'No Event Found', 'geodirevents' ),
+				'not_found_in_trash' => __( 'No Event Found In Trash', 'geodirevents' )
 			);
 
 			$args = array(

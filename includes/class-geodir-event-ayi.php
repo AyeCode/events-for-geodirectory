@@ -90,21 +90,24 @@ class GeoDir_Event_AYI {
 		}
 
 		$current_date = date_i18n( 'Y-m-d H:i:s', time() );
-		$event_details = maybe_unserialize( $post->event_dates );
+		$schedule = GeoDir_Event_Schedules::get_start_schedule( $post->ID );
+		if ( empty( $schedule ) ) {
+			return false;
+		}
 
 		$gde = isset( $_GET['gde'] ) ? strip_tags( $_GET['gde'] ) : false;
 
-		if ( isset( $event_details['all_day'] ) && $event_details['all_day'] ) {
+		if ( ! empty( $schedule->all_day ) ) {
 			if ( $gde ) {
-				$event_start_date = isset( $event_details['event_start'] ) ? date_i18n( 'Y-m-d H:i:s', strtotime( $gde ) ) : '';
+				$event_start_date = date_i18n( 'Y-m-d H:i:s', strtotime( $gde ) );
 			} else {
-				$event_start_date = isset( $event_details['event_start'] ) ? date_i18n( 'Y-m-d H:i:s', strtotime( $event_details['event_start'] ) ) : '';
+				$event_start_date = date_i18n( 'Y-m-d H:i:s', strtotime( $schedule->start_date ) );
 			}
 		} else {
 			if ( $gde ) {
-				$event_start_date = isset( $event_details['event_start'] ) ? date_i18n( 'Y-m-d H:i:s', strtotime( $gde .' ' . $event_details['starttime'] ) ) : '';
+				$event_start_date = date_i18n( 'Y-m-d H:i:s', strtotime( $gde . ' ' . $schedule->start_time ) );
 			} else {
-				$event_start_date = isset( $event_details['event_start'] ) ? date_i18n( 'Y-m-d H:i:s', strtotime( $event_details['event_start'] . ' ' . $event_details['starttime'] ) ) : '';
+				$event_start_date = date_i18n( 'Y-m-d H:i:s', strtotime( $schedule->start_date . ' ' . $schedule->start_time ) );
 			}
 		}
 
@@ -134,7 +137,7 @@ class GeoDir_Event_AYI {
 
 		if ( $buttons ) {
 			?>
-			<div class="geodir-ayi-buttons geodir-ayi-border-bottom">
+			<div class="geodir-ayi-buttons">
 				<?php
 				if ( $cur_user_interested ) {
 					if ( $cur_user_interested == 'event_rsvp_yes' ) {
@@ -157,16 +160,16 @@ class GeoDir_Event_AYI {
 				} else { ?>
 					<ul class="geodir-ayi-inline-layout">
 						<li>
-							<a href="#" data-action="add" data-type="event_rsvp_yes" data-gde="<?php echo $gde; ?>" data-postid="<?php echo $post->ID; ?>" class="geodir-ayi-btn geodir-ayi-btn-small geodir-ayi-btn-full geodir-ayi-btn-rsvp geodir-ayi-btn-rsvp-yes"><?php echo __("I'm in!", 'geodirevents'); ?></a>
+							<a href="#" data-action="add" data-type="event_rsvp_yes" data-gde="<?php echo $gde; ?>" data-postid="<?php echo $post->ID; ?>" class="geodir-ayi-btn geodir-ayi-btn-small geodir-ayi-btn-full geodir-ayi-btn-rsvp geodir-ayi-btn-rsvp-yes button button-primary"><?php echo __("I'm in!", 'geodirevents'); ?></a>
 						</li>
 						<li>
-							<a href="#" data-action="add" data-type="event_rsvp_maybe" data-gde="<?php echo $gde; ?>" data-postid="<?php echo $post->ID; ?>" class="geodir-ayi-btn geodir-ayi-btn-small geodir-ayi-btn-full geodir-ayi-btn-rsvp geodir-ayi-btn-rsvp-maybe"><?php echo __("Sounds Cool", 'geodirevents'); ?></a>
+							<a href="#" data-action="add" data-type="event_rsvp_maybe" data-gde="<?php echo $gde; ?>" data-postid="<?php echo $post->ID; ?>" class="geodir-ayi-btn geodir-ayi-btn-small geodir-ayi-btn-full geodir-ayi-btn-rsvp geodir-ayi-btn-rsvp-maybe button button-secondary"><?php echo __("Sounds Cool", 'geodirevents'); ?></a>
 						</li>
 					</ul>
 				<?php } ?>
 			</div>
 		<?php } ?>
-		<div class="geodir-ayi-wid geodir-ayi-whois-in geodir-ayi-border-bottom">
+		<div class="geodir-ayi-wid geodir-ayi-whois-in">
 			<h3 class="geodir-ayi-section-title"><?php echo __('Who\'s in?', 'geodirevents'); ?>
 				<span><?php echo wp_sprintf( _n( '1 response', '%s responses', $count['yes'], 'geodirevents'), $count['yes'] ); ?></span></h3>
 			<?php if ($count['yes'] > 0) { ?>
@@ -179,7 +182,7 @@ class GeoDir_Event_AYI {
 				</p>
 			<?php } ?>
 		</div>
-		<div class="geodir-ayi-wid geodir-ayi-sounds-cool">
+		<div class="geodir-ayi-wid">
 			<h3 class="geodir-ayi-section-title"><?php echo __('Sounds Cool', 'geodirevents'); ?>
 				<span><?php echo wp_sprintf(_n('1 response', '%s responses', $count['maybe'], 'geodirevents'), $count['maybe'] ); ?></span></h3>
 			<?php if ($count['maybe'] > 0) { ?>
@@ -210,25 +213,24 @@ class GeoDir_Event_AYI {
 		$rsvp_args['post_id'] = $post_id;
 		$rsvp_args['gde'] = $gde;
 
-		geodir_ayi_rsvp_add_or_remove($rsvp_args);
+		self::update_ayi_data($rsvp_args);
 		$post = geodir_get_post_info($post_id);
 
 		$current_date = date_i18n( 'Y-m-d H:i:s', time() );
-		$event_details = maybe_unserialize($post->event_dates);
-
 		$gde = !empty($gde) ? strip_tags($gde) : false;
+		$schedule = GeoDir_Event_Schedules::get_start_schedule( $post->ID );
 
-		if (isset($event_details['all_day']) && $event_details['all_day']) {
-			if ($gde) {
-				$event_start_date = $event_details['event_start'] ? date_i18n('Y-m-d H:i:s', strtotime($gde)) : '';
+		if ( ! empty( $schedule->all_day ) ) {
+			if ( $gde ) {
+				$event_start_date = date_i18n( 'Y-m-d H:i:s', strtotime( $gde ) );
 			} else {
-				$event_start_date = $event_details['event_start'] ? date_i18n('Y-m-d H:i:s', strtotime($event_details['event_start'])) : '';
+				$event_start_date = date_i18n( 'Y-m-d H:i:s', strtotime( $schedule->start_date ) );
 			}
 		} else {
-			if ($gde) {
-				$event_start_date = $event_details['event_start'] ? date_i18n('Y-m-d H:i:s', strtotime($gde.' '.$event_details['starttime'])) : '';
+			if ( $gde ) {
+				$event_start_date = date_i18n( 'Y-m-d H:i:s', strtotime( $gde . ' ' . $schedule->start_time ) );
 			} else {
-				$event_start_date = $event_details['event_start'] ? date_i18n('Y-m-d H:i:s', strtotime($event_details['event_start'].' '.$event_details['starttime'])) : '';
+				$event_start_date = date_i18n( 'Y-m-d H:i:s', strtotime( $schedule->start_date . ' ' . $schedule->start_time ) );
 			}
 		}
 

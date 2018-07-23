@@ -27,11 +27,9 @@ class GeoDir_Event_Fields {
     }
 
 	public static function init() {
-		if ( is_admin() ) {
-			add_filter( 'geodir_enable_field_type_in_owntab', array( __CLASS__, 'enable_event_dates_in_owntab' ), 10, 3 );
-		}
 	
 		add_filter( 'geodir_default_custom_fields', array( __CLASS__, 'default_custom_fields' ), 10, 3 );
+		add_filter( 'geodir_custom_fields_predefined', array( __CLASS__, 'predefined_fields' ), 10, 2 );
 
 		// Admin cpt cf settings
 		add_filter( 'geodir_cfa_is_active_event', array( __CLASS__, 'cfa_is_active' ), 10, 4 );
@@ -41,6 +39,7 @@ class GeoDir_Event_Fields {
 		// Add event form
 		add_filter( 'geodir_before_custom_form_field_recurring', array( __CLASS__, 'input_recurring' ), 10, 3 );
 		add_filter( 'geodir_before_custom_form_field_event_dates', array( __CLASS__, 'input_event_dates' ), 10, 3 );
+		add_filter( 'geodir_before_custom_form_field_link_business', array( __CLASS__, 'input_link_business' ), 10, 3 );
 
 		// Process value before save
 		add_filter( 'geodir_custom_field_value_event', array( __CLASS__, 'sanitize_event_data' ), 10, 6 );
@@ -55,13 +54,9 @@ class GeoDir_Event_Fields {
 		add_filter( 'geodir_custom_field_output_event', array( __CLASS__, 'cf_event' ), 10, 3 );
 		add_filter( 'geodir_custom_field_output_event_var_event_dates', array( __CLASS__, 'output_event_dates' ), 10, 4 ); // Schedules
 		add_filter( 'geodir_custom_field_output_event_loc_listing', array( __CLASS__, 'output_event_date' ), 10, 3 ); // Single date
-	}
-
-	public static function enable_event_dates_in_owntab( $return, $field_type, $field ) {
-		if ( $field->htmlvar_name == 'event_dates' ) {
-			$return = true;
-		}
-		return $return;
+		add_filter( 'geodir_custom_field_output_event_var_link_business', array( __CLASS__, 'output_link_business' ), 10, 4 ); // Link business
+		
+		add_filter( 'geodir_cpt_settings_tabs_predefined_fields', array( __CLASS__, 'event_predefined_tabs' ), 10, 2 );
 	}
 
 	public static function default_custom_fields( $fields, $post_type, $package_id ) {
@@ -117,26 +112,216 @@ class GeoDir_Event_Fields {
 		return $fields;
 	}
 
+	public static function predefined_fields( $custom_fields, $post_type ) {
+		if ( $post_type != 'gd_event' ) {
+			return $custom_fields;
+		}
+
+		// Link Business
+		$custom_fields['link_business'] = array(
+			'field_type'  => 'event',
+			'class'       => 'gd-link-business',
+			'icon'        => 'fa fa-link',
+			'name'        => __( 'Link Business', 'geodirevents' ),
+			'description' => __( 'Add a select input to link the business to the event.', 'geodirevents' ),
+			'single_use'  => 'link_business',
+			'defaults'    => array(
+				'data_type'          => 'INT',
+				'admin_title'        => 'Link Business',
+				'frontend_title'     => 'Link Business',
+				'frontend_desc'      => 'Select & link your business to the event.',
+				'htmlvar_name'       => 'link_business',
+				'is_active'          => true,
+				'for_admin_use'      => false,
+				'default_value'      => '',
+				'show_in'            => '[detail]',
+				'is_required'        => false,
+				'option_values'      => '',
+				'validation_pattern' => '',
+				'validation_msg'     => '',
+				'required_msg'       => '',
+				'field_icon'         => 'fa fa-link',
+				'css_class'          => '',
+				'cat_sort'           => false,
+				'cat_filter'         => false,
+				'single_use'         => true
+			)
+
+		);
+		// Event Fees
+		$custom_fields['event_reg_fees'] = array(
+			'field_type'  => 'text',
+			'class'       => 'gd-event-reg-fees',
+			'icon'        => 'fa fa-usd',
+			'name'        => __( 'Event Registration Fees', 'geodirevents' ),
+			'description' => __( 'Adds a input for a event registration fees.', 'geodirevents' ),
+			'single_use'  => 'event_reg_fees',
+			'defaults'    => array(
+				'data_type'          => 'FLOAT',
+				'decimal_point'      => '2',
+				'admin_title'        => 'Event Registration Fees',
+				'frontend_title'     => 'Event Registration Fees',
+				'frontend_desc'      => 'Enter the event registration fees in $ (no currency symbol)',
+				'htmlvar_name'       => 'event_reg_fees',
+				'is_active'          => true,
+				'for_admin_use'      => false,
+				'default_value'      => '',
+				'show_in'            => '[moreinfo]',
+				'is_required'        => false,
+				'validation_pattern' => '\d+(\.\d{2})?',
+				'validation_msg'     => 'Please enter number and decimal only ie: 100.50',
+				'required_msg'       => '',
+				'field_icon'         => 'fa fa-usd',
+				'css_class'          => '',
+				'cat_sort'           => true,
+				'cat_filter'         => true,
+				'single_use'         => true,
+				'extra_fields'       => array(
+					'is_price'                  => 1,
+					'thousand_separator'        => 'comma',
+					'decimal_separator'         => 'period',
+					'decimal_display'           => 'if',
+					'currency_symbol'           => '$',
+					'currency_symbol_placement' => 'left'
+				)
+			)
+		);
+		// Event Registration Info
+		$custom_fields['event_reg_desc'] = array(
+			'field_type'  => 'html',
+			'class'       => 'gd-event-reg-desc',
+			'icon'        => 'fa fa-ticket',
+			'name'        => __( 'Event Registration Info', 'geodirevents' ),
+			'description' => __( 'Adds a input for a event registration description.', 'geodirevents' ),
+			'single_use'  => 'event_reg_desc',
+			'defaults'    => array(
+				'data_type'          => 'TEXT',
+				'admin_title'        => 'How to register',
+				'frontend_title'     => 'Event Registration Info',
+				'frontend_desc'      => 'Enter details to register to this event.',
+				'htmlvar_name'       => 'event_reg_desc',
+				'is_active'          => true,
+				'for_admin_use'      => false,
+				'default_value'      => '',
+				'show_in'            => '[moreinfo]',
+				'is_required'        => false,
+				'option_values'      => '',
+				'validation_pattern' => '',
+				'validation_msg'     => '',
+				'required_msg'       => '',
+				'field_icon'         => 'fa fa-ticket',
+				'css_class'          => '',
+				'cat_sort'           => false,
+				'cat_filter'         => false,
+				'single_use'         => true,
+			)
+		);
+
+		return $custom_fields;
+	}
+
 	public static function cfa_is_active( $content, $_id, $cf, $field ) {
-		$content = '<li style="display:none!important"><div class="gd-cf-input-wrap"><input id="is_active" name="is_active" value="1" type="hidden"></div></li>';
+		if ( $field->htmlvar_name == 'recurring' || $field->htmlvar_name == 'event_dates' ) {
+			$content = '<li style="display:none!important"><div class="gd-cf-input-wrap"><input id="is_active" name="is_active" value="1" type="hidden"></div></li>';
+		} else {
+			$radio_id = ! empty( $field->htmlvar_name ) ? $field->htmlvar_name : rand( 5, 500 );
+			$value = '';
+			if ( isset( $field->is_active ) ) {
+				$value = esc_attr( $field->is_active );
+			} elseif ( isset( $cf['defaults']['is_active'] ) && $cf['defaults']['is_active'] ) {
+				$value = $cf['defaults']['is_active'];
+			}
+			ob_start();
+			?>
+			<li>
+				<label for="is_active" class="gd-cf-tooltip-wrap">
+					<span class="gd-help-tip gd-help-tip-float-none gd-help-tip-no-margin dashicons dashicons-editor-help" title="<?php esc_attr_e( 'If no is selected then the field will not be displayed anywhere.', 'geodirectory' ); ?>"></span> 
+					<?php _e( 'Is active :', 'geodirectory' ); ?>
+				</label>
+				<div class="gd-cf-input-wrap gd-switch">
+					<input type="radio" id="is_active_yes<?php echo $radio_id; ?>" name="is_active" class="gdri-enabled" value="1" <?php checked( (int)$value, 1 ); ?>/>
+					<label for="is_active_yes<?php echo $radio_id; ?>" class="gdcb-enable"><span><?php _e( 'Yes', 'geodirectory' ); ?></span></label>
+					<input type="radio" id="is_active_no<?php echo $radio_id; ?>" name="is_active" class="gdri-disabled" value="0" <?php checked( (int)$value, 0 ); ?>/>
+					<label for="is_active_no<?php echo $radio_id; ?>" class="gdcb-disable"><span><?php _e( 'No', 'geodirectory' ); ?></span></label>
+				</div>
+			</li>
+			<?php
+			$content = ob_get_clean();
+		}
 
 		return $content;
 	}
 
 	public static function cfa_for_admin_use( $content, $_id, $cf, $field ) {
-		$content = '<li style="display:none!important"><div class="gd-cf-input-wrap"><input id="for_admin_use" name="for_admin_use" value="0" type="hidden"></div></li>';
+		if ( $field->htmlvar_name == 'recurring' || $field->htmlvar_name == 'event_dates' ) {
+			$content = '<li style="display:none!important"><div class="gd-cf-input-wrap"><input id="for_admin_use" name="for_admin_use" value="0" type="hidden"></div></li>';
+		} else {
+			$radio_id = ! empty( $field->htmlvar_name ) ? $field->htmlvar_name : rand( 5, 500 );
+			$value = '';
+			if ( isset( $field->for_admin_use ) ) {
+				$value = esc_attr( $field->for_admin_use );
+			} elseif ( isset( $cf['defaults']['for_admin_use'] ) && $cf['defaults']['for_admin_use'] ) {
+				$value = $cf['defaults']['for_admin_use'];
+			}
+			ob_start();
+			?>
+			<li class="gd-advanced-setting">
+				<label for="for_admin_use" class="gd-cf-tooltip-wrap">
+					<span class="gd-help-tip gd-help-tip-float-none gd-help-tip-no-margin dashicons dashicons-editor-help" title="<?php _e( 'If yes is selected then only site admin can see and edit this field.', 'geodirectory' ); ?>"></span> 
+					<?php _e( 'For admin use only? :', 'geodirectory' ); ?>
+				</label>
+				<div class="gd-cf-input-wrap gd-switch">
+					<input type="radio" id="for_admin_use_yes<?php echo $radio_id; ?>" name="for_admin_use" class="gdri-enabled" value="1" <?php checked( (int)$value, 1 ); ?>/>
+					<label for="for_admin_use_yes<?php echo $radio_id; ?>" class="gdcb-enable"><span><?php _e( 'Yes', 'geodirectory' ); ?></span></label>
+					<input type="radio" id="for_admin_use_no<?php echo $radio_id; ?>" name="for_admin_use" class="gdri-disabled" value="0" <?php checked( (int)$value, 0 ); ?>/>
+					<label for="for_admin_use_no<?php echo $radio_id; ?>" class="gdcb-disable"><span><?php _e( 'No', 'geodirectory' ); ?></span></label>
+				</div>
+			</li>
+			<?php
+			$content = ob_get_clean();
+		}
 
 		return $content;
 	}
 
 	public static function cfa_is_required( $content, $_id, $cf, $field ) {
-		$content = '<li style="display:none!important"><div class="gd-cf-input-wrap"><input id="is_required" name="is_required" value="1" type="hidden"></div></li>';
+		if ( $field->htmlvar_name == 'recurring' || $field->htmlvar_name == 'event_dates' ) {
+			$content = '<li style="display:none!important"><div class="gd-cf-input-wrap"><input id="is_required" name="is_required" value="1" type="hidden"></div></li>';
+		} else {
+			$radio_id = ! empty( $field->htmlvar_name ) ? $field->htmlvar_name : rand( 5, 500 );
+			$value = '';
+			if ( isset( $field->is_required ) ) {
+				$value = esc_attr( $field->is_required );
+			} elseif ( isset( $cf['defaults']['is_required'] ) && $cf['defaults']['is_required'] ) {
+				$value = $cf['defaults']['is_required'];
+			}
+			ob_start();
+			?>
+			<li class="">
+				<label for="is_required" class="gd-cf-tooltip-wrap">
+					<span class="gd-help-tip gd-help-tip-float-none gd-help-tip-no-margin dashicons dashicons-editor-help" title="<?php _e( 'Select yes to set field as required.', 'geodirectory' ); ?>"></span> 
+					<?php _e( 'Is required :', 'geodirectory' ); ?>
+				</label>
+				<div class="gd-cf-input-wrap gd-switch">
+					<input type="radio" id="is_required_yes<?php echo $radio_id; ?>" name="is_required" class="gdri-enabled" value="1" <?php checked( (int)$value, 1 ); ?>/>
+					<label onclick="gd_show_hide_radio(this,'show','cf-is-required-msg');" for="is_required_yes<?php echo $radio_id; ?>" class="gdcb-enable"><span><?php _e( 'Yes', 'geodirectory' ); ?></span></label>
+					<input type="radio" id="is_required_no<?php echo $radio_id; ?>" name="is_required" class="gdri-disabled" value="0" <?php checked( (int)$value, 0 ); ?>/>
+					<label onclick="gd_show_hide_radio(this,'hide','cf-is-required-msg');" for="is_required_no<?php echo $radio_id; ?>" class="gdcb-disable"><span><?php _e( 'No', 'geodirectory' ); ?></span></label>
+				</div>
+			</li>
+			<?php
+			$content = ob_get_clean();
+		}
 
 		return $content;
 	}
 
 	public static function input_recurring( $post_type, $package_id, $field ) {
-        if ( ! geodir_event_is_recurring_active() ) { // Recurring is disabled
+        if ( $post_type != 'gd_event' ) {
+			return;
+		}
+
+		if ( ! geodir_event_is_recurring_active() ) { // Recurring is disabled
 			return;
 		}
 		$value 					= geodir_get_cf_value( $field );
@@ -152,7 +337,7 @@ class GeoDir_Event_Fields {
 			<span class="gd-radios"><input name="<?php echo $htmlvar_name; ?>" id="<?php echo $htmlvar_name; ?>" <?php checked( (int) $value, 1 ); ?> value="1" class="gd-checkbox" field_type="radio" type="radio" /><?php echo __( 'Yes', 'geodirevents' ); ?></span>
 			<span class="gd-radios"><input name="<?php echo $htmlvar_name; ?>" id="<?php echo $htmlvar_name; ?>" <?php checked( (int) $value, 0 ); ?> value="0" class="gd-checkbox" field_type="radio" type="radio" /><?php echo __( 'No', 'geodirevents' ); ?></span>
             <span class="geodir_message_note"><?php echo $field_desc; ?></span>
-            <span class="geodir_message_error"><?php $required_msg; ?></span>
+            <span class="geodir_message_error"><?php echo $required_msg; ?></span>
         </div>
         <?php
         $html = ob_get_clean();
@@ -161,6 +346,10 @@ class GeoDir_Event_Fields {
 	}
 
 	public static function input_event_dates( $post_type, $package_id, $field ) {
+		if ( $post_type != 'gd_event' ) {
+			return;
+		}
+
 		$htmlvar_name 			= $field['htmlvar_name'];
 		$event_data 			= geodir_get_cf_value( $field );
 		$event_data 			= maybe_unserialize( $event_data );
@@ -190,7 +379,7 @@ class GeoDir_Event_Fields {
 
 		$recurring_dates_list	= '';
 		$custom_dates_list		= '';
-		$differnt_times_list	= '';
+		$different_times_list	= '';
 
 		if ( $recurring && $is_recurring_active ) {	
 			$duration_x 		= ! empty( $event_data['duration_x'] ) && absint( $event_data['duration_x'] ) > 0 ? absint( $event_data['duration_x'] ) : 1;
@@ -220,7 +409,7 @@ class GeoDir_Event_Fields {
 						if ( $different_times ) {
 							$start_time_selected	= ! empty( $start_times[ $key ] ) ? $start_times[$key] : ( ! empty( $start_time ) ? $start_time : '10:00' );
 							$end_time_selected 	= ! empty( $end_times[ $key ] ) ? $end_times[$key] : ( ! empty( $end_time ) ? $end_time : '18:00' );
-							$differnt_times_list 	.= '<div class="event-multiple-times clearfix"><label class="event-multiple-dateto">' . $date . '</label><div class="event-multiple-dateto-inner"><select id="event_start_times" name="event_dates[start_times][]" class="geodir_textfield geodir-select geodir-w110">' . geodir_event_time_options( $start_time_selected ) .  '</select></div><label class="event-multiple-end"> ' . __( 'to', 'geodirevents' ) . ' </label><div class="event-multiple-dateto-inner"><select id="event_end_times" name="event_dates[end_times][]" class="geodir_textfield geodir-select geodir-w110">' . geodir_event_time_options( $end_time_selected ) .  '</select></div></div>';
+							$different_times_list 	.= '<div class="event-multiple-times clearfix"><label class="event-multiple-dateto">' . $date . '</label><div class="event-multiple-dateto-inner"><select id="event_start_times" name="event_dates[start_times][]" class="geodir_textfield geodir-select geodir-w110">' . geodir_event_time_options( $start_time_selected ) .  '</select></div><label class="event-multiple-end"> ' . __( 'to', 'geodirevents' ) . ' </label><div class="event-multiple-dateto-inner"><select id="event_end_times" name="event_dates[end_times][]" class="geodir_textfield geodir-select geodir-w110">' . geodir_event_time_options( $end_time_selected ) .  '</select></div></div>';
 						}
 						$custom_dates_list[] = date_i18n( 'm/d/Y', strtotime( $date ) );
 					}
@@ -286,18 +475,18 @@ class GeoDir_Event_Fields {
 				<option value="<?php echo $i;?>" <?php selected( $repeat_x, $i ); ?>><?php echo $i;?></option>
 				<?php } ?>
 			</select>
-			<span class="geodir_message_error"><?php _e( 'Please select recurring type', 'geodirevents' );?></span>
+			<span class="geodir_message_error"><?php _e( 'Please select recurring interval', 'geodirevents' );?></span>
         </div>
 		<div id="geodir_event_repeat_days_row" class="geodir_form_row clearfix gd-fieldset-details geodir-event-field <?php echo $recurring_class; ?>">
             <label for="event_repeat_days"><?php echo __( 'Repeat on', 'geodirevents' ); ?></label>
 			<select id="event_repeat_days" name="<?php echo $htmlvar_name; ?>[repeat_days][]" class="geodir_textfield geodir-select" multiple="multiple" data-placeholder="<?php echo esc_attr_e( 'Select days', 'geodirevents' );?>">
-				<option value="1" <?php selected( true, in_array( 1, $repeat_days ) ); ?>><?php _e( 'Mon', 'geodirevents' ); ?></option>
-				<option value="2" <?php selected( true, in_array( 2, $repeat_days ) ); ?>><?php _e( 'Tue', 'geodirevents' ); ?></option>
-				<option value="3" <?php selected( true, in_array( 3, $repeat_days ) ); ?>><?php _e( 'Wed', 'geodirevents' ); ?></option>
-				<option value="4" <?php selected( true, in_array( 4, $repeat_days ) ); ?>><?php _e( 'Thu', 'geodirevents' ); ?></option>
-				<option value="5" <?php selected( true, in_array( 5, $repeat_days ) ); ?>><?php _e( 'Fri', 'geodirevents' ); ?></option>
-				<option value="6" <?php selected( true, in_array( 6, $repeat_days ) ); ?>><?php _e( 'Sat', 'geodirevents' ); ?></option>
-				<option value="0" <?php selected( true, in_array( 0, $repeat_days ) ); ?>><?php _e( 'Sun', 'geodirevents' ); ?></option>
+				<option value="1" <?php selected( true, in_array( 1, $repeat_days ) ); ?>><?php _e( 'Mon' ); ?></option>
+				<option value="2" <?php selected( true, in_array( 2, $repeat_days ) ); ?>><?php _e( 'Tue' ); ?></option>
+				<option value="3" <?php selected( true, in_array( 3, $repeat_days ) ); ?>><?php _e( 'Wed' ); ?></option>
+				<option value="4" <?php selected( true, in_array( 4, $repeat_days ) ); ?>><?php _e( 'Thu' ); ?></option>
+				<option value="5" <?php selected( true, in_array( 5, $repeat_days ) ); ?>><?php _e( 'Fri' ); ?></option>
+				<option value="6" <?php selected( true, in_array( 6, $repeat_days ) ); ?>><?php _e( 'Sat' ); ?></option>
+				<option value="0" <?php selected( true, in_array( 0, $repeat_days ) ); ?>><?php _e( 'Sun' ); ?></option>
 			</select>
         </div>
 		<div id="geodir_event_repeat_weeks_row" class="geodir_form_row clearfix gd-fieldset-details geodir-event-field <?php echo $recurring_class; ?>">
@@ -371,13 +560,43 @@ class GeoDir_Event_Fields {
             <label for="event_different_times_chk"><?php echo __( 'Different Event Times?', 'geodirevents' ); ?></label>
             <input type="hidden" name="<?php echo $htmlvar_name; ?>[different_times]" id="event_different_times" value="<?php echo (int)$different_times; ?>"/>
             <input value="1" id="event_different_times_chk" class="gd-checkbox" field_type="checkbox" type="checkbox" <?php checked( $different_times, 1 ); ?> onchange="if(this.checked){jQuery('#event_different_times').val('1');} else{ jQuery('#event_different_times').val('0');}" />
-			<span class="geodir_message_note"><?php _e( 'Tick to set seperate start and end times for each date.', 'geodirevents' ); ?></span>
+			<span class="geodir_message_note"><?php _e( 'Tick to set separate start and end times for each date.', 'geodirevents' ); ?></span>
         </div>
 		<div id="geodir_event_times_row" class="geodir_form_row clearfix gd-fieldset-details geodir-event-field <?php echo $show_times_class; ?>">
 			<label></label>
-			<div class="show_different_times_div"><?php echo $differnt_times_list; ?></div>
+			<div class="show_different_times_div"><?php echo $different_times_list; ?></div>
 		</div>
 		<?php } ?>
+        <?php
+        $html = ob_get_clean();
+
+		echo $html;
+	}
+
+	public static function input_link_business( $post_type, $package_id, $field ) {
+        if ( $post_type != 'gd_event' ) {
+			return;
+		}
+
+		$field_name 			= $field['name'];
+		$field_title 			= ! empty( $field['frontend_title'] ) ? __( $field['frontend_title'], 'geodirectory' ) : '';
+		$field_desc 			= ! empty( $field['desc'] ) ? __( $field['desc'], 'geodirectory' ) : '';
+		$required_field_class	= ! empty( $field['is_required'] ) ? ' required_field' : '';
+		$required_msg 			= ! empty( $field['required_msg'] ) ? __( $field['required_msg'], 'geodirectory' ) : '';
+
+		$value 					= absint( geodir_get_cf_value( $field ) );
+		$options				= $value > 0 ? '<option value="' . $value . '">' . get_the_title( $value ) . '</option>' : '';
+
+		ob_start();
+        ?>
+        <div id="<?php echo $field_name; ?>_row" class="geodir_form_row clearfix gd-fieldset-details geodir-event-field<?php echo $required_field_class; ?>">
+            <label><?php echo $field_title; ?><?php echo ( ! empty( $field['is_required'] ) ? ' <span>*</span>' : '' ); ?></label>
+			<select field_type="<?php echo $field['type']; ?>" name="<?php echo $field_name; ?>" id="<?php echo $field_name; ?>" class="geodir_textfield textfield_x geodir-select-search" data-select-search="business" data-nonce="<?php echo esc_attr( wp_create_nonce( 'search-business' ) ); ?>" data-placeholder="<?php esc_attr_e( 'Search business...', 'geodirectory' ); ?>" data-allow_clear="false" data-min-input-length="2" data-include="<?php echo $value; ?>"><?php echo $options; ?></select><button type="button" class="geodir-fill-business button button-primary" data-nonce="<?php echo esc_attr( wp_create_nonce( 'fill-business' ) ); ?>"><?php _e( 'Fill Business Details', 'geodievents' ); ?></button>
+            <span class="geodir_message_note"><?php echo $field_desc; ?></span>
+            <?php if ( ! empty( $field['is_required'] ) ) { ?>
+                <span class="geodir_message_error"><?php echo $required_msg; ?></span>
+            <?php } ?>
+        </div>
         <?php
         $html = ob_get_clean();
 
@@ -676,7 +895,7 @@ class GeoDir_Event_Fields {
 
 		$htmlvar_name = $cf['htmlvar_name'];
 
-		if ( empty( $html ) && ! empty( $the_post->{$htmlvar_name} ) ) {
+		if ( $htmlvar_name == 'event_dates' && empty( $html ) && ! empty( $the_post->{$htmlvar_name} ) ) {
 			if ( $location == 'mapbubble' ) {
 				$event_type = geodir_get_option( 'event_map_popup_dates', 'upcoming' );
 				$count		= geodir_get_option( 'event_map_popup_count' );
@@ -686,10 +905,10 @@ class GeoDir_Event_Fields {
 			}
 
 			$schedules 		= GeoDir_Event_Schedules::get_schedules( $the_post->ID, $event_type, $count );
-			$schedules_html = GeoDir_Event_Schedules::get_schedules_html( $schedules );
+			$schedules_html = GeoDir_Event_Schedules::get_schedules_html( $schedules, ! empty( $the_post->recurring ) );
 
 			if ( ! empty( $schedules_html ) ) {
-				$field_label = _n( 'Date:', 'Dates:', count( $schedules ), 'geodirevents' );
+				$field_label = _n( 'Date', 'Dates', count( $schedules ), 'geodirevents' );
 				$field_icon = geodir_field_icon_proccess( $cf );
 				if ( strpos( $field_icon, 'http' ) !== false ) {
 					$field_icon_af = '';
@@ -705,7 +924,9 @@ class GeoDir_Event_Fields {
 				$date_class .= count( $schedules ) > 1 ? ' geodir-schedules-meta' : ' geodir-schedule-meta';
 
 				$html = '<div class="geodir_post_meta geodir-field-' . $htmlvar_name . ' ' . trim( $date_class ) . '" style="clear:both;"><span class="geodir-i-datepicker" style="' . $field_icon . '">' . $field_icon_af;
-				$html .= $field_label . ' ';
+				if ( $field_label != '' ) {
+					$html .= $field_label . ': ';
+				}
 				$html .= '</span>' . $schedules_html . '</div>';
 			} else {
 				$html = '';
@@ -724,7 +945,7 @@ class GeoDir_Event_Fields {
 
 		$htmlvar_name = $cf['htmlvar_name'];
 
-		if ( ! empty( $the_post->{$htmlvar_name} ) ) {
+		if ( $htmlvar_name == 'event_dates' && ! empty( $the_post->{$htmlvar_name} ) ) {
 			$event_post 	= isset( $the_post->start_date ) ? $the_post : $post;
 			$schedule		= array();
 			if ( ! empty( $event_post->start_date ) ) {
@@ -735,43 +956,20 @@ class GeoDir_Event_Fields {
 				$schedule		= $schedules[0];
 			}
 
-			if ( ! empty( $schedule ) ) {
-				$date_time_format 	= geodir_event_date_time_format();
-				$date_format 		= geodir_event_date_format();
-				$time_format		= geodir_event_time_format();
+			if ( ! empty( $schedule->start_date ) ) {
+				$row = array(
+					'schedule_id' => ( ! empty( $schedule->schedule_id ) ? $schedule->schedule_id : $event_post->ID ),
+					'event_id' => ( ! empty( $schedule->event_id ) ? $schedule->event_id : $event_post->ID ),
+					'start_date' => $schedule->start_date,
+					'end_date' => ( ! empty( $schedule->end_date ) && $schedule->end_date != '0000-00-00' ? $schedule->end_date : $start_date ),
+					'start_time' => ( ! empty( $schedule->start_time ) ? $schedule->start_time : '00:00:00' ),
+					'end_time' => ( ! empty( $schedule->end_time ) ? $schedule->end_time : '00:00:00' ),
+					'all_day' => ( ! empty( $schedule->all_day ) ? true : false )
+				);
 
-				$start_date			= $schedule->start_date;
-				$end_date			= ! empty( $schedule->end_date ) && $schedule->end_date != '0000-00-00' ? $schedule->end_date : $start_date;
-				$start_time			= ! empty( $schedule->start_time ) ? $schedule->start_time : '00:00:00';
-				$end_time			= ! empty( $schedule->end_time ) ? $schedule->end_time : '00:00:00';
-				$all_day			= ! empty( $schedule->all_day ) ? true : false;
+				$value = GeoDir_Event_Schedules::get_schedules_html( array( (object)$schedule ), false );
 
-				if ( empty( $all_day ) ) {
-					$date = '';
-					if ( $start_date == $end_date && $start_time == $end_time && $end_time == '00:00:00' ) {
-						$end_date = date_i18n( 'Y-m-d', strtotime( $start_date . ' ' . $start_time . ' +1 day' ) );
-					}
-
-					if ( $start_date == $end_date ) {
-						$date = date_i18n( $date_format, strtotime( $start_date ) );
-						$date .= ', ' . date_i18n( $time_format, strtotime( $start_time ) );
-						$date .= ' - ' . date_i18n( $time_format, strtotime( $end_time ) );
-					} else {
-						$date = date_i18n( $date_time_format, strtotime( $start_date . ' '. $start_time ) );
-						$date .= ' - ';
-						$date .= date_i18n( $date_time_format, strtotime( $end_date . ' '. $end_time ) );
-					}
-					$meta_startDate = $start_date . 'T' . date_i18n( 'H:i:s', strtotime( $start_time ) );
-				} else {
-					$date = date_i18n( $date_format, strtotime( $start_date ) );
-					if ( $start_date != $end_date ) {
-						$date .= ' - ' . date_i18n( $date_format, strtotime( $end_date ) );
-					}
-					$meta_startDate = $start_date . 'T00:00:00';
-				}
-				$meta_startDate .= geodir_gmt_offset();
-
-				$field_label = __( 'Date:', 'geodirevents' );
+				$field_label = __( 'Date', 'geodirevents' );
 				$field_icon = geodir_field_icon_proccess( $cf );
 				if ( strpos( $field_icon, 'http' ) !== false ) {
 					$field_icon_af = '';
@@ -784,10 +982,51 @@ class GeoDir_Event_Fields {
 
 				$date_class = $cf['css_class'];
 				$date_class .= 'geodir-schedule-meta geodir-edate-' . $cf['css_class'];
+				$field_label = '';
 
-				$html = '<div class="geodir_post_meta geodir-field-' . $htmlvar_name . ' ' . trim( $date_class ) . '" style="clear:both;"><meta itemprop="startDate" content="' . $meta_startDate . '"><span class="geodir-i-datepicker" style="' . $field_icon . '">' . $field_icon_af;
-				//$html .= $field_label . ' ';
-				$html .= '</span>' . $date . '</div>';
+				$html = '<div class="geodir_post_meta geodir-field-' . $htmlvar_name . ' ' . trim( $date_class ) . '" style="clear:both;"><span class="geodir-i-datepicker" style="' . $field_icon . '">' . $field_icon_af;
+				if ( $field_label != '' ) {
+					$html .= $field_label . ': ';
+				}
+				$html .= '</span>' . $value . '</div>';
+			} else {
+				$html = '<div style="display:none"></div>';
+			}
+		}
+
+		return $html;
+	}
+
+	public static function output_link_business( $html, $location, $cf, $the_post = array() ) {
+		if ( empty( $the_post ) || empty( $cf ) ) {
+			return $html;
+		}
+
+		$htmlvar_name = $cf['htmlvar_name'];
+
+		if ( $htmlvar_name == 'link_business' && ! empty( $the_post->{$htmlvar_name} ) ) {
+			$post_id = (int)$the_post->{$htmlvar_name};
+			if ( get_post_status( $post_id ) == 'publish' ) {
+				$url = get_permalink( $post_id );
+				$rel = strpos( $url, get_site_url() ) !== false ? '' : ' rel="nofollow"';
+				$value = '<a href="' . $url . '" target="_blank"' . $rel . '>' . get_the_title( $post_id ) . '</a>';
+
+				$field_label = ! empty( $cf['frontend_title'] ) ? apply_filters( 'geodir_event_link_business_field_label', __( $cf['frontend_title'], 'geodirevents' ), $the_post, $cf, $location ) : '';
+				$field_icon = geodir_field_icon_proccess( $cf );
+				if ( strpos( $field_icon, 'http' ) !== false ) {
+					$field_icon_af = '';
+				} elseif ( $field_icon == '' ) {
+					$field_icon_af = '';
+				} else {
+					$field_icon_af = $field_icon;
+					$field_icon = '';
+				}
+
+				$html = '<div class="geodir_post_meta geodir-field-' . $htmlvar_name . '" style="clear:both;"><span class="geodir-i-website" style="' . $field_icon . '">' . $field_icon_af;
+				if ( $field_label != '' ) {
+					$html .= $field_label . ': ';
+				}
+				$html .= '</span>' . $value . '</div>';
 			} else {
 				$html = '<div style="display:none"></div>';
 			}
@@ -810,5 +1049,18 @@ class GeoDir_Event_Fields {
 		}
 		
 		return $value;
+	}
+
+	public static function event_predefined_tabs( $fields, $post_type ) {
+		if ( $post_type == 'gd_place' && ( $cf = geodir_get_field_infoby( 'htmlvar_name', 'link_business', 'gd_event' ) ) ) {
+			$fields[] = array(
+				'tab_type'   => 'standard',
+				'tab_name'   => __( 'Events','geodirevents' ),
+				'tab_icon'   => 'fa-calendar',
+				'tab_key'    => 'events',
+				'tab_content'=> '[gd_linked_events]'
+			);
+		}
+		return $fields;
 	}
 }

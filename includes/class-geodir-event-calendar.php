@@ -148,7 +148,7 @@ class GeoDir_Event_Calendar {
 		if ($day == 'monday') {
 			$day = '1';
 		}
-		$monthNames = Array(__("January", 'geodirevents'), __("February", 'geodirevents'), __("March", 'geodirevents'), __("April", 'geodirevents'), __("May", 'geodirevents'), __("June", 'geodirevents'), __("July", 'geodirevents'), __("August", 'geodirevents'), __("September", 'geodirevents'), __("October", 'geodirevents'), __("November", 'geodirevents'), __("December", 'geodirevents'));
+		$monthNames = Array(__("January"), __("February"), __("March"), __("April"), __("May"), __("June"), __("July"), __("August"), __("September"), __("October"), __("November"), __("December"));
 
 		if (!isset($_REQUEST["mnth"])) $_REQUEST["mnth"] = date_i18n("n");
 		if (!isset($_REQUEST["yr"])) $_REQUEST["yr"] = date_i18n("Y");
@@ -254,32 +254,32 @@ class GeoDir_Event_Calendar {
 				$day_sun = __( 'Su', 'geodirevents' );
 			break;
 			case 2:
-				$day_mon = __( 'Mon', 'geodirevents' );
-				$day_tue = __( 'Tue', 'geodirevents' );
-				$day_wed = __( 'Wed', 'geodirevents' );
-				$day_thu = __( 'Thu', 'geodirevents' );
-				$day_fri = __( 'Fri', 'geodirevents' );
-				$day_sat = __( 'Sat', 'geodirevents' );
-				$day_sun = __( 'Sun', 'geodirevents' );
+				$day_mon = __( 'Mon' );
+				$day_tue = __( 'Tue' );
+				$day_wed = __( 'Wed' );
+				$day_thu = __( 'Thu' );
+				$day_fri = __( 'Fri' );
+				$day_sat = __( 'Sat' );
+				$day_sun = __( 'Sun' );
 			break;
 			case 3:
-				$day_mon = __( 'Monday', 'geodirevents' );
-				$day_tue = __( 'Tuesday', 'geodirevents' );
-				$day_wed = __( 'Wednesday', 'geodirevents' );
-				$day_thu = __( 'Thursday', 'geodirevents' );
-				$day_fri = __( 'Friday', 'geodirevents' );
-				$day_sat = __( 'Saturday', 'geodirevents' );
-				$day_sun = __( 'Sunday', 'geodirevents' );
+				$day_mon = __( 'Monday' );
+				$day_tue = __( 'Tuesday' );
+				$day_wed = __( 'Wednesday' );
+				$day_thu = __( 'Thursday' );
+				$day_fri = __( 'Friday' );
+				$day_sat = __( 'Saturday' );
+				$day_sun = __( 'Sunday' );
 			break;
 			case 0:
 			default:
-				$day_mon = __( 'M', 'geodirevents' );
-				$day_tue = __( 'T', 'geodirevents' );
-				$day_wed = __( 'W', 'geodirevents' );
-				$day_thu = __( 'T', 'geodirevents' );
-				$day_fri = __( 'F', 'geodirevents' );
-				$day_sat = __( 'S', 'geodirevents' );
-				$day_sun = __( 'S', 'geodirevents' );
+				$day_mon = __( 'M', 'Monday initial' );
+				$day_tue = __( 'T', 'Tuesday initial' );
+				$day_wed = __( 'W', 'Wednesday initial' );
+				$day_thu = __( 'T', 'Thursday initial' );
+				$day_fri = __( 'F', 'Friday initial' );
+				$day_sat = __( 'S', 'Saturday initial' );
+				$day_sun = __( 'S', 'Sunday initial' );
 			break;
 		}
 
@@ -303,10 +303,6 @@ class GeoDir_Event_Calendar {
 		}
 
 		$search_url = geodir_search_page_base_url();
-		if ( geodir_is_wpml() && wp_doing_ajax() ) {
-			global $sitepress;
-			$search_url = $sitepress->convert_url( $search_url );
-		}
 		$search_args = array(
 			'geodir_search' => 1,
 			'etype' => 'all',
