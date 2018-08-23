@@ -218,7 +218,7 @@ if ( ! class_exists( 'GeoDir_Event_Settings_Events', false ) ) :
 					),
 					array(
 						'type' => 'number',
-						'id' => 'geodir_event_linked_count',
+						'id' => 'event_linked_count',
 						'name' => __('Posts to show', 'geodirevents'),
 						'desc' => __('The number of posts to show by default.', 'geodirevents'),
 						'default'  => '5',
@@ -227,7 +227,7 @@ if ( ! class_exists( 'GeoDir_Event_Settings_Events', false ) ) :
 					),
 					array(
 						'type' => 'select',
-						'id' => 'geodir_event_linked_event_type',
+						'id' => 'event_linked_event_type',
 						'name' => __( 'Event filter', 'geodirevents' ),
 						'desc' => __( 'Set the event filter.', 'geodirevents' ),
 						'class' => 'geodir-select',
@@ -239,7 +239,7 @@ if ( ! class_exists( 'GeoDir_Event_Settings_Events', false ) ) :
 					),
 					array(
 						'type' => 'checkbox',
-						'id'   => 'geodir_event_linked_single_event',
+						'id'   => 'event_linked_single_event',
 						'name' => __( 'Show single listing?', 'geodirevents' ),
 						'desc' => __( 'Show single listing for recurring event.', 'geodirevents' ),
 						'default' => '0',
@@ -247,7 +247,7 @@ if ( ! class_exists( 'GeoDir_Event_Settings_Events', false ) ) :
 					),
 					array(
 						'type' => 'select',
-						'id' => 'geodir_event_linked_sortby',
+						'id' => 'event_linked_sortby',
 						'name' => __( 'Sort by', 'geodirevents' ),
 						'desc' => __( 'Set the linked event listing sorting.', 'geodirevents' ),
 						'class' => 'geodir-select',
@@ -260,7 +260,7 @@ if ( ! class_exists( 'GeoDir_Event_Settings_Events', false ) ) :
 					array(
 						'type' => 'select',
 						'name' => __('Layout', 'geodirevents'),
-						'id' => 'geodir_event_linked_listing_view',
+						'id' => 'event_linked_listing_view',
 						'desc' => __('How the listings should laid out by default.', 'geodirevents'),
 						'class' => 'geodir-select',
 						'default'  => 'gridview_onehalf',

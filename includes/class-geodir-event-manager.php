@@ -159,10 +159,9 @@ final class GeoDir_Event_Manager {
 		GeoDir_Event_AYI::init();
 		GeoDir_Event_Widgets::init();
 
-        require_once( GEODIR_EVENT_PLUGIN_DIR . 'includes/general-functions.php' );
-		require_once( GEODIR_EVENT_PLUGIN_DIR . 'includes/shortcode-functions.php' );
-		require_once( GEODIR_EVENT_PLUGIN_DIR . 'includes/template-functions.php' );		
-		require_once( GEODIR_EVENT_PLUGIN_DIR . 'includes/widget-functions.php' );
+		require_once( GEODIR_EVENT_PLUGIN_DIR . 'includes/deprecated-functions.php' );
+        require_once( GEODIR_EVENT_PLUGIN_DIR . 'includes/core-functions.php' );
+		require_once( GEODIR_EVENT_PLUGIN_DIR . 'includes/template-functions.php' );
 		
 		GeoDir_Event_API::init();
 
@@ -176,10 +175,6 @@ final class GeoDir_Event_Manager {
 			require_once( GEODIR_EVENT_PLUGIN_DIR . 'upgrade.php' );	        
         }
 
-        if ( $this->is_request( 'frontend' ) ) {
-            require_once( GEODIR_EVENT_PLUGIN_DIR . 'includes/class-geodir-event-shortcodes.php' );
-        }
-
 		$this->query = new GeoDir_Event_Query();
     }
     
@@ -189,12 +184,13 @@ final class GeoDir_Event_Manager {
      */
     private function init_hooks() {
         add_action( 'init', array( $this, 'init' ), 0 );
-        add_action( 'init', array( 'GeoDir_Event_Shortcodes', 'init' ) );
 
 		if ( $this->is_request( 'frontend' ) ) {
 			add_action( 'wp_enqueue_scripts', array( $this, 'add_styles' ), 10 );
 			add_action( 'wp_enqueue_scripts', array( $this, 'add_scripts' ), 10 );
 		}
+
+		add_action( 'widgets_init', 'goedir_event_register_widgets' );
     }
     
     /**
@@ -303,8 +299,8 @@ final class GeoDir_Event_Manager {
 		// Register scripts
 		// YUI Calendar
 		wp_register_script( 'yui-calendar', GEODIR_EVENT_PLUGIN_URL . '/assets/yui/calendar.min.js', array( 'jquery' ), '2.9.0' );
-		wp_register_script( 'geodir-event', GEODIR_EVENT_PLUGIN_URL . '/assets/js/geodir-event' . $suffix . '.js', array( 'jquery', 'geodir' ), GEODIR_EVENT_VERSION );
-		wp_register_script( 'geodir-event-front', GEODIR_EVENT_PLUGIN_URL . '/assets/js/event-front' . $suffix . '.js', array( 'jquery', 'geodir', 'geodir-event' ), GEODIR_EVENT_VERSION );
+		wp_register_script( 'geodir-event', GEODIR_EVENT_PLUGIN_URL . '/assets/js/common' . $suffix . '.js', array( 'jquery', 'geodir' ), GEODIR_EVENT_VERSION );
+		wp_register_script( 'geodir-event-front', GEODIR_EVENT_PLUGIN_URL . '/assets/js/front' . $suffix . '.js', array( 'jquery', 'geodir', 'geodir-event' ), GEODIR_EVENT_VERSION );
 		
 		if ( is_page() && geodir_is_page( 'add-listing' ) ) {
 			wp_enqueue_script( 'yui-calendar' );

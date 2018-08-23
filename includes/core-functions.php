@@ -10,6 +10,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Register Widgets.
+ *
+ * @since 2.0.0
+ */
+function goedir_event_register_widgets() {
+    if ( get_option( 'geodir_event_version' )) {
+        register_widget( 'GeoDir_Event_Widget_Calendar' );
+        register_widget( 'GeoDir_Event_Widget_AYI' );
+
+		// Non Widgets
+        new GeoDir_Event_Widget_Linked_Events();
+    }
+}
+
 function geodir_event_calender_search_page_title($title){
 		
 	global $condition_date;	
@@ -1144,58 +1159,6 @@ function geodir_event_category_term_link( $term_link, $term_id, $post_type ) {
 }
 
 /**
- * Update the terms reviews count for upcoming events.
- *
- * @since 1.2.4
- */
-function geodir_event_review_count_force_update() {
-	$today_date = date_i18n( 'Y-m-d', current_time( 'timestamp' ) );
-	$last_update_date = geodir_get_option( 'geodir_review_count_force_update' );
-	
-	if ( !$last_update_date || strtotime( $last_update_date ) < strtotime( $today_date ) ) {
-		// update terms reviews count
-		geodir_count_reviews_by_terms(true);
-		
-		// update location reviews count
-		if (defined('POST_LOCATION_TABLE')) {
-			geodir_event_location_update_count_reviews();
-		}
-				
-		geodir_update_option('geodir_review_count_force_update', $today_date );
-	}
-}
-
-/**
- * Update the reviews count for upcoming events for current location.
- *
- * @since 1.2.4
- *
- * @global object $wpdb WordPress Database object.
- * @global string $plugin_prefix Geodirectory plugin table prefix.
- *
- * @return bool True if update, otherwise false.
- */
-function geodir_event_location_update_count_reviews() {
-	global $wpdb, $plugin_prefix;
-	
-	$listing_table = $plugin_prefix . 'gd_event_detail';
-	$today_date = date_i18n( 'Y-m-d', current_time( 'timestamp' ) );
-	
-	$sql = "SELECT ed.post_id FROM `" . $listing_table . "` AS ed INNER JOIN " . GEODIR_EVENT_SCHEDULES_TABLE . " AS es ON (es.event_id = ed.post_id) WHERE ed.locations !='' AND es.end_date = '" . date_i18n( 'Y-m-d', strtotime($today_date . ' -1 day')  ) . "'";
-	$rows = $wpdb->get_results($sql);
-	if (!empty($rows)) {
-		foreach ($rows as $row) {
-			$post_id = $row->post_id;
-			geodir_term_review_count_update($post_id);
-		}
-		
-		return true;
-	}
-	
-	return false;;
-}
-
-/**
  * Filter reviews sql query fro upcoming events.
  *
  * @since 1.2.4
@@ -1886,7 +1849,6 @@ if ( !is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
 	add_filter( 'geodir_category_term_link', 'geodir_event_category_term_link', 20, 3 );
 }
 
-add_action('wp_loaded', 'geodir_event_review_count_force_update');
 add_filter('geodir_count_reviews_by_term_sql', 'geodir_event_count_reviews_by_term_sql', 10, 4);
 add_filter('geodir_location_count_reviews_by_term_sql', 'geodir_event_count_reviews_by_location_term_sql', 10, 7);
 add_filter('geodir_bestof_widget_view_all_link', 'geodir_event_bestof_widget_view_all_link', 10, 3);
@@ -2184,4 +2146,128 @@ function geodir_event_filter_options() {
 		'past' => __( 'Past', 'geodirevents' )
 	);
 	return apply_filters( 'geodir_event_filter_options', $options );
+}
+
+add_shortcode( 'gd_event_calendar', 'geodir_sc_event_calendar' );
+function geodir_sc_event_calendar( $atts ) {
+	ob_start();
+	$defaults = array(
+		'title' => '',
+		'day'   => '',
+		'before_widget'		  => '',
+		'after_widget'		  => '',
+		'before_title'		  => '<h3 class="widget-title">',
+		'after_title'		  => '</h3>',
+		'add_location_filter' => 0
+	);
+
+	$params = shortcode_atts( $defaults, $atts );
+
+	GeoDir_Event_Calendar::display_calendar($params, $params);
+
+	$output = ob_get_contents();
+	ob_end_clean();
+	return $output;
+}
+
+add_shortcode( 'gd_related_events', 'geodir_sc_related_events' );
+function geodir_sc_related_events( $atts ) {
+	ob_start();
+	$defaults = array(
+		'post_number'         => 5,
+		'layout'              => 'gridview_onehalf',
+		'event_type'          => 'all',
+		'add_location_filter' => 0,
+		'listing_width'       => '',
+		'list_sort'           => 'latest',
+		'character_count'     => '20',
+	);
+
+	$params = shortcode_atts( $defaults, $atts );
+
+	/**
+	 * Begin validating params
+	 */
+
+	// Validate that post_number is a number and is 1 or higher
+	$params['post_number'] = absint( $params['post_number'] );
+	if ( 0 === $params['post_number'] ) {
+		$params['post_number'] = 1;
+	}
+
+	// Validate layout selection
+	$params['layout'] = gdsc_validate_layout_choice( $params['layout'] );
+
+	// Validate event type selection
+	$params['event_type'] = gdsc_validate_event_type( $params['event_type'] );
+
+	// Validate listing_width
+	$params['listing_width'] = gdsc_validate_listing_width( $params['listing_width'] );
+
+	// Validate sorting option
+	$params['list_sort'] = $params['list_sort'] == 'upcoming' ? $params['list_sort'] : gdsc_validate_sort_choice( $params['list_sort'] );
+
+	// Validate character_count
+	$params['character_count'] = absint( $params['character_count'] );
+	if ( 20 > $params['character_count'] ) {
+		$params['character_count'] = 20;
+	}
+
+	/**
+	 * End validating params
+	 */
+
+	global $post;
+	$post_id   = '';
+	$post_type = '';
+
+	if ( isset( $_REQUEST['pid'] ) && $_REQUEST['pid'] != '' ) {
+		$post      = geodir_get_post_info( $_REQUEST['pid'] );
+		$post_type = $post->post_type;
+		$post_id   = $_REQUEST['pid'];
+	} elseif ( isset( $post->post_type ) && $post->post_type != '' ) {
+		$post_type = $post->post_type;
+		$post_id   = $post->ID;
+	}
+
+	$all_postypes = geodir_get_posttypes();
+
+	if ( ! ( in_array( $post_type, $all_postypes ) ) ) {
+		return false;
+	}
+
+	if ( $post_type == 'gd_place' && $post_id != '' ) {
+		$query_args = array(
+
+			'gd_event_type' 	=> $params['event_type'],
+			'event_related_id'  => $post_id,
+			'posts_per_page'    => $params['post_number'],
+			'is_geodir_loop'    => true,
+			'gd_location'       => $params['add_location_filter'],
+			'post_type'         => 'gd_event',
+			'order_by'          => $params['list_sort'],
+			'excerpt_length'    => $params['character_count'],
+
+		);
+
+		geodir_get_post_feature_events( $query_args, $params['layout'] );
+		geodir_get_post_past_events( $query_args, $params['layout'] );
+
+	}
+	$output = ob_get_contents();
+	ob_end_clean();
+	return $output;
+}
+
+function gdsc_validate_event_type( $event_type ) {
+	$options = array(
+		'all',
+		'feature',
+		'past',
+		'future',
+	);
+
+	if ( ! ( in_array( $event_type, $options ) ) ) {
+		$event_type = 'feature';
+	}
 }

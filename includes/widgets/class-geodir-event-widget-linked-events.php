@@ -55,22 +55,22 @@ class GeoDir_Event_Widget_Linked_Events extends WP_Super_Duper {
 				'category' => array(),
 				'related_to' => '',
 				'category_title' => '',
-				'sort_by' => geodir_get_option( 'geodir_event_linked_sortby', 'latest' ),
+				'sort_by' => geodir_get_option( 'event_linked_sortby', 'latest' ),
 				'title_tag' => 'h3',
 				'list_order' => '',
-				'post_limit' => geodir_get_option( 'geodir_event_linked_count', '5' ),
-				'layout' => geodir_get_option( 'geodir_event_linked_listing_view', 'gridview_onehalf' ),
+				'post_limit' => geodir_get_option( 'event_linked_count', '5' ),
+				'layout' => geodir_get_option( 'event_linked_listing_view', 'gridview_onehalf' ),
 				'listing_width' => '',
 				'add_location_filter' => '0',
-				'character_count' => geodir_get_option( 'geodir_event_linked_post_excerpt', '20' ),
+				'character_count' => geodir_get_option( 'event_linked_post_excerpt', '20' ),
 				'show_featured_only' => '',
 				'show_special_only' => '',
 				'with_pics_only' => '',
 				'with_videos_only' => '',
 				'use_viewing_post_type' => '',
 				'hide_if_empty' => true,
-				'event_type' => geodir_get_option( 'geodir_event_linked_event_type', 'all' ),
-				'single_event' => geodir_get_option( 'geodir_event_linked_single_event' )
+				'event_type' => geodir_get_option( 'event_linked_event_type', 'all' ),
+				'single_event' => geodir_get_option( 'event_linked_single_event' )
 			)
         );
 
