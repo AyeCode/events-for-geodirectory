@@ -25,6 +25,14 @@ function geodir_event_location_update_count_reviews(){
     _deprecated_function( 'geodir_event_location_update_count_reviews', '2.0.0' );
 }
 
+/**
+ * Filter the GROUP BY clause of the event listings query.
+ * @deprecated
+ */
+function geodir_event_loop_filter( $query ){
+    _deprecated_function( 'geodir_event_loop_filter', '2.0.0' );
+}
+
 /*
 function geodir_event_(){
     _deprecated_function( 'geodir_event_', '2.0.0', '' );

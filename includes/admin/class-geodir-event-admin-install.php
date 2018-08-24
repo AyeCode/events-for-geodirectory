@@ -413,6 +413,7 @@ class GeoDir_Event_Admin_Install {
 		$columns['rating_count'] = "rating_count int(11) DEFAULT '0'";
 		$columns['recurring'] = "recurring TINYINT(1) DEFAULT '0'";
 		$columns['event_dates'] = "event_dates TEXT NOT NULL";
+		$columns['rsvp_count'] = "rsvp_count INT(11) DEFAULT '0'";
 
 		// Location fields
 		if ( ! $locationless ) {

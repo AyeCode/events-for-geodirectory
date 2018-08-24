@@ -151,7 +151,7 @@ if ( ! class_exists( 'GeoDir_Event_Settings_Events', false ) ) :
 					),
 					array(
 						'type' => 'select',
-						'id' => 'event_defalt_filter',
+						'id' => 'event_default_filter',
 						'name' => __( 'Default event filter', 'geodirevents' ),
 						'desc' => __( 'Set the default filter view of event on listing page.', 'geodirevents' ),
 						'class' => 'geodir-select',
@@ -308,6 +308,10 @@ if ( ! class_exists( 'GeoDir_Event_Settings_Events', false ) ) :
 				"random"        =>  __('Random', 'geodirevents'),
 				"distance_asc" 	=>  __('Distance to current post', 'geodirevents'),
 			);
+
+			if ( ! get_option( 'geodirectory_version' ) ) {
+				return $options;
+			}
 
 			$sort_options = geodir_get_sort_options( $post_type );
 			if(!empty($sort_options)){

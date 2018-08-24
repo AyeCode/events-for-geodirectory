@@ -104,7 +104,7 @@ function geodir_event_display_filter_options(){
 	$event_filters_opt = geodir_event_filter_options();
 	
 	if($filter_by == '')
-		$filter_by = geodir_get_option( 'event_defalt_filter' );
+		$filter_by = geodir_get_option( 'event_default_filter' );
 
 	//$current_link = esc_url(get_pagenum_link());
 	$current_link = esc_url(geodir_curPageURL());
@@ -381,10 +381,10 @@ function geodir_event_show_schedule_date() {
                 
                 $output .= '<p class="' . $recurring_class_cont . '">';
                 $output .= '<a class="' . $recurring_class . '" href="' . $recurring_event_link . '" title="' . esc_attr( $recurring_event_title ) . '">';
-                $output .= '<span class="geodir_schedule_start"><i class="fa fa-caret-right"></i>' . $start_date . '</span>';
+                $output .= '<span class="geodir_schedule_start"><i class="fas fa-caret-right"></i>' . $start_date . '</span>';
                 if ( !$same_day && !$same_datetime ) {
                     $output .= '<br />';
-                    $output .= '<span class="geodir_schedule_end"><i class="fa fa-caret-left"></i>' . $end_date . '</span>';
+                    $output .= '<span class="geodir_schedule_end"><i class="fas fa-caret-left"></i>' . $end_date . '</span>';
                 }
                 $output .= '</a>';
                 $output .= '</p>';
@@ -464,11 +464,11 @@ function geodir_event_show_schedule_date() {
                     $start_date .= ' - ' . date_i18n( $geodir_time_format, $end_datetime );
                 }
                 
-                $output .= '<span class="geodir_schedule_start"><i class="fa fa-caret-right"></i>' . $start_date. '</span>';
+                $output .= '<span class="geodir_schedule_start"><i class="fas fa-caret-right"></i>' . $start_date. '</span>';
                 
                 if ( !$same_day && !$one_day ) {
                     $output .= '<br />';
-                    $output .= '<span class="geodir_schedule_end"><i class="fa fa-caret-left"></i>' . $end_date. '</span>';
+                    $output .= '<span class="geodir_schedule_end"><i class="fas fa-caret-left"></i>' . $end_date. '</span>';
                 }
                 $output .= '</p>';
                 $output .= '</div>';
@@ -511,10 +511,10 @@ function geodir_event_show_schedule_date() {
                     }
                 
                     $output .= '<p>';
-                    $output .= '<span class="geodir_schedule_start"><i class="fa fa-caret-right"></i>' . $start_date. '</span>';
+                    $output .= '<span class="geodir_schedule_start"><i class="fas fa-caret-right"></i>' . $start_date. '</span>';
                     if ( !$same_day && $sdate != $edate ) {
                         $output .= '<br />';
-                        $output .= '<span class="geodir_schedule_end"><i class="fa fa-caret-left"></i>' . date_i18n( $geodir_date_time_format, $edate ). '</span>';
+                        $output .= '<span class="geodir_schedule_end"><i class="fas fa-caret-left"></i>' . date_i18n( $geodir_date_time_format, $edate ). '</span>';
                     }
                     $output .= '</p>';
                 }
@@ -534,9 +534,9 @@ function geodir_event_show_schedule_date() {
         echo '<div class="geodir-company_info ' . $geodir_event_dates_display . '">';
         
         if ( $geodir_num_dates == 1 ) {
-            echo '<span class="geodir-event-dates"><i class="fa fa-calendar"></i>' . $geodir_date_count . ' : ';
+            echo '<span class="geodir-event-dates"><i class="fas fa-calendar-alt"></i>' . $geodir_date_count . ' : ';
         } else {
-            echo '<span class="geodir-event-dates"><i class="fa fa-calendar"></i>' . $geodir_date_count . ' : ';
+            echo '<span class="geodir-event-dates"><i class="fas fa-calendar-alt"></i>' . $geodir_date_count . ' : ';
         }
         echo $output;
         echo '</span></div>';
@@ -553,74 +553,9 @@ echo geodir_get_current_posttype();
 	                    'site_title'=>'Search By Date ',
 	                    'htmlvar_name'=>'event',
 	                    'data_type'=>'DATE',
-	                    'field_icon' => 'fa fa-calendar'
+	                    'field_icon' => 'fas fa-calendar-alt'
 	   );
 	 return $fields;
-}
-
-
-function geodir_event_add_event_features() {
-	global $post, $gd_session;
-	
-	$event_reg_desc = '';
-	$event_reg_fees = '';
-	
-	$package_info = array();
-	$package_info = geodir_post_package_info($package_info , $post);
-	
-	if (!isset($package_info->post_type) || $package_info->post_type != 'gd_event')
-		return false;
-	
-	if (isset($_REQUEST['backandedit']) &&  $_REQUEST['backandedit'] && $ses_listing = $gd_session->get('listing')) { 
-		$post = $ses_listing;
-		$event_reg_desc = isset($post['event_reg_desc']) ? $post['event_reg_desc'] : '';
-		$event_reg_fees = isset($post['event_reg_fees']) ? $post['event_reg_fees'] : '';
-	} else if( isset($_REQUEST['pid']) && $_REQUEST['pid']!='' && $post_info = geodir_get_post_info($_REQUEST['pid'])) { 
-		$event_reg_desc = isset($post_info->event_reg_desc) ? $post_info->event_reg_desc : '';
-		$event_reg_fees = isset($post_info->event_reg_fees) ? $post_info->event_reg_fees : '';
-	}
-	 
-	if($event_reg_desc == '' && isset($post->ID))
-		$event_reg_desc = geodir_get_post_meta( $post->ID, 'event_reg_desc');
-		
-	if($event_reg_fees == '' && isset($post->ID))
-		$event_reg_fees = geodir_get_post_meta($post->ID, 'event_reg_fees');
-			
-	if (isset($package_info->reg_desc_pkg) && $package_info->reg_desc_pkg  == '1') { ?>
-		<div id="geodir_event_reg_desc_row" class="geodir_form_row clearfix">
-			<label><?php _e('How to Register', 'geodirevents');?></label>
-			<?php
-			$show_editor = geodir_get_option('geodir_tiny_editor_event_reg_on_add_listing');
-			if (!empty($show_editor) && $show_editor=='yes') {
-				$editor_settings = array('media_buttons'=>false, 'textarea_rows'=>10);
-			?>
-				<div class="editor" field_id="event_reg_desc" field_type="editor">
-				<?php wp_editor( stripslashes($event_reg_desc), "event_reg_desc", $editor_settings ); ?>
-				</div>
-			<?php } else { ?>
-				<textarea field_type="textarea" name="event_reg_desc" id="event_reg_desc" class="geodir_textarea" ><?php echo esc_attr(stripslashes($event_reg_desc)); ?></textarea>
-			<?php } ?>
-			<span class="geodir_message_note"><?php _e('Basic HTML tags are allowed', 'geodirevents');?></span>
-			<span class="geodir_message_error"></span>
-		</div>
-		<?php
-	}
-	
-	if (isset($package_info->reg_fees_pkg) && $package_info->reg_fees_pkg  == '1') {
-		$currency = geodir_get_option('geodir_currency');
-		$currency = $currency ? $currency : 'USD';
-		
-		$sym = geodir_get_option('geodir_currencysym');
-		$sym = $sym ? $sym : '$';
-		?>
-		<div id="geodir_event_reg_fees_row" class="geodir_form_row clearfix">
-			<label><?php _e('Registration Fees', 'geodirevents');?></label>
-			<input type="text" field_type="text" name="event_reg_fees" id="event_reg_fees" class="geodir_textfield" value="<?php echo esc_attr(stripslashes($event_reg_fees)); ?>"  />
-			<span class="geodir_message_note"><?php echo wp_sprintf(__('Enter Registration Fees, in %s eg. : %s50', 'geodirevents'), $currency, $sym);?></span>
-			<span class="geodir_message_error"></span>
-		</div>
-		<?php
-	}
 }
 
 function geodir_event_before_description() {
@@ -1112,7 +1047,7 @@ function geodir_event_display_event_type_filter( $post_type ) {
 		return;
 	}
 
-	$event_type 	= ! empty( $_REQUEST['etype'] ) ? sanitize_text_field( $_REQUEST['etype'] ) : geodir_get_option( 'event_defalt_filter' );
+	$event_type 	= ! empty( $_REQUEST['etype'] ) ? sanitize_text_field( $_REQUEST['etype'] ) : geodir_get_option( 'event_default_filter' );
 	$current_url 	= str_replace( '#038;', '&', geodir_curPageURL() );
 	$current_url	= remove_query_arg( array( 'etype' ), $current_url );
 

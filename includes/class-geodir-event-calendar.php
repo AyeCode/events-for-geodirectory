@@ -27,7 +27,7 @@ class GeoDir_Event_Calendar {
 	}
 
 	public static function display_calendar( $args = '', $instance = '' ) {
-		global $post, $gd_session;
+		global $post;
 
 		$id_base 				= !empty($args['widget_id']) ? $args['widget_id'] : 'geodir_event_listing_calendar';
 		$title 					= apply_filters('widget_title', empty($instance['title']) ? '' : $instance['title'], $instance, $id_base);
@@ -42,6 +42,7 @@ class GeoDir_Event_Calendar {
 		$location_title = '';
 		$backup = array();
 		$location_params = '';
+		/* // @todo move to LMv2
 		if ($add_location_filter) {
 			if (isset($_REQUEST['snear'])) {
 				$location_params .= '&snear=' . sanitize_text_field(stripslashes($_REQUEST['snear']));
@@ -53,6 +54,7 @@ class GeoDir_Event_Calendar {
 			if (geodir_is_page('detail') && !empty($post) && !empty($post->location_id)) {
 				$location_id = $post->location_id;
 			}
+			
 			$location_id = apply_filters('geodir_event_calendar_widget_location_id', $location_id, $instance, $id_base);
 			if ($location_id && function_exists('geodir_get_location_by_id') && $location = geodir_get_location_by_id('', $location_id)) {
 				$backup['all_near_me'] = $gd_session->get('all_near_me');
@@ -71,6 +73,7 @@ class GeoDir_Event_Calendar {
 				$location_title = geodir_current_loc_shortcode();
 			}
 		}
+		*/
 		if ($title && strpos($title, '%%location_name%%') !== false) {
 			$title = str_replace('%%location_name%%', $location_title, $title);
 		}
@@ -81,12 +84,12 @@ class GeoDir_Event_Calendar {
 			<?php } */ ?>
 			<table style="width:100%" class="gd_cal_nav">
 				<tr align="center" class="title">
-					<td style="width:10%" class="title"><span class="geodir_cal_prev" title="<?php esc_attr_e('prev', 'geodirevents');?>"><i class="fa fa-chevron-left"></i></span></td>
+					<td style="width:10%" class="title"><span class="geodir_cal_prev" title="<?php esc_attr_e('prev', 'geodirevents');?>"><i class="fas fa-chevron-left"></i></span></td>
 					<td style="vertical-align:top;text-align:center" class="title"></td>
-					<td style="width:10%" class="title"><span class="geodir_cal_next" title="<?php esc_attr_e('next', 'geodirevents');?>"><i class="fa fa-chevron-right"></i></span></td>
+					<td style="width:10%" class="title"><span class="geodir_cal_next" title="<?php esc_attr_e('next', 'geodirevents');?>"><i class="fas fa-chevron-right"></i></span></td>
 				</tr>
 			</table>
-			<div class="geodir_event_calendar geodir-calendar-loading"><div class="gd-div-loader"><i class="fa fa-refresh fa-spin"></i></div></div>
+			<div class="geodir_event_calendar geodir-calendar-loading"><div class="gd-div-loader"><i class="fas fa-sync fa-spin"></i></div></div>
 		</div>
 	<script type="text/javascript">
 	if (typeof <?php echo $function_name; ?> !== 'function') {
@@ -131,6 +134,7 @@ class GeoDir_Event_Calendar {
 	});
 	</script>
 		<?php
+		/* // @todo move to LMv2
 		if (!empty($backup)) {
 			foreach ($backup as $key => $value) {
 				if ($value !== false) {
@@ -139,11 +143,10 @@ class GeoDir_Event_Calendar {
 					$gd_session->un_set($key);
 				}
 			}
-		}
+		}*/
 	}
 
 	public static function ajax_calendar() {
-		global $gd_session;
 		$day = $_REQUEST["sday"];
 		if ($day == 'monday') {
 			$day = '1';
@@ -155,7 +158,7 @@ class GeoDir_Event_Calendar {
 
 		$month = (int)$_REQUEST["mnth"];
 		$year = (int)$_REQUEST["yr"];
-		$add_location_filter = !empty($_REQUEST['_loc']) && defined('POST_LOCATION_TABLE') ? true : false;
+		$add_location_filter = !empty($_REQUEST['_loc']) && defined('POST_LOCATION_TABLE') ? true : false; // @todo LMv2
 		$location_id = $add_location_filter && !empty($_REQUEST['_l']) ? (int)$_REQUEST['_l'] : 0;
 		
 		$location_params = '&snear=' . (isset($_REQUEST['snear']) ? sanitize_text_field(stripslashes($_REQUEST['snear'])) : '');
@@ -165,6 +168,7 @@ class GeoDir_Event_Calendar {
 				$location_params .= '&sgeo_lon=' . sanitize_text_field($_REQUEST['my_lon']);
 			}
 			
+			/* // @todo move to LMv2
 			if (defined('POST_LOCATION_TABLE')) {
 				$gd_ses_country = $gd_session->get('gd_country');
 				$gd_ses_region = $gd_session->get('gd_region');
@@ -191,8 +195,10 @@ class GeoDir_Event_Calendar {
 					}
 				}
 			}
+			*/
 		}
 		
+		/* // @todo move to LMv2
 		$backup = array();
 		if ($location_id && function_exists('geodir_get_location_by_id') && $location = geodir_get_location_by_id('', $location_id)) {
 			$backup['all_near_me'] = $gd_session->get('all_near_me');
@@ -207,6 +213,7 @@ class GeoDir_Event_Calendar {
 			$gd_session->set('gd_region', $location->region_slug);
 			$gd_session->set('gd_city', $location->city_slug);
 		}
+		*/
 
 		$query_args = array(
 			'gd_event_calendar' => strtotime( $year . '-' . $month ),
@@ -284,7 +291,7 @@ class GeoDir_Event_Calendar {
 		}
 
 		wp_reset_query();
-	?><div class="gd-div-loader"><i class="fa fa-refresh fa-spin"></i></div><span id="cal_title"><strong><?php echo $monthNames[$month-1].' '.$year; ?></strong></span><table width="100%" border="0" cellpadding="2" cellspacing="2" class="calendar_widget"><tr><?php if ( $day != '1' ) { ?><td align="center" class="days"><strong><?php echo apply_filters( 'geodir_event_cal_single_day_sunday', $day_sun );?></strong></td><?php } ?><td class="days"><strong><?php echo apply_filters( 'geodir_event_cal_single_day_monday', $day_mon );?></strong></td><td class="days"><strong><?php echo apply_filters( 'geodir_event_cal_single_day_tuesday', $day_tue );?></strong></td><td class="days"><strong><?php echo apply_filters( 'geodir_event_cal_single_day_wednesday', $day_wed );?></strong></td><td class="days"><strong><?php echo apply_filters( 'geodir_event_cal_single_day_thursday', $day_thu );?></strong></td><td class="days"><strong><?php echo apply_filters( 'geodir_event_cal_single_day_friday', $day_fri );?></strong></td><td class="days"><strong><?php echo apply_filters( 'geodir_event_cal_single_day_saturday', $day_sat );?></strong></td><?php if ( $day == '1' ) { ?><td class="days"><strong><?php echo apply_filters('geodir_event_cal_single_day_sunday', $day_sun );?></strong></td><?php } ?></tr>
+	?><div class="gd-div-loader"><i class="fas fa-sync fa-spin"></i></div><span id="cal_title"><strong><?php echo $monthNames[$month-1].' '.$year; ?></strong></span><table width="100%" border="0" cellpadding="2" cellspacing="2" class="calendar_widget"><tr><?php if ( $day != '1' ) { ?><td align="center" class="days"><strong><?php echo apply_filters( 'geodir_event_cal_single_day_sunday', $day_sun );?></strong></td><?php } ?><td class="days"><strong><?php echo apply_filters( 'geodir_event_cal_single_day_monday', $day_mon );?></strong></td><td class="days"><strong><?php echo apply_filters( 'geodir_event_cal_single_day_tuesday', $day_tue );?></strong></td><td class="days"><strong><?php echo apply_filters( 'geodir_event_cal_single_day_wednesday', $day_wed );?></strong></td><td class="days"><strong><?php echo apply_filters( 'geodir_event_cal_single_day_thursday', $day_thu );?></strong></td><td class="days"><strong><?php echo apply_filters( 'geodir_event_cal_single_day_friday', $day_fri );?></strong></td><td class="days"><strong><?php echo apply_filters( 'geodir_event_cal_single_day_saturday', $day_sat );?></strong></td><?php if ( $day == '1' ) { ?><td class="days"><strong><?php echo apply_filters('geodir_event_cal_single_day_sunday', $day_sun );?></strong></td><?php } ?></tr>
 		<?php
 		$timestamp = mktime( 0, 0, 0, $month, 1, $year );
 		$maxday = date_i18n( "t", $timestamp );
@@ -340,6 +347,7 @@ class GeoDir_Event_Calendar {
 		}
 		?>
 	</table><?php
+		/* // @todo move to LMv2
 		if (!empty($backup)) {
 			foreach ($backup as $key => $value) {
 				if ($value !== false) {
@@ -349,6 +357,7 @@ class GeoDir_Event_Calendar {
 				}
 			}
 		}
+		*/
 	}
 
 	public static function parse_calendar_schedules( $event_dates, $all_event_dates = array() ) {
