@@ -946,15 +946,6 @@ function geodir_event_function_widget_events_limit( $limit ) {
 	return $limit;
 }
 
-function geodir_event_filter_title_meta_vars($settings) {
-    foreach($settings as $index => $setting) {
-        if (!empty($setting['id']) && $setting['id'] == 'geodir_meta_vars' && !empty($setting['type']) && $setting['type']== 'sectionstart') {
-            $settings[$index]['desc'] = $setting['desc'] . ', %%event_type_archive%%, %%event_start_date%%, %%event_end_date%%, %%event_start_time%%, %%event_end_time%%, %%event_start_to_end_date%%, %%event_start_to_end_time%%';
-        }
-    }
-    return $settings;
-}
-
 function geodir_event_search_calendar_day_filter_title($filters = array()) {
     global $geodir_date_format;
     
@@ -1066,3 +1057,28 @@ function geodir_event_display_event_type_filter( $post_type ) {
 	echo $content;
 }
 add_action( 'geodir_extra_loop_actions', 'geodir_event_display_event_type_filter', 10, 1 );
+
+function geodir_event_seo_variables( $vars, $gd_page = '' ) {
+	if ( $gd_page == 'search' || $gd_page == 'pt' || $gd_page == 'archive' ) {
+		$vars['%%event_type_archive%%'] = __( 'Event type. Eg: Past, Today, Upcoming', 'geodirevents' );
+	}
+
+	// Single event
+	if ( $gd_page == 'single' ) {
+		$current_time = current_time( 'timestamp' );
+		$display_date_format = geodir_event_date_format();
+		$display_time_format = geodir_event_time_format();
+		$start_date = date_i18n( $display_date_format, $current_time );
+		$end_date = date_i18n( $display_date_format, $current_time + DAY_IN_SECONDS );
+		$start_time = date_i18n( $display_time_format, $current_time );
+		$end_time = date_i18n( $display_time_format, $current_time + ( HOUR_IN_SECONDS * 8 ) );
+
+		$vars['%%event_start_date%%'] = wp_sprintf( __( 'Evevt start date. Eg: %s', 'geodirevents' ), $start_date );
+		$vars['%%event_end_date%%'] = wp_sprintf( __( 'Evevt past date. Eg: %s', 'geodirevents' ), $end_date );
+		$vars['%%event_start_time%%'] = wp_sprintf( __( 'Evevt start time. Eg: %s', 'geodirevents' ), $start_time );
+		$vars['%%event_end_time%%'] = wp_sprintf( __( 'Evevt end time. Eg: %s', 'geodirevents' ), $end_time );
+		$vars['%%event_start_to_end_date%%'] = wp_sprintf( __( 'Evevt start date - end date. Eg: %s', 'geodirevents' ), $start_date . ' - ' . $end_date );
+		$vars['%%event_start_to_end_time%%'] = wp_sprintf( __( 'Evevt start time - end time. Eg: %s', 'geodirevents' ), $start_time . ' - ' . $end_time );
+	}
+    return $vars;
+}

@@ -31,6 +31,7 @@ class GeoDir_Event_Admin {
 		add_filter( 'geodir_get_settings_pages', array( $this, 'load_settings_page' ), 10.2, 1 );
 		add_filter( 'geodir_cat_schemas', 'geodir_event_filter_schemas', 10, 1 );
 		add_filter( 'geodir_add_custom_sort_options', 'geodir_event_custom_sort_options', 10, 2 );
+		add_filter( 'geodir_uninstall_options', 'geodir_event_uninstall_settings', 10, 1 );
 
 		// Dummy data
 		add_filter( 'geodir_dummy_data_types' , array( 'GeoDir_Event_Admin_Dummy_Data', 'dummy_data_types' ), 10, 2 );
@@ -68,7 +69,9 @@ class GeoDir_Event_Admin {
 	}
 
 	public static function load_settings_page( $settings_pages ) {
-		if ( ! ( isset( $_REQUEST['page'] ) && $_REQUEST['page'] == 'gd-cpt-settings' ) ) {
+		$post_type = ! empty( $_REQUEST['post_type'] ) ? sanitize_text_field( $_REQUEST['post_type'] ) : 'gd_place';
+
+		if ( ! ( ! empty( $_REQUEST['page'] ) && $_REQUEST['page'] == $post_type . '-settings' ) ) {
 			$settings_pages[] = include( GEODIR_EVENT_PLUGIN_DIR . 'includes/admin/settings/class-geodir-event-settings-events.php' );
 		}
 

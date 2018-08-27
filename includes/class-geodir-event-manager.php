@@ -190,6 +190,8 @@ final class GeoDir_Event_Manager {
 			add_action( 'wp_enqueue_scripts', array( $this, 'add_scripts' ), 10 );
 		}
 
+		add_filter( 'geodir_seo_variables', 'geodir_event_seo_variables', 10, 2 );
+		add_filter( 'geodir_filter_title_variables_vars', 'geodir_event_filter_title_variables_vars', 10, 4 );
 		add_action( 'widgets_init', 'goedir_event_register_widgets' );
     }
     
