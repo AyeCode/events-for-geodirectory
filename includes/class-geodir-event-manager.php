@@ -188,11 +188,20 @@ final class GeoDir_Event_Manager {
 		if ( $this->is_request( 'frontend' ) ) {
 			add_action( 'wp_enqueue_scripts', array( $this, 'add_styles' ), 10 );
 			add_action( 'wp_enqueue_scripts', array( $this, 'add_scripts' ), 10 );
+			add_filter( 'geodir_category_term_link', 'geodir_event_category_term_link', 20, 3 );
 		}
 
+		add_action( 'geodir_extra_loop_actions', 'geodir_event_display_event_type_filter', 10, 1 );
 		add_filter( 'geodir_seo_variables', 'geodir_event_seo_variables', 10, 2 );
-		add_filter( 'geodir_filter_title_variables_vars', 'geodir_event_filter_title_variables_vars', 10, 4 );
+		add_filter( 'geodir_replace_seo_vars', 'geodir_event_replace_seo_vars', 10, 2 );
+		add_filter( 'geodir_filter_title_variables_vars', 'geodir_event_filter_title_seo_vars', 10, 4 );
+		add_filter( 'geodir_advance_search_filter_titles', 'geodir_event_search_show_current_filters', 10, 1 );
 		add_action( 'widgets_init', 'goedir_event_register_widgets' );
+		add_filter( 'geodir_details_schema', 'geodir_event_schema', 10, 2 );
+		add_filter( 'geodir_bestof_widget_view_all_link', 'geodir_event_bestof_widget_view_all_link', 10, 3 );
+		add_filter( 'geodir_location_count_reviews_by_term_sql', 'geodir_event_count_reviews_by_location_term_sql', 10, 7 );
+		add_filter( 'the_title', 'geodir_event_title_recurring_event', 100, 2 );
+		add_filter( 'the_permalink', 'geodir_event_recurring_event_link', 100 );
     }
     
     /**
