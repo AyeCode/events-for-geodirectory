@@ -172,7 +172,7 @@ class GeoDir_Event_Query {
 	}
 
 	public static function posts_where( $where, $query = array() ) {
-		global $geodir_post_type, $gd_session;
+		global $geodir_post_type;
 		
 		if ( $geodir_post_type != 'gd_event' ) {
 			return $where;
@@ -181,7 +181,7 @@ class GeoDir_Event_Query {
 		$table 				= GEODIR_EVENT_DETAIL_TABLE;
 		$schedules_table	= GEODIR_EVENT_SCHEDULES_TABLE;
 
-		$event_type = ! empty( $_REQUEST['etype'] ) ? sanitize_text_field( $_REQUEST['etype'] ) : geodir_get_option( 'event_defalt_filter' );
+		$event_type = ! empty( $_REQUEST['etype'] ) ? sanitize_text_field( $_REQUEST['etype'] ) : geodir_get_option( 'event_default_filter' );
 		if ( ( $gd_event_type = get_query_var( 'gd_event_type' ) ) ) {
 			$event_type = $gd_event_type;
 		}
@@ -199,6 +199,7 @@ class GeoDir_Event_Query {
 			}
 		}
 
+		/* // @todo move to LMv2
 		if ( $gd_session->get('all_near_me' ) ) {
 			$radius = geodir_getDistanceRadius( geodir_get_option( 'search_distance_long' ) );
 			$latitude = $gd_session->get('user_lat');
@@ -226,6 +227,7 @@ class GeoDir_Event_Query {
 				$where .= " AND ( " . $table . ".latitude BETWEEN " . $min_latitude . " AND " . $max_latitude . " ) AND ( " . $table . ".longitude BETWEEN " . $min_longitude . " AND " . $max_longitude . " )";
 			}
 		}
+		*/
 		
 		$venue = get_query_var( 'venue' );
 		if ( empty( $venue ) && ! empty( $_REQUEST['venue'] ) ) {
@@ -291,7 +293,7 @@ class GeoDir_Event_Query {
 	}
 
 	public static function calendar_posts_fields( $fields, $query = array() ) {
-		global $wpdb, $gd_session;
+		global $wpdb;
 
 		$table 				= GEODIR_EVENT_DETAIL_TABLE;
 		$schedules_table	= GEODIR_EVENT_SCHEDULES_TABLE;
@@ -304,6 +306,7 @@ class GeoDir_Event_Query {
 		$condition 	= "( ( ( '" . $month_start . "' BETWEEN start_date AND end_date ) OR ( start_date BETWEEN '" . $month_start . "' AND end_date ) ) AND ( ( '" . $month_end . "' BETWEEN start_date AND end_date ) OR ( end_date BETWEEN start_date AND '" . $month_end . "' ) ) ) AND " . $schedules_table . ".event_id = " . $wpdb->posts . ".ID";
 		
 		$fields = "( SELECT GROUP_CONCAT( DISTINCT CONCAT( DATE_FORMAT( " . $schedules_table . ".start_date, '%d%m%y' ), '', DATE_FORMAT( " . $schedules_table . ".end_date, '%d%m%y' ) ) ) FROM " . $schedules_table . " WHERE " . $condition . " ) AS schedules";
+		/* // @todo move to LMv2
 		if ( $gd_session->get( 'all_near_me' ) ) {
 			$radius = geodir_getDistanceRadius( geodir_get_option( 'search_distance_long' ) );
 			$latitude = $gd_session->get('user_lat');
@@ -311,6 +314,7 @@ class GeoDir_Event_Query {
 			
 			$fields .= ", ( " . $radius . " * 2 * ASIN( SQRT( POWER( SIN( ( ABS( " . $latitude . " ) - ABS( " . $table . ".latitude ) ) * PI() / 180 / 2 ), 2 ) + COS( ABS( " . $latitude . " ) * PI() / 180 ) * COS( ABS( " . $table . ".latitude ) * PI() / 180 ) * POWER( SIN( ( " . $longitude . " - " . $table . ".longitude ) * PI() / 180 / 2 ), 2 ) ) ) ) AS distance";
 		}
+		*/
 
 		return $fields;
 	}
@@ -385,7 +389,7 @@ class GeoDir_Event_Query {
 			return $where;
 		}
 
-		$event_type = ! empty( $wp_query->query_vars['gd_event_type'] ) ? $wp_query->query_vars['gd_event_type'] : geodir_get_option( 'event_defalt_filter' );
+		$event_type = ! empty( $wp_query->query_vars['gd_event_type'] ) ? $wp_query->query_vars['gd_event_type'] : geodir_get_option( 'event_default_filter' );
 
 		if ( ( $condition = GeoDir_Event_Schedules::event_type_condition( $event_type ) ) ) {
 			$where .= " AND " . $condition;

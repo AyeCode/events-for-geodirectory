@@ -35,6 +35,7 @@ class GeoDir_Event_Fields {
 		add_filter( 'geodir_cfa_is_active_event', array( __CLASS__, 'cfa_is_active' ), 10, 4 );
 		add_filter( 'geodir_cfa_for_admin_use_event', array( __CLASS__, 'cfa_for_admin_use' ), 10, 4 );
 		add_filter( 'geodir_cfa_is_required_event', array( __CLASS__, 'cfa_is_required' ), 10, 4 );
+		add_filter( 'geodir_cfa_can_delete_field', array( __CLASS__, 'cfa_can_delete_field' ), 10, 2 );
 
 		// Add event form
 		add_filter( 'geodir_before_custom_form_field_recurring', array( __CLASS__, 'input_recurring' ), 10, 3 );
@@ -81,7 +82,7 @@ class GeoDir_Event_Fields {
 				'show_on_pkg' => $package,
 				'required_msg' => __( 'Choose a type for an event!', 'geodirevents' ),
 				'clabels' => __( 'Recurring Event?', 'geodirevents' ),
-				'field_icon' => 'fa fa-repeat',
+				'field_icon' => 'fas fa-redo',
 				'extra' => array(),
 				'single_use' => true
 			);
@@ -103,7 +104,7 @@ class GeoDir_Event_Fields {
 				'show_on_pkg' => $package,
 				'required_msg' => __( 'Choose dates for an event!', 'geodirevents' ),
 				'clabels' => __( 'Event Dates', 'geodirevents' ),
-				'field_icon' => 'fa fa-calendar ',
+				'field_icon' => 'fas fa-calendar-alt',
 				'extra' => array(),
 				'single_use' => true
 			);
@@ -121,7 +122,7 @@ class GeoDir_Event_Fields {
 		$custom_fields['link_business'] = array(
 			'field_type'  => 'event',
 			'class'       => 'gd-link-business',
-			'icon'        => 'fa fa-link',
+			'icon'        => 'fas fa-link',
 			'name'        => __( 'Link Business', 'geodirevents' ),
 			'description' => __( 'Add a select input to link the business to the event.', 'geodirevents' ),
 			'single_use'  => 'link_business',
@@ -140,7 +141,7 @@ class GeoDir_Event_Fields {
 				'validation_pattern' => '',
 				'validation_msg'     => '',
 				'required_msg'       => '',
-				'field_icon'         => 'fa fa-link',
+				'field_icon'         => 'fas fa-link',
 				'css_class'          => '',
 				'cat_sort'           => false,
 				'cat_filter'         => false,
@@ -152,7 +153,7 @@ class GeoDir_Event_Fields {
 		$custom_fields['event_reg_fees'] = array(
 			'field_type'  => 'text',
 			'class'       => 'gd-event-reg-fees',
-			'icon'        => 'fa fa-usd',
+			'icon'        => 'fas fa-dollar-sign',
 			'name'        => __( 'Event Registration Fees', 'geodirevents' ),
 			'description' => __( 'Adds a input for a event registration fees.', 'geodirevents' ),
 			'single_use'  => 'event_reg_fees',
@@ -171,7 +172,7 @@ class GeoDir_Event_Fields {
 				'validation_pattern' => '\d+(\.\d{2})?',
 				'validation_msg'     => 'Please enter number and decimal only ie: 100.50',
 				'required_msg'       => '',
-				'field_icon'         => 'fa fa-usd',
+				'field_icon'         => 'fas fa-dollar-sign',
 				'css_class'          => '',
 				'cat_sort'           => true,
 				'cat_filter'         => true,
@@ -190,7 +191,7 @@ class GeoDir_Event_Fields {
 		$custom_fields['event_reg_desc'] = array(
 			'field_type'  => 'html',
 			'class'       => 'gd-event-reg-desc',
-			'icon'        => 'fa fa-ticket',
+			'icon'        => 'fas fa-ticket-alt',
 			'name'        => __( 'Event Registration Info', 'geodirevents' ),
 			'description' => __( 'Adds a input for a event registration description.', 'geodirevents' ),
 			'single_use'  => 'event_reg_desc',
@@ -209,7 +210,7 @@ class GeoDir_Event_Fields {
 				'validation_pattern' => '',
 				'validation_msg'     => '',
 				'required_msg'       => '',
-				'field_icon'         => 'fa fa-ticket',
+				'field_icon'         => 'fas fa-ticket-alt',
 				'css_class'          => '',
 				'cat_sort'           => false,
 				'cat_filter'         => false,
@@ -222,31 +223,7 @@ class GeoDir_Event_Fields {
 
 	public static function cfa_is_active( $content, $_id, $cf, $field ) {
 		if ( $field->htmlvar_name == 'recurring' || $field->htmlvar_name == 'event_dates' ) {
-			$content = '<li style="display:none!important"><div class="gd-cf-input-wrap"><input id="is_active" name="is_active" value="1" type="hidden"></div></li>';
-		} else {
-			$radio_id = ! empty( $field->htmlvar_name ) ? $field->htmlvar_name : rand( 5, 500 );
-			$value = '';
-			if ( isset( $field->is_active ) ) {
-				$value = esc_attr( $field->is_active );
-			} elseif ( isset( $cf['defaults']['is_active'] ) && $cf['defaults']['is_active'] ) {
-				$value = $cf['defaults']['is_active'];
-			}
-			ob_start();
-			?>
-			<li>
-				<label for="is_active" class="gd-cf-tooltip-wrap">
-					<span class="gd-help-tip gd-help-tip-float-none gd-help-tip-no-margin dashicons dashicons-editor-help" title="<?php esc_attr_e( 'If no is selected then the field will not be displayed anywhere.', 'geodirectory' ); ?>"></span> 
-					<?php _e( 'Is active :', 'geodirectory' ); ?>
-				</label>
-				<div class="gd-cf-input-wrap gd-switch">
-					<input type="radio" id="is_active_yes<?php echo $radio_id; ?>" name="is_active" class="gdri-enabled" value="1" <?php checked( (int)$value, 1 ); ?>/>
-					<label for="is_active_yes<?php echo $radio_id; ?>" class="gdcb-enable"><span><?php _e( 'Yes', 'geodirectory' ); ?></span></label>
-					<input type="radio" id="is_active_no<?php echo $radio_id; ?>" name="is_active" class="gdri-disabled" value="0" <?php checked( (int)$value, 0 ); ?>/>
-					<label for="is_active_no<?php echo $radio_id; ?>" class="gdcb-disable"><span><?php _e( 'No', 'geodirectory' ); ?></span></label>
-				</div>
-			</li>
-			<?php
-			$content = ob_get_clean();
+			$content = '<input id="is_active" name="is_active" value="1" type="hidden">';
 		}
 
 		return $content;
@@ -254,31 +231,7 @@ class GeoDir_Event_Fields {
 
 	public static function cfa_for_admin_use( $content, $_id, $cf, $field ) {
 		if ( $field->htmlvar_name == 'recurring' || $field->htmlvar_name == 'event_dates' ) {
-			$content = '<li style="display:none!important"><div class="gd-cf-input-wrap"><input id="for_admin_use" name="for_admin_use" value="0" type="hidden"></div></li>';
-		} else {
-			$radio_id = ! empty( $field->htmlvar_name ) ? $field->htmlvar_name : rand( 5, 500 );
-			$value = '';
-			if ( isset( $field->for_admin_use ) ) {
-				$value = esc_attr( $field->for_admin_use );
-			} elseif ( isset( $cf['defaults']['for_admin_use'] ) && $cf['defaults']['for_admin_use'] ) {
-				$value = $cf['defaults']['for_admin_use'];
-			}
-			ob_start();
-			?>
-			<li class="gd-advanced-setting">
-				<label for="for_admin_use" class="gd-cf-tooltip-wrap">
-					<span class="gd-help-tip gd-help-tip-float-none gd-help-tip-no-margin dashicons dashicons-editor-help" title="<?php _e( 'If yes is selected then only site admin can see and edit this field.', 'geodirectory' ); ?>"></span> 
-					<?php _e( 'For admin use only? :', 'geodirectory' ); ?>
-				</label>
-				<div class="gd-cf-input-wrap gd-switch">
-					<input type="radio" id="for_admin_use_yes<?php echo $radio_id; ?>" name="for_admin_use" class="gdri-enabled" value="1" <?php checked( (int)$value, 1 ); ?>/>
-					<label for="for_admin_use_yes<?php echo $radio_id; ?>" class="gdcb-enable"><span><?php _e( 'Yes', 'geodirectory' ); ?></span></label>
-					<input type="radio" id="for_admin_use_no<?php echo $radio_id; ?>" name="for_admin_use" class="gdri-disabled" value="0" <?php checked( (int)$value, 0 ); ?>/>
-					<label for="for_admin_use_no<?php echo $radio_id; ?>" class="gdcb-disable"><span><?php _e( 'No', 'geodirectory' ); ?></span></label>
-				</div>
-			</li>
-			<?php
-			$content = ob_get_clean();
+			$content = '<input id="for_admin_use" name="for_admin_use" value="0" type="hidden">';
 		}
 
 		return $content;
@@ -286,34 +239,19 @@ class GeoDir_Event_Fields {
 
 	public static function cfa_is_required( $content, $_id, $cf, $field ) {
 		if ( $field->htmlvar_name == 'recurring' || $field->htmlvar_name == 'event_dates' ) {
-			$content = '<li style="display:none!important"><div class="gd-cf-input-wrap"><input id="is_required" name="is_required" value="1" type="hidden"></div></li>';
-		} else {
-			$radio_id = ! empty( $field->htmlvar_name ) ? $field->htmlvar_name : rand( 5, 500 );
-			$value = '';
-			if ( isset( $field->is_required ) ) {
-				$value = esc_attr( $field->is_required );
-			} elseif ( isset( $cf['defaults']['is_required'] ) && $cf['defaults']['is_required'] ) {
-				$value = $cf['defaults']['is_required'];
-			}
-			ob_start();
-			?>
-			<li class="">
-				<label for="is_required" class="gd-cf-tooltip-wrap">
-					<span class="gd-help-tip gd-help-tip-float-none gd-help-tip-no-margin dashicons dashicons-editor-help" title="<?php _e( 'Select yes to set field as required.', 'geodirectory' ); ?>"></span> 
-					<?php _e( 'Is required :', 'geodirectory' ); ?>
-				</label>
-				<div class="gd-cf-input-wrap gd-switch">
-					<input type="radio" id="is_required_yes<?php echo $radio_id; ?>" name="is_required" class="gdri-enabled" value="1" <?php checked( (int)$value, 1 ); ?>/>
-					<label onclick="gd_show_hide_radio(this,'show','cf-is-required-msg');" for="is_required_yes<?php echo $radio_id; ?>" class="gdcb-enable"><span><?php _e( 'Yes', 'geodirectory' ); ?></span></label>
-					<input type="radio" id="is_required_no<?php echo $radio_id; ?>" name="is_required" class="gdri-disabled" value="0" <?php checked( (int)$value, 0 ); ?>/>
-					<label onclick="gd_show_hide_radio(this,'hide','cf-is-required-msg');" for="is_required_no<?php echo $radio_id; ?>" class="gdcb-disable"><span><?php _e( 'No', 'geodirectory' ); ?></span></label>
-				</div>
-			</li>
-			<?php
-			$content = ob_get_clean();
+			$content = '<input id="is_required" name="is_required" value="1" type="hidden">';
 		}
 
 		return $content;
+	}
+
+	public static function cfa_can_delete_field( $delete, $field ) {
+		if ( ! empty( $field ) && $field->post_type == 'gd_event' ) {
+			if ( $field->htmlvar_name == 'recurring' || $field->htmlvar_name == 'event_dates' ) {
+				$delete = false;
+			}
+		}
+		return $delete;
 	}
 
 	public static function input_recurring( $post_type, $package_id, $field ) {
@@ -913,7 +851,7 @@ class GeoDir_Event_Fields {
 				if ( strpos( $field_icon, 'http' ) !== false ) {
 					$field_icon_af = '';
 				} elseif ( $field_icon == '' ) {
-					$field_icon_af = '<i class="fa fa-calendar"></i>';
+					$field_icon_af = '<i class="fas fa-calendar-alt"></i>';
 				} else {
 					$field_icon_af = $field_icon;
 					$field_icon = '';
@@ -974,7 +912,7 @@ class GeoDir_Event_Fields {
 				if ( strpos( $field_icon, 'http' ) !== false ) {
 					$field_icon_af = '';
 				} elseif ( $field_icon == '' ) {
-					$field_icon_af = '<i class="fa fa-calendar"></i>';
+					$field_icon_af = '<i class="fas fa-calendar-alt"></i>';
 				} else {
 					$field_icon_af = $field_icon;
 					$field_icon = '';
@@ -1056,7 +994,7 @@ class GeoDir_Event_Fields {
 			$fields[] = array(
 				'tab_type'   => 'standard',
 				'tab_name'   => __( 'Events','geodirevents' ),
-				'tab_icon'   => 'fa-calendar',
+				'tab_icon'   => 'fas fa-calendar-alt',
 				'tab_key'    => 'events',
 				'tab_content'=> '[gd_linked_events]'
 			);

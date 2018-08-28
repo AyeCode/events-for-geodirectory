@@ -34,7 +34,7 @@ class GeoDir_Event_API {
 		$params['event_type'] = array(
 			'description'        => __( 'Filter the events to show.', 'geodirevents' ),
 			'type'               => 'string',
-			'default'            => geodir_get_option( 'event_defalt_filter' ),
+			'default'            => geodir_get_option( 'event_default_filter' ),
 			'enum'               => array_keys( geodir_event_filter_options() ),
 		);
 		$params['single_event'] = array(

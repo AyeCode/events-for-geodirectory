@@ -481,7 +481,7 @@ class GeoDir_Event_Schedules {
 				$end_time		= ! empty( $row->end_time ) ? $row->end_time : '00:00:00';
 				$all_day		= ! empty( $row->all_day ) ? true : false;
 
-				$schedule = '<div class="geodir-schedule-start"><i class="fa fa-caret-right"></i>';
+				$schedule = '<div class="geodir-schedule-start"><i class="fas fa-caret-right"></i>';
 				if ( empty( $all_day ) ) {
 					if ( $start_date == $end_date && $start_time == $end_time && $end_time == '00:00:00' ) {
 						$end_date = date_i18n( 'Y-m-d', strtotime( $start_date . ' ' . $start_time . ' +1 day' ) );

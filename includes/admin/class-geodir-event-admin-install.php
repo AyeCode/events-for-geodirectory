@@ -57,10 +57,13 @@ class GeoDir_Event_Admin_Install {
 	 * This check is done on all requests and runs if the versions do not match.
 	 */
 	public static function check_version() {
-		if ( ! defined( 'IFRAME_REQUEST' ) && get_option( 'geodir_event_version' ) !== GEODIR_EVENT_VERSION ) {
-			self::install();
-
-			do_action( 'geodir_event_updated' );
+		if ( ! defined( 'IFRAME_REQUEST' ) ) {
+			if ( self::is_v2_upgrade() ) {
+				// v2 upgrade
+			} else if ( get_option( 'geodir_event_version' ) !== GEODIR_EVENT_VERSION ) {
+				self::install();
+				do_action( 'geodir_event_updated' );
+			}
 		}
 	}
 
@@ -404,19 +407,16 @@ class GeoDir_Event_Admin_Install {
 		$columns['post_tags'] = "post_tags text NULL DEFAULT NULL";
 		$columns['post_category'] = "post_category varchar(254) NULL DEFAULT NULL";
 		$columns['default_category'] = "default_category INT NULL DEFAULT NULL";
-		$columns['featured'] = "featured tinyint(1) NOT NULL DEFAULT '0'";
 		$columns['featured_image'] = "featured_image varchar( 254 ) NULL DEFAULT NULL";
 		$columns['submit_ip'] = "submit_ip varchar(100) NULL DEFAULT NULL";
 		$columns['overall_rating'] = "overall_rating float(11) DEFAULT '0'";
 		$columns['rating_count'] = "rating_count int(11) DEFAULT '0'";
 		$columns['recurring'] = "recurring TINYINT(1) DEFAULT '0'";
 		$columns['event_dates'] = "event_dates TEXT NOT NULL";
+		$columns['rsvp_count'] = "rsvp_count INT(11) DEFAULT '0'";
 
 		// Location fields
 		if ( ! $locationless ) {
-			$columns['marker_json'] = "marker_json text NULL DEFAULT NULL"; //@todo do we even still need this?
-			$columns['location_id'] = "location_id int(11) NOT NULL"; //@todo do we even still need this?
-			$columns['locations'] = "locations varchar( 254 ) NULL DEFAULT NULL"; //@todo do we even still need this?
 			$columns['street'] = "street VARCHAR( 254 ) NULL";
 			$columns['city'] = "city VARCHAR( 50 ) NULL";
 			$columns['region'] = "region VARCHAR( 50 ) NULL";
@@ -455,9 +455,25 @@ class GeoDir_Event_Admin_Install {
 
 		// Location keys
 		if ( ! $locationless ) {
-			$keys['locations'] = "KEY locations (locations($max_index_length))";
+			$keys['country'] = "KEY country (country(50))";
+			$keys['region'] = "KEY region (region(50))";
+			$keys['city'] = "KEY city (city(50))";
 		}
 
 		return apply_filters( 'geodir_db_event_default_keys', $keys, $locationless );
+	}
+
+	/**
+	 * Is v1 to v2 upgrade.
+	 *
+	 * @since 2.0.0
+	 * @return boolean
+	 */
+	private static function is_v2_upgrade() {
+		if ( ( get_option( 'geodirectory_db_version' ) && version_compare( get_option( 'geodirectory_db_version' ), '2.0.0.0', '<' ) ) || ( get_option( 'geodirevents_db_version' ) && version_compare( get_option( 'geodirevents_db_version' ), '2.0.0.0', '<' ) && ( is_null( get_option( 'geodirevents_db_version', null ) ) || ( get_option( 'geodir_event_db_version' ) && version_compare( get_option( 'geodir_event_db_version' ), '2.0.0.0', '<' ) ) ) ) ) {
+			return true;
+		}
+
+		return false;
 	}
 }

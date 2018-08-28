@@ -68,8 +68,8 @@ class GeoDir_Event_Admin_Assets {
 		// Register scripts
 		// YUI Calendar
 		wp_register_script( 'yui-calendar', GEODIR_EVENT_PLUGIN_URL . '/assets/yui/calendar.min.js', array( 'jquery' ), '2.9.0' );
-		wp_register_script( 'geodir-event', GEODIR_EVENT_PLUGIN_URL . '/assets/js/geodir-event' . $suffix . '.js', array( 'jquery', 'geodir-admin-script' ), GEODIR_EVENT_VERSION );
-		wp_register_script( 'geodir-event-admin', GEODIR_EVENT_PLUGIN_URL . '/assets/js/event-admin' . $suffix . '.js', array( 'jquery', 'geodir-event' ), GEODIR_EVENT_VERSION );
+		wp_register_script( 'geodir-event', GEODIR_EVENT_PLUGIN_URL . '/assets/js/common' . $suffix . '.js', array( 'jquery', 'geodir-admin-script' ), GEODIR_EVENT_VERSION );
+		wp_register_script( 'geodir-event-admin', GEODIR_EVENT_PLUGIN_URL . '/assets/js/admin' . $suffix . '.js', array( 'jquery', 'geodir-event' ), GEODIR_EVENT_VERSION );
 
 		// Admin scripts for GD pages only
 		if ( in_array( $screen_id, geodir_get_screen_ids() ) ) {

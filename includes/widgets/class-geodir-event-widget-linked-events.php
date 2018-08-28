@@ -55,22 +55,22 @@ class GeoDir_Event_Widget_Linked_Events extends WP_Super_Duper {
 				'category' => array(),
 				'related_to' => '',
 				'category_title' => '',
-				'sort_by' => geodir_get_option( 'geodir_event_linked_sortby', 'latest' ),
+				'sort_by' => geodir_get_option( 'event_linked_sortby', 'latest' ),
 				'title_tag' => 'h3',
 				'list_order' => '',
-				'post_limit' => geodir_get_option( 'geodir_event_linked_count', '5' ),
-				'layout' => geodir_get_option( 'geodir_event_linked_listing_view', 'gridview_onehalf' ),
+				'post_limit' => geodir_get_option( 'event_linked_count', '5' ),
+				'layout' => geodir_get_option( 'event_linked_listing_view', 'gridview_onehalf' ),
 				'listing_width' => '',
 				'add_location_filter' => '0',
-				'character_count' => geodir_get_option( 'geodir_event_linked_post_excerpt', '20' ),
+				'character_count' => geodir_get_option( 'event_linked_post_excerpt', '20' ),
 				'show_featured_only' => '',
 				'show_special_only' => '',
 				'with_pics_only' => '',
 				'with_videos_only' => '',
 				'use_viewing_post_type' => '',
 				'hide_if_empty' => true,
-				'event_type' => geodir_get_option( 'geodir_event_linked_event_type', 'all' ),
-				'single_event' => geodir_get_option( 'geodir_event_linked_single_event' )
+				'event_type' => geodir_get_option( 'event_linked_event_type', 'all' ),
+				'single_event' => geodir_get_option( 'event_linked_single_event' )
 			)
         );
 
@@ -90,14 +90,13 @@ class GeoDir_Event_Widget_Linked_Events extends WP_Super_Duper {
      * @global object $post                    The current post object.
      * @global string $gd_layout_class 		   The girdview style of the listings for widget.
      * @global bool $geodir_is_widget_listing  Is this a widget listing?. Default: false.
-     * @global object $gd_session              GeoDirectory Session object.
      *
      * @param array|string $args               Display arguments including before_title, after_title, before_widget, and
      *                                         after_widget.
      * @param array|string $instance           The settings for the particular instance of the widget.
      */
     public function output_html( $args = '', $instance = '' ) {
-        global $gd_session, $gd_post, $post;
+        global $gd_post, $post;
 
         extract( $args, EXTR_SKIP );
 
@@ -113,12 +112,6 @@ class GeoDir_Event_Widget_Linked_Events extends WP_Super_Duper {
 			$list_sort = geodir_get_posts_default_sort( $post_type );
 		}
 
-        $skip_location = false;
-        if ( ! $add_location_filter && $gd_session->get( 'gd_multi_location' ) ) {
-            $skip_location = true;
-            $gd_session->un_set( 'gd_multi_location' );
-        }
-
 		$view_all_params = array();
 		if ( ! empty( $instance['event_type'] ) ) {
 			$view_all_params['etype'] = $instance['event_type'];
@@ -126,10 +119,6 @@ class GeoDir_Event_Widget_Linked_Events extends WP_Super_Duper {
 		$view_all_params['sort_by'] = $list_sort;
 		$view_all_params['venue'] = $gd_post->ID . '-' . $gd_post->post_title;
 		$view_all_url = geodir_getlink( get_post_type_archive_link( $post_type ), $view_all_params );
-
-        if ( $skip_location ) {
-            $gd_session->set( 'gd_multi_location', 1 );
-        }
 
         $query_args = array(
             'posts_per_page' 	=> $post_number,

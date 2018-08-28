@@ -64,46 +64,6 @@ function geodir_event_deactivation() {
 	delete_option( 'gdevents_installed');
 }
 
-function geodir_event_business_setting(){
-	
-	global $post,$post_id,$post_info;  
-	
-	wp_nonce_field( plugin_basename( __FILE__ ), 'geodir_event_business_noncename' );
-	
-	do_action('geodir_event_business_fields_on_metabox');
-	
-}
-
-function geodir_event_admin_menu_order( $menu_order ) {
-	
-	// Initialize our custom order array
-	$gdevents_menu_order = array();
-	$gdevents_menu_order[] = 'edit.php?post_type=gd_event';
-	
-	// Get index of deals menu
-	$gdevents_events = array_search( 'edit.php?post_type=gd_event', $menu_order );
-	
-	if($gdevents_separator = array_search( 'separator-geodirectory', $menu_order )){
-		array_splice( $menu_order, $gdevents_separator + 1, 0, $gdevents_menu_order ); 
-		unset( $menu_order[$gdevents_events] );
-	}	
-	
-	// Return order
-	return $menu_order;
-}
-
-
-function geodir_event_admin_custom_menu_order() {
-	if ( !current_user_can( 'manage_options' ) ) return false;
-	return true;
-}
-
-/* Admin init loader */
-
-//add_action('menu_order', 'geodir_event_admin_menu_order',12); // @todo
-
-//add_action('custom_menu_order', 'geodir_event_admin_custom_menu_order'); // @todo
-
 /**
  * Replace schema types for even categories.
  *
@@ -126,10 +86,35 @@ function geodir_event_custom_sort_options( $fields, $post_type ) {
 			'field_type'     => 'datetime',
 			'frontend_title' => __( 'Event date', 'geodirevents' ),
 			'htmlvar_name'   => 'event_dates',
-			'field_icon'     => 'fa fa-calendar',
+			'field_icon'     => 'fas fa-calendar-alt',
 			'description'    => __( 'Sort by event date', 'geodirevents' )
 		);
 	}
 
 	return $fields;
+}
+
+/**
+ * Add the plugin to uninstall settings.
+ *
+ * @since 2.0.0
+ *
+ * @return array $settings the settings array.
+ * @return array The modified settings.
+ */
+function geodir_event_uninstall_settings( $settings ) {
+    array_pop( $settings );
+
+	$settings[] = array(
+		'name'     => __( 'Events', 'geodirevents' ),
+		'desc'     => __( 'Check this box if you would like to completely remove all of its data when Events is deleted.', 'geodirevents' ),
+		'id'       => 'uninstall_geodir_event_manager',
+		'type'     => 'checkbox',
+	);
+	$settings[] = array( 
+		'type' => 'sectionend',
+		'id' => 'uninstall_options'
+	);
+
+    return $settings;
 }
