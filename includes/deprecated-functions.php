@@ -30,11 +30,68 @@ function geodir_event_location_update_count_reviews(){
  * @deprecated
  */
 function geodir_event_loop_filter( $query ){
-    _deprecated_function( 'geodir_event_loop_filter', '2.0.0' );
+    _deprecated_function( 'geodir_event_loop_filter', '2.0.0', 'GeoDir_Event_Query::__construct()' );
 }
 
-/*
-function geodir_event_(){
-    _deprecated_function( 'geodir_event_', '2.0.0', '' );
+/**
+ * Get widget event posts.
+ * @deprecated
+ */
+function geodir_event_get_widget_events( $query_args, $count_only = false ) {
+	_deprecated_function( 'geodir_event_get_widget_events', '2.0.0' );
 }
-*/
+
+/**
+ *
+ * @since 1.4.6 Same day events should just show date and from - to time.
+ * @deprecated
+ */
+function geodir_event_show_schedule_date() {
+	_deprecated_function( 'geodir_event_show_schedule_date', '2.0.0', 'GeoDir_Event_Schedules::get_schedules_html()' );
+}
+
+/**
+ * Displays the event dates in the meta info in the map info window.
+ * @deprecated
+ */
+function geodir_event_infowindow_meta_event_dates( $post_id, $post, $preview ) {
+	_deprecated_function( 'geodir_event_infowindow_meta_event_dates', '2.0.0' );
+}
+
+/**
+ * Filter reviews sql query fro upcoming events.
+ * @deprecated
+ */
+function geodir_event_count_reviews_by_term_sql( $sql, $term_id, $taxonomy, $post_type ) {
+	_deprecated_function( 'geodir_event_count_reviews_by_term_sql', '2.0.0' );
+}
+
+/**
+ * Filter the past events count in terms array results.
+ * @deprecated
+ */
+function geodir_event_get_terms( $terms, $taxonomies, $args ) {
+	_deprecated_function( 'geodir_event_get_terms', '2.0.0' );
+}
+
+/**
+ * Check schedule exists or not.
+ * @deprecated
+ */
+function geodir_event_schedule_exist( $date, $event_id ) {
+	_deprecated_function( 'geodir_event_schedule_exist', '2.0.0', 'GeoDir_Event_Schedules::has_schedule()' );
+}
+
+/**
+ * @deprecated
+ */
+function geodir_event_function_related_post_ids_where( $where ) {
+	_deprecated_function( 'geodir_event_function_related_post_ids_where', '2.0.0' );
+}
+
+/**
+ * @deprecated
+ */
+function geodir_get_detail_page_related_events( $request ) {
+	_deprecated_function( 'geodir_get_detail_page_related_events', '2.0.0' );
+}

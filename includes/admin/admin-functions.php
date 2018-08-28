@@ -8,6 +8,13 @@
  * @param string $plugin Plugin basename.
  */
 
+function geodir_event_admin_params() {
+	$params = array(
+    );
+
+    return apply_filters( 'geodir_event_admin_params', $params );
+}
+
 /**
  * Deactivate gdevent
  */

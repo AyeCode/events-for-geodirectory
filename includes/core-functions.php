@@ -25,16 +25,6 @@ function goedir_event_register_widgets() {
     }
 }
 
-function geodir_event_calender_search_page_title($title){
-		
-	global $condition_date;	
-	
-	if(isset($_REQUEST['event_calendar']) && !empty($_REQUEST['event_calendar']) && geodir_is_page('search'))
-		$title = apply_filters('geodir_calendar_search_page_title', __(' Browsing Day', 'geodirevents').'" '.date_i18n('F  d, Y',strtotime($condition_date)).'"');
-	
-	return $title;
-}
-
 function geodir_event_fill_listings( $term ) {
 	//$listings = geodir_event_get_my_listings( 'gd_place', $term );
 	$listings = geodir_event_get_my_listings( 'all', $term );
@@ -580,19 +570,6 @@ function geodir_event_date_occurrences( $type = 'year', $start_date, $end_date =
 	return $dates;
 }
 
-function geodir_event_schedule_exist( $date, $event_id ) {
-	global $wpdb;
-	
-	$date = date_i18n( 'Y-m-d', strtotime( $date ) );
-	
-	$sql = "SELECT * FROM `" . GEODIR_EVENT_SCHEDULES_TABLE . "` WHERE event_id=" . (int)$event_id . " AND ( ( end_date = '0000-00-00' AND DATE_FORMAT( start_date, '%Y-%m-%d') = '" . $date . "' ) OR ( end_date != '0000-00-00' AND DATE_FORMAT( start_date, '%Y-%m-%d') <= '" . $date . "' AND '" . $date . "' <= DATE_FORMAT( end_date, '%Y-%m-%d') ) )";
-	
-	if ( $wpdb->get_var( $sql ) ) {
-		return true;
-	}
-	return false;
-}
-
 function geodir_event_is_recurring_active() {
 	if ( geodir_get_option( 'event_disable_recurring' ) ) {
 		$active = false;
@@ -706,138 +683,12 @@ function geodir_event_date_time_format() {
 }
 
 /**
- * Retrieve the page title for the listing page.
- *
- * @since 1.1.8
- *
- * @param  string $page_title Page title.
- * @return string Listing page title.
- */
-function geodir_event_listing_page_title($page_title = '') {
-	$current_posttype = geodir_get_current_posttype();
-	
-	if ( geodir_is_page( 'listing' ) && $current_posttype == 'gd_event' && isset( $_REQUEST['venue'] ) && $_REQUEST['venue'] != '' ) {
-		$venue = explode( '-', $_REQUEST['venue'], 2);
-		$venue_info = !empty($venue) && isset($venue[0]) ? get_post((int)$venue[0]) : array();
-		
-		if ( !empty( $venue_info ) && isset( $venue_info->post_title ) && $venue_info->post_title != '' )
-			$page_title = wp_sprintf( __( '%s at %s', 'geodirevents' ), $page_title, $venue_info->post_title );
-	}
-		
-	return $page_title;
-}
-
-/**
- * Filter the past events count in terms array results.
- *
- * @since 1.1.9
- *
- * @param array $terms Array of terms.
- * @param array $taxonomies Array of post taxonomies.
- * @param array $args Terms arguments.
- * @return array Array of terms.
- */
-function geodir_event_get_terms( $terms, $taxonomies, $args ) {
-	if ( isset( $args['gd_event_no_loop'] ) ) {
-		return $terms; // Avoid an infinite loop.
-	}
-	
-	$args['gd_event_no_loop'] = true;
-	
-	$gd_event_post_type = 'gd_event';
-	
-	$gd_event_taxonomy = $gd_event_post_type . 'category';
-	
-	if ( !empty( $terms ) && in_array( $gd_event_taxonomy, $taxonomies ) ) {
-		$query_args = array (
-			'is_geodir_loop' => true,
-			'post_type' => $gd_event_post_type,
-			'gd_location' => true,
-		);
-			
-		$new_terms = array();
-		
-		foreach ( $terms as $key => $term ) {
-			$new_term = $term;
-			
-			if ( isset( $term->taxonomy ) && $term->taxonomy == $gd_event_taxonomy ) {
-				$tax_query = array(
-					'taxonomy' => $gd_event_taxonomy,
-					'field' => 'id',
-					'terms' => $term->term_id
-				);
-				
-				$query_args['tax_query'] = array($tax_query);
-				
-				$new_term->count = geodir_get_widget_listings( $query_args, true );
-			}
-			
-			$new_terms[$key] = $new_term;
-		}
-		
-		$terms = $new_terms;
-	}
-
-	return $terms;
-}
-
-/**
- * Add the query vars to the term link to retrieve today & upcoming events.
- *
- * @since 1.1.9
- *
- * @param string $term_link The term permalink.
- * @param int    $cat->term_id The term id.
- * @param string $post_type Wordpress post type.
- * @return string The category term link.
- */
-function geodir_event_category_term_link( $term_link, $term_id, $post_type ) {
-	if ( $post_type != 'gd_event' ) {
-		return $term_link;
-	}
-	
-	$term_link = add_query_arg( array( 'etype' => 'upcoming' ), $term_link );
-
-	return $term_link;
-}
-
-/**
- * Filter reviews sql query fro upcoming events.
- *
- * @since 1.2.4
- *
- * @global object $wpdb WordPress Database object.
- * @global string $plugin_prefix Geodirectory plugin table prefix.
- *
- * @param string $sql Database sql query.
- * @param int $term_id The term ID.
- * @param int $taxonomy The taxonomy Id.
- * @param string $post_type The post type.
- * @return string Database sql query.
- */
-function geodir_event_count_reviews_by_term_sql($sql, $term_id, $taxonomy, $post_type) {
-	if ($term_id > 0 && $post_type == 'gd_event') {
-		global $wpdb, $plugin_prefix;
-		
-		$listing_table = $plugin_prefix . $post_type . '_detail';
-		
-		$current_date = date_i18n( 'Y-m-d', current_time( 'timestamp' ) );
-		
-		$sql = "SELECT COALESCE(SUM(ed.rating_count),0) FROM `" . $listing_table . "` AS ed INNER JOIN " . GEODIR_EVENT_SCHEDULES_TABLE . " AS es ON (es.event_id = ed.post_id) WHERE ed.post_status = 'publish' AND ed.rating_count > 0 AND FIND_IN_SET(" . $term_id . ", ed.post_category)";
-		$sql .= " AND (es.start_date >= '" . $current_date . "' OR (es.start_date <= '" . $current_date . "' AND es.end_date >= '" . $current_date . "'))";
-	}
-	
-	return $sql;
-}
-
-/**
  * Filter reviews sql query fro upcoming events for current location.
  *
  * @since 1.2.4
  * @since 1.3.0 Fixed post term count for neighbourhood locations.
  *
  * @global object $wpdb WordPress Database object.
- * @global string $plugin_prefix Geodirectory plugin table prefix.
  *
  * @param string $sql Database sql query.
  * @param int $term_id The term ID.
@@ -847,14 +698,13 @@ function geodir_event_count_reviews_by_term_sql($sql, $term_id, $taxonomy, $post
  * @param array $loc Current location terms.
  * @param string $count_type The term count type.
  * @return string Database sql query.
+ * @todo move to LMv2 and use filter
  */
-function geodir_event_count_reviews_by_location_term_sql($sql, $term_id, $taxonomy, $post_type, $location_type, $loc, $count_type) {
+function geodir_event_count_reviews_by_location_term_sql( $sql, $term_id, $taxonomy, $post_type, $location_type, $loc, $count_type ) {
 	if ($term_id > 0 && $post_type == 'gd_event') {
-		global $wpdb, $plugin_prefix;
+		global $wpdb;
 		
-		if ($count_type == 'review_count') {			
-			$listing_table = $plugin_prefix . $post_type . '_detail';
-			
+		if ($count_type == 'review_count') {
 			$current_date = date_i18n( 'Y-m-d', current_time( 'timestamp' ) );
 			
 			if (!$loc) {
@@ -872,24 +722,22 @@ function geodir_event_count_reviews_by_location_term_sql($sql, $term_id, $taxono
 			
 			$where = '';
 			if ( $country!= '') {
-				$where .= " AND ed.locations LIKE '%,[".$country."]' ";
+				$where .= $wpdb->prepare( " AND ed.country LIKE %s", array( $country ) );
 			}
 			
 			if ( $region != '' && $location_type!='gd_country' ) {
-				$where .= " AND ed.locations LIKE '%,[".$region."],%' ";
+				$where .= $wpdb->prepare( " AND ed.region LIKE %s", array( $region ) );
 			}
 			
 			if ( $city != '' && $location_type!='gd_country' && $location_type!='gd_region' ) {
-				$where .= " AND ed.locations LIKE '[".$city."],%' ";
+				$where .= $wpdb->prepare( " AND ed.city LIKE %s", array( $city ) );
 			}
 			
-			if ($location_type == 'gd_neighbourhood' && $neighbourhood != '' && $wpdb->get_var("SHOW COLUMNS FROM " . $listing_table . " WHERE field = 'neighbourhood'")) {
-				$where .= " AND ed.neighbourhood = '" . $neighbourhood . "' ";
+			if ( $location_type == 'gd_neighbourhood' && $neighbourhood != '' && GeoDir_Location_Neighbourhood::is_active() ) {
+				$where .= $wpdb->prepare( " AND ed.neighbourhood LIKE %s", array( $neighbourhood ) );
 			}
 			
-			$sql = "SELECT COALESCE(SUM(ed.rating_count),0) FROM `" . $listing_table . "` AS ed INNER JOIN " . GEODIR_EVENT_SCHEDULES_TABLE . " AS es ON (es.event_id = ed.post_id) WHERE ed.post_status = 'publish' " . $where . " AND ed.rating_count > 0 AND FIND_IN_SET(" . $term_id . ", ed.post_category)";
-			
-			$sql .= " AND (es.start_date >= '" . $current_date . "' OR (es.start_date <= '" . $current_date . "' AND es.end_date >= '" . $current_date . "'))";
+			$sql = "SELECT COALESCE(SUM(ed.rating_count),0) FROM `" . GEODIR_EVENT_DETAIL_TABLE . "` AS ed INNER JOIN " . GEODIR_EVENT_SCHEDULES_TABLE . " AS es ON (es.event_id = ed.post_id) WHERE ed.post_status = 'publish' " . $where . " AND ed.rating_count > 0 AND FIND_IN_SET(" . $term_id . ", ed.post_category) AND (es.start_date >= '" . $current_date . "' OR (es.start_date <= '" . $current_date . "' AND es.end_date >= '" . $current_date . "'))";
 		}
 	}
 	
@@ -906,118 +754,11 @@ function geodir_event_count_reviews_by_location_term_sql($sql, $term_id, $taxono
  * @param object $term The category term object.
  * @return string Link url.
  */
-function geodir_event_bestof_widget_view_all_link($view_all_link, $post_type, $term) {
-	if ($post_type == 'gd_event') {
-		$view_all_link = add_query_arg(array('etype' => 'upcoming'), $view_all_link) ;
+function geodir_event_bestof_widget_view_all_link( $view_all_link, $post_type, $term ) {
+	if ( $post_type == 'gd_event' ) {
+		$view_all_link = add_query_arg( array( 'etype' => geodir_get_option( 'event_default_filter' ) ), $view_all_link ) ;
 	}
 	return $view_all_link;
-}
-
-/**
- * Displays the event dates in the meta info in the map info window.
- *
- * @since 1.2.7
- * @since 1.4.6 Same day events should just show date and from - to time.
- *
- * @global string $geodir_date_format Date format.
- * @global string $geodir_date_time_format Date time format.
- *
- * @param object $post_id The post id.
- * @param object $post The post info as an object.
- * @param bool|string $preview True if currently in post preview page. Empty string if not.                           *
- */
-function geodir_event_infowindow_meta_event_dates($post_id, $post, $preview) {
-	global $geodir_date_format, $geodir_date_time_format, $geodir_time_format;
-	if (empty($post)) {
-		return NULL;
-	}
-	
-	$limit = (int)geodir_get_option('event_map_popup_count', 1); // no of event dates to show in map infowindow.
-	if (!$limit > 0) {
-		return NULL;
-	}
-	
-	$post_type = isset($post->post_type) ? $post->post_type : NULL;
-	if ((int)$post_id > 0) {
-		$post_type = get_post_type($post_id);
-	}
-	
-	if (empty($post_type) && $preview) {
-		$post_type = !empty($post->listing_type) ? $post->listing_type : (!empty($post->post_type) ? $post->post_type : NULL);
-	}
-	
-	if ($post_type != 'gd_event') {
-		return NULL;
-	}
-	
-	$event_type = geodir_get_option('event_map_popup_dates', 'upcoming');
-	$schedule_dates = geodir_event_get_schedule_dates($post, $preview, $event_type);
-
-	$dates = array();
-	if (!empty($schedule_dates)) {
-		$count = 0;
-		foreach ($schedule_dates as $date) {
-			$event_date = $date['start_date'];
-			$event_enddate = $date['end_date'];
-			$event_starttime = $date['start_time'];
-			$event_endtime = $date['end_time'];
-			
-			if ($event_enddate == '0000-00-00') {
-				$event_enddate = $event_date;
-			}
-			
-			$full_day = false;
-			$same_datetime = false;
-			$same_day = false;
-			
-			if ($event_starttime == $event_endtime && ($event_starttime == '00:00:00' || $event_starttime == '00:00' || $event_starttime == '')) {
-				$full_day = true;
-			}
-			
-			if ($event_date == $event_enddate && $full_day) {
-				$same_datetime = true;
-			}
-			
-			$ievent_date = strtotime($event_date . ' ' . $event_starttime);
-			$ievent_enddate = strtotime($event_enddate . ' ' . $event_endtime);
-			
-			if ($full_day) {
-				$start_date = date_i18n($geodir_date_format, $ievent_date);
-				$end_date = date_i18n($geodir_date_format, $ievent_enddate);
-			} else {
-				$start_date = date_i18n($geodir_date_time_format, $ievent_date);
-				
-				if (!$same_datetime && date_i18n( 'Y-m-d', $ievent_date ) == date_i18n( 'Y-m-d', $ievent_enddate ) ) {
-					$same_day = true;
-					
-					$start_date .= ' - ' . date_i18n( $geodir_time_format, $ievent_enddate );
-				} else {
-					$end_date = date_i18n($geodir_date_time_format, $ievent_enddate);
-				}
-			}
-			
-			$schedule = '<span class="geodir_schedule clearfix"><span class="geodir_schedule_start"><i class="fas fa-caret-right"></i> ' . $start_date . '</span>';
-			if (!$same_datetime && !$same_day) {
-				$schedule .= '<br /><span class="geodir_schedule_end"><i class="fas fa-caret-left"></i> ' . $end_date . '</span>';
-			}
-			$schedule .= '</span>';
-			
-			$dates[] = $schedule;
-			
-			$count++;
-			if ($limit == $count) {
-				break;
-			}
-		}
-	}
-	
-	if (empty($dates)) {
-		return NULL;
-	}
-		
-	$content = '<div class="geodir_event_schedule">' . implode('', $dates) . '</div>';
-	
-	echo $content;
 }
 
 /**
@@ -1231,246 +972,6 @@ function geodir_event_get_schedule_dates($post, $preview = false, $event_type = 
 	return $results;
 }
 
-function geodir_event_home_map_marker_query_join($join = '') {
-	global $plugin_prefix;
-	
-	$join .= " INNER JOIN " . $plugin_prefix . "event_schedule AS es ON es.event_id = pd.post_id";
-	return $join;
-}
-
-function geodir_event_home_map_marker_query_where($where = '') {
-	$today = date_i18n('Y-m-d');
-	
-	$where .= " AND (es.start_date >= '" . $today . "' OR (es.start_date <= '" . $today . "' AND es.end_date >= '" . $today . "')) ";
-	return $where;
-}
-
-function geodir_get_detail_page_related_events($request) {
-	if (!empty($request)) {
-		$post_number = (isset($request['post_number']) && !empty($request['post_number'])) ? $request['post_number'] : '5';
-		$relate_to = (isset($request['relate_to']) && !empty($request['relate_to'])) ? $request['relate_to'] : 'category';
-		$add_location_filter = (isset($request['add_location_filter']) && !empty($request['add_location_filter'])) ? $request['add_location_filter'] : '0';
-		$listing_width = (isset($request['listing_width']) && !empty($request['listing_width'])) ? $request['listing_width'] : '';
-		$list_sort = (isset($request['list_sort']) && !empty($request['list_sort'])) ? $request['list_sort'] : 'latest';
-		$character_count = (isset($request['character_count']) && !empty($request['character_count'])) ? $request['character_count'] : '';
-		$event_type = (isset($request['event_type']) && !empty($request['event_type'])) ? $request['event_type'] : 'upcoming';
-		$event_type = apply_filters('geodir_detail_page_related_event_type', $event_type);
-        $layout = !empty($request['layout']) ? $request['layout'] : '';
-
-		global $post, $map_jason;
-		$current_map_jason = $map_jason;
-		$post_type = $post->post_type;
-		$post_id = $post->ID;
-		$category_taxonomy = '';
-		$tax_field = 'id';
-		$category = array();
-
-		if ($relate_to == 'category') {
-
-			$category_taxonomy = $post_type . $relate_to;
-			if (isset($post->{$category_taxonomy}) && $post->{$category_taxonomy} != '')
-				$category = explode(',', trim($post->{$category_taxonomy}, ','));
-
-		} elseif ($relate_to == 'tags') {
-
-			$category_taxonomy = $post_type . '_' . $relate_to;
-			if ($post->post_tags != '')
-				$category = explode(',', trim($post->post_tags, ','));
-			$tax_field = 'name';
-		}
-
-		/* --- return false in invalid request --- */
-		if (empty($category))
-			return false;
-
-		$all_postypes = geodir_get_posttypes();
-
-		if (!in_array($post_type, $all_postypes))
-			return false;
-
-		$query_args = array(
-				'gd_event_type' => $event_type,
-				'posts_per_page' => $post_number,
-				'is_geodir_loop' => true,
-				'gd_location' 	 => $add_location_filter ? true : false,
-				'post_type' => 'gd_event',
-				'post__not_in'     => array( $post_id ),
-				'order_by' => $list_sort,
-				'excerpt_length' => $character_count,
-				'character_count' => $character_count,
-				'listing_width' => $listing_width
-		);
-
-		$tax_query = array('taxonomy' => $category_taxonomy,
-				'field' => $tax_field,
-				'terms' => $category
-		);
-
-		$query_args['tax_query'] = array( $tax_query );
-
-
-		add_filter( 'geodir_event_filter_widget_events_where', 'geodir_event_function_related_post_ids_where' );
-		$output = geodir_get_post_widget_events($query_args, $layout);
-		remove_filter( 'geodir_event_filter_widget_events_where', 'geodir_event_function_related_post_ids_where' );
-		
-		$map_jason = $current_map_jason;
-
-		$map_jason = $current_map_jason;
-
-		return $output;
-	}
-	return false;
-}
-
-function geodir_event_function_related_post_ids_where( $where ) {
-	global $wpdb, $plugin_prefix, $gd_query_args;
-
-	if ( !empty( $gd_query_args ) && isset( $gd_query_args['related_post_ids'] ) ) {
-		if ($gd_query_args['related_post_ids']) {
-			$where .= " AND ".$wpdb->posts .".ID IN (" . implode(',', $gd_query_args['related_post_ids']) . ")";
-		}
-	}
-
-	return $where;
-}
-
-/**
- * Display notice when site is running with older then PHP 5.3.
- *
- * @since 1.4.5
- *
- */
-function geodir_event_PHP_version_notice() {
-    echo '<div class="error" style="margin:12px 0"><p>' . __( 'Your version of PHP is below the minimum version of PHP required by <b>GeoDirectory Events</b>. Please contact your host and request that your PHP version be upgraded to <b>5.3 or later</b>.', 'geodirevents' ) . '</p></div>';
-}
-
-/*
-add_filter('geodir_show_filters','geodir_add_search_fields',10,2);
-
-add_action('pre_get_posts','geodir_event_loop_filter' ,2 );
-
-add_action('geodir_after_description_on_listing_detail', 'geodir_event_before_description', 1);
-
-add_action('geodir_after_description_on_listing_preview', 'geodir_event_before_description', 1);
-
-add_filter('geodir_search_page_title',"geodir_event_calender_search_page_title", 1);
-
-
-add_filter('geodir_diagnose_multisite_conversion' , 'geodir_diagnose_multisite_conversion_events', 10,1); */
-function geodir_diagnose_multisite_conversion_events($table_arr){
-	
-	// Diagnose Claim listing details table
-	$table_arr['geodir_gd_event_detail'] = __('Events','geodirevents');
-	$table_arr['geodir_event_schedule'] = __('Event schedule','geodirevents');
-	return $table_arr;
-}
-
-// add date to title for recurring event
-function geodir_event_title_recurring_event( $title, $post_id = null ) {
-	global $post, $gd_post;
-
-    $post_type = !empty( $post ) && isset( $post->post_type ) ? $post->post_type : '';
-    if ( ! ( ! empty( $post->post_type ) && $post->post_type == 'gd_event' ) ) {
-		return $title;
-	}
-
-	if ( ! empty( $gd_post ) && isset( $gd_post->start_date ) ) {
-		$event_post = $gd_post;
-	} else {
-		$event_post = $post;
-	}
-
-	// Check recurring enabled
-	$recurring_pkg = geodir_event_recurring_pkg( $event_post );
-	if ( ! $recurring_pkg ) {
-		return $title;
-	}
-
-	if ( $event_post->ID == $post_id && !empty( $event_post->recurring ) ) {
-		$geodir_date_format = geodir_event_date_format();
-		$current_date = date_i18n( 'Y-m-d', current_time( 'timestamp' ));
-		$current_time = strtotime( $current_date );
-		
-		if ( !empty( $event_post->start_date ) && geodir_event_is_date( $event_post->start_date ) ) {
-			$event_start_time = strtotime( date_i18n( 'Y-m-d', strtotime( $event_post->start_date ) ) );
-			$event_end_time = isset( $event_post->end_date ) && geodir_event_is_date( $event_post->end_date ) ? strtotime( $event_post->end_date ) : 0;
-			
-			if ($event_end_time > $event_start_time && $event_start_time <= $current_time && $event_end_time >= $current_time) {
-				$title .= "<span class='gd-date-in-title'> " . wp_sprintf( __( '- %s', 'geodirevents' ), date_i18n( $geodir_date_format, $current_time ) ) . "</span>";
-			} else {
-				$title .= "<span class='gd-date-in-title'> " . wp_sprintf( __( '- %s', 'geodirevents' ), date_i18n( $geodir_date_format, strtotime( $event_post->start_date ) ) ) . "</span>";
-			}
-		} else {
-			if ( is_single() && isset( $_REQUEST['gde'] ) && geodir_event_is_date( $_REQUEST['gde'] ) && geodir_event_schedule_exist( $_REQUEST['gde'], $post_id ) ) {
-				$title .= "<span class='gd-date-in-title'> " . wp_sprintf( __( '- %s', 'geodirevents' ), date_i18n( $geodir_date_format, strtotime( $_REQUEST['gde'] ) ) ) . "</span>";
-			}
-		}
-	}
-	return $title;
-}
-add_filter( 'the_title', 'geodir_event_title_recurring_event', 100, 2 );
-
-// get link for recurring event
-function geodir_event_link_recurring_event( $link ) {
-	global $post;
-
-    if($post->post_type!='gd_event'){return $link;}
-	
-	// Check recurring enabled
-	$recurring_pkg = geodir_event_recurring_pkg( $post );
-	
-	if ( !$recurring_pkg ) {
-		return $link;
-	}
-	
-	if ( !empty( $post ) && isset( $post->ID ) && !empty( $post->recurring ) && !empty( $post->start_date ) ) {
-		if ( geodir_event_is_date( $post->start_date ) && get_permalink() == get_permalink( $post->ID ) ) {
-			$current_date = date_i18n( 'Y-m-d', current_time( 'timestamp' ));
-			$current_time = strtotime($current_date);
-			
-			$event_start_time = strtotime(date_i18n( 'Y-m-d', strtotime($post->start_date)));
-			$event_end_time = isset($post->end_date) && geodir_event_is_date($post->end_date) ? strtotime($post->end_date) : 0;
-			
-			if ($event_end_time > $event_start_time && $event_start_time <= $current_time && $event_end_time >= $current_time) {
-				$link_date = date_i18n( 'Y-m-d', strtotime( $current_time ) );
-			} else {
-				$link_date = date_i18n( 'Y-m-d', strtotime( $post->start_date ) );
-			}
-		
-			// recuring event link
-			$link = geodir_getlink( get_permalink( $post->ID ), array( 'gde' => $link_date ) );
-		}
-	}
-	return $link;
-}
-add_filter( 'the_permalink', 'geodir_event_link_recurring_event', 100 );
-
-// Filter the page title for event listing.
-add_filter( 'geodir_listing_page_title', 'geodir_event_listing_page_title', 2, 10);
-
-// Remove past event count from popular category count.
-if ( !is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
-	add_filter( 'get_terms', 'geodir_event_get_terms', 20, 3 );
-	
-	add_filter( 'geodir_category_term_link', 'geodir_event_category_term_link', 20, 3 );
-}
-
-add_filter('geodir_count_reviews_by_term_sql', 'geodir_event_count_reviews_by_term_sql', 10, 4);
-add_filter('geodir_location_count_reviews_by_term_sql', 'geodir_event_count_reviews_by_location_term_sql', 10, 7);
-add_filter('geodir_bestof_widget_view_all_link', 'geodir_event_bestof_widget_view_all_link', 10, 3);
-add_filter('geodir_event_filter_widget_events_join', 'geodir_function_widget_listings_join', 10, 1);
-add_filter('geodir_event_filter_widget_events_where', 'geodir_function_widget_listings_where', 10, 1);
-add_action('geodir_infowindow_meta_before', 'geodir_event_infowindow_meta_event_dates', 10, 3);
-
-// Remove past event count from popular category count.
-if (defined('DOING_AJAX') && DOING_AJAX && isset($_REQUEST['ajax_action']) && $_REQUEST['ajax_action'] == 'cat' && isset($_REQUEST['gd_posttype']) && $_REQUEST['gd_posttype'] == 'gd_event') {
-	add_filter('geodir_home_map_listing_join', 'geodir_event_home_map_marker_query_join', 99, 1);
-	add_filter('geodir_home_map_listing_where', 'geodir_event_home_map_marker_query_where', 100, 1);
-}
-
-
-
-add_filter('geodir_details_schema','geodir_event_schema_filter',10,2);
 /*
  * Filter the schema data for events.
  *
@@ -1481,7 +982,7 @@ add_filter('geodir_details_schema','geodir_event_schema_filter',10,2);
  * @param object $post The post object.
  * @return array The filtered schema array.
  */
-function geodir_event_schema_filter($schema, $post) {
+function geodir_event_schema( $schema, $post ) {
     $event_schema_types = geodir_event_get_schema_types();
     if ( isset( $event_schema_types[ $schema['@type'] ] ) ) {
         if (!empty($post->link_business)) {
@@ -1621,36 +1122,6 @@ function geodir_event_schema_filter($schema, $post) {
     return $schema;
 }
 
-add_filter('geodir_advance_search_filter_titles', 'geodir_event_search_calendar_day_filter_title', 10, 1);
-
-
-/**
- * Group the recurring events in search results.
- *
- * @since 1.4.7
- *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
- * @param string $groupby The GROUP BY clause of the query.
- * @param WP_Query $wp_query The WP_Query instance.
- * @return string Filtered GROUP BY clause of the query.
- */
-function geodir_event_group_recurring_events( $groupby, $wp_query ) {
-    global $wpdb;
-    
-    // No proximity parameter set.
-    if ( !( isset( $_REQUEST['sgeo_lat'] ) && $_REQUEST['sgeo_lat'] != '' && isset( $_REQUEST['sgeo_lon'] ) && $_REQUEST['sgeo_lon'] != '' ) ) {
-        return $groupby;
-    }
-
-    if ( !empty( $_REQUEST['stype'] ) && $_REQUEST['stype'] == 'gd_event' && $wp_query->is_main_query() && geodir_is_page( 'search' ) ) {
-        $groupby = $wpdb->posts . ".ID";
-    }
-
-    return $groupby;
-}
-add_filter( 'posts_groupby', 'geodir_event_group_recurring_events', 100, 2 );
-
 function geodir_event_get_schema_types() {
 	$schemas = array();
 	$schemas['Event'] = 'Event';
@@ -1716,7 +1187,7 @@ function geodir_event_date_to_ymd( $date, $from_format ) {
 	return $date;
 }
 
-function geodir_event_array_insert ( $array, $position, $insert_array ) {
+function geodir_event_array_insert( $array, $position, $insert_array ) {
 	$first_array = array_splice ( $array, 0, $position );
 	return array_merge ( $first_array, $insert_array, $array );
 }
@@ -1729,4 +1200,62 @@ function geodir_event_filter_options() {
 		'past' => __( 'Past', 'geodirevents' )
 	);
 	return apply_filters( 'geodir_event_filter_options', $options );
+}
+
+function geodir_event_time_options( $default = '' ) {
+	$event_times = geodir_event_get_times();
+
+	$all_times = '';
+	foreach( $event_times as $key => $times ) {
+		$selected = ''; 
+		if ( $default == $key || $default == $times || '0 '. $default == $times ) {
+			 $selected = 'selected="selected"';
+		}
+		$all_times.= '<option ' . $selected . ' value="' . $key . '">' . $times . '</option>'; 
+	}
+	return $all_times;
+}
+
+function geodir_event_get_times() {
+	$time_increment = apply_filters( 'geodir_event_time_increment' , 15 ) ;
+	$am = __( '%s AM', 'geodirevents' );
+	$pm = __( '%s PM', 'geodirevents' );
+
+
+	$event_time_array = array();
+	for ( $i = 0; $i < 24; $i++ ) {
+		 for ( $j = 0; $j < 60; $j += $time_increment ) {
+		 	$time_hr_abs = $i;
+		 	$time_am_pm = $am;
+
+			if ( $i >= 12) {
+				$time_am_pm = $pm;
+			}
+
+			if ( $i > 12 ) {
+				$time_hr_abs = $i - 12;
+			}
+		 	if ( $time_hr_abs < 10 ) {
+				$time_hr = '0' . $time_hr_abs;
+			} else {
+				$time_hr = $time_hr_abs;
+			}
+
+			if ( $j < 10 ) {
+				$time_min = '0' . $j;
+			} else {
+				$time_min = $j;
+			}
+
+			if ( $i < 10 ) {
+				$time_hr_index = '0' . $i;
+			} else {
+				$time_hr_index = $i;
+			}
+
+		 	$event_time_array[ $time_hr_index  . ":" . $time_min ] = wp_sprintf( $time_am_pm, $time_hr . ":" . $time_min );
+		 }
+	}
+
+	return apply_filters( 'geodir_event_schedule_times' , $event_time_array);
 }

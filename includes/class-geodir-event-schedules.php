@@ -559,4 +559,9 @@ class GeoDir_Event_Schedules {
 		}
 		return $where;
 	}
+
+	public static function has_schedule( $post_id, $date ) {
+		$schedule = self::get_upcoming_schedule( $post_id, $date );
+		return ! empty( $schedule ) ? true : false;
+	}
 }
