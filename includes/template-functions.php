@@ -329,3 +329,20 @@ function geodir_event_recurring_event_link( $link ) {
 	}
 	return $link;
 }
+
+/**
+ * Filter the page link to best of widget view all listings.
+ *
+ * @since 1.2.4
+ *
+ * @param string $view_all_link View all listings page link.
+ * @param string $post_type The Post type.
+ * @param object $term The category term object.
+ * @return string Link url.
+ */
+function geodir_event_bestof_widget_view_all_link( $view_all_link, $post_type, $term ) {
+	if ( $post_type == 'gd_event' ) {
+		$view_all_link = add_query_arg( array( 'etype' => geodir_get_option( 'event_default_filter' ) ), $view_all_link ) ;
+	}
+	return $view_all_link;
+}

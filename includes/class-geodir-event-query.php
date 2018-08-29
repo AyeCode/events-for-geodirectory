@@ -198,36 +198,6 @@ class GeoDir_Event_Query {
 				$where .= " AND ( start_date = '" . $filter_date . "' OR ( start_date <= '" . $filter_date . "' AND end_date >= '" . $filter_date . "' ) )";
 			}
 		}
-
-		/* // @todo move to LMv2
-		if ( $gd_session->get('all_near_me' ) ) {
-			$radius = geodir_getDistanceRadius( geodir_get_option( 'search_distance_long' ) );
-			$latitude = $gd_session->get('user_lat');
-			$longitude = $gd_session->get('user_lon');
-			
-			if ( $latitude && $longitude ) {
-				if ( ( $near_me_range = $gd_session->get( 'near_me_range' ) ) ) {
-					$distance =  $near_me_range;
-				} else if ( ( $near_me_dist = $gd_session->get( 'near_me_dist' ) ) ) {
-					$distance = $near_me_dist;
-				} else {
-					$distance = 200;
-				}
-
-				$lat1 = $latitude - ( $distance / 69 );
-				$lat2 = $latitude + ( $distance / 69 );
-				$lon1 = $longitude - $distance / abs( cos( deg2rad( $latitude ) ) * 69 ); 
-				$lon2 = $longitude + $distance / abs( cos( deg2rad( $latitude ) ) * 69 );
-
-				$min_latitude = is_numeric( min( $lat1, $lat2 ) ) ? min( $lat1, $lat2 ) : '';
-				$max_latitude = is_numeric( max( $lat1, $lat2 ) ) ? max( $lat1, $lat2 ) : '';
-				$min_longitude = is_numeric( min( $lon1, $lon2 ) ) ? min( $lon1, $lon2 ) : '';
-				$max_longitude = is_numeric( max( $lon1, $lon2 ) ) ? max( $lon1, $lon2 ) : '';
-
-				$where .= " AND ( " . $table . ".latitude BETWEEN " . $min_latitude . " AND " . $max_latitude . " ) AND ( " . $table . ".longitude BETWEEN " . $min_longitude . " AND " . $max_longitude . " )";
-			}
-		}
-		*/
 		
 		$venue = get_query_var( 'venue' );
 		if ( empty( $venue ) && ! empty( $_REQUEST['venue'] ) ) {
@@ -306,15 +276,6 @@ class GeoDir_Event_Query {
 		$condition 	= "( ( ( '" . $month_start . "' BETWEEN start_date AND end_date ) OR ( start_date BETWEEN '" . $month_start . "' AND end_date ) ) AND ( ( '" . $month_end . "' BETWEEN start_date AND end_date ) OR ( end_date BETWEEN start_date AND '" . $month_end . "' ) ) ) AND " . $schedules_table . ".event_id = " . $wpdb->posts . ".ID";
 		
 		$fields = "( SELECT GROUP_CONCAT( DISTINCT CONCAT( DATE_FORMAT( " . $schedules_table . ".start_date, '%d%m%y' ), '', DATE_FORMAT( " . $schedules_table . ".end_date, '%d%m%y' ) ) ) FROM " . $schedules_table . " WHERE " . $condition . " ) AS schedules";
-		/* // @todo move to LMv2
-		if ( $gd_session->get( 'all_near_me' ) ) {
-			$radius = geodir_getDistanceRadius( geodir_get_option( 'search_distance_long' ) );
-			$latitude = $gd_session->get('user_lat');
-			$longitude = $gd_session->get('user_lon');
-			
-			$fields .= ", ( " . $radius . " * 2 * ASIN( SQRT( POWER( SIN( ( ABS( " . $latitude . " ) - ABS( " . $table . ".latitude ) ) * PI() / 180 / 2 ), 2 ) + COS( ABS( " . $latitude . " ) * PI() / 180 ) * COS( ABS( " . $table . ".latitude ) * PI() / 180 ) * POWER( SIN( ( " . $longitude . " - " . $table . ".longitude ) * PI() / 180 / 2 ), 2 ) ) ) ) AS distance";
-		}
-		*/
 
 		return $fields;
 	}

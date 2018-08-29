@@ -42,38 +42,6 @@ class GeoDir_Event_Calendar {
 		$location_title = '';
 		$backup = array();
 		$location_params = '';
-		/* // @todo move to LMv2
-		if ($add_location_filter) {
-			if (isset($_REQUEST['snear'])) {
-				$location_params .= '&snear=' . sanitize_text_field(stripslashes($_REQUEST['snear']));
-			}
-			if (!empty($_REQUEST['sgeo_lat']) && !empty($_REQUEST['sgeo_lon'])) {
-				$location_params .= '&my_lat=' . sanitize_text_field($_REQUEST['sgeo_lat']);
-				$location_params .= '&my_lon=' . sanitize_text_field($_REQUEST['sgeo_lon']);
-			}
-			if (geodir_is_page('detail') && !empty($post) && !empty($post->location_id)) {
-				$location_id = $post->location_id;
-			}
-			
-			$location_id = apply_filters('geodir_event_calendar_widget_location_id', $location_id, $instance, $id_base);
-			if ($location_id && function_exists('geodir_get_location_by_id') && $location = geodir_get_location_by_id('', $location_id)) {
-				$backup['all_near_me'] = $gd_session->get('all_near_me');
-				$backup['gd_multi_location'] = $gd_session->get('gd_multi_location');
-				$backup['gd_country'] = $gd_session->get('gd_country');
-				$backup['gd_region'] = $gd_session->get('gd_region');
-				$backup['gd_city'] = $gd_session->get('gd_city');
-				
-				$gd_session->set('all_near_me', false);
-				$gd_session->set('gd_multi_location', 1);
-				$gd_session->set('gd_country', $location->country_slug);
-				$gd_session->set('gd_region', $location->region_slug);
-				$gd_session->set('gd_city', $location->city_slug);
-			}
-			if (function_exists('geodir_current_loc_shortcode')) {
-				$location_title = geodir_current_loc_shortcode();
-			}
-		}
-		*/
 		if ($title && strpos($title, '%%location_name%%') !== false) {
 			$title = str_replace('%%location_name%%', $location_title, $title);
 		}
@@ -134,16 +102,6 @@ class GeoDir_Event_Calendar {
 	});
 	</script>
 		<?php
-		/* // @todo move to LMv2
-		if (!empty($backup)) {
-			foreach ($backup as $key => $value) {
-				if ($value !== false) {
-					$gd_session->set($key, $value);
-				} else {
-					$gd_session->un_set($key);
-				}
-			}
-		}*/
 	}
 
 	public static function ajax_calendar() {
@@ -167,54 +125,8 @@ class GeoDir_Event_Calendar {
 				$location_params .= '&sgeo_lat=' . sanitize_text_field($_REQUEST['my_lat']);
 				$location_params .= '&sgeo_lon=' . sanitize_text_field($_REQUEST['my_lon']);
 			}
-			
-			/* // @todo move to LMv2
-			if (defined('POST_LOCATION_TABLE')) {
-				$gd_ses_country = $gd_session->get('gd_country');
-				$gd_ses_region = $gd_session->get('gd_region');
-				$gd_ses_city = $gd_session->get('gd_city');
-				$gd_ses_neighbourhood = $gd_session->get('gd_neighbourhood');
-				
-				if ($gd_ses_neighbourhood && geodir_get_option('location_neighbourhoods') && $neighbourhood = geodir_location_get_neighbourhood_by_id($gd_ses_neighbourhood, true)) {
-					$location_params .= '&set_location_type=4&set_location_val=' . (int)$neighbourhood->location_id . '&gd_hood_s=' . (int)$neighbourhood->hood_id;
-				} else if($gd_ses_country || $gd_ses_region || $gd_ses_city) {
-					if ($gd_ses_city) {
-						$location_type = 3;
-						$type = 'city';
-					} else if ($gd_ses_region) {
-						$location_type = 2;
-						$type = 'region';
-					} else if ($gd_ses_country) {
-						$location_type = 1;
-						$type = 'country';
-					}
-					
-					$location_info = geodir_get_location_by_slug($type, array('city_slug' => $gd_ses_city, 'country_slug' => $gd_ses_country, 'region_slug' => $gd_ses_region));
-					if (!empty($location_info)) {
-						$location_params .= '&set_location_type=' . $location_type . '&set_location_val=' . (int)$location_info->location_id;
-					}
-				}
-			}
-			*/
 		}
 		
-		/* // @todo move to LMv2
-		$backup = array();
-		if ($location_id && function_exists('geodir_get_location_by_id') && $location = geodir_get_location_by_id('', $location_id)) {
-			$backup['all_near_me'] = $gd_session->get('all_near_me');
-			$backup['gd_multi_location'] = $gd_session->get('gd_multi_location');
-			$backup['gd_country'] = $gd_session->get('gd_country');
-			$backup['gd_region'] = $gd_session->get('gd_region');
-			$backup['gd_city'] = $gd_session->get('gd_city');
-			
-			$gd_session->set('all_near_me', false);
-			$gd_session->set('gd_multi_location', 1);
-			$gd_session->set('gd_country', $location->country_slug);
-			$gd_session->set('gd_region', $location->region_slug);
-			$gd_session->set('gd_city', $location->city_slug);
-		}
-		*/
-
 		$query_args = array(
 			'gd_event_calendar' => strtotime( $year . '-' . $month ),
 			'is_geodir_loop' => true,
@@ -347,17 +259,6 @@ class GeoDir_Event_Calendar {
 		}
 		?>
 	</table><?php
-		/* // @todo move to LMv2
-		if (!empty($backup)) {
-			foreach ($backup as $key => $value) {
-				if ($value !== false) {
-					$gd_session->set($key, $value);
-				} else {
-					$gd_session->un_set($key);
-				}
-			}
-		}
-		*/
 	}
 
 	public static function parse_calendar_schedules( $event_dates, $all_event_dates = array() ) {
