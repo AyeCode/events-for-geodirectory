@@ -19,44 +19,7 @@ function goedir_event_register_widgets() {
     if ( get_option( 'geodir_event_version' )) {
         register_widget( 'GeoDir_Event_Widget_Calendar' );
         register_widget( 'GeoDir_Event_Widget_AYI' );
-
-		// Non Widgets
-        new GeoDir_Event_Widget_Linked_Events();
     }
-}
-
-function geodir_event_get_my_listings( $post_type = 'all', $search = '', $limit = 5 ) {
-	global $wpdb, $current_user;
-	
-	if( empty( $current_user->ID ) ) {
-		return NULL;
-	} 
-	$geodir_postypes = geodir_get_posttypes();
-
-	$search = trim( $search );
-	$post_type = $post_type != '' ? $post_type : 'all';
-	
-	if( $post_type == 'all' ) {
-		$geodir_postypes = implode( ",", $geodir_postypes );
-		$condition = $wpdb->prepare( " AND FIND_IN_SET( post_type, %s )" , array( $geodir_postypes ) );
-	} else {
-		$post_type = in_array( $post_type, $geodir_postypes ) ? $post_type : 'gd_place';
-		$condition = $wpdb->prepare( " AND post_type = %s" , array( $post_type ) );
-	}
-
-
-	if(!geodir_get_option('event_link_any_user')){
-		$condition .= !current_user_can( 'manage_options' ) ? $wpdb->prepare( "AND post_author=%d" , array( (int)$current_user->ID ) ) : '';
-	}
-	$condition .= $search != '' ? $wpdb->prepare( " AND post_title LIKE %s", array( $search . '%%' ) ) : "";
-	
-	$orderby = " ORDER BY post_title ASC";
-	$limit = " LIMIT " . (int)$limit;
-	
-	$sql = $wpdb->prepare( "SELECT ID, post_title FROM $wpdb->posts WHERE post_status = %s AND post_type != 'gd_event' " . $condition . $orderby . $limit, array( 'publish' ) );
-	$rows = $wpdb->get_results($sql);
-	
-	return $rows;
 }
 
 /*
@@ -275,38 +238,14 @@ function geodir_event_date_time_format() {
 function geodir_event_schema( $schema, $post ) {
     $event_schema_types = geodir_event_get_schema_types();
     if ( isset( $event_schema_types[ $schema['@type'] ] ) ) {
-        if (!empty($post->link_business)) {
-            $place = array();
-            $linked_post = geodir_get_post_info($post->link_business);
-            $place["@type"] = "Place";
-            $place["name"] =  $linked_post->post_title;
-            $place["address"] = array(
-                "@type" => "PostalAddress",
-                "streetAddress" => $linked_post->street,
-                "addressLocality" => $linked_post->city,
-                "addressRegion" => $linked_post->region,
-                "addressCountry" => $linked_post->country,
-                "postalCode" => $linked_post->zip
-            );
-            $place["telephone"] = $linked_post->geodir_contact;
-            
-            if($linked_post->latitude && $linked_post->longitude) {
-                $schema['geo'] = array(
-                    "@type" => "GeoCoordinates",
-                    "latitude" => $linked_post->latitude,
-                    "longitude" => $linked_post->longitude
-                );
-            }
-        } else {
-            $place = array();
-            $place["@type"] = "Place";
-            $place["name"] = $schema['name'];
-            $place["address"] = $schema['address'];
-            if ( ! empty( $schema['telephone'] ) ) {
-				$place["telephone"] = $schema['telephone'];
-			}
-            $place["geo"] = $schema['geo'];
-        }
+		$place = array();
+		$place["@type"] = "Place";
+		$place["name"] = $schema['name'];
+		$place["address"] = $schema['address'];
+		if ( ! empty( $schema['telephone'] ) ) {
+			$place["telephone"] = $schema['telephone'];
+		}
+		$place["geo"] = $schema['geo'];
 
         if (!empty($post->event_dates)) {
             $dates = maybe_unserialize($post->event_dates);

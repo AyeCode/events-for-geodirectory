@@ -40,7 +40,6 @@ class GeoDir_Event_Fields {
 		// Add event form
 		add_filter( 'geodir_before_custom_form_field_recurring', array( __CLASS__, 'input_recurring' ), 10, 3 );
 		add_filter( 'geodir_before_custom_form_field_event_dates', array( __CLASS__, 'input_event_dates' ), 10, 3 );
-		add_filter( 'geodir_before_custom_form_field_link_business', array( __CLASS__, 'input_link_business' ), 10, 3 );
 
 		// Process value before save
 		add_filter( 'geodir_custom_field_value_event', array( __CLASS__, 'sanitize_event_data' ), 10, 6 );
@@ -55,9 +54,6 @@ class GeoDir_Event_Fields {
 		add_filter( 'geodir_custom_field_output_event', array( __CLASS__, 'cf_event' ), 10, 3 );
 		add_filter( 'geodir_custom_field_output_event_var_event_dates', array( __CLASS__, 'output_event_dates' ), 10, 4 ); // Schedules
 		add_filter( 'geodir_custom_field_output_event_loc_listing', array( __CLASS__, 'output_event_date' ), 10, 3 ); // Single date
-		add_filter( 'geodir_custom_field_output_event_var_link_business', array( __CLASS__, 'output_link_business' ), 10, 4 ); // Link business
-		
-		add_filter( 'geodir_cpt_settings_tabs_predefined_fields', array( __CLASS__, 'event_predefined_tabs' ), 10, 2 );
 	}
 
 	public static function default_custom_fields( $fields, $post_type, $package_id ) {
@@ -118,37 +114,6 @@ class GeoDir_Event_Fields {
 			return $custom_fields;
 		}
 
-		// Link Business
-		$custom_fields['link_business'] = array(
-			'field_type'  => 'event',
-			'class'       => 'gd-link-business',
-			'icon'        => 'fas fa-link',
-			'name'        => __( 'Link Business', 'geodirevents' ),
-			'description' => __( 'Add a select input to link the business to the event.', 'geodirevents' ),
-			'single_use'  => 'link_business',
-			'defaults'    => array(
-				'data_type'          => 'INT',
-				'admin_title'        => 'Link Business',
-				'frontend_title'     => 'Link Business',
-				'frontend_desc'      => 'Select & link your business to the event.',
-				'htmlvar_name'       => 'link_business',
-				'is_active'          => true,
-				'for_admin_use'      => false,
-				'default_value'      => '',
-				'show_in'            => '[detail]',
-				'is_required'        => false,
-				'option_values'      => '',
-				'validation_pattern' => '',
-				'validation_msg'     => '',
-				'required_msg'       => '',
-				'field_icon'         => 'fas fa-link',
-				'css_class'          => '',
-				'cat_sort'           => false,
-				'cat_filter'         => false,
-				'single_use'         => true
-			)
-
-		);
 		// Event Fees
 		$custom_fields['event_reg_fees'] = array(
 			'field_type'  => 'text',
@@ -505,36 +470,6 @@ class GeoDir_Event_Fields {
 			<div class="show_different_times_div"><?php echo $different_times_list; ?></div>
 		</div>
 		<?php } ?>
-        <?php
-        $html = ob_get_clean();
-
-		echo $html;
-	}
-
-	public static function input_link_business( $post_type, $package_id, $field ) {
-        if ( $post_type != 'gd_event' ) {
-			return;
-		}
-
-		$field_name 			= $field['name'];
-		$field_title 			= ! empty( $field['frontend_title'] ) ? __( $field['frontend_title'], 'geodirectory' ) : '';
-		$field_desc 			= ! empty( $field['desc'] ) ? __( $field['desc'], 'geodirectory' ) : '';
-		$required_field_class	= ! empty( $field['is_required'] ) ? ' required_field' : '';
-		$required_msg 			= ! empty( $field['required_msg'] ) ? __( $field['required_msg'], 'geodirectory' ) : '';
-
-		$value 					= absint( geodir_get_cf_value( $field ) );
-		$options				= $value > 0 ? '<option value="' . $value . '">' . get_the_title( $value ) . '</option>' : '';
-
-		ob_start();
-        ?>
-        <div id="<?php echo $field_name; ?>_row" class="geodir_form_row clearfix gd-fieldset-details geodir-event-field<?php echo $required_field_class; ?>">
-            <label><?php echo $field_title; ?><?php echo ( ! empty( $field['is_required'] ) ? ' <span>*</span>' : '' ); ?></label>
-			<select field_type="<?php echo $field['type']; ?>" name="<?php echo $field_name; ?>" id="<?php echo $field_name; ?>" class="geodir_textfield textfield_x geodir-select-search" data-select-search="business" data-nonce="<?php echo esc_attr( wp_create_nonce( 'search-business' ) ); ?>" data-placeholder="<?php esc_attr_e( 'Search business...', 'geodirectory' ); ?>" data-allow_clear="false" data-min-input-length="2" data-include="<?php echo $value; ?>"><?php echo $options; ?></select><button type="button" class="geodir-fill-business button button-primary" data-nonce="<?php echo esc_attr( wp_create_nonce( 'fill-business' ) ); ?>"><?php _e( 'Fill Business Details', 'geodievents' ); ?></button>
-            <span class="geodir_message_note"><?php echo $field_desc; ?></span>
-            <?php if ( ! empty( $field['is_required'] ) ) { ?>
-                <span class="geodir_message_error"><?php echo $required_msg; ?></span>
-            <?php } ?>
-        </div>
         <?php
         $html = ob_get_clean();
 
@@ -935,44 +870,6 @@ class GeoDir_Event_Fields {
 		return $html;
 	}
 
-	public static function output_link_business( $html, $location, $cf, $the_post = array() ) {
-		if ( empty( $the_post ) || empty( $cf ) ) {
-			return $html;
-		}
-
-		$htmlvar_name = $cf['htmlvar_name'];
-
-		if ( $htmlvar_name == 'link_business' && ! empty( $the_post->{$htmlvar_name} ) ) {
-			$post_id = (int)$the_post->{$htmlvar_name};
-			if ( get_post_status( $post_id ) == 'publish' ) {
-				$url = get_permalink( $post_id );
-				$rel = strpos( $url, get_site_url() ) !== false ? '' : ' rel="nofollow"';
-				$value = '<a href="' . $url . '" target="_blank"' . $rel . '>' . get_the_title( $post_id ) . '</a>';
-
-				$field_label = ! empty( $cf['frontend_title'] ) ? apply_filters( 'geodir_event_link_business_field_label', __( $cf['frontend_title'], 'geodirevents' ), $the_post, $cf, $location ) : '';
-				$field_icon = geodir_field_icon_proccess( $cf );
-				if ( strpos( $field_icon, 'http' ) !== false ) {
-					$field_icon_af = '';
-				} elseif ( $field_icon == '' ) {
-					$field_icon_af = '';
-				} else {
-					$field_icon_af = $field_icon;
-					$field_icon = '';
-				}
-
-				$html = '<div class="geodir_post_meta geodir-field-' . $htmlvar_name . '" style="clear:both;"><span class="geodir-i-website" style="' . $field_icon . '">' . $field_icon_af;
-				if ( $field_label != '' ) {
-					$html .= $field_label . ': ';
-				}
-				$html .= '</span>' . $value . '</div>';
-			} else {
-				$html = '<div style="display:none"></div>';
-			}
-		}
-
-		return $html;
-	}
-
 	public static function parse_array( $value ) {
 		if ( ! is_array( $value ) && strlen( $value ) < 1 ) {
 			return array();
@@ -987,18 +884,5 @@ class GeoDir_Event_Fields {
 		}
 		
 		return $value;
-	}
-
-	public static function event_predefined_tabs( $fields, $post_type ) {
-		if ( $post_type == 'gd_place' && ( $cf = geodir_get_field_infoby( 'htmlvar_name', 'link_business', 'gd_event' ) ) ) {
-			$fields[] = array(
-				'tab_type'   => 'standard',
-				'tab_name'   => __( 'Events','geodirevents' ),
-				'tab_icon'   => 'fas fa-calendar-alt',
-				'tab_key'    => 'events',
-				'tab_content'=> '[gd_linked_events]'
-			);
-		}
-		return $fields;
 	}
 }

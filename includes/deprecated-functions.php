@@ -110,3 +110,10 @@ function geodir_event_get_schedule_dates($post, $preview = false, $event_type = 
 function geodir_event_date_occurrences( $type = 'year', $start_date, $end_date = '', $interval = 1, $limit = '', $repeat_end = '', $repeat_days = array(), $repeat_weeks = array() ) {
 	_deprecated_function( 'geodir_event_date_occurrences', '2.0.0' );
 }
+
+/**
+ * @deprecated
+ */
+function geodir_event_get_my_listings( $post_type = 'all', $search = '', $limit = 5 ) {
+	_deprecated_function( 'geodir_event_get_my_listings', '2.0.0' );
+}

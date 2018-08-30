@@ -58,12 +58,6 @@ if ( ( ! empty( $geodir_settings ) && ( ! empty( $geodir_settings['admin_uninsta
 			'event_display_date_format',
 			'event_use_custom_format',
 			'event_custom_date_format',
-			'event_link_any_user',
-			'event_linked_count',
-			'event_linked_event_type',
-			'event_linked_single_event',
-			'event_linked_sortby',
-			'event_linked_listing_view',
 			'uninstall_geodir_event_manager',
 		);
 

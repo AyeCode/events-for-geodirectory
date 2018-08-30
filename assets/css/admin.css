@@ -104,15 +104,4 @@ body .geodir-none {
 	border-color: #ccc;
 }
 
-.geodir_form_row select#link_business {
-	width: calc( 70% - 180px );
-}
-.geodir_form_row button.geodir-fill-business,
-.geodir_form_row button.geodir-fill-business:focus {
-	width: 150px;
-	display: inline-block;
-	margin-left: 15px;
-	vertical-align: middle;
-}
-
 /* ADD EVENT FORM ENDS */

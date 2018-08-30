@@ -66,9 +66,7 @@ class GeoDir_Event_API {
 		if ( $post_type != 'gd_event' ) {
 			return $empty;
 		}
-		if ( $field['name'] == 'link_business' ) {
-			$args['type']   = geodir_rest_data_type_to_field_type( $field['data_type'] );
-		} else if ( $field['name'] == 'recurring' ) {
+		if ( $field['name'] == 'recurring' ) {
 			$args['type']   = 'integer';
 		} else if ( $field['name'] == 'event_dates' ) {
 			$times = array_keys( geodir_event_get_times() );

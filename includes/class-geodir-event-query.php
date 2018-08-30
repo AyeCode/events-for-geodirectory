@@ -95,9 +95,6 @@ class GeoDir_Event_Query {
 			if ( isset( $gd_query_args_widgets['event_type'] ) && ( $condition = GeoDir_Event_Schedules::event_type_condition( $gd_query_args_widgets['event_type'] ) ) ) {
 				$where .= " AND " . $condition;
 			}
-			if ( ! empty( $gd_query_args_widgets['link_business'] ) ) {
-				$where .= " AND " . GEODIR_EVENT_DETAIL_TABLE . ".link_business = " . (int)$gd_query_args_widgets['link_business'];
-			}
 		}
 		return $where;
 	}
@@ -196,24 +193,6 @@ class GeoDir_Event_Query {
 				$filter_date = substr( $filter_date, 0, 4 ) . '-' . substr( $filter_date , 4, 2 ) . '-' . substr( $filter_date, 6, 2 );
 
 				$where .= " AND ( start_date = '" . $filter_date . "' OR ( start_date <= '" . $filter_date . "' AND end_date >= '" . $filter_date . "' ) )";
-			}
-		}
-		
-		$venue = get_query_var( 'venue' );
-		if ( empty( $venue ) && ! empty( $_REQUEST['venue'] ) ) {
-			$venue = sanitize_text_field( $_REQUEST['venue'] );
-		}
-
-		if ( ! empty( $venue ) ) {
-			$venue = explode( '-', $venue, 2);
-			if ( ! empty( $venue[0] ) && (int)$venue[0] > 0 ) {
-				if ( geodir_is_gd_post_type( get_post_type( (int)$venue[0] ) ) ) {
-					$link_business = (int)$venue[0];
-				} else {
-					$link_business = '-1';
-				}
-
-				$where .= " AND " . $table . ".link_business = " . (int)$link_business;
 			}
 		}
 
