@@ -44,7 +44,7 @@ class GeoDir_Event_Admin_Assets {
 
 		// Admin styles for GD pages only
 		if ( in_array( $screen_id, geodir_get_screen_ids() ) ) {
-			if ( ( 'edit.php' === $pagenow || 'post.php' === $pagenow || 'post-new.php' == $pagenow ) && ! empty( $post->post_type ) && $post->post_type == 'gd_event' ) {
+			if ( ( 'edit.php' === $pagenow || 'post.php' === $pagenow || 'post-new.php' == $pagenow ) && ! empty( $post->post_type ) && GeoDir_Post_types::supports( $post->post_type, 'events' ) ) {
 				wp_enqueue_style( 'yui-calendar' );
 			}
 
@@ -73,7 +73,7 @@ class GeoDir_Event_Admin_Assets {
 
 		// Admin scripts for GD pages only
 		if ( in_array( $screen_id, geodir_get_screen_ids() ) ) {
-			if ( ( 'edit.php' === $pagenow || 'post.php' === $pagenow || 'post-new.php' == $pagenow ) && ! empty( $post->post_type ) && $post->post_type == 'gd_event' ) {
+			if ( ( 'edit.php' === $pagenow || 'post.php' === $pagenow || 'post-new.php' == $pagenow ) && ! empty( $post->post_type ) && GeoDir_Post_types::supports( $post->post_type, 'events' ) ) {
 				// YUI Calendar
 				wp_enqueue_script( 'yui-calendar' );
 				wp_localize_script( 'yui-calendar', 'cal_trans', geodir_event_yui_calendar_params() );

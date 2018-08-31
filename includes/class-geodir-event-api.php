@@ -63,7 +63,7 @@ class GeoDir_Event_API {
 
 	public static function event_feild_schema( $args, $post_type, $field, $custom_fields, $package_id, $default ) {
 		$empty = array();
-		if ( $post_type != 'gd_event' ) {
+		if ( ! GeoDir_Post_types::supports( $post_type, 'events' ) ) {
 			return $empty;
 		}
 		if ( $field['name'] == 'recurring' ) {

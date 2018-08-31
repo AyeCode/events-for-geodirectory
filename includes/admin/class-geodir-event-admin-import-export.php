@@ -35,7 +35,7 @@ class GeoDir_Event_Admin_Import_Export {
 	}
 
 	public static function import_validate_post( $post_info, $row ) {
-		if ( ! empty( $post_info ) && is_array( $post_info ) && $post_info['post_type'] == 'gd_event' ) {
+		if ( ! empty( $post_info ) && is_array( $post_info ) && GeoDir_Post_types::supports( $post_info['post_type'], 'events' ) ) {
 			$default_start_date = date_i18n( 'Y-m-d' );
 			$mapping = array(
 				'start_date' 				=> 'start_date',
@@ -224,7 +224,7 @@ class GeoDir_Event_Admin_Import_Export {
 	}
 
 	public static function export_events( $results, $post_type ) {
-		if ( $post_type == 'gd_event' && ! empty( $results ) ) {
+		if ( GeoDir_Post_types::supports( $post_type, 'events' ) && ! empty( $results ) ) {
 			$is_recurring_active	= geodir_event_is_recurring_active();
 			$week_day_nos 			= self::week_days();
 

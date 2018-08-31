@@ -63,7 +63,7 @@ class GeoDir_Event_Widgets {
 	}
 
 	public static function widget_listings_query_args( $query_args, $params = array() ) {
-		if ( ! empty( $params['post_type'] ) && $params['post_type'] == 'gd_event' ) {
+		if ( ! empty( $params['post_type'] ) && GeoDir_Post_types::supports( $params['post_type'], 'events' ) ) {
 			$merge_args = array( 'event_type', 'single_event' );
 			
 			foreach ( $merge_args as $key => $arg ) {

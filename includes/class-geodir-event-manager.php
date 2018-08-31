@@ -96,7 +96,6 @@ final class GeoDir_Event_Manager {
         $this->define( 'GEODIR_EVENT_PLUGIN_BASENAME', plugin_basename( GEODIR_EVENT_PLUGIN_FILE ) );
 
         // Database tables
-		$this->define( 'GEODIR_EVENT_DETAIL_TABLE', $plugin_prefix . 'gd_event_detail' );
 		$this->define( 'GEODIR_EVENT_SCHEDULES_TABLE', $plugin_prefix . 'event_schedule' );
     }
     

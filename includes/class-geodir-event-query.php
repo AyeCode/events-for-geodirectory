@@ -44,7 +44,7 @@ class GeoDir_Event_Query {
 	}
 
 	public static function filter_calender_posts( $query ) {
-		if ( get_query_var( 'post_type' ) == 'gd_event' && get_query_var( 'gd_event_calendar' ) ) {
+		if ( GeoDir_Post_types::supports( get_query_var( 'post_type' ), 'events' ) && get_query_var( 'gd_event_calendar' ) ) {
 			add_filter( 'posts_fields', array( __CLASS__, 'calendar_posts_fields' ), 10, 2 );
 			add_filter( 'posts_join', array( __CLASS__, 'calendar_posts_join' ), 10, 2 );
 			add_filter( 'posts_where', array( __CLASS__, 'calendar_posts_where' ), 10, 2 );
@@ -54,7 +54,7 @@ class GeoDir_Event_Query {
 	}
 
 	public static function is_rest( $query ) {
-		if ( defined( 'REST_REQUEST' ) && REST_REQUEST && ! empty( $query->query_vars ) && $query->query_vars['post_type'] == 'gd_event' ) {
+		if ( defined( 'REST_REQUEST' ) && REST_REQUEST && ! empty( $query->query_vars ) && GeoDir_Post_types::supports( $query->query_vars['post_type'], 'events' ) ) {
 			return true;
 		}
 		return false;
@@ -73,7 +73,7 @@ class GeoDir_Event_Query {
 	public static function widget_posts_fields( $fields, $table, $post_type ) {
 		global  $wpdb, $gd_query_args_widgets;
 
-		if ( $post_type == 'gd_event' ) {
+		if ( GeoDir_Post_types::supports( $post_type, 'events' ) ) {
 			$fields .= ", " . GEODIR_EVENT_SCHEDULES_TABLE . ".*";
 		}
 		return $fields;
@@ -82,7 +82,7 @@ class GeoDir_Event_Query {
 	public static function widget_posts_join( $join, $post_type ) {
 		global $wpdb, $gd_query_args_widgets;
 
-		if ( $post_type == 'gd_event' ) {
+		if ( GeoDir_Post_types::supports( $post_type, 'events' ) ) {
 			$join .= " LEFT JOIN " . GEODIR_EVENT_SCHEDULES_TABLE . " ON " . GEODIR_EVENT_SCHEDULES_TABLE . ".event_id = " . $wpdb->posts . ".ID";	
 		}
 		return $join;
@@ -91,7 +91,7 @@ class GeoDir_Event_Query {
 	public static function widget_posts_where( $where, $post_type ) {
 		global  $wpdb, $gd_query_args_widgets;
 
-		if ( $post_type == 'gd_event' && ! empty( $gd_query_args_widgets ) ) {
+		if ( GeoDir_Post_types::supports( $post_type, 'events' ) && ! empty( $gd_query_args_widgets ) ) {
 			if ( isset( $gd_query_args_widgets['event_type'] ) && ( $condition = GeoDir_Event_Schedules::event_type_condition( $gd_query_args_widgets['event_type'] ) ) ) {
 				$where .= " AND " . $condition;
 			}
@@ -102,7 +102,7 @@ class GeoDir_Event_Query {
 	public static function widget_posts_groupby( $groupby, $post_type ) {
 		global  $wpdb, $gd_query_args_widgets;
 
-		if ( $post_type == 'gd_event' ) {
+		if ( GeoDir_Post_types::supports( $post_type, 'events' ) ) {
 			if ( ! empty( $gd_query_args_widgets['single_event'] ) ) {
 				$groupby = " GROUP BY " . GEODIR_EVENT_SCHEDULES_TABLE . ".event_id";
 				//$groupby = " GROUP BY " .  $wpdb->posts . ".ID";
@@ -117,7 +117,7 @@ class GeoDir_Event_Query {
 	public static function widget_posts_orderby( $orderby, $table, $post_type ) {
 		global  $wpdb, $gd_query_args_widgets;
 
-		if ( $post_type == 'gd_event' ) {
+		if ( GeoDir_Post_types::supports( $post_type, 'events' ) ) {
 			$order_by = ! empty( $gd_query_args_widgets['order_by'] ) ? $gd_query_args_widgets['order_by'] : '';
 
 			if ( $order_by == 'random' ) {
@@ -144,7 +144,7 @@ class GeoDir_Event_Query {
 	public static function posts_fields( $fields, $query = array() ) {
 		global $geodir_post_type;
 		
-		if ( $geodir_post_type != 'gd_event' ) {
+		if ( ! GeoDir_Post_types::supports( $geodir_post_type, 'events' ) ) {
 			return $fields;
 		}
 		if ( trim( $fields ) != '' ) {
@@ -159,7 +159,7 @@ class GeoDir_Event_Query {
 	public static function posts_join( $join, $query = array() ) {
 		global $wpdb, $geodir_post_type;
 		
-		if ( $geodir_post_type != 'gd_event' ) {
+		if ( ! GeoDir_Post_types::supports( $geodir_post_type, 'events' ) ) {
 			return $join;
 		}
 
@@ -171,11 +171,11 @@ class GeoDir_Event_Query {
 	public static function posts_where( $where, $query = array() ) {
 		global $geodir_post_type;
 		
-		if ( $geodir_post_type != 'gd_event' ) {
+		if ( ! GeoDir_Post_types::supports( $geodir_post_type, 'events' ) ) {
 			return $where;
 		}
 
-		$table 				= GEODIR_EVENT_DETAIL_TABLE;
+		$table 				= geodir_db_cpt_table( 'gd_event' );
 		$schedules_table	= GEODIR_EVENT_SCHEDULES_TABLE;
 
 		$event_type = ! empty( $_REQUEST['etype'] ) ? sanitize_text_field( $_REQUEST['etype'] ) : geodir_get_option( 'event_default_filter' );
@@ -202,7 +202,7 @@ class GeoDir_Event_Query {
 	public static function posts_groupby( $groupby, $query = array() ) {
 		global $wpdb, $geodir_post_type;
 
-		if ( $geodir_post_type != 'gd_event' ) {
+		if ( ! GeoDir_Post_types::supports( $geodir_post_type, 'events' ) ) {
 			return $groupby;
 		}
 		
@@ -220,7 +220,7 @@ class GeoDir_Event_Query {
 	public static function posts_orderby( $orderby, $sortby, $table, $query = array() ) {
 		global $geodir_post_type;
 
-		if ( $geodir_post_type != 'gd_event' || $sortby == 'random' ) {
+		if ( $sortby == 'random' || ! GeoDir_Post_types::supports( $geodir_post_type, 'events' ) ) {
 			return $orderby;
 		}
 
@@ -244,7 +244,7 @@ class GeoDir_Event_Query {
 	public static function calendar_posts_fields( $fields, $query = array() ) {
 		global $wpdb;
 
-		$table 				= GEODIR_EVENT_DETAIL_TABLE;
+		$table 				= geodir_db_cpt_table( 'gd_event' );
 		$schedules_table	= GEODIR_EVENT_SCHEDULES_TABLE;
 		$date 				= get_query_var( 'gd_event_calendar' );
 		$current_year 		= date_i18n( 'Y', $date );
@@ -262,7 +262,7 @@ class GeoDir_Event_Query {
 	public static function calendar_posts_join( $join, $query = array() ) {
 		global $wpdb;
 
-		$table 				= GEODIR_EVENT_DETAIL_TABLE;
+		$table 				= geodir_db_cpt_table( 'gd_event' );
 		$schedules_table	= GEODIR_EVENT_SCHEDULES_TABLE;
 
 		$join .= " LEFT JOIN " . $table . " ON " . $table . ".post_id = " . $wpdb->posts . ".ID";
@@ -272,7 +272,7 @@ class GeoDir_Event_Query {
 	}
 
 	public static function calendar_posts_where( $where, $query = array() ) {
-		$table 				= GEODIR_EVENT_DETAIL_TABLE;
+		$table 				= geodir_db_cpt_table( 'gd_event' );
 		$schedules_table	= GEODIR_EVENT_SCHEDULES_TABLE;
 		$date 				= get_query_var( 'gd_event_calendar' );
 		$current_year 		= date_i18n( 'Y', $date );

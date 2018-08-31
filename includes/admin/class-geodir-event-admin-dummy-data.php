@@ -31,7 +31,7 @@ class GeoDir_Event_Admin_Dummy_Data {
 	 * @return array
 	 */
 	public static function dummy_data_types( $types, $post_type ) {
-		if ( $post_type != 'gd_event' ) {
+		if ( ! GeoDir_Post_types::supports( $post_type, 'events' ) ) {
 			return $types;
 		}
 
@@ -52,7 +52,7 @@ class GeoDir_Event_Admin_Dummy_Data {
 	public static function include_file( $post_type, $data_type, $type, $item_index ) {
 		global $dummy_image_url, $dummy_categories, $dummy_custom_fields, $dummy_posts;
 
-		if ( $post_type != 'gd_event' ) {
+		if ( ! GeoDir_Post_types::supports( $post_type, 'events' ) ) {
 			return;
 		}
 

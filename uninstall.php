@@ -22,7 +22,7 @@ if ( ( ! empty( $geodir_settings ) && ( ! empty( $geodir_settings['admin_uninsta
 		$plugin_prefix = $wpdb->prefix . 'geodir_';
 	}
 
-	$event_detail_table = defined( 'GEODIR_EVENT_DETAIL_TABLE' ) ? GEODIR_EVENT_DETAIL_TABLE : $plugin_prefix . 'gd_event_detail';
+	$event_detail_table = $plugin_prefix . 'gd_event_detail';
 	$event_schedules_table = defined( 'GEODIR_EVENT_SCHEDULES_TABLE' ) ? GEODIR_EVENT_SCHEDULES_TABLE : $plugin_prefix . 'event_schedule';
 	$attachments_table = defined( 'GEODIR_ATTACHMENT_TABLE' ) ? GEODIR_ATTACHMENT_TABLE : $plugin_prefix . 'attachments';
 	$custom_fields_table = defined( 'GEODIR_CUSTOM_FIELDS_TABLE' ) ? GEODIR_CUSTOM_FIELDS_TABLE : $plugin_prefix . 'custom_fields';

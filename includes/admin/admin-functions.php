@@ -86,7 +86,7 @@ function geodir_event_filter_schemas( $schemas ) {
 }
 
 function geodir_event_custom_sort_options( $fields, $post_type ) {
-	if ( $post_type == 'gd_event' ) {
+	if ( GeoDir_Post_types::supports( $post_type, 'events' ) ) {
 		$fields['event_dates'] = array(
 			'post_type'      => $post_type,
 			'data_type'      => '',

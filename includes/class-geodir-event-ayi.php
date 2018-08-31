@@ -37,13 +37,12 @@ class GeoDir_Event_AYI {
 	public static function update_interested_count( $post_id, $user_id, $type, $add_or_remove, $gde ) {
 		global $wpdb, $plugin_prefix;
 
-		$post_type = 'gd_event';
-		$detail_table = $plugin_prefix . $post_type . '_detail';
+		$table = geodir_db_cpt_table( get_post_type( $post_id ) );
 
 		$count = self::count_interested( $post_id, $gde );
 
-		if ( $wpdb->get_var( "SHOW TABLES LIKE '" . GEODIR_EVENT_DETAIL_TABLE . "'" ) == GEODIR_EVENT_DETAIL_TABLE ) {
-			$wpdb->query( $wpdb->prepare( "UPDATE " . GEODIR_EVENT_DETAIL_TABLE . " SET rsvp_count = %d WHERE post_id = %d", array( $count['total'], $post_id ) ) );
+		if ( $wpdb->get_var( "SHOW TABLES LIKE '" . $table . "'" ) == $table ) {
+			$wpdb->query( $wpdb->prepare( "UPDATE {$table} SET rsvp_count = %d WHERE post_id = %d", array( $count['total'], $post_id ) ) );
 		}
 	}
 
@@ -85,7 +84,7 @@ class GeoDir_Event_AYI {
 		if ( ! geodir_is_page( 'detail' ) ) {
 			return false;
 		}
-		if ( get_query_var( 'post_type' ) != 'gd_event' ) {
+		if ( ! GeoDir_Post_types::supports( get_query_var( 'post_type' ), 'events' ) ) {
 			return false;
 		}
 
@@ -248,9 +247,7 @@ class GeoDir_Event_AYI {
 		if (!get_current_user_id()) {
 			return;
 		}
-	//    if (get_query_var('post_type') != 'gd_event') {
-	//        return;
-	//    }
+
 		$ajax_nonce = wp_create_nonce("geodir-ayi-nonce");
 		?>
 		<script type="text/javascript">
@@ -320,7 +317,7 @@ class GeoDir_Event_AYI {
 
 
 	public static function save_ayi_data( $post_id, $post, $update ) {
-		if ( ! $update && $post->post_type == 'gd_event' ) {
+		if ( ! $update && GeoDir_Post_types::supports( $post->post_type, 'events' ) ) {
 			$rsvp_args = array();
 			$rsvp_args['action'] = 'add';
 			$rsvp_args['type'] = 'event_rsvp_yes';
@@ -331,7 +328,7 @@ class GeoDir_Event_AYI {
 	}
 
 	public static function remove_ayi_data( $post_id ) {
-		if ( get_post_type( $post_id ) == 'gd_event' ) {
+		if ( GeoDir_Post_types::supports( get_post_type( $post_id ), 'events' ) ) {
 			$rsvp_args = array();
 			$rsvp_args['action'] = 'remove';
 			$rsvp_args['type'] = 'event_rsvp_yes';

@@ -28,7 +28,9 @@ class GeoDir_Event_Fields {
 
 	public static function init() {
 	
-		add_filter( 'geodir_default_custom_fields', array( __CLASS__, 'default_custom_fields' ), 10, 3 );
+		if ( ! ( ! empty( $_REQUEST['tab'] ) && $_REQUEST['tab'] == 'cpt' && isset( $_REQUEST['prev_supports_events'] ) ) ) {
+			add_filter( 'geodir_default_custom_fields', array( __CLASS__, 'default_custom_fields' ), 10, 3 );
+		}
 		add_filter( 'geodir_custom_fields_predefined', array( __CLASS__, 'predefined_fields' ), 10, 2 );
 
 		// Admin cpt cf settings
@@ -57,7 +59,7 @@ class GeoDir_Event_Fields {
 	}
 
 	public static function default_custom_fields( $fields, $post_type, $package_id ) {
-		if ( $post_type == 'gd_event' ) {
+		if ( GeoDir_Post_types::supports( $post_type, 'events' ) ) {
 			$package = is_array( $package_id ) && ! empty( $package_id ) ? $package_id : ( $package_id !== '' ? array( $package_id ) : '');
 
 			$fields[] = array(
@@ -211,7 +213,7 @@ class GeoDir_Event_Fields {
 	}
 
 	public static function cfa_can_delete_field( $delete, $field ) {
-		if ( ! empty( $field ) && $field->post_type == 'gd_event' ) {
+		if ( ! empty( $field ) && GeoDir_Post_types::supports( $field->post_type, 'events' ) ) {
 			if ( $field->htmlvar_name == 'recurring' || $field->htmlvar_name == 'event_dates' ) {
 				$delete = false;
 			}
@@ -220,7 +222,7 @@ class GeoDir_Event_Fields {
 	}
 
 	public static function input_recurring( $post_type, $package_id, $field ) {
-        if ( $post_type != 'gd_event' ) {
+        if ( ! GeoDir_Post_types::supports( $post_type, 'events' ) ) {
 			return;
 		}
 
@@ -249,7 +251,7 @@ class GeoDir_Event_Fields {
 	}
 
 	public static function input_event_dates( $post_type, $package_id, $field ) {
-		if ( $post_type != 'gd_event' ) {
+		if ( ! GeoDir_Post_types::supports( $post_type, 'events' ) ) {
 			return;
 		}
 
@@ -477,7 +479,7 @@ class GeoDir_Event_Fields {
 	}
 
 	public static function save_event_data( $postarr, $gd_post, $post, $update ) {
-		if ( ! empty( $post->post_type ) && $post->post_type == 'gd_event' ) {
+		if ( ! empty( $post->post_type ) && GeoDir_Post_types::supports( $post->post_type, 'events' ) ) {
 			if ( isset( $postarr['event_dates'] ) ) {
 				if ( ! geodir_event_is_recurring_active() ) {
 					$postarr['recurring'] = false;
@@ -648,7 +650,7 @@ class GeoDir_Event_Fields {
 			return $value;
 		}
 
-		if ( ! ( ! empty( $gd_post->ID ) && ! empty( $gd_post->post_type ) && $gd_post->post_type == 'gd_event' ) ) {
+		if ( ! ( ! empty( $gd_post->ID ) && ! empty( $gd_post->post_type ) && GeoDir_Post_types::supports( $gd_post->post_type, 'events' ) ) ) {
 			return $value;
 		}
 
