@@ -421,14 +421,14 @@ function geodir_event_array_insert( $array, $position, $insert_array ) {
 	return array_merge ( $first_array, $insert_array, $array );
 }
 
-function geodir_event_filter_options() {
+function geodir_event_filter_options( $post_type = 'gd_event' ) {
 	$options = array(
-		'all' => __( 'All Events', 'geodirevents' ),
+		'all' => wp_sprintf( _x( 'All %s', 'Event type filter', 'geodirevents' ), geodir_post_type_name( $post_type, true ) ),
 		'today' => __( 'Today', 'geodirevents' ),
 		'upcoming' => __( 'Upcoming', 'geodirevents' ),
 		'past' => __( 'Past', 'geodirevents' )
 	);
-	return apply_filters( 'geodir_event_filter_options', $options );
+	return apply_filters( 'geodir_event_filter_options', $options, $post_type );
 }
 
 function geodir_event_time_options( $default = '' ) {

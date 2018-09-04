@@ -90,7 +90,7 @@ function geodir_event_display_event_type_filter( $post_type ) {
 		return;
 	}
 
-	$event_types = geodir_event_filter_options();
+	$event_types = geodir_event_filter_options( $post_type );
 
 	if ( empty( $event_types ) ) {
 		return;
@@ -218,8 +218,8 @@ function geodir_event_search_show_current_filters( $filters = array() ) {
     return $filters;
 }
 
-function geodir_event_type_title( $event_type ) {
-	$event_types = geodir_event_filter_options();
+function geodir_event_type_title( $event_type, $post_type = 'gd_event' ) {
+	$event_types = geodir_event_filter_options( $post_type );
 
 	if ( ! empty( $event_type ) ) {
 		$title = isset( $event_types[ $event_type ] ) ? $event_types[ $event_type ] : $event_type;
@@ -227,7 +227,7 @@ function geodir_event_type_title( $event_type ) {
 		$title = $event_type;
 	}	
 
-	return apply_filters( 'geodir_event_type_title', $title, $event_type );
+	return apply_filters( 'geodir_event_type_title', $title, $event_type, $post_type );
 }
 
 /**

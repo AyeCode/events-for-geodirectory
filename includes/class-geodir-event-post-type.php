@@ -42,6 +42,8 @@ class GeoDir_Event_Post_Type {
 
 		// Post type events supports disabled.
 		add_action( 'geodir_event_pt_events_supports_disabled', array( __CLASS__, 'pt_events_supports_disabled' ), 10.1, 1 );
+
+		add_filter( 'geodir_post_type_supports', array( __CLASS__, 'post_type_supports' ), 10, 3 );
 	}
 
 	/**
@@ -422,16 +424,18 @@ class GeoDir_Event_Post_Type {
 	 */
 	public static function post_type_supports( $value, $post_type, $feature ) {
 		// Check a post type supports events
-		if ( $feature == 'events' && defined( 'GEODIR_CP_VERSION' ) ) {
+		if ( $feature == 'events' ) {
 			if ( $post_type == 'gd_event' ) {
 				return true;
 			}
 
-			$post_type_object = geodir_post_type_object( $post_type );
-			if ( ! empty( $post_type_object ) && ! empty( $post_type_object->supports_events ) ) {
-				$value = true;
-			} else {
-				$value = false;
+			if ( defined( 'GEODIR_CP_VERSION' ) ) {
+				$post_type_object = geodir_post_type_object( $post_type );
+				if ( ! empty( $post_type_object ) && ! empty( $post_type_object->supports_events ) ) {
+					$value = true;
+				} else {
+					$value = false;
+				}
 			}
 		}
 
@@ -461,10 +465,10 @@ class GeoDir_Event_Post_Type {
 
 		$table = geodir_db_cpt_table( $post_type );
 
-		$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->posts} SET post_status = %s WHERE post_status != %s", array( 'draft', 'draft' ) ) );
+		$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->posts} SET post_status = %s WHERE post_type = %s AND post_status != %s", array( 'draft', $post_type, 'draft' ) ) );
 		$wpdb->query( $wpdb->prepare( "UPDATE {$table} SET post_status = %s WHERE post_status != %s", array( 'draft', 'draft' ) ) );
 
-		$fields = GeoDir_Event_Fields::default_custom_fields( array(), $post_type, 0 );
+		$fields = GeoDir_Event_Fields::event_custom_fields( $post_type, 0 );
 
 		if ( ! empty( $fields ) ) {
 			foreach ( $fields as $key => $field ) {
@@ -478,7 +482,7 @@ class GeoDir_Event_Post_Type {
 	public static function pt_events_supports_disabled( $post_type ) {
 		global $wpdb;
 
-		$fields = GeoDir_Event_Fields::default_custom_fields( array(), $post_type, 0 );
+		$fields = GeoDir_Event_Fields::event_custom_fields( $post_type, 0 );
 
 		if ( ! empty( $fields ) ) {
 			$cfs = new GeoDir_Settings_Cpt_Cf();
@@ -497,7 +501,7 @@ class GeoDir_Event_Post_Type {
 	public static function update_fields_sort_order( $post_type ) {
 		global $wpdb;
 
-		$results = $wpdb->get_results( $wpdb->prepare( "SELECT id FROM `" . GEODIR_CUSTOM_FIELDS_TABLE . "` WHERE post_type = %s ORDER BY sort_order ASC", array( $post_type ) ) );
+		$results = $wpdb->get_results( $wpdb->prepare( "SELECT id FROM `" . GEODIR_CUSTOM_FIELDS_TABLE . "` WHERE post_type = %s ORDER BY sort_order ASC, id ASC", array( $post_type ) ) );
 
 		if ( ! empty( $results ) ) {
 			$sort_order = 0;
@@ -507,6 +511,29 @@ class GeoDir_Event_Post_Type {
 				$wpdb->update( GEODIR_CUSTOM_FIELDS_TABLE, array( 'sort_order' => $sort_order ), array( 'id' => $row->id ) );
 			}
 		}
+	}
+
+	public static function get_event_post_types() {
+		global $wpdb;
+
+		$post_types = wp_cache_get( 'geodir_event_post_types', 'event_post_types' );
+
+		if ( $post_types !== false ) {
+			return $post_types;
+		}
+
+		$gd_post_types = geodir_get_posttypes();
+
+		$post_types = array();
+		foreach ( $gd_post_types as $post_type ) {
+			if ( GeoDir_Post_types::supports( $post_type, 'events' ) ) {
+				$post_types[] = $post_type;
+			}
+		}
+
+		wp_cache_set( 'geodir_event_post_types', $post_types, 'event_post_types' );
+
+		return $post_types;
 	}
 }
 GeoDir_Event_Post_Type::init();

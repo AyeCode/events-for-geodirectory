@@ -35,6 +35,15 @@ class GeoDir_Event_Widgets {
 				$new_arguments[ $key ] = $argument;
 
 				if ( $key == $match_classes[ $widget_class ] ) {
+					$event_post_types = GeoDir_Event_Post_Type::get_event_post_types();
+					$conditions = array();
+					if ( ! empty( $event_post_types ) ) {
+						foreach ( $event_post_types as $pt ) {
+							$conditions[] = '[%post_type%]=="' . $pt . '"';
+						}
+					}
+					$condition = ! empty( $conditions ) ? implode( ' || ', $conditions ) : '';
+
 					$new_arguments['event_type'] = array(
 						'type' => 'select',
 						'title' => __( 'Show events:', 'geodirevents' ),
@@ -43,7 +52,7 @@ class GeoDir_Event_Widgets {
 						'default' => 'all',
 						'desc_tip' => true,
 						'advanced' => true,
-						'element_require' => '[%post_type%]=="gd_event"',
+						'element_require' => $condition,
 					);
 
 					$new_arguments['single_event'] = array(
@@ -53,7 +62,7 @@ class GeoDir_Event_Widgets {
 						'default' => '0',
 						'desc_tip' => true,
 						'advanced' => true,
-						'element_require' => '[%post_type%]=="gd_event"',
+						'element_require' => $condition,
 					);
 				}
 			}
