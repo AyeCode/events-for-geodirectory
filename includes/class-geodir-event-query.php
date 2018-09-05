@@ -175,7 +175,6 @@ class GeoDir_Event_Query {
 			return $where;
 		}
 
-		$table 				= geodir_db_cpt_table( 'gd_event' );
 		$schedules_table	= GEODIR_EVENT_SCHEDULES_TABLE;
 
 		$event_type = ! empty( $_REQUEST['etype'] ) ? sanitize_text_field( $_REQUEST['etype'] ) : geodir_get_option( 'event_default_filter' );
@@ -193,6 +192,26 @@ class GeoDir_Event_Query {
 				$filter_date = substr( $filter_date, 0, 4 ) . '-' . substr( $filter_date , 4, 2 ) . '-' . substr( $filter_date, 6, 2 );
 
 				$where .= " AND ( start_date = '" . $filter_date . "' OR ( start_date <= '" . $filter_date . "' AND end_date >= '" . $filter_date . "' ) )";
+			}
+
+			if ( ! empty( $_REQUEST['event_dates'] ) ) {
+				$date_format = geodir_event_date_format();
+				$date_format = apply_filters( 'geodir_event_serach_date_format', $date_format, $geodir_post_type );
+
+				if ( is_array( $_REQUEST['event_dates'] ) ) {
+					$from_date = ! empty( $_REQUEST['event_dates']['from'] ) ? geodir_event_date_to_ymd( sanitize_text_field( $_REQUEST['event_dates']['from'] ), $date_format ) : '';
+					$to_date = ! empty( $_REQUEST['event_dates']['to'] ) ? geodir_event_date_to_ymd( sanitize_text_field( $_REQUEST['event_dates']['to'] ), $date_format ) : '';
+
+					if ( ! empty( $from_date ) && ! empty( $to_date ) ) {
+						$where .= " AND ( ( '{$from_date}' BETWEEN {$schedules_table}.start_date AND {$schedules_table}.end_date ) OR ( {$schedules_table}.start_date BETWEEN '{$from_date}' AND {$schedules_table}.end_date ) ) AND ( ( '{$to_date}' BETWEEN {$schedules_table}.start_date AND {$schedules_table}.end_date ) OR ( {$schedules_table}.end_date BETWEEN {$schedules_table}.start_date AND '{$to_date}' ) ) ";
+					} else {
+						$date = ! empty( $from_date ) ? $from_date : $to_date;
+						$where .= " AND ( '{$date}' BETWEEN {$schedules_table}.start_date AND {$schedules_table}.end_date ) ";
+					}
+				} else {
+					$date = geodir_event_date_to_ymd( sanitize_text_field( $_REQUEST['event_dates'] ), $date_format );
+					$where .= " AND ( '{$date}' BETWEEN {$schedules_table}.start_date AND {$schedules_table}.end_date ) ";
+				}
 			}
 		}
 
