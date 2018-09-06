@@ -194,7 +194,7 @@ final class GeoDir_Event_Manager {
 		add_filter( 'geodir_seo_variables', 'geodir_event_seo_variables', 10, 2 );
 		add_filter( 'geodir_replace_seo_vars', 'geodir_event_replace_seo_vars', 10, 2 );
 		add_filter( 'geodir_filter_title_variables_vars', 'geodir_event_filter_title_seo_vars', 10, 4 );
-		add_filter( 'geodir_advance_search_filter_titles', 'geodir_event_search_show_current_filters', 10, 1 );
+		add_filter( 'geodir_search_filter_searched_params', 'geodir_event_filter_searched_params', 10, 2 );
 		add_action( 'widgets_init', 'goedir_event_register_widgets' );
 		add_filter( 'geodir_details_schema', 'geodir_event_schema', 10, 2 );
 		add_filter( 'geodir_bestof_widget_view_all_link', 'geodir_event_bestof_widget_view_all_link', 10, 3 );

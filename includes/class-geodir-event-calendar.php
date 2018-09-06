@@ -31,11 +31,15 @@ class GeoDir_Event_Calendar {
 
 		$id_base 				= !empty($args['widget_id']) ? $args['widget_id'] : 'geodir_event_listing_calendar';
 		$title 					= apply_filters('widget_title', empty($instance['title']) ? '' : $instance['title'], $instance, $id_base);
+		$post_type 				= apply_filters('geodir_event_calendar_widget_post_type_filter', empty( $instance['post_type'] ) ? 'gd_event' : $instance['post_type'], $instance, $id_base);
 		$day 					= apply_filters('widget_day', empty($instance['day']) ? '' : $instance['day'], $instance, $id_base);
 		$week_day_format 		= apply_filters('widget_week_day_format', empty($instance['week_day_format']) ? 0 : $instance['week_day_format'], $instance, $id_base);
 		$add_location_filter 	= apply_filters('geodir_event_calendar_widget_add_location_filter', empty($instance['add_location_filter']) ? 0 : 1, $instance, $id_base);
 		$identifier 			= sanitize_html_class($id_base);
 		$function_name 			= 'geodir_event_call_calendar_' . rand(100, 999);
+		if ( ! ( ! empty( $post_type ) && in_array( $post_type, GeoDir_Event_Post_Type::get_event_post_types() ) ) ) {
+			$post_type = 'gd_event';
+		}
 		
 		// Set location for detail page
 		$location_id = 0;
@@ -45,11 +49,20 @@ class GeoDir_Event_Calendar {
 		if ($title && strpos($title, '%%location_name%%') !== false) {
 			$title = str_replace('%%location_name%%', $location_title, $title);
 		}
+
+		$post_types = geodir_get_posttypes( 'options-plural' );
+		$post_type_options = '';
+		foreach ( $post_types as $pt => $name ) {
+			if ( in_array( $pt, GeoDir_Event_Post_Type::get_event_post_types() ) ) {
+				$post_type_options .= '<option ' . selected( $post_type, $pt, false ) . ' value="' . $pt . '">' . $name . '</option>';
+			}
+		}
 		?>
 		<div class="geodir_event_cal_widget" id="gdwgt_<?php echo $identifier; ?>">
 			<?php /* if (trim($title) != '') { ?>
 			<div class="geodir_event_cal_widget_title clearfix"><?php echo $args['before_title'] . __($title, 'geodirevents') . $args['after_title'];?></div>
 			<?php } */ ?>
+			<label for="geodir_calendar_post_type" style="margin-bottom:5px;display:block"><select id="geodir_calendar_post_type" class="geodir-select" style="width:100%;max-width:400px"><?php echo $post_type_options; ?></select></label>
 			<table style="width:100%" class="gd_cal_nav">
 				<tr align="center" class="title">
 					<td style="width:10%" class="title"><span class="geodir_cal_prev" title="<?php esc_attr_e('prev', 'geodirevents');?>"><i class="fas fa-chevron-left"></i></span></td>
@@ -68,6 +81,7 @@ class GeoDir_Event_Calendar {
 			var gdem_loading = jQuery('.gd_cal_nav .gdem-loading', $container);
 			var loc = '&_loc=<?php echo (int)$add_location_filter;?>&_l=<?php echo (int)$location_id;?><?php echo $location_params;?>';
 			params = "&sday=" + sday + "&wday=" + wday + loc;
+			params += '&post_type=' + jQuery('#geodir_calendar_post_type', $container).val();
 			geodir_event_get_calendar($container, params);
 			
 			var mnth = <?php echo date_i18n("n");?>;
@@ -80,6 +94,7 @@ class GeoDir_Event_Calendar {
 					mnth = 1;
 				}
 				params = "&mnth=" + mnth + "&yr=" + year + "&sday=" + sday + "&wday=" + wday + loc;
+				params += '&post_type=' + jQuery('#geodir_calendar_post_type', $container).val();
 				geodir_event_get_calendar($container, params);
 			});
 			
@@ -90,6 +105,13 @@ class GeoDir_Event_Calendar {
 					mnth = 12;
 				}
 				params = "&mnth=" + mnth + "&yr=" + year + "&sday=" + sday + "&wday=" + wday + loc;
+				params += '&post_type=' + jQuery('#geodir_calendar_post_type', $container).val();
+				geodir_event_get_calendar($container, params);
+			});
+
+			jQuery("#geodir_calendar_post_type", $container).on('change', function() {
+				params = "&mnth=" + mnth + "&yr=" + year + "&sday=" + sday + "&wday=" + wday + loc;
+				params += '&post_type=' + jQuery(this).val();
 				geodir_event_get_calendar($container, params);
 			});
 		};
@@ -105,6 +127,11 @@ class GeoDir_Event_Calendar {
 	}
 
 	public static function ajax_calendar() {
+		$post_type = !empty( $_REQUEST['post_type'] ) ? sanitize_text_field( $_REQUEST['post_type'] ) : '';
+		if ( ! ( ! empty( $post_type ) && in_array( $post_type, GeoDir_Event_Post_Type::get_event_post_types() ) ) ) {
+			$post_type = 'gd_event';
+		}
+		
 		$day = $_REQUEST["sday"];
 		if ($day == 'monday') {
 			$day = '1';
@@ -131,7 +158,7 @@ class GeoDir_Event_Calendar {
 			'gd_event_calendar' => strtotime( $year . '-' . $month ),
 			'is_geodir_loop' => true,
 			'gd_location' => $add_location_filter,
-			'post_type' => 'gd_event',
+			'post_type' => $post_type,
 			'posts_per_page' => -1
 		);
 						
@@ -225,7 +252,7 @@ class GeoDir_Event_Calendar {
 		$search_args = array(
 			'geodir_search' => 1,
 			'etype' => 'all',
-			'stype' => 'gd_event',
+			'stype' => $post_type,
 			's' => '',
 		);
 		$search_url = add_query_arg( $search_args, $search_url ) . $location_params;
