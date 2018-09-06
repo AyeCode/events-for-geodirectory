@@ -114,7 +114,7 @@ class GeoDir_Event_Schedules {
 			return false;
 		}
 
-		self::delete_schedules( $post_id, 'gd_event' );
+		self::delete_schedules( $post_id );
 
 		foreach( $schedules as $schedule ) {
 			$wpdb->insert( GEODIR_EVENT_SCHEDULES_TABLE, $schedule, array( '%d', '%s', '%s', '%s', '%s', '%d', '%d' ) );
@@ -134,7 +134,7 @@ class GeoDir_Event_Schedules {
 			$post_type = get_post_type( $post_id );
 		}
 
-		if ( $post_type != 'gd_event' ) {
+		if ( ! GeoDir_Post_types::supports( $post_type, 'events' ) ) {
 			return false;
 		}
 

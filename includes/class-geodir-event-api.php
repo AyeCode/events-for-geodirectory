@@ -24,8 +24,11 @@ class GeoDir_Event_API {
 	}
 
 	public static function init() {
-		add_filter( 'rest_gd_event_collection_params', array( __CLASS__, 'event_collection_params' ), 10, 2 );
-		add_filter( 'rest_gd_event_query', array( __CLASS__, 'event_query' ), 10, 2 );
+		$event_post_types = GeoDir_Event_Post_Type::get_event_post_types();
+		foreach ( $event_post_types as $post_type ) {
+			add_filter( 'rest_' . $post_type . '_collection_params', array( __CLASS__, 'event_collection_params' ), 10, 2 );
+			add_filter( 'rest_' . $post_type . '_query', array( __CLASS__, 'event_query' ), 10, 2 );
+		}
 		add_filter( 'geodir_rest_post_custom_fields_schema', array( __CLASS__, 'event_feild_schema' ), 10, 6 );
 		add_filter( 'geodir_rest_get_post_data', array( __CLASS__, 'event_post_data' ), 10, 4 );
 	}
@@ -35,7 +38,7 @@ class GeoDir_Event_API {
 			'description'        => __( 'Filter the events to show.', 'geodirevents' ),
 			'type'               => 'string',
 			'default'            => geodir_get_option( 'event_default_filter' ),
-			'enum'               => array_keys( geodir_event_filter_options() ),
+			'enum'               => array_keys( geodir_event_filter_options( $post_type_obj->name ) ),
 		);
 		$params['single_event'] = array(
 			'description'        => __( 'Show single listing for recurring event.', 'geodirevents' ),
@@ -63,12 +66,10 @@ class GeoDir_Event_API {
 
 	public static function event_feild_schema( $args, $post_type, $field, $custom_fields, $package_id, $default ) {
 		$empty = array();
-		if ( $post_type != 'gd_event' ) {
+		if ( ! GeoDir_Post_types::supports( $post_type, 'events' ) ) {
 			return $empty;
 		}
-		if ( $field['name'] == 'link_business' ) {
-			$args['type']   = geodir_rest_data_type_to_field_type( $field['data_type'] );
-		} else if ( $field['name'] == 'recurring' ) {
+		if ( $field['name'] == 'recurring' ) {
 			$args['type']   = 'integer';
 		} else if ( $field['name'] == 'event_dates' ) {
 			$times = array_keys( geodir_event_get_times() );

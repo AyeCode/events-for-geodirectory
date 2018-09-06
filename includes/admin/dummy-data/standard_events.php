@@ -522,7 +522,7 @@ Make the most of Revolutionary Germantown Festival by purchasing a Passport that
  
  
 function geodir_event_extra_custom_fields_standard_events( $fields, $post_type, $package_id ) {
-	if ( $post_type != 'gd_event' ) {
+	if ( ! GeoDir_Post_types::supports( $post_type, 'events' ) ) {
 		return $fields;
 	}
 

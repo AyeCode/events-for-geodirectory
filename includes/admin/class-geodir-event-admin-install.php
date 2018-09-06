@@ -328,7 +328,7 @@ class GeoDir_Event_Admin_Install {
 		}
 
 		// Event detail table
-		$tables = "CREATE TABLE " . GEODIR_EVENT_DETAIL_TABLE . " (
+		$tables = "CREATE TABLE " . geodir_db_cpt_table( 'gd_event' ) . " (
 						" . implode ( ",", self::db_cpt_default_columns( false ) ) . ",
 						" . implode ( ", \n", self::db_cpt_default_keys( false ) ) . " 
 					) $collate; ";
@@ -372,7 +372,7 @@ class GeoDir_Event_Admin_Install {
 	 * @return string[]
 	 */
 	public static function wpmu_drop_tables( $tables ) {
-		$tables[] = GEODIR_EVENT_DETAIL_TABLE;
+		$tables[] = geodir_db_cpt_table( 'gd_event' );
 		$tables[] = GEODIR_EVENT_SCHEDULES_TABLE;
 
 		return $tables;

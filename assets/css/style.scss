@@ -170,37 +170,6 @@ body .geodir-none {
 	filter: alpha(opacity=66)
 }
 
-
-/* DETAIL PAGE LINKED EVENTS TAB */
-
-#eventsTab .geodir_location_listing {
-    clear: both
-}
-
-#eventsTab .geodir_category_list_view li {
-    margin-left: 0;
-}
-
-#eventsTab .geodir-entry-header {
-    border-bottom: none;
-}
-
-#eventsTab .geodir_category_list_view li .geodir-content p.geodir-event-meta {
-    margin-bottom: 0
-}
-
-#eventsTab .geodir_category_list_view header.geodir-entry-header {
-    padding-bottom: .5em
-}
-
-#eventsTab a.geodir-viewall-linked {
-    text-align: right;
-    display: block;
-    margin-top: 5px;
-    margin-right: 5px
-}
-
-
 /* RECURRING EVENT DATES */
 
 .geodir_event_schedule .gde-recurring-cont {}
@@ -211,26 +180,6 @@ body .geodir-none {
 
 .geodir_event_schedule a.gde-recurr-act {
     cursor: default
-}
-
-#eventsTab .geodir_category_list_view li.geodir-listview {
-    margin-bottom: 10px
-}
-
-#eventsTab .geodir_category_list_view li.geodir-listview header.geodir-entry-header,
-#eventsTab .geodir_category_list_view li.geodir-listview footer.geodir-entry-meta {
-    padding: 0;
-    margin: 0;
-    border: none
-}
-
-#eventsTab .geodir_category_list_view li.geodir-listview .geodir-entry-content p {
-    margin: 0
-}
-
-.geodir-tabs-content.entry-content #eventsTab li {
-    margin: auto;
-    margin-bottom: 15px
 }
 
 /* EVENT AYI STARTS */
@@ -694,18 +643,6 @@ h3.geodir-ayi-section-title span {
 
 #event_yui_calendar.yui-skin-sam .yui-calcontainer {
 	border-color: #ccc;
-}
-
-.geodir_form_row select#link_business {
-	width: calc( 70% - 180px );
-}
-
-.geodir_form_row button.geodir-fill-business,
-.geodir_form_row button.geodir-fill-business:focus {
-	min-width: 150px;
-	display: inline-block;
-	margin-left: 15px;
-	vertical-align: middle;
 }
 /* ADD EVENT FORM ENDS */
 

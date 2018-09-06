@@ -27,6 +27,23 @@ class GeoDir_Event_Post_Type {
 		add_action( 'init', array( __CLASS__, 'register_taxonomy' ), 5.1 );
 		add_action( 'init', array( __CLASS__, 'register_post_type' ), 5.1 );
 		add_filter( 'rest_api_allowed_post_types', array( __CLASS__, 'rest_api_allowed_post_types' ) );
+
+		// Add cpt setting events support option.
+		add_filter( 'geodir_get_settings_cpt', array( __CLASS__, 'filter_cpt_settings' ), 10.1, 3 );
+
+		// Sanitize post type data.
+		add_filter( 'geodir_save_post_type', array( __CLASS__, 'sanitize_post_type' ), 10.1, 3 );
+
+		// Post type saved.
+		add_action( 'geodir_post_type_saved', array( __CLASS__, 'post_type_saved' ), 10.1, 3 );
+
+		// Post type events supports enabled.
+		add_action( 'geodir_event_pt_events_supports_enabled', array( __CLASS__, 'pt_events_supports_enabled' ), 10.1, 1 );
+
+		// Post type events supports disabled.
+		add_action( 'geodir_event_pt_events_supports_disabled', array( __CLASS__, 'pt_events_supports_disabled' ), 10.1, 1 );
+
+		add_filter( 'geodir_post_type_supports', array( __CLASS__, 'post_type_supports' ), 10, 3 );
 	}
 
 	/**
@@ -334,5 +351,189 @@ class GeoDir_Event_Post_Type {
 		return $post_types;
 	}
 
+	public static function filter_cpt_settings( $settings, $current_section = '', $post_type_values = array() ) {
+		$post_type = ! empty( $_GET['post_type'] ) ? sanitize_text_field( $_GET['post_type'] ) : '';
+
+		if ( ! empty( $settings ) ) {
+			// Events supports setting
+			if ( $post_type != 'gd_event' && defined( 'GEODIR_CP_VERSION' ) ) {
+				$new_settings = array();
+				foreach ( $settings as $key => $setting ) {
+					if ( ! empty( $setting['id'] ) && $setting['id'] == 'cpt_settings' && $setting['type'] == 'sectionend' ) {
+						$new_settings[] =  array(
+							'name' => __( 'Is Event Post Type?', 'geodirevents' ),
+							'desc' => __( 'Tick to treat this post type as an event post type. <span style="color:red;">(WARNING: enabling post type as event post type will move all existing posts to draft.)</span>', 'geodirevents' ),
+							'id'   => 'supports_events',
+							'type' => 'checkbox',
+							'std'  => '0',
+							'advanced' => true,
+							'value'	   => ( ! empty( $post_type_values['supports_events'] ) ? '1' : '0' )
+						);
+						$new_settings[] =  array(
+							'name' => '',
+							'desc' => '',
+							'id'   => 'prev_supports_events',
+							'type' => 'hidden',
+							'value'	   => ( ! empty( $post_type_values['supports_events'] ) ? 'y' : 'n' )
+						);
+					}
+					$new_settings[] = $setting;
+				}
+				$settings = $new_settings;
+			}
+		}
+
+		return $settings;
+	}
+
+	public static function sanitize_post_type( $data, $post_type, $request ) {
+		// Save supports events setting
+		if ( $post_type != 'gd_event' && defined( 'GEODIR_CP_VERSION' ) ) {
+			$data[ $post_type ]['supports_events'] = ! empty( $request['supports_events'] ) ? true : false;
+		}
+
+		return $data;
+	}
+
+	public static function post_type_saved( $post_type, $args, $new = false ) {
+		if ( $post_type != 'gd_event' && defined( 'GEODIR_CP_VERSION' ) ) {
+			$current = ! empty( $args['supports_events'] ) ? true : false;
+			$previous = ! empty( $_POST['prev_supports_events'] ) && $_POST['prev_supports_events'] == 'y' ? true : false;
+			if ( $new ) {
+				$previous = false;
+			}
+			if ( $current != $previous ) {
+				if ( $current && ! $previous ) { // Events support enabled.
+					do_action( 'geodir_event_pt_events_supports_enabled', $post_type );
+				} else if ( ! $current && $previous ) { // Events support disabled.
+					do_action( 'geodir_event_pt_events_supports_disabled', $post_type );
+				}
+
+				do_action( 'geodir_event_pt_events_supports_changed', $post_type, $current, $previous );
+			}
+		}
+	}
+
+	/**
+	 * Check a post type's support for a given feature.
+	 *
+	 * @param bool $value       True if supports else False.
+	 * @param string $post_type The post type being checked.
+	 * @param string $feature   The feature being checked.
+	 * @return bool Whether the post type supports the given feature.
+	 */
+	public static function post_type_supports( $value, $post_type, $feature ) {
+		// Check a post type supports events
+		if ( $feature == 'events' ) {
+			if ( $post_type == 'gd_event' ) {
+				return true;
+			}
+
+			if ( defined( 'GEODIR_CP_VERSION' ) ) {
+				$post_type_object = geodir_post_type_object( $post_type );
+				if ( ! empty( $post_type_object ) && ! empty( $post_type_object->supports_events ) ) {
+					$value = true;
+				} else {
+					$value = false;
+				}
+			}
+		}
+
+		return $value;
+	}
+
+	/**
+	 * Check a taxonomy's support for a given feature.
+	 *
+	 * @param bool $value       True if supports else False.
+	 * @param string $taxonomy  The taxonomy being checked.
+	 * @param string $post_type The post type being checked.
+	 * @param string $feature   The feature being checked.
+	 * @return bool Whether the taxonomy supports the given feature.
+	 */
+	public static function taxonomy_supports( $value, $taxonomy, $post_type, $feature ) {
+		// Check a post type supports events
+		if ( $feature == 'events' && defined( 'GEODIR_CP_VERSION' ) ) {
+			$value = GeoDir_Post_types::supports( $post_type, $feature, $value );
+		}
+
+		return $value;
+	}
+
+	public static function pt_events_supports_enabled( $post_type ) {
+		global $wpdb;
+
+		$table = geodir_db_cpt_table( $post_type );
+
+		$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->posts} SET post_status = %s WHERE post_type = %s AND post_status != %s", array( 'draft', $post_type, 'draft' ) ) );
+		$wpdb->query( $wpdb->prepare( "UPDATE {$table} SET post_status = %s WHERE post_status != %s", array( 'draft', 'draft' ) ) );
+
+		$fields = GeoDir_Event_Fields::event_custom_fields( $post_type, 0 );
+
+		if ( ! empty( $fields ) ) {
+			foreach ( $fields as $key => $field ) {
+				geodir_custom_field_save( $field );
+			}
+
+			self::update_fields_sort_order( $post_type );
+		}
+	}
+
+	public static function pt_events_supports_disabled( $post_type ) {
+		global $wpdb;
+
+		$fields = GeoDir_Event_Fields::event_custom_fields( $post_type, 0 );
+
+		if ( ! empty( $fields ) ) {
+			$cfs = new GeoDir_Settings_Cpt_Cf();
+
+			foreach ( $fields as $key => $field ) {
+				if ( $field_id = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM " . GEODIR_CUSTOM_FIELDS_TABLE . " WHERE post_type = %s AND htmlvar_name = %s LIMIT 1", array( $post_type, $field['htmlvar_name'] ) ) ) ) {
+					$cfs->delete_custom_field( $field_id );
+				}
+			}
+		}
+
+		// Delete event schedules.
+		$wpdb->query( $wpdb->prepare( "DELETE schedules FROM " . GEODIR_EVENT_SCHEDULES_TABLE . " schedules LEFT JOIN {$wpdb->posts} posts ON posts.ID = schedules.event_id WHERE posts.post_type = %s", array( $post_type ) ) );
+	}
+
+	public static function update_fields_sort_order( $post_type ) {
+		global $wpdb;
+
+		$results = $wpdb->get_results( $wpdb->prepare( "SELECT id FROM `" . GEODIR_CUSTOM_FIELDS_TABLE . "` WHERE post_type = %s ORDER BY sort_order ASC, id ASC", array( $post_type ) ) );
+
+		if ( ! empty( $results ) ) {
+			$sort_order = 0;
+			foreach ( $results as $key => $row ) {
+				$sort_order++;
+
+				$wpdb->update( GEODIR_CUSTOM_FIELDS_TABLE, array( 'sort_order' => $sort_order ), array( 'id' => $row->id ) );
+			}
+		}
+	}
+
+	public static function get_event_post_types() {
+		global $wpdb;
+
+		$post_types = wp_cache_get( 'geodir_event_post_types', 'event_post_types' );
+
+		if ( $post_types !== false ) {
+			return $post_types;
+		}
+
+		$gd_post_types = geodir_get_posttypes();
+
+		$post_types = array();
+		foreach ( $gd_post_types as $post_type ) {
+			if ( GeoDir_Post_types::supports( $post_type, 'events' ) ) {
+				$post_types[] = $post_type;
+			}
+		}
+
+		wp_cache_set( 'geodir_event_post_types', $post_types, 'event_post_types' );
+
+		return $post_types;
+	}
 }
 GeoDir_Event_Post_Type::init();

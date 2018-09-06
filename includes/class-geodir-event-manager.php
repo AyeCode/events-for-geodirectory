@@ -96,7 +96,6 @@ final class GeoDir_Event_Manager {
         $this->define( 'GEODIR_EVENT_PLUGIN_BASENAME', plugin_basename( GEODIR_EVENT_PLUGIN_FILE ) );
 
         // Database tables
-		$this->define( 'GEODIR_EVENT_DETAIL_TABLE', $plugin_prefix . 'gd_event_detail' );
 		$this->define( 'GEODIR_EVENT_SCHEDULES_TABLE', $plugin_prefix . 'event_schedule' );
     }
     
@@ -199,7 +198,6 @@ final class GeoDir_Event_Manager {
 		add_action( 'widgets_init', 'goedir_event_register_widgets' );
 		add_filter( 'geodir_details_schema', 'geodir_event_schema', 10, 2 );
 		add_filter( 'geodir_bestof_widget_view_all_link', 'geodir_event_bestof_widget_view_all_link', 10, 3 );
-		add_filter( 'geodir_location_count_reviews_by_term_sql', 'geodir_event_count_reviews_by_location_term_sql', 10, 7 );
 		add_filter( 'the_title', 'geodir_event_title_recurring_event', 100, 2 );
 		add_filter( 'the_permalink', 'geodir_event_recurring_event_link', 100 );
     }

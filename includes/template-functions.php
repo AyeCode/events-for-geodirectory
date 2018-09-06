@@ -86,11 +86,11 @@ function geodir_event_yui_calendar_params() {
 }
 
 function geodir_event_display_event_type_filter( $post_type ) {
-	if ( $post_type != 'gd_event' ) {
+	if ( ! GeoDir_Post_types::supports( $post_type, 'events' ) ) {
 		return;
 	}
 
-	$event_types = geodir_event_filter_options();
+	$event_types = geodir_event_filter_options( $post_type );
 
 	if ( empty( $event_types ) ) {
 		return;
@@ -159,7 +159,7 @@ function geodir_event_replace_seo_vars( $title, $gd_page ) {
 		$event_type_archive = geodir_event_type_title( sanitize_text_field( $_REQUEST['etype'] ) );
 	}
 	
-	if ( ( $gd_page == 'detail' || $gd_page == 'single' ) && is_single() && ! empty( $gd_post ) && $gd_post->post_type == 'gd_event' ) {
+	if ( ( $gd_page == 'detail' || $gd_page == 'single' ) && is_single() && ! empty( $gd_post ) && GeoDir_Post_types::supports( $gd_post->post_type, 'events' ) ) {
 		$date_format = geodir_event_date_format();
 		$time_format = geodir_event_time_format();
 
@@ -218,8 +218,8 @@ function geodir_event_search_show_current_filters( $filters = array() ) {
     return $filters;
 }
 
-function geodir_event_type_title( $event_type ) {
-	$event_types = geodir_event_filter_options();
+function geodir_event_type_title( $event_type, $post_type = 'gd_event' ) {
+	$event_types = geodir_event_filter_options( $post_type );
 
 	if ( ! empty( $event_type ) ) {
 		$title = isset( $event_types[ $event_type ] ) ? $event_types[ $event_type ] : $event_type;
@@ -227,7 +227,7 @@ function geodir_event_type_title( $event_type ) {
 		$title = $event_type;
 	}	
 
-	return apply_filters( 'geodir_event_type_title', $title, $event_type );
+	return apply_filters( 'geodir_event_type_title', $title, $event_type, $post_type );
 }
 
 /**
@@ -241,7 +241,7 @@ function geodir_event_type_title( $event_type ) {
  * @return string The category term link.
  */
 function geodir_event_category_term_link( $term_link, $term_id, $post_type ) {
-	if ( $post_type != 'gd_event' ) {
+	if ( ! GeoDir_Post_types::supports( $post_type, 'events' ) ) {
 		return $term_link;
 	}
 	
@@ -255,7 +255,7 @@ function geodir_event_title_recurring_event( $title, $post_id = null ) {
 	global $post, $gd_post;
 
     $post_type = ! empty( $post->post_type ) ? $post->post_type : '';
-    if ( $post_type != 'gd_event' ) {
+    if ( ! GeoDir_Post_types::supports( $post_type, 'events' ) ) {
 		return $title;
 	}
 
@@ -298,7 +298,7 @@ function geodir_event_title_recurring_event( $title, $post_id = null ) {
 function geodir_event_recurring_event_link( $link ) {
 	global $post;
 
-    if ( $post->post_type != 'gd_event' ) { 
+    if ( ! GeoDir_Post_types::supports( $post->post_type, 'events' ) ) { 
 		return $link;
 	}
 	
@@ -328,4 +328,21 @@ function geodir_event_recurring_event_link( $link ) {
 		}
 	}
 	return $link;
+}
+
+/**
+ * Filter the page link to best of widget view all listings.
+ *
+ * @since 1.2.4
+ *
+ * @param string $view_all_link View all listings page link.
+ * @param string $post_type The Post type.
+ * @param object $term The category term object.
+ * @return string Link url.
+ */
+function geodir_event_bestof_widget_view_all_link( $view_all_link, $post_type, $term ) {
+	if ( GeoDir_Post_types::supports( $post_type, 'events' ) ) {
+		$view_all_link = add_query_arg( array( 'etype' => geodir_get_option( 'event_default_filter' ) ), $view_all_link ) ;
+	}
+	return $view_all_link;
 }
