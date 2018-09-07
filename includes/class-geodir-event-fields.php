@@ -936,45 +936,59 @@ class GeoDir_Event_Fields {
 
 		$pt_name = geodir_post_type_singular_name( $post_type, true );
 		$htmlvar_name = $cf->htmlvar_name;
-		$event_dates = isset( $_REQUEST[ $htmlvar_name ] ) ? $_REQUEST[ $htmlvar_name ] : NULL;
+		$event_dates = isset( $_REQUEST[ $htmlvar_name ] ) ? $_REQUEST[ $htmlvar_name ] : '';
 		$field_label = $cf->frontend_title ? stripslashes( __( $cf->frontend_title, 'geodirectory' ) ) : '';
 
 		$date_format = geodir_event_date_format();
-		$date_format = apply_filters( 'geodir_event_serach_date_format', $date_format, $post_type );
 
 		// Convert to jQuery UI datepicker format.
-		$date_format  = geodir_date_format_php_to_jqueryui( $date_format  );
+		$jqueryui_date_format  = geodir_date_format_php_to_jqueryui( $date_format  );
 
 		ob_start();
 		if ( $cf->search_condition == 'FROM' ) {
-			$field_label_from = ! empty( $field_label ) ? wp_sprintf( __( 'From: %s', 'geodiradvancesearch' ), $field_label ) : wp_sprintf( __( '%s Start Date', 'geodiradvancesearch' ), $pt_name );
-			$field_label_to = ! empty( $field_label ) ? wp_sprintf( __( 'To: %s', 'geodiradvancesearch' ), $field_label ) : wp_sprintf( __( '%s End Date', 'geodiradvancesearch' ), $pt_name );
+			$field_value_from = '';
+			$field_value_to = '';
+			$field_value_from_display = '';
+			$field_value_to_display = '';
 
-			$field_value_from = is_array( $event_dates ) && ! empty( $event_dates['from'] ) ? sanitize_text_field( $event_dates['from'] ) : '';
-			$field_value_to = is_array( $event_dates ) && ! empty( $event_dates['to'] ) ? sanitize_text_field( $event_dates['to'] ) : '';
+			if ( is_array( $event_dates ) && ! empty( $event_dates ) ) {
+				if ( ! empty( $event_dates['from'] ) ) {
+					$field_value_from = sanitize_text_field( $event_dates['from'] );
+					$field_value_from_display = date_i18n( $date_format, strtotime( $field_value_from ) );
+				}
+
+				if ( ! empty( $event_dates['to'] ) ) {
+					$field_value_to = sanitize_text_field( $event_dates['to'] );
+					$field_value_to_display = date_i18n( $date_format, strtotime( $field_value_to ) );
+				}
+			}
+
+			$field_label_from = ! empty( $field_label ) ? wp_sprintf( __( 'From: %s', 'geodirevents' ), $field_label ) : wp_sprintf( __( '%s Start Date', 'geodirevents' ), $pt_name );
+			$field_label_to = ! empty( $field_label ) ? wp_sprintf( __( 'To: %s', 'geodirevents' ), $field_label ) : wp_sprintf( __( '%s End Date', 'geodirevents' ), $pt_name );
 			?>
 			<div class="gd-search-input-wrapper gd-search-field-cpt gd-search-has-date gd-search-<?php echo $htmlvar_name; ?>-from">
-				<input type="text" name="<?php echo $htmlvar_name; ?>[from]" value="<?php echo esc_attr( $field_value_from ); ?>" placeholder="<?php echo esc_attr( $field_label_from ); ?>" class="cat_input gd-search-date-input" field_type="text" data-date-format="<?php echo esc_attr( $date_format ); ?>" data-field-key="<?php echo $htmlvar_name; ?>"/>
+				<input type="text" value="<?php echo esc_attr( $field_value_from_display ); ?>" placeholder="<?php echo esc_attr( $field_label_from ); ?>" class="cat_input gd-search-date-input" field_type="text" data-alt-field="<?php echo $htmlvar_name; ?>[from]" data-date-format="<?php echo esc_attr( $jqueryui_date_format ); ?>" data-field-key="<?php echo $htmlvar_name; ?>"/><input type="hidden" name="<?php echo $htmlvar_name; ?>[from]" value="<?php echo esc_attr( $field_value_from ); ?>">
 			</div>
 			<div class="gd-search-input-wrapper gd-search-field-cpt gd-search-has-date gd-search-<?php echo $htmlvar_name; ?>-to">
-				<input type="text" name="<?php echo $htmlvar_name; ?>[to]" value="<?php echo esc_attr( $field_value_to ); ?>" placeholder="<?php echo esc_attr( $field_label_to ); ?>" class="cat_input gd-search-date-input" field_type="text" data-date-format="<?php echo esc_attr( $date_format ); ?>" data-field-key="<?php echo $htmlvar_name; ?>"/>
+				<input type="text" value="<?php echo esc_attr( $field_value_to_display ); ?>" placeholder="<?php echo esc_attr( $field_label_to ); ?>" class="cat_input gd-search-date-input" field_type="text" data-alt-field="<?php echo $htmlvar_name; ?>[to]" data-date-format="<?php echo esc_attr( $jqueryui_date_format ); ?>" data-field-key="<?php echo $htmlvar_name; ?>"/><input type="hidden" name="<?php echo $htmlvar_name; ?>[to]" value="<?php echo esc_attr( $field_value_to ); ?>">
 			</div>
 			<?php
 		} else {
 			if ( empty( $field_label ) ) {
-				$field_label = wp_sprintf( __( '%s Date', 'geodiradvancesearch' ), $pt_name );
+				$field_label = wp_sprintf( __( '%s Date', 'geodirevents' ), $pt_name );
 			}
 			$field_value = ! empty( $event_dates ) && ! is_array( $event_dates ) ? sanitize_text_field( $event_dates ) : '';
+			$field_value_display = ! empty( $field_value ) ? date_i18n( $date_format, strtotime( $field_value ) ) : '';
 			?>
 			<div class="gd-search-input-wrapper gd-search-field-cpt gd-search-has-date gd-search-<?php echo $htmlvar_name; ?>">
-				<input type="text" name="<?php echo $htmlvar_name; ?>" value="<?php echo esc_attr( $field_value ); ?>" placeholder="<?php echo esc_attr( $field_label ); ?>" class="cat_input gd-search-date-input" field_type="text" data-date-format="<?php echo esc_attr( $date_format ); ?>" data-field-key="<?php echo $htmlvar_name; ?>"/>
+				<input type="text" value="<?php echo esc_attr( $field_value_display ); ?>" placeholder="<?php echo esc_attr( $field_label ); ?>" class="cat_input gd-search-date-input" field_type="text" data-alt-field="<?php echo $htmlvar_name; ?>" data-date-format="<?php echo esc_attr( $jqueryui_date_format ); ?>" data-field-key="<?php echo $htmlvar_name; ?>"><input type="hidden" name="<?php echo $htmlvar_name; ?>" value="<?php echo esc_attr( $field_value ); ?>">
 			</div>
 			<?php			
 		}
 
 		$html .= ob_get_clean();
 
-		return $html;
+		return apply_filters( 'geodir_event_search_form_output_main_event_dates', $html, $cf, $post_type );
 	}
 
 	public static function search_output_event( $html, $cf, $post_type ) {
@@ -990,53 +1004,68 @@ class GeoDir_Event_Fields {
 		$field_label = $cf->frontend_title ? stripslashes( __( $cf->frontend_title, 'geodirectory' ) ) : '';
 
 		$date_format = geodir_event_date_format();
-		$date_format = apply_filters( 'geodir_event_serach_date_format', $date_format, $post_type );
 
 		// Convert to jQuery UI datepicker format.
-		$date_format  = geodir_date_format_php_to_jqueryui( $date_format  );
+		$jqueryui_date_format  = geodir_date_format_php_to_jqueryui( $date_format  );
 		
 		$html .= GeoDir_Adv_Search_Fields::field_wrapper_start( $cf );
 
 		ob_start();
-		?><li><?php
+		?><li class="gd-search-row-<?php echo $htmlvar_name; ?>"><?php
 		if ( $cf->search_condition == 'FROM' ) {
-			if ( empty( $field_label ) ) {
-				$field_label = wp_sprintf( __( '%s Dates', 'geodiradvancesearch' ), $pt_name );
-			}
-			$field_label_from = ! empty( $field_label ) ? wp_sprintf( __( 'From: %s', 'geodiradvancesearch' ), $field_label ) : wp_sprintf( __( '%s Start Date', 'geodiradvancesearch' ), $pt_name );
-			$field_label_to = ! empty( $field_label ) ? wp_sprintf( __( 'To: %s', 'geodiradvancesearch' ), $field_label ) : wp_sprintf( __( '%s End Date', 'geodiradvancesearch' ), $pt_name );
+			$field_value_from = '';
+			$field_value_to = '';
+			$field_value_from_display = '';
+			$field_value_to_display = '';
 
-			$field_value_from = is_array( $event_dates ) && ! empty( $event_dates['from'] ) ? sanitize_text_field( $event_dates['from'] ) : '';
-			$field_value_to = is_array( $event_dates ) && ! empty( $event_dates['to'] ) ? sanitize_text_field( $event_dates['to'] ) : '';
+			if ( is_array( $event_dates ) && ! empty( $event_dates ) ) {
+				if ( ! empty( $event_dates['from'] ) ) {
+					$field_value_from = sanitize_text_field( $event_dates['from'] );
+					$field_value_from_display = date_i18n( $date_format, strtotime( $field_value_from ) );
+				}
+
+				if ( ! empty( $event_dates['to'] ) ) {
+					$field_value_to = sanitize_text_field( $event_dates['to'] );
+					$field_value_to_display = date_i18n( $date_format, strtotime( $field_value_to ) );
+				}
+			}
+
+			if ( empty( $field_label ) ) {
+				$field_label = wp_sprintf( __( '%s Dates', 'geodirevents' ), $pt_name );
+			}
+			$field_label_from = ! empty( $field_label ) ? wp_sprintf( __( 'From: %s', 'geodirevents' ), $field_label ) : wp_sprintf( __( '%s Start Date', 'geodirevents' ), $pt_name );
+			$field_label_to = ! empty( $field_label ) ? wp_sprintf( __( 'To: %s', 'geodirevents' ), $field_label ) : wp_sprintf( __( '%s End Date', 'geodirevents' ), $pt_name );
 			?>
 			<div class="gd-search-has-date gd-search-<?php echo $htmlvar_name; ?> from-to">
 				<?php if ( ! empty( $as_fieldset_start ) ) { ?>
 					<label for="<?php echo $htmlvar_name; ?>_from"><?php echo $field_label; ?></label>
 				<?php } ?>
-				<input type="text" name="<?php echo $htmlvar_name; ?>[from]" id="<?php echo $htmlvar_name; ?>_from" value="<?php echo esc_attr( $field_value_from ); ?>" placeholder="<?php echo esc_attr( $field_label_from ); ?>" class="cat_input gd-search-date-input" field_type="text" data-date-format="<?php echo esc_attr( $date_format ); ?>" data-field-key="<?php echo $htmlvar_name; ?>"/>
-				<input type="text" name="<?php echo $htmlvar_name; ?>[to]" id="<?php echo $htmlvar_name; ?>_to" value="<?php echo esc_attr( $field_value_to ); ?>" placeholder="<?php echo esc_attr( $field_label_to ); ?>" class="cat_input gd-search-date-input" field_type="text" data-date-format="<?php echo esc_attr( $date_format ); ?>" data-field-key="<?php echo $htmlvar_name; ?>"/>
+				<input type="text" id="<?php echo $htmlvar_name; ?>_from" value="<?php echo esc_attr( $field_value_from_display ); ?>" placeholder="<?php echo esc_attr( $field_label_from ); ?>" class="cat_input gd-search-date-input" field_type="text" data-alt-field="<?php echo $htmlvar_name; ?>[from]" data-date-format="<?php echo esc_attr( $jqueryui_date_format ); ?>" data-field-key="<?php echo $htmlvar_name; ?>"/>
+				<input type="text" id="<?php echo $htmlvar_name; ?>_to" value="<?php echo esc_attr( $field_value_to_display ); ?>" placeholder="<?php echo esc_attr( $field_label_to ); ?>" class="cat_input gd-search-date-input" field_type="text" data-alt-field="<?php echo $htmlvar_name; ?>[to]" data-date-format="<?php echo esc_attr( $jqueryui_date_format ); ?>" data-field-key="<?php echo $htmlvar_name; ?>"/>
+				<input type="hidden" name="<?php echo $htmlvar_name; ?>[from]" value="<?php echo esc_attr( $field_value_from ); ?>"><input type="hidden" name="<?php echo $htmlvar_name; ?>[to]" value="<?php echo esc_attr( $field_value_to ); ?>">
 			</div>
 			<?php
 		} else {
 			if ( empty( $field_label ) ) {
-				$field_label = wp_sprintf( __( '%s Date', 'geodiradvancesearch' ), $pt_name );
+				$field_label = wp_sprintf( __( '%s Date', 'geodirevents' ), $pt_name );
 			}
 			$field_value = ! empty( $event_dates ) && ! is_array( $event_dates ) ? sanitize_text_field( $event_dates ) : '';
+			$field_value_display = ! empty( $field_value ) ? date_i18n( $date_format, strtotime( $field_value ) ) : '';
 			?>
 			<div class="gd-search-has-date gd-search-<?php echo $htmlvar_name; ?>">
 				<?php if ( ! empty( $as_fieldset_start ) ) { ?>
 					<label for="<?php echo $htmlvar_name; ?>"><?php echo $field_label; ?></label>
 				<?php } ?>
-				<input type="text" name="<?php echo $htmlvar_name; ?>" id="<?php echo $htmlvar_name; ?>" value="<?php echo esc_attr( $field_value ); ?>" placeholder="<?php echo esc_attr( $field_label ); ?>" class="cat_input gd-search-date-input" field_type="text" data-date-format="<?php echo esc_attr( $date_format ); ?>" data-field-key="<?php echo $htmlvar_name; ?>"/>
+				<input type="text" id="<?php echo $htmlvar_name; ?>" value="<?php echo esc_attr( $field_value_display ); ?>" placeholder="<?php echo esc_attr( $field_label ); ?>" class="cat_input gd-search-date-input" field_type="text" data-alt-field="<?php echo $htmlvar_name; ?>" data-date-format="<?php echo esc_attr( $jqueryui_date_format ); ?>" data-field-key="<?php echo $htmlvar_name; ?>"/><input type="hidden" name="<?php echo $htmlvar_name; ?>" value="<?php echo esc_attr( $field_value ); ?>">
 			</div>
 			<?php			
 		}
 		?></li><?php
 
 		$html .= ob_get_clean();
-		
+
 		$html .= GeoDir_Adv_Search_Fields::field_wrapper_end( $cf );
-		
-		return apply_filters( 'geodir_event_search_field_outputevent_dates', $html, $cf, $post_type );
+
+		return apply_filters( 'geodir_event_search_form_output_event_dates', $html, $cf, $post_type );
 	}
 }
