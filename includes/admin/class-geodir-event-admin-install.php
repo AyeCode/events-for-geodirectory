@@ -110,7 +110,7 @@ class GeoDir_Event_Admin_Install {
 		self::insert_default_fields();
 
 		// Register post type
-		GeoDir_Event_Post_type::register_post_type();
+		//GeoDir_Event_Post_type::register_post_type();
 
 		// Register taxonomy
 		GeoDir_Event_Post_type::register_taxonomy();
@@ -326,12 +326,8 @@ class GeoDir_Event_Admin_Install {
 		if ( $wpdb->has_cap( 'collation' ) ) {
 			$collate = $wpdb->get_charset_collate();
 		}
-
-		// Event detail table
-		$tables = "CREATE TABLE " . geodir_db_cpt_table( 'gd_event' ) . " (
-						" . implode ( ",", self::db_cpt_default_columns( false ) ) . ",
-						" . implode ( ", \n", self::db_cpt_default_keys( false ) ) . " 
-					) $collate; ";
+		
+		$tables = '';
 
 		// Event schedules table
 		$tables .= "CREATE TABLE " . GEODIR_EVENT_SCHEDULES_TABLE . " (
@@ -389,79 +385,8 @@ class GeoDir_Event_Admin_Install {
 		return $slug[0];
 	}
 
-	/**
-	 * Get the Custom Post Type database default fields.
-	 *
-	 * @param bool $locationless Is the CPT locationless?
-	 * @since 2.0.0
-	 *
-	 * @return array The array of default fields.
-	 */
-	public static function db_cpt_default_columns( $locationless = false ) {
-		$columns = array();
 
-		// Standard fields
-		$columns['post_id'] = "post_id int(11) NOT NULL";
-		$columns['post_title'] = "post_title text NULL DEFAULT NULL";
-		$columns['post_status'] = "post_status varchar(20) NULL DEFAULT NULL";
-		$columns['post_tags'] = "post_tags text NULL DEFAULT NULL";
-		$columns['post_category'] = "post_category varchar(254) NULL DEFAULT NULL";
-		$columns['default_category'] = "default_category INT NULL DEFAULT NULL";
-		$columns['featured_image'] = "featured_image varchar( 254 ) NULL DEFAULT NULL";
-		$columns['submit_ip'] = "submit_ip varchar(100) NULL DEFAULT NULL";
-		$columns['overall_rating'] = "overall_rating float(11) DEFAULT '0'";
-		$columns['rating_count'] = "rating_count int(11) DEFAULT '0'";
-		$columns['recurring'] = "recurring TINYINT(1) DEFAULT '0'";
-		$columns['event_dates'] = "event_dates TEXT NOT NULL";
-		$columns['rsvp_count'] = "rsvp_count INT(11) DEFAULT '0'";
 
-		// Location fields
-		if ( ! $locationless ) {
-			$columns['street'] = "street VARCHAR( 254 ) NULL";
-			$columns['city'] = "city VARCHAR( 50 ) NULL";
-			$columns['region'] = "region VARCHAR( 50 ) NULL";
-			$columns['country'] = "country VARCHAR( 50 ) NULL";
-			$columns['zip'] = "zip VARCHAR( 20 ) NULL";
-			$columns['latitude'] = "latitude VARCHAR( 22 ) NULL";
-			$columns['longitude'] = "longitude VARCHAR( 22 ) NULL";
-			$columns['mapview'] = "mapview VARCHAR( 15 ) NULL";
-			$columns['mapzoom'] = "mapzoom VARCHAR( 3 ) NULL";
-		}
-
-		return apply_filters( 'geodir_event_db_default_columns', $columns, $locationless );
-	}
-
-	/**
-	 * Get the Custom Post Type database default keys.
-	 *
-	 * @param bool $locationless Is the CPT locationless?
-	 * @since 2.0.0
-	 *
-	 * @return array The array of default fields.
-	 */
-	public static function db_cpt_default_keys( $locationless = false ) {
-
-		/*
-		 * Indexes have a maximum size of 767 bytes. Historically, we haven't need to be concerned about that.
-		 * As of 4.2, however, we moved to utf8mb4, which uses 4 bytes per character. This means that an index which
-		 * used to have room for floor(767/3) = 255 characters, now only has room for floor(767/4) = 191 characters.
-		 */
-		$max_index_length = 191;
-
-		$keys = array();
-
-		// Standard keys
-		$keys['post_id'] = "PRIMARY KEY (post_id)";
-
-		// Location keys
-		if ( ! $locationless ) {
-			$keys['country'] = "KEY country (country(50))";
-			$keys['region'] = "KEY region (region(50))";
-			$keys['city'] = "KEY city (city(50))";
-		}
-
-		return apply_filters( 'geodir_db_event_default_keys', $keys, $locationless );
-	}
 
 	/**
 	 * Is v1 to v2 upgrade.

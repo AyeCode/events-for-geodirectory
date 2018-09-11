@@ -190,7 +190,7 @@ final class GeoDir_Event_Manager {
 			add_filter( 'geodir_category_term_link', 'geodir_event_category_term_link', 20, 3 );
 		}
 
-		add_action( 'geodir_extra_loop_actions', 'geodir_event_display_event_type_filter', 10, 1 );
+		add_action( 'geodir_extra_loop_actions', 'geodir_event_display_event_type_filter', 6, 1 );
 		add_filter( 'geodir_seo_variables', 'geodir_event_seo_variables', 10, 2 );
 		add_filter( 'geodir_replace_seo_vars', 'geodir_event_replace_seo_vars', 10, 2 );
 		add_filter( 'geodir_filter_title_variables_vars', 'geodir_event_filter_title_seo_vars', 10, 4 );

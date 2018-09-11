@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: GeoDirectory Events 1.4.8\n"
+"Project-Id-Version: GeoDirectory Events 2.0.0.0-beta\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-12 15:39+0100\n"
-"PO-Revision-Date: 2017-10-12 15:39+0100\n"
+"POT-Creation-Date: 2018-09-11 15:14+0100\n"
+"PO-Revision-Date: 2018-09-11 15:14+0100\n"
 "Last-Translator: \n"
 "Language-Team: GeoDirectory <info@wpgeodirectory.com>\n"
 "Language: en_US\n"
@@ -18,1227 +18,1110 @@ msgstr ""
 "X-Generator: Poedit 1.8.7.1\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: ayi-functions.php:41 ayi-widgets.php:45
-msgid "Are You Interested?"
+#: includes/admin/admin-functions.php:94
+#: includes/admin/dummy-data/recurring_events.php:37
+#: includes/admin/dummy-data/standard_events.php:37
+msgid "Event date"
 msgstr ""
 
-#: ayi-functions.php:71 ayi-functions.php:80
+#: includes/admin/admin-functions.php:97
+msgid "Sort by event date"
+msgstr ""
+
+#: includes/admin/admin-functions.php:116
+#: includes/admin/settings/class-geodir-event-settings-events.php:27
+#: includes/class-geodir-event-post-type.php:156
+msgid "Events"
+msgstr ""
+
+#: includes/admin/admin-functions.php:117
+msgid ""
+"Check this box if you would like to completely remove all of its data when "
+"Events is deleted."
+msgstr ""
+
+#: includes/admin/class-geodir-event-admin-assets.php:38
+#: includes/admin/class-geodir-event-admin-assets.php:64
+msgid "GeoDirectory"
+msgstr ""
+
+#: includes/admin/class-geodir-event-admin-dummy-data.php:40
+msgid "Default"
+msgstr ""
+
+#: includes/admin/class-geodir-event-admin-dummy-data.php:44
+msgid "With Recurring Events"
+msgstr ""
+
+#: includes/admin/class-geodir-event-admin-import-export.php:33
+msgid "Download Sample Events CSV"
+msgstr ""
+
+#: includes/admin/dummy-data/recurring_events.php:49
+#: includes/admin/dummy-data/standard_events.php:49
+msgid "Newest"
+msgstr ""
+
+#: includes/admin/dummy-data/recurring_events.php:61
+#: includes/admin/dummy-data/standard_events.php:61
+msgid "Title"
+msgstr ""
+
+#: includes/admin/dummy-data/recurring_events.php:73
+#: includes/admin/dummy-data/standard_events.php:73
+msgid "Rating"
+msgstr ""
+
+#: includes/admin/settings/class-geodir-event-settings-events.php:46
+msgid "General"
+msgstr ""
+
+#: includes/admin/settings/class-geodir-event-settings-events.php:95
+msgid "Date Format"
+msgstr ""
+
+#: includes/admin/settings/class-geodir-event-settings-events.php:103
+msgid "Input date format"
+msgstr ""
+
+#: includes/admin/settings/class-geodir-event-settings-events.php:104
+msgid "Date format to use in the add event form."
+msgstr ""
+
+#: includes/admin/settings/class-geodir-event-settings-events.php:107
+#: includes/admin/settings/class-geodir-event-settings-events.php:119
+#: includes/admin/settings/class-geodir-event-settings-events.php:159
+#: includes/admin/settings/class-geodir-event-settings-events.php:196
+msgid "Select"
+msgstr ""
+
+#: includes/admin/settings/class-geodir-event-settings-events.php:115
+msgid "Display date format"
+msgstr ""
+
+#: includes/admin/settings/class-geodir-event-settings-events.php:116
+msgid "Date format to display event dates."
+msgstr ""
+
+#: includes/admin/settings/class-geodir-event-settings-events.php:128
+msgid "OR use custom date form setting for display event dates."
+msgstr ""
+
+#: includes/admin/settings/class-geodir-event-settings-events.php:136
+msgid "Set the custom date format to display event dates."
+msgstr ""
+
+#: includes/admin/settings/class-geodir-event-settings-events.php:147
+msgid "Listings"
+msgstr ""
+
+#: includes/admin/settings/class-geodir-event-settings-events.php:155
+msgid "Default event filter"
+msgstr ""
+
+#: includes/admin/settings/class-geodir-event-settings-events.php:156
+msgid "Set the default filter view of event on listing page."
+msgstr ""
+
+#: includes/admin/settings/class-geodir-event-settings-events.php:167
+msgid "Disable recurring feature?"
+msgstr ""
+
+#: includes/admin/settings/class-geodir-event-settings-events.php:168
+msgid "This allows to disable recurring event feature."
+msgstr ""
+
+#: includes/admin/settings/class-geodir-event-settings-events.php:175
+msgid "Hide event past schedules?"
+msgstr ""
+
+#: includes/admin/settings/class-geodir-event-settings-events.php:176
+msgid "Hide past event schedules on the event listings."
+msgstr ""
+
+#: includes/admin/settings/class-geodir-event-settings-events.php:183
+msgid "Schedules in map popup"
+msgstr ""
+
+#: includes/admin/settings/class-geodir-event-settings-events.php:184
+msgid ""
+"No. of schedule dates to display for event marker info window on the map. "
+"Default: 1"
+msgstr ""
+
+#: includes/admin/settings/class-geodir-event-settings-events.php:192
+msgid "Display dates in map popup"
+msgstr ""
+
+#: includes/admin/settings/class-geodir-event-settings-events.php:193
+msgid ""
+"Set the filter to view schedule dates for event marker info window on the "
+"map."
+msgstr ""
+
+#: includes/admin/settings/class-geodir-event-settings-events.php:226
+msgid "A-Z"
+msgstr ""
+
+#: includes/admin/settings/class-geodir-event-settings-events.php:227
+msgid "Latest"
+msgstr ""
+
+#: includes/admin/settings/class-geodir-event-settings-events.php:228
+msgid "Most reviews"
+msgstr ""
+
+#: includes/admin/settings/class-geodir-event-settings-events.php:229
+msgid "Highest rating"
+msgstr ""
+
+#: includes/admin/settings/class-geodir-event-settings-events.php:230
+msgid "Random"
+msgstr ""
+
+#: includes/admin/settings/class-geodir-event-settings-events.php:231
+msgid "Distance to current post"
+msgstr ""
+
+#: includes/class-geodir-event-api.php:38
+msgid "Filter the events to show."
+msgstr ""
+
+#: includes/class-geodir-event-api.php:44
+msgid "Show single listing for recurring event."
+msgstr ""
+
+#: includes/class-geodir-event-api.php:80
+msgid "Event start date (Y-m-d)."
+msgstr ""
+
+#: includes/class-geodir-event-api.php:87
+msgid "Event end date (Y-m-d)."
+msgstr ""
+
+#: includes/class-geodir-event-api.php:94
+msgid "Event duration (days)."
+msgstr ""
+
+#: includes/class-geodir-event-api.php:100
+msgid "Recurring type."
+msgstr ""
+
+#: includes/class-geodir-event-api.php:108
+msgid "Recurring interval"
+msgstr ""
+
+#: includes/class-geodir-event-api.php:116
+msgid "Repeat on days."
+msgstr ""
+
+#: includes/class-geodir-event-api.php:123
+msgid "Repeat on weeks."
+msgstr ""
+
+#: includes/class-geodir-event-api.php:130
+msgid "Recurring end type."
+msgstr ""
+
+#: includes/class-geodir-event-api.php:138
+msgid "Max repeat."
+msgstr ""
+
+#: includes/class-geodir-event-api.php:144
+msgid "Recurring end date (Y-m-d)."
+msgstr ""
+
+#: includes/class-geodir-event-api.php:151
+msgid "Custom recurring dates."
+msgstr ""
+
+#: includes/class-geodir-event-api.php:157
+msgid "All day event?"
+msgstr ""
+
+#: includes/class-geodir-event-api.php:163
+msgid "Event start time (H:i)."
+msgstr ""
+
+#: includes/class-geodir-event-api.php:171
+msgid "Event end time (H:i)."
+msgstr ""
+
+#: includes/class-geodir-event-api.php:179
+msgid "Different event times?"
+msgstr ""
+
+#: includes/class-geodir-event-api.php:185
+msgid "Event start times (H:i)."
+msgstr ""
+
+#: includes/class-geodir-event-api.php:193
+msgid "Event end times (H:i)."
+msgstr ""
+
+#: includes/class-geodir-event-ayi.php:145
+#: includes/class-geodir-event-ayi.php:153
 msgid "You Replied:"
 msgstr ""
 
-#: ayi-functions.php:72 ayi-functions.php:91
+#: includes/class-geodir-event-ayi.php:146
+#: includes/class-geodir-event-ayi.php:162
 msgid "I'm in!"
 msgstr ""
 
-#: ayi-functions.php:74 ayi-functions.php:83
+#: includes/class-geodir-event-ayi.php:147
+#: includes/class-geodir-event-ayi.php:155
 msgid "Cancel"
 msgstr ""
 
-#: ayi-functions.php:81 ayi-functions.php:95 ayi-functions.php:117
+#: includes/class-geodir-event-ayi.php:154
+#: includes/class-geodir-event-ayi.php:165
+#: includes/class-geodir-event-ayi.php:185
 msgid "Sounds Cool"
 msgstr ""
 
-#: ayi-functions.php:103
+#: includes/class-geodir-event-ayi.php:172
 msgid "Who's in?"
 msgstr ""
 
-#: ayi-functions.php:104 ayi-functions.php:118
+#: includes/class-geodir-event-ayi.php:173
+#: includes/class-geodir-event-ayi.php:186
 #, php-format
 msgid "1 response"
 msgid_plural "%s responses"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ayi-functions.php:112 ayi-functions.php:126
+#: includes/class-geodir-event-ayi.php:180
+#: includes/class-geodir-event-ayi.php:193
 msgid "No one is in yet."
 msgstr ""
 
-#: ayi-functions.php:543
+#: includes/class-geodir-event-ayi.php:545
 msgid "Submitted by"
 msgstr ""
 
-#: ayi-functions.php:572 ayi-functions.php:577
+#: includes/class-geodir-event-ayi.php:574
+#: includes/class-geodir-event-ayi.php:579
 msgid "is interested"
 msgstr ""
 
-#: ayi-functions.php:572 ayi-functions.php:577
+#: includes/class-geodir-event-ayi.php:574
+#: includes/class-geodir-event-ayi.php:579
 msgid "are interested"
 msgstr ""
 
-#: ayi-functions.php:611 gdevents_functions.php:1068
-#: gdevents_template_functions.php:1707 gdevents_widget.php:259
+#: includes/class-geodir-event-ayi.php:613
+#: includes/class-geodir-event-calendar.php:218
+#: includes/template-functions.php:73
+#: includes/widgets/class-geodir-event-widget-calendar.php:65
 msgid "Sunday"
 msgstr ""
 
-#: ayi-functions.php:611 gdevents_functions.php:1069
-#: gdevents_template_functions.php:1701 gdevents_widget.php:258
-#: gdevents_widget.php:270
+#: includes/class-geodir-event-ayi.php:613
+#: includes/class-geodir-event-calendar.php:212
+#: includes/template-functions.php:74
+#: includes/widgets/class-geodir-event-widget-calendar.php:64
+#: includes/widgets/class-geodir-event-widget-calendar.php:79
 msgid "Monday"
 msgstr ""
 
-#: ayi-functions.php:611 gdevents_functions.php:1070
-#: gdevents_template_functions.php:1702
+#: includes/class-geodir-event-ayi.php:613
+#: includes/class-geodir-event-calendar.php:213
+#: includes/template-functions.php:75
 msgid "Tuesday"
 msgstr ""
 
-#: ayi-functions.php:611 gdevents_functions.php:1071
-#: gdevents_template_functions.php:1703
+#: includes/class-geodir-event-ayi.php:613
+#: includes/class-geodir-event-calendar.php:214
+#: includes/template-functions.php:76
 msgid "Wednesday"
 msgstr ""
 
-#: ayi-functions.php:611 gdevents_functions.php:1072
-#: gdevents_template_functions.php:1704
+#: includes/class-geodir-event-ayi.php:613
+#: includes/class-geodir-event-calendar.php:215
+#: includes/template-functions.php:77
 msgid "Thursday"
 msgstr ""
 
-#: ayi-functions.php:611 gdevents_functions.php:1073
-#: gdevents_template_functions.php:1705
+#: includes/class-geodir-event-ayi.php:613
+#: includes/class-geodir-event-calendar.php:216
+#: includes/template-functions.php:78
 msgid "Friday"
 msgstr ""
 
-#: ayi-functions.php:611 gdevents_functions.php:1074
-#: gdevents_template_functions.php:1706
+#: includes/class-geodir-event-ayi.php:613
+#: includes/class-geodir-event-calendar.php:217
+#: includes/template-functions.php:79
 msgid "Saturday"
 msgstr ""
 
-#: ayi-widgets.php:16
-msgid "Displays \"Are you interested?\" widget in event pages"
-msgstr ""
-
-#: ayi-widgets.php:49
-msgid "Widget Title:"
-msgstr ""
-
-#: gd_update.php:16
-#, php-format
-msgid ""
-"The plugin %sWP Easy Updates%s is required to check for and update some "
-"installed plugins, please install it now."
-msgstr ""
-
-#: gdevents-admin/admin_functions.php:27
-msgid ""
-"<span style=\"color:#FF0000\">There was an issue determining where "
-"GeoDirectory Plugin is installed and activated. Please install or activate "
-"GeoDirectory Plugin.</span>"
-msgstr ""
-
-#: gdevents-admin/admin_functions.php:304
-msgid "Event Features Only"
-msgstr ""
-
-#: gdevents-admin/admin_functions.php:308
-msgid "Link business"
-msgstr ""
-
-#: gdevents-admin/admin_functions.php:312
-#: gdevents-admin/admin_functions.php:326
-#: gdevents-admin/admin_functions.php:341
-#: gdevents-admin/admin_functions.php:356 gdevents_functions.php:61
-#: gdevents_template_functions.php:266
-msgid "No"
-msgstr ""
-
-#: gdevents-admin/admin_functions.php:315
-#: gdevents-admin/admin_functions.php:329
-#: gdevents-admin/admin_functions.php:344
-#: gdevents-admin/admin_functions.php:355 gdevents_functions.php:60
-#: gdevents_template_functions.php:268
-msgid "Yes"
-msgstr ""
-
-#: gdevents-admin/admin_functions.php:321
-msgid "Registration Description"
-msgstr ""
-
-#: gdevents-admin/admin_functions.php:336 gdevents_template_functions.php:1162
-msgid "Registration Fees"
-msgstr ""
-
-#: gdevents-admin/admin_functions.php:351
-msgid "Recurring Events"
-msgstr ""
-
-#: gdevents-admin/admin_functions.php:381
-msgid "General"
-msgstr ""
-
-#: gdevents-admin/admin_functions.php:415
-msgid "Save changes"
-msgstr ""
-
-#: gdevents-admin/admin_functions.php:429
-msgid "Filter Settings"
-msgstr ""
-
-#: gdevents-admin/admin_functions.php:432
-msgid "Listing settings"
-msgstr ""
-
-#: gdevents-admin/admin_functions.php:435
-msgid "Default event filter"
-msgstr ""
-
-#: gdevents-admin/admin_functions.php:436
-msgid "Set the default filter view of event on listing page"
-msgstr ""
-
-#: gdevents-admin/admin_functions.php:443
-#: gdevents-admin/admin_functions.php:480 gdevents_widget.php:396
-#: gdevents_widget.php:410
-msgid "All"
-msgstr ""
-
-#: gdevents-admin/admin_functions.php:444
-#: gdevents-admin/admin_functions.php:481
-#: gdevents-admin/admin_hooks_actions.php:141
-#: gdevents_template_functions.php:26 gdevents_template_functions.php:1965
-#: gdevents_widget.php:441
-msgid "Today"
-msgstr ""
-
-#: gdevents-admin/admin_functions.php:445
-#: gdevents-admin/admin_functions.php:482
-#: gdevents-admin/admin_hooks_actions.php:142
-#: gdevents-admin/admin_hooks_actions.php:161
-#: gdevents_template_functions.php:27 gdevents_template_functions.php:1967
-#: gdevents_widget.php:420 gdevents_widget.php:443
-msgid "Upcoming"
-msgstr ""
-
-#: gdevents-admin/admin_functions.php:446
-#: gdevents-admin/admin_functions.php:483
-#: gdevents-admin/admin_hooks_actions.php:143
-#: gdevents_template_functions.php:28 gdevents_template_functions.php:1963
-#: gdevents_widget.php:445
-msgid "Past"
-msgstr ""
-
-#: gdevents-admin/admin_functions.php:450
-msgid "Disable Recurring Feature"
-msgstr ""
-
-#: gdevents-admin/admin_functions.php:451
-msgid "This allows to disable recurring event feature"
-msgstr ""
-
-#: gdevents-admin/admin_functions.php:457
-msgid "Hide event past dates"
-msgstr ""
-
-#: gdevents-admin/admin_functions.php:458
-msgid "Hide event past dates in the detail page sidebar of recurring events"
-msgstr ""
-
-#: gdevents-admin/admin_functions.php:464
-msgid "Event dates in map infowindow"
-msgstr ""
-
-#: gdevents-admin/admin_functions.php:465
-msgid ""
-"No. of schedule dates to display for event marker info window on the map. "
-"Default: 1"
-msgstr ""
-
-#: gdevents-admin/admin_functions.php:472
-msgid "Filter event dates in map infowindow"
-msgstr ""
-
-#: gdevents-admin/admin_functions.php:473
-msgid ""
-"Set the filter to view schedule dates for event marker info window on the "
-"map."
-msgstr ""
-
-#: gdevents-admin/admin_functions.php:488
-msgid "Date settings"
-msgstr ""
-
-#: gdevents-admin/admin_functions.php:514
-msgid "Date format for add event feilds"
-msgstr ""
-
-#: gdevents-admin/admin_functions.php:515
-msgid "Set the date format for the date feilds and calendar in add event form."
-msgstr ""
-
-#: gdevents-admin/admin_functions.php:540
-msgid "Date format for display event dates"
-msgstr ""
-
-#: gdevents-admin/admin_functions.php:541
-msgid "Set the date format to display event dates."
-msgstr ""
-
-#: gdevents-admin/admin_functions.php:552
-msgid "OR use custom date form setting for display event dates."
-msgstr ""
-
-#: gdevents-admin/admin_functions.php:560
-msgid "Custom date format"
-msgstr ""
-
-#: gdevents-admin/admin_functions.php:561
-msgid "Set the custom date format to display event dates."
-msgstr ""
-
-#: gdevents-admin/admin_functions.php:573
-msgid "Link Business settings"
-msgstr ""
-
-#: gdevents-admin/admin_functions.php:576
-msgid "Any linking Author"
-msgstr ""
-
-#: gdevents-admin/admin_functions.php:577
-msgid "Allow linking to any post not just users own posts?"
-msgstr ""
-
-#: gdevents-admin/admin_hooks_actions.php:61
-#: gdevents_template_functions.php:259
-msgid "Event Schedule"
-msgstr ""
-
-#: gdevents-admin/admin_hooks_actions.php:71
-#: gdevents_template_functions.php:1063
-msgid "Businesses"
-msgstr ""
-
-#: gdevents-admin/admin_hooks_actions.php:96
-#: gdevents-admin/admin_install.php:173 gdevents_hooks_actions.php:58
-#: gdevents_hooks_actions.php:157 gdevents_template_functions.php:1263
-msgid "Events"
-msgstr ""
-
-#: gdevents-admin/admin_hooks_actions.php:111
-msgid "Download sample csv for Events"
-msgstr ""
-
-#: gdevents-admin/admin_hooks_actions.php:126
-msgid "Linked Events Settings"
-msgstr ""
-
-#: gdevents-admin/admin_hooks_actions.php:132
-msgid "Display events filter:"
-msgstr ""
-
-#: gdevents-admin/admin_hooks_actions.php:140
-#: gdevents_template_functions.php:25 gdevents_widget.php:439
-msgid "All Events"
-msgstr ""
-
-#: gdevents-admin/admin_hooks_actions.php:147 gdevents_widget.php:136
-#: gdevents_widget.php:416
-msgid "Sort by:"
-msgstr ""
-
-#: gdevents-admin/admin_hooks_actions.php:148
-msgid "Set the linked event listing sort by view"
-msgstr ""
-
-#: gdevents-admin/admin_hooks_actions.php:155
-msgid "A-Z"
-msgstr ""
-
-#: gdevents-admin/admin_hooks_actions.php:156 gdevents_widget.php:140
-msgid "Latest"
-msgstr ""
-
-#: gdevents-admin/admin_hooks_actions.php:157 gdevents_widget.php:142
-#: gdevents_widget.php:422
-msgid "Featured"
-msgstr ""
-
-#: gdevents-admin/admin_hooks_actions.php:158 gdevents_widget.php:144
-#: gdevents_widget.php:424
-msgid "Review"
-msgstr ""
-
-#: gdevents-admin/admin_hooks_actions.php:159 gdevents_widget.php:146
-#: gdevents_widget.php:426
-msgid "Rating"
-msgstr ""
-
-#: gdevents-admin/admin_hooks_actions.php:160 gdevents_widget.php:148
-#: gdevents_widget.php:428
-msgid "Random"
-msgstr ""
-
-#: gdevents-admin/admin_hooks_actions.php:165
-msgid "Number of events:"
-msgstr ""
-
-#: gdevents-admin/admin_hooks_actions.php:166
-msgid "Enter number of events to display on linked events listing"
-msgstr ""
-
-#: gdevents-admin/admin_hooks_actions.php:173 gdevents_widget.php:164
-#: gdevents_widget.php:461
-msgid "Layout:"
-msgstr ""
-
-#: gdevents-admin/admin_hooks_actions.php:174
-msgid "Set the listing view of linked event on place detail page"
-msgstr ""
-
-#: gdevents-admin/admin_hooks_actions.php:181 gdevents_widget.php:166
-#: gdevents_widget.php:463
-msgid "Grid View (Two Columns)"
-msgstr ""
-
-#: gdevents-admin/admin_hooks_actions.php:182 gdevents_widget.php:167
-#: gdevents_widget.php:464
-msgid "Grid View (Three Columns)"
-msgstr ""
-
-#: gdevents-admin/admin_hooks_actions.php:183 gdevents_widget.php:168
-#: gdevents_widget.php:465
-msgid "Grid View (Four Columns)"
-msgstr ""
-
-#: gdevents-admin/admin_hooks_actions.php:184 gdevents_widget.php:169
-#: gdevents_widget.php:466
-msgid "Grid View (Five Columns)"
-msgstr ""
-
-#: gdevents-admin/admin_hooks_actions.php:185 gdevents_widget.php:170
-#: gdevents_widget.php:467
-msgid "List view"
-msgstr ""
-
-#: gdevents-admin/admin_hooks_actions.php:189
-msgid "Event content excerpt:"
-msgstr ""
-
-#: gdevents-admin/admin_hooks_actions.php:190
-msgid "Enter event content excerpt character count."
-msgstr ""
-
-#: gdevents-admin/admin_install.php:111
-msgid "Event Categories"
-msgstr ""
-
-#: gdevents-admin/admin_install.php:112
-msgid "Event Category"
-msgstr ""
-
-#: gdevents-admin/admin_install.php:113
-msgid "Search Event Categories"
-msgstr ""
-
-#: gdevents-admin/admin_install.php:114
-msgid "Popular Event Categories"
-msgstr ""
-
-#: gdevents-admin/admin_install.php:115
-msgid "All Event Categories"
-msgstr ""
-
-#: gdevents-admin/admin_install.php:116
-msgid "Edit Event Category"
-msgstr ""
-
-#: gdevents-admin/admin_install.php:117
-msgid "Update Event Category"
-msgstr ""
-
-#: gdevents-admin/admin_install.php:118
-msgid "Add New Event Category"
-msgstr ""
-
-#: gdevents-admin/admin_install.php:119
-msgid "New Event Category"
-msgstr ""
-
-#: gdevents-admin/admin_install.php:120
-msgid "Add or remove Event categories"
-msgstr ""
-
-#: gdevents-admin/admin_install.php:143
-msgid "Event Tags"
-msgstr ""
-
-#: gdevents-admin/admin_install.php:144
-msgid "Event Tag"
-msgstr ""
-
-#: gdevents-admin/admin_install.php:145
-msgid "Search Event Tags"
-msgstr ""
-
-#: gdevents-admin/admin_install.php:146
-msgid "Popular Event Tags"
-msgstr ""
-
-#: gdevents-admin/admin_install.php:147
-msgid "All Event Tags"
-msgstr ""
-
-#: gdevents-admin/admin_install.php:148
-msgid "Edit Event Tag"
-msgstr ""
-
-#: gdevents-admin/admin_install.php:149
-msgid "Update Event Tag"
-msgstr ""
-
-#: gdevents-admin/admin_install.php:150
-msgid "Add New Event Tag"
-msgstr ""
-
-#: gdevents-admin/admin_install.php:151
-msgid "New Event Tag Name"
-msgstr ""
-
-#: gdevents-admin/admin_install.php:152
-msgid "Add or remove Event tags"
-msgstr ""
-
-#: gdevents-admin/admin_install.php:153
-msgid "Choose from the most used Event tags"
-msgstr ""
-
-#: gdevents-admin/admin_install.php:154
-msgid "Separate Event tags with commas"
-msgstr ""
-
-#: gdevents-admin/admin_install.php:174
-msgid "Event"
-msgstr ""
-
-#: gdevents-admin/admin_install.php:175
-msgid "Add New"
-msgstr ""
-
-#: gdevents-admin/admin_install.php:176
-msgid "Add New Event"
-msgstr ""
-
-#: gdevents-admin/admin_install.php:177
-msgid "Edit Event"
-msgstr ""
-
-#: gdevents-admin/admin_install.php:178
-msgid "New Event"
-msgstr ""
-
-#: gdevents-admin/admin_install.php:179
-msgid "View Event"
-msgstr ""
-
-#: gdevents-admin/admin_install.php:180
-msgid "Search Events"
-msgstr ""
-
-#: gdevents-admin/admin_install.php:181
-msgid "No Event Found"
-msgstr ""
-
-#: gdevents-admin/admin_install.php:182
-msgid "No Event Found In Trash"
-msgstr ""
-
-#: gdevents-admin/admin_install.php:188
-msgid "Event post type."
-msgstr ""
-
-#: gdevents_functions.php:50
-msgid "Show event 'registration description' field as editor"
-msgstr ""
-
-#: gdevents_functions.php:51
-msgid "Select the option to show advanced editor on add listing page."
-msgstr ""
-
-#: gdevents_functions.php:59
-msgid "Select"
-msgstr ""
-
-#: gdevents_functions.php:103
-msgid " Browsing Day"
-msgstr ""
-
-#: gdevents_functions.php:847 gdevents_hooks_actions.php:105
-msgid "No Business"
-msgstr ""
-
-#: gdevents_functions.php:1023 gdevents_template_functions.php:492
-#: gdevents_template_functions.php:1587
-msgid "January"
-msgstr ""
-
-#: gdevents_functions.php:1024 gdevents_template_functions.php:493
-#: gdevents_template_functions.php:1587
-msgid "February"
-msgstr ""
-
-#: gdevents_functions.php:1025 gdevents_template_functions.php:494
-#: gdevents_template_functions.php:1587
-msgid "March"
-msgstr ""
-
-#: gdevents_functions.php:1026 gdevents_template_functions.php:495
-#: gdevents_template_functions.php:1587
-msgid "April"
-msgstr ""
-
-#: gdevents_functions.php:1027 gdevents_functions.php:1039
-#: gdevents_template_functions.php:496 gdevents_template_functions.php:1587
-msgid "May"
-msgstr ""
-
-#: gdevents_functions.php:1028 gdevents_template_functions.php:497
-#: gdevents_template_functions.php:1587
-msgid "June"
-msgstr ""
-
-#: gdevents_functions.php:1029 gdevents_template_functions.php:498
-#: gdevents_template_functions.php:1587
-msgid "July"
-msgstr ""
-
-#: gdevents_functions.php:1030 gdevents_template_functions.php:499
-#: gdevents_template_functions.php:1587
-msgid "August"
-msgstr ""
-
-#: gdevents_functions.php:1031 gdevents_template_functions.php:500
-#: gdevents_template_functions.php:1587
-msgid "September"
-msgstr ""
-
-#: gdevents_functions.php:1032 gdevents_template_functions.php:501
-#: gdevents_template_functions.php:1587
-msgid "October"
-msgstr ""
-
-#: gdevents_functions.php:1033 gdevents_template_functions.php:502
-#: gdevents_template_functions.php:1587
-msgid "November"
-msgstr ""
-
-#: gdevents_functions.php:1034 gdevents_template_functions.php:503
-#: gdevents_template_functions.php:1587
-msgid "December"
-msgstr ""
-
-#: gdevents_functions.php:1035
-msgid "Jan"
-msgstr ""
-
-#: gdevents_functions.php:1036
-msgid "Feb"
-msgstr ""
-
-#: gdevents_functions.php:1037
-msgid "Mar"
-msgstr ""
-
-#: gdevents_functions.php:1038
-msgid "Apr"
-msgstr ""
-
-#: gdevents_functions.php:1040
-msgid "Jun"
-msgstr ""
-
-#: gdevents_functions.php:1041
-msgid "Jul"
-msgstr ""
-
-#: gdevents_functions.php:1042
-msgid "Aug"
-msgstr ""
-
-#: gdevents_functions.php:1043
-msgid "Sep"
-msgstr ""
-
-#: gdevents_functions.php:1044
-msgid "Oct"
-msgstr ""
-
-#: gdevents_functions.php:1045
-msgid "Nov"
-msgstr ""
-
-#: gdevents_functions.php:1046
-msgid "Dec"
-msgstr ""
-
-#: gdevents_functions.php:1047 gdevents_functions.php:1053
-#: gdevents_template_functions.php:1716 gdevents_template_functions.php:1717
-msgid "S"
-msgstr ""
-
-#: gdevents_functions.php:1048 gdevents_template_functions.php:1711
-#: gdevents_widget.php:267
-msgid "M"
-msgstr ""
-
-#: gdevents_functions.php:1049 gdevents_functions.php:1051
-#: gdevents_template_functions.php:1712 gdevents_template_functions.php:1714
-msgid "T"
-msgstr ""
-
-#: gdevents_functions.php:1050 gdevents_template_functions.php:1713
-msgid "W"
-msgstr ""
-
-#: gdevents_functions.php:1052 gdevents_template_functions.php:1715
-msgid "F"
-msgstr ""
-
-#: gdevents_functions.php:1054 gdevents_template_functions.php:1689
-msgid "Su"
-msgstr ""
-
-#: gdevents_functions.php:1055 gdevents_template_functions.php:1683
-#: gdevents_widget.php:268
-msgid "Mo"
-msgstr ""
-
-#: gdevents_functions.php:1056 gdevents_template_functions.php:1684
-msgid "Tu"
-msgstr ""
-
-#: gdevents_functions.php:1057 gdevents_template_functions.php:1685
-msgid "We"
-msgstr ""
-
-#: gdevents_functions.php:1058 gdevents_template_functions.php:1686
-msgid "Th"
-msgstr ""
-
-#: gdevents_functions.php:1059 gdevents_template_functions.php:1687
-msgid "Fr"
-msgstr ""
-
-#: gdevents_functions.php:1060 gdevents_template_functions.php:1688
-msgid "Sa"
-msgstr ""
-
-#: gdevents_functions.php:1061 gdevents_template_functions.php:323
-#: gdevents_template_functions.php:1698
-msgid "Sun"
-msgstr ""
-
-#: gdevents_functions.php:1062 gdevents_template_functions.php:317
-#: gdevents_template_functions.php:1692 gdevents_widget.php:269
-msgid "Mon"
-msgstr ""
-
-#: gdevents_functions.php:1063 gdevents_template_functions.php:318
-#: gdevents_template_functions.php:1693
-msgid "Tue"
-msgstr ""
-
-#: gdevents_functions.php:1064 gdevents_template_functions.php:319
-#: gdevents_template_functions.php:1694
-msgid "Wed"
-msgstr ""
-
-#: gdevents_functions.php:1065 gdevents_template_functions.php:320
-#: gdevents_template_functions.php:1695
-msgid "Thu"
-msgstr ""
-
-#: gdevents_functions.php:1066 gdevents_template_functions.php:321
-#: gdevents_template_functions.php:1696
-msgid "Fri"
-msgstr ""
-
-#: gdevents_functions.php:1067 gdevents_template_functions.php:322
-#: gdevents_template_functions.php:1697
-msgid "Sat"
-msgstr ""
-
-#: gdevents_functions.php:1076
-msgid "Previous Month"
-msgstr ""
-
-#: gdevents_functions.php:1077
-msgid "Next Month"
-msgstr ""
-
-#: gdevents_functions.php:1078
-msgid "Close"
-msgstr ""
-
-#: gdevents_functions.php:1162
-msgid "Listing"
-msgstr ""
-
-#: gdevents_functions.php:1165
-#, php-format
-msgid "Go to: %s"
-msgstr ""
-
-#: gdevents_functions.php:1341
-msgid "Near:"
-msgstr ""
-
-#: gdevents_functions.php:1341
-msgid "Me"
-msgstr ""
-
-#: gdevents_functions.php:1380
-msgid "View all"
-msgstr ""
-
-#: gdevents_functions.php:1529
+#: includes/class-geodir-event-calendar.php:68
 msgid "prev"
 msgstr ""
 
-#: gdevents_functions.php:1531
+#: includes/class-geodir-event-calendar.php:70
 msgid "next"
 msgstr ""
 
-#: gdevents_functions.php:2097
-#, php-format
-msgid "%s at %s"
+#: includes/class-geodir-event-calendar.php:139
+#: includes/template-functions.php:20 includes/template-functions.php:28
+msgid "January"
 msgstr ""
 
-#: gdevents_functions.php:2809
-msgid ""
-"Your version of PHP is below the minimum version of PHP required by "
-"<b>GeoDirectory Events</b>. Please contact your host and request that your "
-"PHP version be upgraded to <b>5.3 or later</b>."
+#: includes/class-geodir-event-calendar.php:139
+#: includes/template-functions.php:20 includes/template-functions.php:29
+msgid "February"
 msgstr ""
 
-#: gdevents_hooks_actions.php:59
-msgid "Event schedule"
+#: includes/class-geodir-event-calendar.php:139
+#: includes/template-functions.php:20 includes/template-functions.php:30
+msgid "March"
 msgstr ""
 
-#: gdevents_hooks_actions.php:104 gdevents_hooks_actions.php:106
-msgid "Please wait..."
+#: includes/class-geodir-event-calendar.php:139
+#: includes/template-functions.php:20 includes/template-functions.php:31
+msgid "April"
 msgstr ""
 
-#: gdevents_hooks_actions.php:107
-msgid "We are searching for"
+#: includes/class-geodir-event-calendar.php:139
+#: includes/template-functions.php:20 includes/template-functions.php:32
+msgid "May"
 msgstr ""
 
-#: gdevents_hooks_actions.php:108
-msgid "No results match"
+#: includes/class-geodir-event-calendar.php:139
+#: includes/template-functions.php:20 includes/template-functions.php:33
+msgid "June"
 msgstr ""
 
-#: gdevents_hooks_actions.php:229 gdevents_hooks_actions.php:231
-#: gdevents_hooks_actions.php:235
-#, php-format
-msgid "- %s"
+#: includes/class-geodir-event-calendar.php:139
+#: includes/template-functions.php:20 includes/template-functions.php:34
+msgid "July"
 msgstr ""
 
-#: gdevents_hooks_actions.php:526
-msgid "Upcoming (Events Only)"
+#: includes/class-geodir-event-calendar.php:139
+#: includes/template-functions.php:20 includes/template-functions.php:35
+msgid "August"
 msgstr ""
 
-#: gdevents_template_functions.php:240 gdevents_template_functions.php:384
-msgid "Start"
+#: includes/class-geodir-event-calendar.php:139
+#: includes/template-functions.php:20 includes/template-functions.php:36
+msgid "September"
 msgstr ""
 
-#: gdevents_template_functions.php:240 gdevents_template_functions.php:390
-msgid "End"
+#: includes/class-geodir-event-calendar.php:139
+#: includes/template-functions.php:20 includes/template-functions.php:37
+msgid "October"
 msgstr ""
 
-#: gdevents_template_functions.php:262
-msgid "Recurring event?"
+#: includes/class-geodir-event-calendar.php:139
+#: includes/template-functions.php:20 includes/template-functions.php:38
+msgid "November"
 msgstr ""
 
-#: gdevents_template_functions.php:272
-msgid "Check \"Yes\" for recurring event."
+#: includes/class-geodir-event-calendar.php:139
+#: includes/template-functions.php:20 includes/template-functions.php:39
+msgid "December"
 msgstr ""
 
-#: gdevents_template_functions.php:276
+#: includes/class-geodir-event-calendar.php:194
+#: includes/template-functions.php:60
+#: includes/widgets/class-geodir-event-widget-calendar.php:77
+msgid "Mo"
+msgstr ""
+
+#: includes/class-geodir-event-calendar.php:195
+#: includes/template-functions.php:61
+msgid "Tu"
+msgstr ""
+
+#: includes/class-geodir-event-calendar.php:196
+#: includes/template-functions.php:62
+msgid "We"
+msgstr ""
+
+#: includes/class-geodir-event-calendar.php:197
+#: includes/template-functions.php:63
+msgid "Th"
+msgstr ""
+
+#: includes/class-geodir-event-calendar.php:198
+#: includes/template-functions.php:64
+msgid "Fr"
+msgstr ""
+
+#: includes/class-geodir-event-calendar.php:199
+#: includes/template-functions.php:65
+msgid "Sa"
+msgstr ""
+
+#: includes/class-geodir-event-calendar.php:200
+#: includes/template-functions.php:59
+msgid "Su"
+msgstr ""
+
+#: includes/class-geodir-event-calendar.php:203
+#: includes/class-geodir-event-fields.php:408
+#: includes/template-functions.php:67
+#: includes/widgets/class-geodir-event-widget-calendar.php:78
+msgid "Mon"
+msgstr ""
+
+#: includes/class-geodir-event-calendar.php:204
+#: includes/class-geodir-event-fields.php:409
+#: includes/template-functions.php:68
+msgid "Tue"
+msgstr ""
+
+#: includes/class-geodir-event-calendar.php:205
+#: includes/class-geodir-event-fields.php:410
+#: includes/template-functions.php:69
+msgid "Wed"
+msgstr ""
+
+#: includes/class-geodir-event-calendar.php:206
+#: includes/class-geodir-event-fields.php:411
+#: includes/template-functions.php:70
+msgid "Thu"
+msgstr ""
+
+#: includes/class-geodir-event-calendar.php:207
+#: includes/class-geodir-event-fields.php:412
+#: includes/template-functions.php:71
+msgid "Fri"
+msgstr ""
+
+#: includes/class-geodir-event-calendar.php:208
+#: includes/class-geodir-event-fields.php:413
+#: includes/template-functions.php:72
+msgid "Sat"
+msgstr ""
+
+#: includes/class-geodir-event-calendar.php:209
+#: includes/class-geodir-event-fields.php:414
+#: includes/template-functions.php:66
+msgid "Sun"
+msgstr ""
+
+#: includes/class-geodir-event-calendar.php:222
+#: includes/widgets/class-geodir-event-widget-calendar.php:76
+msgid "M"
+msgstr ""
+
+#: includes/class-geodir-event-calendar.php:223
+#: includes/class-geodir-event-calendar.php:225
+msgid "T"
+msgstr ""
+
+#: includes/class-geodir-event-calendar.php:224
+msgid "W"
+msgstr ""
+
+#: includes/class-geodir-event-calendar.php:226
+msgid "F"
+msgstr ""
+
+#: includes/class-geodir-event-calendar.php:227
+#: includes/class-geodir-event-calendar.php:228
+msgid "S"
+msgstr ""
+
+#: includes/class-geodir-event-calendar.php:277
+msgid "Click to view events on this date"
+msgstr ""
+
+#: includes/class-geodir-event-fields.php:76
+#: includes/class-geodir-event-fields.php:78
+#: includes/class-geodir-event-fields.php:89
+msgid "Recurring Event?"
+msgstr ""
+
+#: includes/class-geodir-event-fields.php:77
+msgid "Tick \"Yes\" for recurring event."
+msgstr ""
+
+#: includes/class-geodir-event-fields.php:82
+#: includes/class-geodir-event-fields.php:262
+msgid "Yes"
+msgstr ""
+
+#: includes/class-geodir-event-fields.php:82
+#: includes/class-geodir-event-fields.php:263
+msgid "No"
+msgstr ""
+
+#: includes/class-geodir-event-fields.php:88
+msgid "Choose a type for an event!"
+msgstr ""
+
+#: includes/class-geodir-event-fields.php:98
+#: includes/class-geodir-event-fields.php:100
+#: includes/class-geodir-event-fields.php:111
+msgid "Event Dates"
+msgstr ""
+
+#: includes/class-geodir-event-fields.php:110
+msgid "Choose dates for an event!"
+msgstr ""
+
+#: includes/class-geodir-event-fields.php:144
+msgid "Event Registration Fees"
+msgstr ""
+
+#: includes/class-geodir-event-fields.php:145
+msgid "Adds a input for a event registration fees."
+msgstr ""
+
+#: includes/class-geodir-event-fields.php:182
+msgid "Event Registration Info"
+msgstr ""
+
+#: includes/class-geodir-event-fields.php:183
+msgid "Adds a input for a event registration description."
+msgstr ""
+
+#: includes/class-geodir-event-fields.php:337
+#: includes/template-functions.php:15 includes/template-functions.php:187
+msgid "to"
+msgstr ""
+
+#: includes/class-geodir-event-fields.php:371
 msgid "Event start date"
 msgstr ""
 
-#: gdevents_template_functions.php:278
-msgid "Please check start date of event"
+#: includes/class-geodir-event-fields.php:373
+msgid "Choose a start date of the event."
 msgstr ""
 
-#: gdevents_template_functions.php:281
+#: includes/class-geodir-event-fields.php:376
 msgid "Event end date"
 msgstr ""
 
-#: gdevents_template_functions.php:286
-msgid "Event duration"
+#: includes/class-geodir-event-fields.php:381
+msgid "Event duration (days)"
 msgstr ""
 
-#: gdevents_template_functions.php:287
-msgid "day(s)"
-msgstr ""
-
-#: gdevents_template_functions.php:290
+#: includes/class-geodir-event-fields.php:385
 msgid "Repeats"
 msgstr ""
 
-#: gdevents_template_functions.php:293
-msgid "Select Recurring Type"
+#: includes/class-geodir-event-fields.php:386
+#: includes/class-geodir-event-fields.php:387
+msgid "Select recurring type"
 msgstr ""
 
-#: gdevents_template_functions.php:294
+#: includes/class-geodir-event-fields.php:388
 msgid "days"
 msgstr ""
 
-#: gdevents_template_functions.php:294
+#: includes/class-geodir-event-fields.php:388
 msgid "Daily"
 msgstr ""
 
-#: gdevents_template_functions.php:295
+#: includes/class-geodir-event-fields.php:389
 msgid "weeks"
 msgstr ""
 
-#: gdevents_template_functions.php:295
+#: includes/class-geodir-event-fields.php:389
 msgid "Weekly"
 msgstr ""
 
-#: gdevents_template_functions.php:296
+#: includes/class-geodir-event-fields.php:390
 msgid "months"
 msgstr ""
 
-#: gdevents_template_functions.php:296
+#: includes/class-geodir-event-fields.php:390
 msgid "Monthly"
 msgstr ""
 
-#: gdevents_template_functions.php:297
+#: includes/class-geodir-event-fields.php:391
 msgid "years"
 msgstr ""
 
-#: gdevents_template_functions.php:297
+#: includes/class-geodir-event-fields.php:391
 msgid "Yearly"
 msgstr ""
 
-#: gdevents_template_functions.php:298
+#: includes/class-geodir-event-fields.php:392
 msgid "Custom"
 msgstr ""
 
-#: gdevents_template_functions.php:301
+#: includes/class-geodir-event-fields.php:394
 msgid "Please select recurring type"
 msgstr ""
 
-#: gdevents_template_functions.php:304
+#: includes/class-geodir-event-fields.php:397
 msgid "Repeat every"
 msgstr ""
 
-#: gdevents_template_functions.php:314
+#: includes/class-geodir-event-fields.php:403
+msgid "Please select recurring interval"
+msgstr ""
+
+#: includes/class-geodir-event-fields.php:406
 msgid "Repeat on"
 msgstr ""
 
-#: gdevents_template_functions.php:316
+#: includes/class-geodir-event-fields.php:407
 msgid "Select days"
 msgstr ""
 
-#: gdevents_template_functions.php:328
+#: includes/class-geodir-event-fields.php:418
 msgid "Repeat by"
 msgstr ""
 
-#: gdevents_template_functions.php:330
+#: includes/class-geodir-event-fields.php:419
 msgid "Select weeks"
 msgstr ""
 
-#: gdevents_template_functions.php:331
+#: includes/class-geodir-event-fields.php:420
 msgid "1st week"
 msgstr ""
 
-#: gdevents_template_functions.php:332
+#: includes/class-geodir-event-fields.php:421
 msgid "2nd week"
 msgstr ""
 
-#: gdevents_template_functions.php:333
+#: includes/class-geodir-event-fields.php:422
 msgid "3rd week"
 msgstr ""
 
-#: gdevents_template_functions.php:334
+#: includes/class-geodir-event-fields.php:423
 msgid "4th week"
 msgstr ""
 
-#: gdevents_template_functions.php:335
+#: includes/class-geodir-event-fields.php:424
 msgid "5th week"
 msgstr ""
 
-#: gdevents_template_functions.php:342
+#: includes/class-geodir-event-fields.php:428
 msgid "Recurring ends"
 msgstr ""
 
-#: gdevents_template_functions.php:344
+#: includes/class-geodir-event-fields.php:430
 msgid "After"
 msgstr ""
 
-#: gdevents_template_functions.php:344
+#: includes/class-geodir-event-fields.php:430
 msgid "occurrences"
 msgstr ""
 
-#: gdevents_template_functions.php:344
+#: includes/class-geodir-event-fields.php:430
 msgid "On"
 msgstr ""
 
-#: gdevents_template_functions.php:346
+#: includes/class-geodir-event-fields.php:432
 msgid "Recurring event duration."
 msgstr ""
 
-#: gdevents_template_functions.php:350
+#: includes/class-geodir-event-fields.php:435
 msgid "Event Date(s)"
 msgstr ""
 
-#: gdevents_template_functions.php:360
+#: includes/class-geodir-event-fields.php:441
 msgid "Selected Dates"
 msgstr ""
 
-#: gdevents_template_functions.php:372
+#: includes/class-geodir-event-fields.php:460
 msgid ""
 "Click on each day your event will be held. You may choose more than one day. "
 "Selected dates appear in blue and can be unselected by clicking on them."
 msgstr ""
 
-#: gdevents_template_functions.php:373
+#: includes/class-geodir-event-fields.php:461
 msgid "Please select at least one event date."
 msgstr ""
 
-#: gdevents_template_functions.php:378
+#: includes/class-geodir-event-fields.php:465
 msgid "All day"
 msgstr ""
 
-#: gdevents_template_functions.php:380
-msgid "Checked to set event for all day"
+#: includes/class-geodir-event-fields.php:468
+msgid "Tick to set event for all day."
 msgstr ""
 
-#: gdevents_template_functions.php:383
+#: includes/class-geodir-event-fields.php:471
 msgid "Event Time"
 msgstr ""
 
-#: gdevents_template_functions.php:399
-msgid "Different Event Times"
+#: includes/class-geodir-event-fields.php:473
+msgid "Starts at"
 msgstr ""
 
-#: gdevents_template_functions.php:401
-msgid "Checked to different dates have different start and end times"
+#: includes/class-geodir-event-fields.php:477
+msgid "Ends at"
 msgstr ""
 
-#: gdevents_template_functions.php:477
-msgid "Start "
+#: includes/class-geodir-event-fields.php:485
+msgid "Different Event Times?"
 msgstr ""
 
-#: gdevents_template_functions.php:477
-msgid "End "
+#: includes/class-geodir-event-fields.php:488
+msgid "Tick to set separate start and end times for each date."
 msgstr ""
 
-#: gdevents_template_functions.php:880
-msgid "Recurring Dates"
-msgstr ""
-
-#: gdevents_template_functions.php:880 gdevents_template_functions.php:1010
+#: includes/class-geodir-event-fields.php:806
+#: includes/class-geodir-event-fields.php:867
 msgid "Date"
-msgstr ""
+msgid_plural "Dates"
+msgstr[0] ""
+msgstr[1] ""
 
-#: gdevents_template_functions.php:1010
-msgid "Dates"
-msgstr ""
-
-#: gdevents_template_functions.php:1066
-msgid "Link Business"
-msgstr ""
-
-#: gdevents_template_functions.php:1070
-msgid "Search business&hellip;"
-msgstr ""
-
-#: gdevents_template_functions.php:1136 gdevents_template_functions.php:1203
-msgid "How to Register"
-msgstr ""
-
-#: gdevents_template_functions.php:1148
-msgid "Basic HTML tags are allowed"
-msgstr ""
-
-#: gdevents_template_functions.php:1164
+#: includes/class-geodir-event-fields.php:966
+#: includes/class-geodir-event-fields.php:1036
+#: includes/template-functions.php:230
 #, php-format
-msgid "Enter Registration Fees, in %s eg. : %s50"
+msgid "From: %s"
 msgstr ""
 
-#: gdevents_template_functions.php:1208
-msgid "Fees:"
-msgstr ""
-
-#: gdevents_template_functions.php:1314 gdevents_template_functions.php:1340
-#: gdevents_widget.php:127
-msgid "Past Events"
-msgstr ""
-
-#: gdevents_template_functions.php:1333
-msgid "Related Events"
-msgstr ""
-
-#: gdevents_template_functions.php:1337 gdevents_widget.php:125
-msgid "Feature Events"
-msgstr ""
-
-#: gdevents_template_functions.php:1343 gdevents_widget.php:129
-msgid "Upcoming Events"
-msgstr ""
-
-#: gdevents_template_functions.php:1778
-msgid "Click to view events on this date"
-msgstr ""
-
-#: gdevents_template_functions.php:1850
-msgid "Date:"
-msgstr ""
-
-#: gdevents_template_functions.php:1860
-msgid "Time:"
-msgstr ""
-
-#: gdevents_template_functions.php:1866
-msgid " to"
-msgstr ""
-
-#: gdevents_template_functions.php:1905
+#: includes/class-geodir-event-fields.php:966
+#: includes/class-geodir-event-fields.php:1036
 #, php-format
-msgid "View all events in \"%s\""
+msgid "%s Start Date"
 msgstr ""
 
-#: gdevents_template_functions.php:1997
-msgid "to"
+#: includes/class-geodir-event-fields.php:967
+#: includes/class-geodir-event-fields.php:1037
+#: includes/template-functions.php:232
+#, php-format
+msgid "To: %s"
 msgstr ""
 
-#: gdevents_widget.php:10 gdevents_widget.php:13
-msgid "GD > Related Events Listing"
+#: includes/class-geodir-event-fields.php:967
+#: includes/class-geodir-event-fields.php:1037
+#, php-format
+msgid "%s End Date"
 msgstr ""
 
-#: gdevents_widget.php:121
-msgid "Display Events:"
+#: includes/class-geodir-event-fields.php:978
+#: includes/class-geodir-event-fields.php:1050
+#, php-format
+msgid "%s Date"
 msgstr ""
 
-#: gdevents_widget.php:156 gdevents_widget.php:453
-msgid "Number of posts:"
+#: includes/class-geodir-event-fields.php:1034
+#, php-format
+msgid "%s Dates"
 msgstr ""
 
-#: gdevents_widget.php:177 gdevents_widget.php:474
-msgid "Listing width:"
+#: includes/class-geodir-event-manager.php:135
+msgid ""
+"Your version of PHP is below the minimum version of PHP required by "
+"GeoDirectory Events. Please contact your host and request that your version "
+"be upgraded to 5.3 or later."
 msgstr ""
 
-#: gdevents_widget.php:184 gdevents_widget.php:481
-msgid "Post Content excerpt character count :"
+#: includes/class-geodir-event-post-type.php:157
+msgid "Event"
 msgstr ""
 
-#: gdevents_widget.php:191 gdevents_widget.php:487
-msgid "Enable Location Filter:"
+#: includes/class-geodir-event-post-type.php:158
+msgid "Add New"
 msgstr ""
 
-#: gdevents_widget.php:207 gdevents_widget.php:210
-msgid "GD > Event Listing Calendar"
+#: includes/class-geodir-event-post-type.php:159
+msgid "Add New Event"
 msgstr ""
 
-#: gdevents_widget.php:247
-msgid "Title"
+#: includes/class-geodir-event-post-type.php:160
+msgid "Edit Event"
 msgstr ""
 
-#: gdevents_widget.php:255
-msgid "Start day?"
+#: includes/class-geodir-event-post-type.php:161
+msgid "New Event"
 msgstr ""
 
-#: gdevents_widget.php:265
-msgid "Week day format:"
+#: includes/class-geodir-event-post-type.php:162
+msgid "View Event"
 msgstr ""
 
-#: gdevents_widget.php:272
-msgid "M => 1 digit, Mo = 2 digits, Mon => 3 digits, Monday => full."
+#: includes/class-geodir-event-post-type.php:163
+msgid "Search Events"
 msgstr ""
 
-#: gdevents_widget.php:275
-msgid "Enable Location Filter"
+#: includes/class-geodir-event-post-type.php:164
+msgid "No Event Found"
 msgstr ""
 
-#: gdevents_widget.php:289 gdevents_widget.php:290
-msgid "GD > Event Listing"
+#: includes/class-geodir-event-post-type.php:165
+msgid "No Event Found In Trash"
 msgstr ""
 
-#: gdevents_widget.php:377
+#: includes/class-geodir-event-post-type.php:262
+#: includes/class-geodir-event-post-type.php:336
+#, php-format
+msgid "%s Tags"
+msgstr ""
+
+#: includes/class-geodir-event-post-type.php:263
+#: includes/class-geodir-event-post-type.php:337
+#, php-format
+msgid "%s Tag"
+msgstr ""
+
+#: includes/class-geodir-event-post-type.php:264
+#: includes/class-geodir-event-post-type.php:338
+#, php-format
+msgid "Search %s Tags"
+msgstr ""
+
+#: includes/class-geodir-event-post-type.php:265
+#: includes/class-geodir-event-post-type.php:339
+#, php-format
+msgid "Popular %s Tags"
+msgstr ""
+
+#: includes/class-geodir-event-post-type.php:266
+#: includes/class-geodir-event-post-type.php:340
+#, php-format
+msgid "All %s Tags"
+msgstr ""
+
+#: includes/class-geodir-event-post-type.php:267
+#: includes/class-geodir-event-post-type.php:341
+#, php-format
+msgid "Edit %s Tag"
+msgstr ""
+
+#: includes/class-geodir-event-post-type.php:268
+#: includes/class-geodir-event-post-type.php:342
+#, php-format
+msgid "Update %s Tag"
+msgstr ""
+
+#: includes/class-geodir-event-post-type.php:269
+#: includes/class-geodir-event-post-type.php:343
+#, php-format
+msgid "Add New %s Tag"
+msgstr ""
+
+#: includes/class-geodir-event-post-type.php:270
+#: includes/class-geodir-event-post-type.php:344
+#, php-format
+msgid "New %s Tag Name"
+msgstr ""
+
+#: includes/class-geodir-event-post-type.php:271
+#: includes/class-geodir-event-post-type.php:345
+#, php-format
+msgid "Add or remove %s tags"
+msgstr ""
+
+#: includes/class-geodir-event-post-type.php:272
+#: includes/class-geodir-event-post-type.php:346
+#, php-format
+msgid "Choose from the most used %s tags"
+msgstr ""
+
+#: includes/class-geodir-event-post-type.php:273
+#: includes/class-geodir-event-post-type.php:347
+#, php-format
+msgid "Separate %s tags with commas"
+msgstr ""
+
+#: includes/class-geodir-event-post-type.php:291
+#: includes/class-geodir-event-post-type.php:351
+#, php-format
+msgid "%s Categories"
+msgstr ""
+
+#: includes/class-geodir-event-post-type.php:292
+#: includes/class-geodir-event-post-type.php:352
+#, php-format
+msgid "%s Category"
+msgstr ""
+
+#: includes/class-geodir-event-post-type.php:293
+#: includes/class-geodir-event-post-type.php:353
+#, php-format
+msgid "Search %s Categories"
+msgstr ""
+
+#: includes/class-geodir-event-post-type.php:294
+#: includes/class-geodir-event-post-type.php:354
+#, php-format
+msgid "Popular %s Categories"
+msgstr ""
+
+#: includes/class-geodir-event-post-type.php:295
+#: includes/class-geodir-event-post-type.php:355
+#, php-format
+msgid "All %s Categories"
+msgstr ""
+
+#: includes/class-geodir-event-post-type.php:296
+#: includes/class-geodir-event-post-type.php:356
+#, php-format
+msgid "Edit %s Category"
+msgstr ""
+
+#: includes/class-geodir-event-post-type.php:297
+#: includes/class-geodir-event-post-type.php:357
+#, php-format
+msgid "Update %s Category"
+msgstr ""
+
+#: includes/class-geodir-event-post-type.php:298
+#: includes/class-geodir-event-post-type.php:358
+#, php-format
+msgid "Add New %s Category"
+msgstr ""
+
+#: includes/class-geodir-event-post-type.php:299
+#: includes/class-geodir-event-post-type.php:359
+#, php-format
+msgid "New %s Category"
+msgstr ""
+
+#: includes/class-geodir-event-post-type.php:300
+#: includes/class-geodir-event-post-type.php:360
+#, php-format
+msgid "Add or remove %s categories"
+msgstr ""
+
+#: includes/class-geodir-event-post-type.php:392
+msgid "Is Event Post Type?"
+msgstr ""
+
+#: includes/class-geodir-event-post-type.php:393
+msgid ""
+"Tick to treat this post type as an event post type. <span style=\"color:red;"
+"\">(WARNING: enabling post type as event post type will move all existing "
+"posts to draft.)</span>"
+msgstr ""
+
+#: includes/class-geodir-event-widgets.php:49
+msgid "Show events:"
+msgstr ""
+
+#: includes/class-geodir-event-widgets.php:50
+msgid "Select events to show."
+msgstr ""
+
+#: includes/class-geodir-event-widgets.php:60
+msgid "Show single listing for recurring event?"
+msgstr ""
+
+#: includes/core-functions.php:427
+msgid "Today"
+msgstr ""
+
+#: includes/core-functions.php:428
+msgid "Upcoming"
+msgstr ""
+
+#: includes/core-functions.php:429
+msgid "Past"
+msgstr ""
+
+#: includes/core-functions.php:450
+#, php-format
+msgid "%s AM"
+msgstr ""
+
+#: includes/core-functions.php:451
+#, php-format
+msgid "%s PM"
+msgstr ""
+
+#: includes/template-functions.php:80
+msgid "Previous Month"
+msgstr ""
+
+#: includes/template-functions.php:81
+msgid "Next Month"
+msgstr ""
+
+#: includes/template-functions.php:82
+msgid "Close"
+msgstr ""
+
+#: includes/template-functions.php:120
+msgid "Event type. Eg: Past, Today, Upcoming"
+msgstr ""
+
+#: includes/template-functions.php:133
+#, php-format
+msgid "Evevt start date. Eg: %s"
+msgstr ""
+
+#: includes/template-functions.php:134
+#, php-format
+msgid "Evevt past date. Eg: %s"
+msgstr ""
+
+#: includes/template-functions.php:135
+#, php-format
+msgid "Evevt start time. Eg: %s"
+msgstr ""
+
+#: includes/template-functions.php:136
+#, php-format
+msgid "Evevt end time. Eg: %s"
+msgstr ""
+
+#: includes/template-functions.php:137
+#, php-format
+msgid "Evevt start date - end date. Eg: %s"
+msgstr ""
+
+#: includes/template-functions.php:138
+#, php-format
+msgid "Evevt start time - end time. Eg: %s"
+msgstr ""
+
+#: includes/template-functions.php:312 includes/template-functions.php:314
+#: includes/template-functions.php:318
+#, php-format
+msgid "- %s"
+msgstr ""
+
+#: includes/widgets/class-geodir-event-widget-ayi.php:24
+msgid "GD > Are You Interested?"
+msgstr ""
+
+#: includes/widgets/class-geodir-event-widget-ayi.php:44
+#: includes/widgets/class-geodir-event-widget-calendar.php:43
 msgid "Title:"
 msgstr ""
 
-#: gdevents_widget.php:385
-msgid "Post Category:"
+#: includes/widgets/class-geodir-event-widget-ayi.php:45
+#: includes/widgets/class-geodir-event-widget-calendar.php:44
+msgid "The widget title."
 msgstr ""
 
-#: gdevents_widget.php:435
-msgid "Filter by:"
+#: includes/widgets/class-geodir-event-widget-calendar.php:24
+msgid "GD > Events Calendar"
 msgstr ""
 
-#: gdevents_widget.php:491
-msgid "Show only featured events:"
+#: includes/widgets/class-geodir-event-widget-calendar.php:51
+msgid "Default Post Type:"
 msgstr ""
 
-#: gdevents_widget.php:495
-msgid "Show only events with special offers:"
+#: includes/widgets/class-geodir-event-widget-calendar.php:52
+msgid "Select post type to filter posts on calendar."
 msgstr ""
 
-#: gdevents_widget.php:499
-msgid "Show only events with pics:"
+#: includes/widgets/class-geodir-event-widget-calendar.php:61
+msgid "Week start day:"
 msgstr ""
 
-#: gdevents_widget.php:503
-msgid "Show only events with videos:"
+#: includes/widgets/class-geodir-event-widget-calendar.php:62
+msgid "Week start day of the calendar."
 msgstr ""
 
-#: language.php:9
-msgid ""
-"Would you like to auto install this geo directory events plugin and populate "
-"sample data on your site?"
+#: includes/widgets/class-geodir-event-widget-calendar.php:73
+msgid "Start day:"
 msgstr ""
 
-#: language.php:10
-msgid "Yes, insert sample data please"
+#: includes/widgets/class-geodir-event-widget-calendar.php:74
+msgid "Start day of the calendar."
 msgstr ""
 
-#: language.php:11
-msgid "Yes Delete Please!"
+#: includes/widgets/class-geodir-event-widget-calendar.php:86
+msgid "Use current viewing post type?"
 msgstr ""
 
-#: language.php:12
-msgid ""
-"Geo Directory Events sample data has been populated on your site. Wish to "
-"delete sample data?"
-msgstr ""
-
-#: language.php:13
-msgid "Please Wait! We are importing dummy data."
-msgstr ""
-
-#: language.php:14
-msgid "Please Wait! We are deleting dummy data."
-msgstr ""
-
-#: language.php:15
-msgid "Fill in Business Details"
-msgstr ""
-
-#: link-business-listview.php:103
-msgid "No Reviews"
-msgstr ""
-
-#: link-business-listview.php:103
-msgid "1 Review"
-msgstr ""
-
-#: link-business-listview.php:103
-msgid "% Reviews"
-msgstr ""
-
-#: tests/test-Add_Custom_Fields.php:36 tests/test-Add_Custom_Fields.php:38
-#: tests/test-Add_Custom_Fields.php:44
-msgid "Website Link"
-msgstr ""
-
-#: tests/test-Add_Custom_Fields.php:37
-msgid "Enter the website link."
-msgstr ""
-
-#: tests/test-Add_Custom_Fields.php:56 tests/test-Add_Custom_Fields.php:58
-#: tests/test-Add_Custom_Fields.php:64
-msgid "Event Type"
-msgstr ""
-
-#: tests/test-Add_Custom_Fields.php:57
-msgid "Select the event type."
+#: includes/widgets/class-geodir-event-widget-calendar.php:94
+msgid "Enable location filter?"
 msgstr ""

@@ -299,7 +299,7 @@ function geodir_event_title_recurring_event( $title, $post_id = null ) {
 		return $title;
 	}
 
-	if ( $event_post->ID == $post_id && !empty( $event_post->recurring ) ) {
+	if ( isset($event_post->ID ) && $event_post->ID == $post_id && !empty( $event_post->recurring ) ) {
 		$geodir_date_format = geodir_event_date_format();
 		$current_date = date_i18n( 'Y-m-d', current_time( 'timestamp' ));
 		$current_time = strtotime( $current_date );

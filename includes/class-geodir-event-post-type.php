@@ -174,6 +174,7 @@ class GeoDir_Event_Post_Type {
 				'hierarchical'    => false,  // Hierarchical causes memory issues - WP loads all records!
 				'map_meta_cap'    => true,
 				'menu_icon'       => 'dashicons-calendar-alt',
+				'listing_order'   => self::get_listing_order($post_types),
 				'public'          => true,
 				'query_var'       => true,
 				'rewrite'         => array(
@@ -192,16 +193,43 @@ class GeoDir_Event_Post_Type {
 					'comments',
 					'revisions',
 				),
-				'taxonomies'      => array( $post_type . 'category', $post_type . '_tags' )
+				'taxonomies'      => array( $post_type . 'category', $post_type . '_tags' ),
+				'supports_events' => true
 			);
 
 			// Update custom post types
 			$post_types[ $post_type ] = $args;
 
 			geodir_update_option( 'post_types', $post_types );
+
+			// flush rewrite rules
+			flush_rewrite_rules();
+			do_action( 'geodir_flush_rewrite_rules' );
+			wp_schedule_single_event( time(), 'geodir_flush_rewrite_rules' );
+
+			// run the create tables function to add our new columns.
+			add_action('init',array('GeoDir_Admin_Install','create_tables'));
+			
+			// insert default tabs
+			GeoDir_Admin_Install::insert_default_tabs( $post_type );
 		}
 
+		
+
 		return $post_types;
+	}
+
+	public static function get_listing_order($post_types){
+		$listing_order = 1;
+		foreach($post_types as $post_type){
+			if(isset($post_type['listing_order']) && $post_type['listing_order'] > $listing_order){
+				$listing_order = $post_type['listing_order'];
+			}
+		}
+
+		$listing_order++;
+
+		return $listing_order;
 	}
 
 	/**
