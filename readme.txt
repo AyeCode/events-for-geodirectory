@@ -3,8 +3,8 @@ Contributors: stiofansisland, paoltaia
 Donate link: https://wpgeodirectory.com/
 Tags: geodirectory, geodirectory events, event, event manager
 Requires at least: 4.9
-Tested up to: 4.9.8
-Stable tag: 2.0.0-dev
+Tested up to: 4.9.9
+Stable tag: 2.0.0.0-beta
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -26,15 +26,5 @@ It's easy to sort events by selecting "upcoming," "today," "past" or "all" and d
 
 == Changelog ==
 
-= 2.0.0-dev =
-
-= 1.4.9 =
-Link business can not be linked from mobile devices - FIXED
-Invalid event category schema - FIXED
-Event created with draft status looses recurring data in backend - FIXED
-
-= 1.4.8 =
-Recently happened events should be displayed first in listing page past events - CHANGED
-Event recurring end date shows incorrect date if event date end selected before - FIXED
-GD user favs function updated - CHANGED
-View all link should go to search page with near me selected - CHANGED
+= 2.0.0.0-beta =
+* First beta release - INFO

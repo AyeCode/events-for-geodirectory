@@ -6,7 +6,7 @@
  * @package GeoDirectory_Event_Manager
  */
 
-global $dummy_image_url, $dummy_categories, $dummy_custom_fields, $dummy_posts;
+global $dummy_image_url, $dummy_categories, $dummy_custom_fields, $dummy_posts, $dummy_sort_fields;
 
 $dummy_image_url = 'https://wpgd-jzgngzymm1v50s3e3fqotwtenpjxuqsmvkua.netdna-ssl.com/dummy/';
 
@@ -25,6 +25,57 @@ $dummy_categories['festivals'] = array(
 
 // Custom fields
 $dummy_custom_fields = GeoDir_Admin_Dummy_Data::extra_custom_fields( $post_type );
+
+// Set any sort fields
+$dummy_sort_fields = array();
+
+// date added
+$dummy_sort_fields[] = array(
+	'post_type' => $post_type,
+	'data_type' => '',
+	'field_type' => 'datetime',
+	'frontend_title' => __('Event date','geodirectory'),
+	'htmlvar_name' => 'event_dates',
+	'sort' => 'asc',
+	'is_active' => '1',
+	'is_default' => '1',
+);
+
+// date added
+$dummy_sort_fields[] = array(
+	'post_type' => $post_type,
+	'data_type' => '',
+	'field_type' => 'datetime',
+	'frontend_title' => __('Newest','geodirectory'),
+	'htmlvar_name' => 'post_date',
+	'sort' => 'desc',
+	'is_active' => '1',
+	'is_default' => '0',
+);
+
+// title
+$dummy_sort_fields[] = array(
+	'post_type' => $post_type,
+	'data_type' => 'VARCHAR',
+	'field_type' => 'text',
+	'frontend_title' => __('Title','geodirectory'),
+	'htmlvar_name' => 'post_title',
+	'sort' => 'asc',
+	'is_active' => '1',
+	'is_default' => '0',
+);
+
+// rating
+$dummy_sort_fields[] = array(
+	'post_type' => $post_type,
+	'data_type' => 'VARCHAR',
+	'field_type' => 'float',
+	'frontend_title' => __('Rating','geodirectory'),
+	'htmlvar_name' => 'overall_rating',
+	'sort' => 'desc',
+	'is_active' => '1',
+	'is_default' => '0',
+);
 
 // Dummy posts
 $dummy_posts = array();
@@ -473,7 +524,6 @@ Live music will be playing from two stages during this all-day event.',
 $dummy_posts[] = array(
 	"post_type" 	=> $post_type,
 	"post_title" 	=> 'Revolutionary Germantown Festival',
-	"post_content" 	=> '',
 	"post_images" 	=> array(
 		"$dummy_image_url/festival7.jpg",
 		"$dummy_image_url/festival9.jpg",
@@ -488,7 +538,7 @@ $dummy_posts[] = array(
 	),
 	"post_category" =>  array( 'Festivals' ) ,
 	"post_tags"     => array( 'germantown', 'rittenhouse' ),
-	"video"         => 'You are never far from history when in Germantown, one of Philadelphia&acute;s most historic neighborhoods. However, it is on full display during the Revolutionary Germantown Festival, a day-long festival that celebrates the rich history of Germantown and features the annual reenactment of the Battle of Germantown, the only military battle ever fought within the borders of Philadelphia.
+	"post_content"         => 'You are never far from history when in Germantown, one of Philadelphia&acute;s most historic neighborhoods. However, it is on full display during the Revolutionary Germantown Festival, a day-long festival that celebrates the rich history of Germantown and features the annual reenactment of the Battle of Germantown, the only military battle ever fought within the borders of Philadelphia.
 
 Escorted bus and walking tours make getting around simple while special programs at ten historic sites throughout the community provide something for every size and taste.
 

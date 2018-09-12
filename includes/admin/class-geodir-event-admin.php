@@ -36,6 +36,29 @@ class GeoDir_Event_Admin {
 		// Dummy data
 		add_filter( 'geodir_dummy_data_types' , array( 'GeoDir_Event_Admin_Dummy_Data', 'dummy_data_types' ), 10, 2 );
 		add_action( 'geodir_dummy_data_include_file' , array( 'GeoDir_Event_Admin_Dummy_Data', 'include_file' ), 10, 4 );
+
+		// Add the required DB columns
+		add_filter('geodir_db_cpt_default_columns', array(__CLASS__,'add_db_columns'),10,2);
+	}
+
+	/**
+	 * Add the event column to the CPTs tables if events are enabled.
+	 *
+	 * @param $columns
+	 * @param $cpt
+	 *
+	 * @return mixed
+	 */
+	public static function add_db_columns($columns,$cpt){
+
+		// check if ratings are disabled on the CPT first.
+		if(isset($cpt['supports_events']) && $cpt['supports_events']){
+			$columns['recurring'] = "recurring TINYINT(1) DEFAULT '0'";
+			$columns['event_dates'] = "event_dates TEXT NOT NULL";
+			$columns['rsvp_count'] = "rsvp_count INT(11) DEFAULT '0'";
+		}
+
+		return $columns;
 	}
 
 	/**
