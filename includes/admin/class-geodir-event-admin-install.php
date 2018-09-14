@@ -394,7 +394,7 @@ class GeoDir_Event_Admin_Install {
 	 * @since 2.0.0
 	 * @return boolean
 	 */
-	private static function is_v2_upgrade() {
+	public static function is_v2_upgrade() {
 		if ( ( get_option( 'geodirectory_db_version' ) && version_compare( get_option( 'geodirectory_db_version' ), '2.0.0.0', '<' ) ) || ( get_option( 'geodirevents_db_version' ) && version_compare( get_option( 'geodirevents_db_version' ), '2.0.0.0', '<' ) && ( is_null( get_option( 'geodirevents_db_version', null ) ) || ( get_option( 'geodir_event_db_version' ) && version_compare( get_option( 'geodir_event_db_version' ), '2.0.0.0', '<' ) ) ) ) ) {
 			return true;
 		}

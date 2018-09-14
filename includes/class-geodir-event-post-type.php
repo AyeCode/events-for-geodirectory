@@ -202,19 +202,19 @@ class GeoDir_Event_Post_Type {
 
 			geodir_update_option( 'post_types', $post_types );
 
-			// flush rewrite rules
-			flush_rewrite_rules();
-			do_action( 'geodir_flush_rewrite_rules' );
-			wp_schedule_single_event( time(), 'geodir_flush_rewrite_rules' );
+			if ( ! GeoDir_Event_Admin_Install::is_v2_upgrade() ) {
+				// flush rewrite rules
+				flush_rewrite_rules();
+				do_action( 'geodir_flush_rewrite_rules' );
+				wp_schedule_single_event( time(), 'geodir_flush_rewrite_rules' );
 
-			// run the create tables function to add our new columns.
-			add_action('init',array('GeoDir_Admin_Install','create_tables'));
-			
-			// insert default tabs
-			GeoDir_Admin_Install::insert_default_tabs( $post_type );
+				// run the create tables function to add our new columns.
+				add_action('init',array('GeoDir_Admin_Install','create_tables'));
+				
+				// insert default tabs
+				GeoDir_Admin_Install::insert_default_tabs( $post_type );
+			}
 		}
-
-		
 
 		return $post_types;
 	}
