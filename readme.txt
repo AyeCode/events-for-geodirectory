@@ -4,7 +4,7 @@ Donate link: https://wpgeodirectory.com/
 Tags: geodirectory, geodirectory events, event, event manager
 Requires at least: 4.9
 Tested up to: 4.9.9
-Stable tag: 2.0.0.0-beta
+Stable tag: 2.0.0.1-rc
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -25,6 +25,9 @@ It's easy to sort events by selecting "upcoming," "today," "past" or "all" and d
 3. Go to WordPress Admin -> Events -> Settings and customize behaviour as needed
 
 == Changelog ==
+
+= 2.0.0.1-rc =
+* Install script should only run if not upgrading from v1 - FIXED
 
 = 2.0.0.0-beta =
 * First beta release - INFO

@@ -15,11 +15,11 @@
  * Plugin Name:       GeoDirectory Events
  * Plugin URI:        http://wpgeodirectory.com/
  * Description:       GeoDirectory Events allows you to extend your GeoDirectory with a versatile event manager.
- * Version:           2.0.0.0-beta
+ * Version:           2.0.0.1-rc
  * Author:            GeoDirectory
  * Author URI:        https://wpgeodirectory.com/
  * Requires at least: 4.9
- * Tested up to:      4.9.4
+ * Tested up to:      4.9.9
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       geodirevents
