@@ -670,7 +670,7 @@ class GeoDir_Event_Fields {
 			return $value;
 		}
 
-		if ( ! ( ! empty( $gd_post->ID ) && ! empty( $gd_post->post_type ) && GeoDir_Post_types::supports( $gd_post->post_type, 'events' ) ) ) {
+		if ( ! GeoDir_Post_types::supports( $cf['post_type'], 'events' ) ) {
 			return $value;
 		}
 
