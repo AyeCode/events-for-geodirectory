@@ -126,25 +126,15 @@ function geodir_event_is_recurring_active() {
 /**
  * Check package has recurring enabled
  */
-function geodir_event_recurring_pkg( $post, $package_info = array() ) {
-	if ( ! function_exists( 'is_plugin_active' ) ) {
-		include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
-	}
-	$package_info = geodir_post_package_info( $package_info, $post );
-	
-	$recurring_pkg = true;
-	
-	if ( is_plugin_active( 'geodir_payment_manager/geodir_payment_manager.php' ) ) {
-		if ( !empty( $package_info ) && isset( $package_info->recurring_pkg ) && (int)$package_info->recurring_pkg == 1 ) {
-			$recurring_pkg = false;
-		};
-	}
-	
-	if ( ! geodir_event_is_recurring_active() ) {
+function geodir_event_recurring_pkg( $post ) {
+	$recurring_pkg = geodir_event_is_recurring_active() ? true : false;
+
+	$package = geodir_get_post_package( $post );
+	if ( ! empty( $package ) && ! empty( $package->no_recurring ) ) {
 		$recurring_pkg = false;
-	}
-	 
-	return apply_filters( 'geodir_event_recurring_pkg', $recurring_pkg, $post, $package_info );
+	};
+
+	return apply_filters( 'geodir_event_recurring_pkg', $recurring_pkg, $post, $package );
 }
 
 function geodir_event_parse_dates( $dates_input, $array = true ) {

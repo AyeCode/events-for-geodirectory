@@ -242,11 +242,13 @@ class GeoDir_Event_Fields {
 	}
 
 	public static function input_recurring( $post_type, $package_id, $field ) {
-        if ( ! GeoDir_Post_types::supports( $post_type, 'events' ) ) {
+        global $gd_post;
+
+		if ( ! GeoDir_Post_types::supports( $post_type, 'events' ) ) {
 			return;
 		}
 
-		if ( ! geodir_event_is_recurring_active() ) { // Recurring is disabled
+		if ( ! geodir_event_recurring_pkg( $gd_post ) ) { // Recurring is disabled
 			return;
 		}
 		$value 					= geodir_get_cf_value( $field );
@@ -271,6 +273,8 @@ class GeoDir_Event_Fields {
 	}
 
 	public static function input_event_dates( $post_type, $package_id, $field ) {
+		global $gd_post;
+
 		if ( ! GeoDir_Post_types::supports( $post_type, 'events' ) ) {
 			return;
 		}
@@ -279,7 +283,7 @@ class GeoDir_Event_Fields {
 		$event_data 			= geodir_get_cf_value( $field );
 		$event_data 			= maybe_unserialize( $event_data );
 
-		$is_recurring_active	= geodir_event_is_recurring_active();
+		$is_recurring_active	= geodir_event_recurring_pkg( $gd_post );
 		$format 				= geodir_event_field_date_format();
 		$default_start_date 	= date_i18n( $format );
 
@@ -685,7 +689,7 @@ class GeoDir_Event_Fields {
 			$recurring = false;
 		}
 
-		if ( $recurring && ! geodir_event_is_recurring_active() ) {
+		if ( $recurring && ! geodir_event_recurring_pkg( $gd_post ) ) {
 			$recurring = false;
 		}
 

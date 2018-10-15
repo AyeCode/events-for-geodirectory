@@ -125,3 +125,44 @@ function geodir_event_uninstall_settings( $settings ) {
 
     return $settings;
 }
+
+function geodir_event_pricing_package_settings( $settings, $current_section, $package_data ) {
+	if ( ( GeoDir_Post_types::supports( $package_data['post_type'], 'events' ) || empty( $package_data['id'] ) ) && ! geodir_event_is_recurring_active() ) {
+		return $settings;
+	}
+
+	$new_settings = array();
+
+	foreach ( $settings as $key => $setting ) {
+		if ( ! empty( $setting['id'] ) && $setting['id'] == 'package_features_settings' && ! empty( $setting['type'] ) && $setting['type'] == 'sectionend' ) {
+			$new_settings[] = array(
+				'type' => 'checkbox',
+				'id' => 'package_no_recurring',
+				'title'=> __( 'Disable Recurring Events?', 'geodirevents' ),
+				'desc' => __( 'Tick to disable recurring events for this package(for events supported post type only).', 'geodirevents' ),
+				'std' => '0',
+				//'advanced' => true,
+				'value'	=> ( ! empty( $package_data['no_recurring'] ) ? '1' : '0' )
+			);
+		}
+		$new_settings[] = $setting;
+	}
+
+	return $new_settings;
+}
+
+function geodir_event_pricing_process_data_for_save( $package_data, $data, $package ) {
+	if ( GeoDir_Post_types::supports( $package_data['post_type'], 'events' ) ) {
+		if ( isset( $data['no_recurring'] ) ) {
+			$package_data['meta']['no_recurring'] = ! empty( $data['no_recurring'] ) ? 1 : 0;
+		} else if ( isset( $package['no_recurring'] ) ) {
+			$package_data['meta']['no_recurring'] = $package['no_recurring'];
+		} else {
+			$package_data['meta']['no_recurring'] = 0;
+		}
+	} else {
+		$package_data['meta']['no_recurring'] = 0;
+	}
+
+	return $package_data;
+}
