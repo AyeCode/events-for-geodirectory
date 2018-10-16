@@ -200,6 +200,8 @@ final class GeoDir_Event_Manager {
 		add_filter( 'geodir_bestof_widget_view_all_link', 'geodir_event_bestof_widget_view_all_link', 10, 3 );
 		add_filter( 'the_title', 'geodir_event_title_recurring_event', 100, 2 );
 		add_filter( 'the_permalink', 'geodir_event_recurring_event_link', 100 );
+		add_action( 'wp_super_duper_widget_init', 'geodir_event_super_duper_widget_init', 10, 2 );
+		add_filter( 'wp_super_duper_arguments', 'geodir_event_super_duper_arguments', 2, 3 );
     }
     
     /**
@@ -310,6 +312,7 @@ final class GeoDir_Event_Manager {
 		wp_register_script( 'yui-calendar', GEODIR_EVENT_PLUGIN_URL . '/assets/yui/calendar.min.js', array( 'jquery' ), '2.9.0' );
 		wp_register_script( 'geodir-event', GEODIR_EVENT_PLUGIN_URL . '/assets/js/common' . $suffix . '.js', array( 'jquery', 'geodir' ), GEODIR_EVENT_VERSION );
 		wp_register_script( 'geodir-event-front', GEODIR_EVENT_PLUGIN_URL . '/assets/js/front' . $suffix . '.js', array( 'jquery', 'geodir', 'geodir-event' ), GEODIR_EVENT_VERSION );
+		wp_register_script( 'geodir-event-widget', GEODIR_EVENT_PLUGIN_URL . '/assets/js/widget' . $suffix . '.js', array( 'jquery' ), GEODIR_EVENT_VERSION );
 		
 		if ( is_page() && geodir_is_page( 'add-listing' ) ) {
 			wp_enqueue_script( 'yui-calendar' );

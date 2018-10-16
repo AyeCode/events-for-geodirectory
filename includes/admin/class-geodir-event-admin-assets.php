@@ -70,6 +70,7 @@ class GeoDir_Event_Admin_Assets {
 		wp_register_script( 'yui-calendar', GEODIR_EVENT_PLUGIN_URL . '/assets/yui/calendar.min.js', array( 'jquery' ), '2.9.0' );
 		wp_register_script( 'geodir-event', GEODIR_EVENT_PLUGIN_URL . '/assets/js/common' . $suffix . '.js', array( 'jquery', 'geodir-admin-script' ), GEODIR_EVENT_VERSION );
 		wp_register_script( 'geodir-event-admin', GEODIR_EVENT_PLUGIN_URL . '/assets/js/admin' . $suffix . '.js', array( 'jquery', 'geodir-event' ), GEODIR_EVENT_VERSION );
+		wp_register_script( 'geodir-event-widget', GEODIR_EVENT_PLUGIN_URL . '/assets/js/widget' . $suffix . '.js', array( 'jquery' ), GEODIR_EVENT_VERSION );
 
 		// Admin scripts for GD pages only
 		if ( in_array( $screen_id, geodir_get_screen_ids() ) ) {
@@ -83,6 +84,11 @@ class GeoDir_Event_Admin_Assets {
 			wp_localize_script( 'geodir-event', 'geodir_event_params', geodir_event_params() );
 			wp_enqueue_script( 'geodir-event-admin' );
 			wp_localize_script( 'geodir-event-admin', 'geodir_event_admin_params', geodir_event_admin_params() );
+		}
+
+		// Script for backend widgets page only
+		if ( $screen_id == 'widgets' ) {
+			wp_enqueue_script( 'geodir-event-widget' );
 		}
 	}
 }

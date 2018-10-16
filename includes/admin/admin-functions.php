@@ -126,7 +126,7 @@ function geodir_event_uninstall_settings( $settings ) {
     return $settings;
 }
 
-function geodir_event_pricing_package_settings( $settings, $current_section, $package_data ) {
+function geodir_event_pricing_package_settings( $settings, $package_data ) {
 	if ( ( GeoDir_Post_types::supports( $package_data['post_type'], 'events' ) || empty( $package_data['id'] ) ) && ! geodir_event_is_recurring_active() ) {
 		return $settings;
 	}
