@@ -374,3 +374,30 @@ function geodir_event_bestof_widget_view_all_link( $view_all_link, $post_type, $
 	}
 	return $view_all_link;
 }
+
+function geodir_event_super_duper_widget_init( $options, $super_duper ) {
+	global $gd_listings_widget_js;
+
+	if ( ! $gd_listings_widget_js && ! empty( $options['base_id'] ) && $options['base_id'] == 'gd_listings' ) {
+		$gd_listings_widget_js = true;
+
+		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+		wp_register_script( 'geodir-event-widget', GEODIR_EVENT_PLUGIN_URL . '/assets/js/widget' . $suffix . '.js', array( 'jquery' ), GEODIR_EVENT_VERSION );
+
+		wp_enqueue_script( 'geodir-event-widget' );
+	}
+}
+
+function geodir_event_super_duper_arguments( $arguments, $options, $instance = array() ) {
+	if ( ! empty( $options['textdomain'] ) && $options['textdomain'] == GEODIRECTORY_TEXTDOMAIN && ! defined( 'GEODIR_CP_VERSION' ) ) {
+		if ( $options['base_id'] == 'gd_listings' ) {
+			if ( ! empty( $arguments['category'] ) && ! empty( $instance['post_type'] ) ) {
+				$arguments['category']['options'] = geodir_category_options( $instance['post_type'] );
+			}
+			if ( ! empty( $arguments['sort_by'] ) && ! empty( $instance['post_type'] ) ) {
+				$arguments['sort_by']['options'] = geodir_sort_by_options( $instance['post_type'] );
+			}
+		}
+	}
+	return $arguments;
+}

@@ -31,6 +31,7 @@ class GeoDir_Event_AJAX {
 		$ajax_events = array(
 			'ayi_action'			=> false,
 			'ajax_calendar'			=> true,
+			'widget_post_type_field_options' => false,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -53,5 +54,44 @@ class GeoDir_Event_AJAX {
 	public static function ajax_calendar() {
 		GeoDir_Event_Calendar::ajax_calendar();
 		exit;
+	}
+
+	public static function widget_post_type_field_options() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( -1 );
+		}
+
+		try {
+			$post_type = ! empty( $_POST['post_type'] ) ? sanitize_text_field( $_POST['post_type'] ) : '';
+
+			$category_options = '';
+			if ( $categories = geodir_category_options( $post_type ) ) {
+				foreach ( $categories as $value => $name ) {
+					$category_options .= '<option value="' . $value . '">' . $name . '</option>';
+				}
+			}
+
+			$sort_by_options = '';
+			if ( $sort_by = geodir_sort_by_options( $post_type ) ) {
+				foreach ( $sort_by as $value => $name ) {
+					$sort_by_options .= '<option value="' . $value . '">' . $name . '</option>';
+				}
+			}
+
+			$data = array( 
+				'category' => array( 
+					'options' => $category_options 
+				),
+				'sort_by' => array( 
+					'options' => $sort_by_options 
+				)
+			);
+
+			$data = apply_filters( 'geodir_widget_post_type_field_options', $data, $post_type );
+
+			wp_send_json_success( $data );
+		} catch ( Exception $e ) {
+			wp_send_json_error( array( 'message' => $e->getMessage() ) );
+		}
 	}
 }

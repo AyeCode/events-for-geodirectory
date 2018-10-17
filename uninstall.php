@@ -147,6 +147,9 @@ if ( ( ! empty( $geodir_settings ) && ( ! empty( $geodir_settings['admin_uninsta
 		update_option( 'geodir_settings', $save_settings );
 	}
 
+	// Delete options
+	$wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name IN('widget_geodir_event_ayi', 'widget_geodir_event_calendar', 'gd_eventcategory_children');" );
+
 	// Delete core options
 	delete_option( 'geodir_event_version' );
 	delete_option( 'geodir_event_db_version' );

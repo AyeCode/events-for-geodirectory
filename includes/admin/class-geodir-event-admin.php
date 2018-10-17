@@ -32,13 +32,15 @@ class GeoDir_Event_Admin {
 		add_filter( 'geodir_cat_schemas', 'geodir_event_filter_schemas', 10, 1 );
 		add_filter( 'geodir_add_custom_sort_options', 'geodir_event_custom_sort_options', 10, 2 );
 		add_filter( 'geodir_uninstall_options', 'geodir_event_uninstall_settings', 10, 1 );
+		add_action( 'geodir_pricing_package_settings', 'geodir_event_pricing_package_settings', 9, 2 );
+		add_action( 'geodir_pricing_process_data_for_save', 'geodir_event_pricing_process_data_for_save', 1, 3 );
 
 		// Dummy data
 		add_filter( 'geodir_dummy_data_types' , array( 'GeoDir_Event_Admin_Dummy_Data', 'dummy_data_types' ), 10, 2 );
 		add_action( 'geodir_dummy_data_include_file' , array( 'GeoDir_Event_Admin_Dummy_Data', 'include_file' ), 10, 4 );
 
 		// Add the required DB columns
-		add_filter('geodir_db_cpt_default_columns', array(__CLASS__,'add_db_columns'),10,2);
+		add_filter('geodir_db_cpt_default_columns', array(__CLASS__,'add_db_columns'),10,3);
 	}
 
 	/**
@@ -49,7 +51,7 @@ class GeoDir_Event_Admin {
 	 *
 	 * @return mixed
 	 */
-	public static function add_db_columns($columns,$cpt){
+	public static function add_db_columns($columns,$cpt,$post_type){
 
 		// check if ratings are disabled on the CPT first.
 		if(isset($cpt['supports_events']) && $cpt['supports_events']){
