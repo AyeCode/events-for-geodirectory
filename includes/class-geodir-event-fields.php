@@ -334,11 +334,11 @@ class GeoDir_Event_Fields {
 				$custom_dates_list 	= array();
 				if ( ! empty( $recurring_dates ) ) {
 					foreach ( $recurring_dates as $key => $date ) {
-						$recurring_dates_list .= '<span>' . date_i18n( $format, strtotime( $date ) ) . '</span>';
+						$recurring_dates_list .= '<span data-date="' . date_i18n( 'Y-m-d', strtotime( $date ) ) . '">' . date_i18n( $format, strtotime( $date ) ) . '</span>';
 						if ( $different_times ) {
 							$start_time_selected	= ! empty( $start_times[ $key ] ) ? $start_times[$key] : ( ! empty( $start_time ) ? $start_time : '10:00' );
 							$end_time_selected 	= ! empty( $end_times[ $key ] ) ? $end_times[$key] : ( ! empty( $end_time ) ? $end_time : '18:00' );
-							$different_times_list 	.= '<div class="event-multiple-times clearfix"><label class="event-multiple-dateto">' . $date . '</label><div class="event-multiple-dateto-inner"><select id="event_start_times" name="event_dates[start_times][]" class="geodir_textfield geodir-select geodir-w110">' . geodir_event_time_options( $start_time_selected ) .  '</select></div><label class="event-multiple-end"> ' . __( 'to', 'geodirevents' ) . ' </label><div class="event-multiple-dateto-inner"><select id="event_end_times" name="event_dates[end_times][]" class="geodir_textfield geodir-select geodir-w110">' . geodir_event_time_options( $end_time_selected ) .  '</select></div></div>';
+							$different_times_list 	.= '<div data-date="' . date_i18n( 'Y-m-d', strtotime( $date ) ) . '" class="event-multiple-times clearfix"><label class="event-multiple-dateto">' . date_i18n( $format, strtotime( $date ) ) . '</label><div class="event-multiple-dateto-inner"><select id="event_start_times" name="event_dates[start_times][]" class="geodir_textfield geodir-select geodir-w110">' . geodir_event_time_options( $start_time_selected ) .  '</select></div><label class="event-multiple-end"> ' . __( 'to', 'geodirevents' ) . ' </label><div class="event-multiple-dateto-inner"><select id="event_end_times" name="event_dates[end_times][]" class="geodir_textfield geodir-select geodir-w110">' . geodir_event_time_options( $end_time_selected ) .  '</select></div></div>';
 						}
 						$custom_dates_list[] = date_i18n( 'm/d/Y', strtotime( $date ) );
 					}

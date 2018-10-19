@@ -26,6 +26,9 @@ It's easy to sort events by selecting "upcoming," "today," "past" or "all" and d
 
 == Changelog ==
 
+= 2.0.0.2-rc =
+* Adding new date to custom recurring event resets the start and end hours - FIXED
+
 = 2.0.0.1-rc =
 * Install script should only run if not upgrading from v1 - FIXED
 
