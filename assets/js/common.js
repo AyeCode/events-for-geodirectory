@@ -160,7 +160,15 @@ var GeoDir_Event_Add = {
             var start_time_options = jQuery('#geodir_event_start_time_options', $form).html();
             var end_time_options = jQuery('#geodir_event_end_time_options', $form).html();
             for (i = 0; i < total_dates; i++) {
-                dates_selected += '<div class="event-multiple-times clearfix"><label class="event-multiple-dateto">' + spdates[i] + '</label><div class="event-multiple-dateto-inner"><select id="event_start_times" name="event_dates[start_times][]" class="geodir_textfield geodir-select geodir-w110">' + start_time_options + '</select></div><label class="event-multiple-end"> ' + geodir_event_params.text_to + ' </label><div class="event-multiple-dateto-inner"><select id="event_end_times" name="event_dates[end_times][]" class="geodir_textfield geodir-select geodir-w110">' + end_time_options + '</select></div></div>';
+                var $el = jQuery('.show_different_times_div .event-multiple-times[data-date="' + spdates[i] + '"]', $self.form);
+				if ($el.length) {
+					$el.find('.geodir-select').removeClass('enhanced').removeClass('select2-hidden-accessible');
+					$el.find('.select2').remove();
+					date_selected = $el.html();
+				} else {
+					date_selected = '<label class="event-multiple-dateto">' + $self.dateFormat( new Date( spdates[i] ) ) + '</label><div class="event-multiple-dateto-inner"><select id="event_start_times" name="event_dates[start_times][]" class="geodir_textfield geodir-select geodir-w110">' + start_time_options + '</select></div><label class="event-multiple-end"> ' + geodir_event_params.text_to + ' </label><div class="event-multiple-dateto-inner"><select id="event_end_times" name="event_dates[end_times][]" class="geodir_textfield geodir-select geodir-w110">' + end_time_options + '</select></div>';
+				}
+				dates_selected += '<div data-date="' + spdates[i] + '" class="event-multiple-times clearfix">' + date_selected + '</div>';
             }
             jQuery('.show_different_times_div', $self.form).html(dates_selected);
             jQuery('.show_different_times_div', $self.form).find('.geodir-select').each(function() {
@@ -205,7 +213,7 @@ var GeoDir_Event_Add = {
                             dateValues += ",";
                         }
                         dateValues += dateValue;
-                        dateLabels += "<span>" + dateLabel + "</span>";
+                        dateLabels += '<span data-date="' + dateValue + '">' + dateLabel + '</span>';
                     }
                     if (dateLabels == '') {
                         jQuery('#geodir_event_selected_dates_row', $form).hide();
