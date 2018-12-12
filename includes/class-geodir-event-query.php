@@ -44,13 +44,20 @@ class GeoDir_Event_Query {
 	}
 
 	public static function filter_calender_posts( $query ) {
-		if ( GeoDir_Post_types::supports( get_query_var( 'post_type' ), 'events' ) && get_query_var( 'gd_event_calendar' ) ) {
+		if ( self::is_calender_query( $query ) ) {
 			add_filter( 'posts_fields', array( __CLASS__, 'calendar_posts_fields' ), 10, 2 );
 			add_filter( 'posts_join', array( __CLASS__, 'calendar_posts_join' ), 10, 2 );
 			add_filter( 'posts_where', array( __CLASS__, 'calendar_posts_where' ), 10, 2 );
 			add_filter( 'posts_groupby', array( __CLASS__, 'calendar_posts_groupby' ), 10, 2 );
 			add_filter( 'posts_orderby', array( __CLASS__, 'calendar_posts_orderby' ), 10, 2 );
 		}
+	}
+
+	public static function is_calender_query( $query ) {
+		if ( ! empty( $query ) && ! empty( $query->query_vars['post_type'] ) && ! empty( $query->query_vars['gd_event_calendar'] ) && GeoDir_Post_types::supports( $query->query_vars['post_type'], 'events' ) ) {
+			return true;
+		}
+		return false;
 	}
 
 	public static function is_rest( $query ) {
@@ -265,7 +272,7 @@ class GeoDir_Event_Query {
 		global $wpdb;
 
 		$schedules_table	= GEODIR_EVENT_SCHEDULES_TABLE;
-		$date 				= get_query_var( 'gd_event_calendar' );
+		$date 				= $query->query_vars['gd_event_calendar'];
 		$current_year 		= date_i18n( 'Y', $date );
 		$current_month 		= date_i18n( 'm', $date );
 		$month_start 		= $current_year . '-' . $current_month . '-01'; // First day of the month.
@@ -293,7 +300,7 @@ class GeoDir_Event_Query {
 	public static function calendar_posts_where( $where, $query = array() ) {
 		$table 				= geodir_db_cpt_table( $query->query_vars['post_type'] );
 		$schedules_table	= GEODIR_EVENT_SCHEDULES_TABLE;
-		$date 				= get_query_var( 'gd_event_calendar' );
+		$date 				= $query->query_vars['gd_event_calendar'];
 		$current_year 		= date_i18n( 'Y', $date );
 		$current_month 		= date_i18n( 'm', $date );
 		$month_start 		= $current_year . '-' . $current_month . '-01'; // First day of the month.
