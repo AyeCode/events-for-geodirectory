@@ -238,7 +238,7 @@ var GeoDir_Event_Add = {
             console.log(e);
         }
     },
-    dateFormat(date) {
+    dateFormat: function(date) {
         var date_format = geodir_event_params.input_date_format;
         monthsArray = eval(geodir_event_params.monthsArray);
         date_format = date_format.replace("Y", date.getFullYear());
