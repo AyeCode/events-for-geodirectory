@@ -26,6 +26,9 @@ It's easy to sort events by selecting "upcoming," "today," "past" or "all" and d
 
 == Changelog ==
 
+= 2.0.0.3-rc =
+* Some plugins WP Query conflicts with event calendar query - FIXED
+
 = 2.0.0.2-rc =
 * Adding new date to custom recurring event resets the start and end hours - FIXED
 
