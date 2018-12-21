@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: GeoDirectory Events 2.0.0.2\n"
+"Project-Id-Version: GeoDirectory Events 2.0.0.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-25 14:23+0100\n"
-"PO-Revision-Date: 2018-10-25 14:23+0100\n"
+"POT-Creation-Date: 2018-12-20 18:03+0000\n"
+"PO-Revision-Date: 2018-12-20 18:03+0000\n"
 "Last-Translator: \n"
 "Language-Team: AyeCode Ltd <contact@ayecode.io>\n"
 "Language: en_US\n"
@@ -536,7 +536,7 @@ msgstr ""
 msgid "S"
 msgstr ""
 
-#: includes/class-geodir-event-calendar.php:277
+#: includes/class-geodir-event-calendar.php:278
 msgid "Click to view events on this date"
 msgstr ""
 

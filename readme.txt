@@ -3,8 +3,8 @@ Contributors: stiofansisland, paoltaia
 Donate link: https://wpgeodirectory.com/
 Tags: geodirectory, geodirectory events, event, event manager
 Requires at least: 4.9
-Tested up to: 4.9.9
-Stable tag: 2.0.0.2-rc
+Tested up to: 5.0
+Stable tag: 2.0.0.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -26,8 +26,9 @@ It's easy to sort events by selecting "upcoming," "today," "past" or "all" and d
 
 == Changelog ==
 
-= 2.0.0.3-rc =
+= 2.0.0.3 =
 * Some plugins WP Query conflicts with event calendar query - FIXED
+* Added event_past class to calender widget for past dated - ADDED
 
 = 2.0.0.2-rc =
 * Adding new date to custom recurring event resets the start and end hours - FIXED

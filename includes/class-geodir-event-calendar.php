@@ -274,7 +274,8 @@ class GeoDir_Event_Calendar {
 
 				echo '<td valign="middle" class="gd_cal_nsat">';
 				if ( in_array( $date, $all_event_dates ) ) {
-					echo '<a class="event_highlight" href=" ' . $date_search_url . '" title="' . esc_attr__( 'Click to view events on this date', 'geodirevents' ) . '" > ' . (int)$day . '</a>';
+					$past_class = $date < date("Y-m-d") ? 'event_past' : '';
+					echo '<a class="event_highlight '.$past_class.'" href=" ' . $date_search_url . '" title="' . esc_attr__( 'Click to view events on this date', 'geodirevents' ) . '" > ' . (int)$day . '</a>';
 				} else {
 					echo '<span class="no_event">' . (int)$day . '</span>';
 				}
