@@ -251,6 +251,15 @@ class GeoDir_Event_Fields {
 		if ( ! geodir_event_recurring_pkg( $gd_post ) ) { // Recurring is disabled
 			return;
 		}
+
+		if ( has_filter( 'geodir_event_custom_field_input_event_recurring' ) ) {
+			$html = apply_filters( 'geodir_event_custom_field_input_event_recurring', '', $field, $package_id );
+
+			if ( ! empty( $html ) ) {
+				return $html;
+			}
+		}
+
 		$value 					= geodir_get_cf_value( $field );
 		$field_title 			= ! empty( $field['frontend_title'] ) ? __( $field['frontend_title'], 'geodirectory' ) : '';
 		$field_desc 			= ! empty( $field['desc'] ) ? __( $field['desc'], 'geodirectory' ) : '';
@@ -277,6 +286,14 @@ class GeoDir_Event_Fields {
 
 		if ( ! GeoDir_Post_types::supports( $post_type, 'events' ) ) {
 			return;
+		}
+
+		if ( has_filter( 'geodir_event_custom_field_input_event_event_dates' ) ) {
+			$html = apply_filters( 'geodir_event_custom_field_input_event_event_dates', '', $field, $package_id );
+
+			if ( ! empty( $html ) ) {
+				return $html;
+			}
 		}
 
 		$htmlvar_name 			= $field['htmlvar_name'];
