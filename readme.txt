@@ -26,6 +26,9 @@ It's easy to sort events by selecting "upcoming," "today," "past" or "all" and d
 
 == Changelog ==
 
+= 2.0.0.5 =
+* [gd_post_meta] always shows icon & label for event_dates - FIXED
+
 = 2.0.0.4 =
 * Changes for franchise manager addon - ADDED
 
