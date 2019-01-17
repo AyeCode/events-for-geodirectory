@@ -53,9 +53,9 @@ class GeoDir_Event_Fields {
 		add_filter( 'geodir_get_cf_value', array( __CLASS__, 'event_dates_cf_value' ), 10, 2 );
 
 		// Output event fields
-		add_filter( 'geodir_custom_field_output_event', array( __CLASS__, 'cf_event' ), 10, 3 );
-		add_filter( 'geodir_custom_field_output_event_var_event_dates', array( __CLASS__, 'output_event_dates' ), 10, 4 ); // Schedules
-		add_filter( 'geodir_custom_field_output_event_loc_listing', array( __CLASS__, 'output_event_date' ), 10, 3 ); // Single date
+		add_filter( 'geodir_custom_field_output_event', array( __CLASS__, 'cf_event' ), 10, 5 );
+		add_filter( 'geodir_custom_field_output_event_var_event_dates', array( __CLASS__, 'output_event_dates' ), 10, 5 ); // Schedules
+		add_filter( 'geodir_custom_field_output_event_loc_listing', array( __CLASS__, 'output_event_date' ), 10, 4 ); // Single date
 
 		// Search
 		add_filter( 'geodir_search_fields_setting_allow_var_event_dates', '__return_true', 10, 3 );
@@ -741,7 +741,7 @@ class GeoDir_Event_Fields {
 		return apply_filters( 'geodir_event_dates_cf_value	', $event_data, $value, $cf, $gd_post );
 	}
 
-	public static function cf_event( $html, $location, $cf, $p = '' ) {
+	public static function cf_event( $html, $location, $cf, $p = '', $output = '' ) {
 		// check we have the post value
 		if ( is_numeric( $p ) ) {
 			$gd_post = geodir_get_post_info( $p );
@@ -772,7 +772,7 @@ class GeoDir_Event_Fields {
 			 * @param array $cf The custom field array.
 			 * @since 2.0.0
 			 */
-			$html = apply_filters( "geodir_custom_field_output_event_loc_{$location}", $html, $cf, $gd_post );
+			$html = apply_filters( "geodir_custom_field_output_event_loc_{$location}", $html, $cf, $output, $gd_post );
 		}
 
 		// Check if there is a custom field specific filter.
@@ -785,7 +785,7 @@ class GeoDir_Event_Fields {
 			 * @param array $cf The custom field array.
 			 * @since 2.0.0
 			 */
-			$html = apply_filters( "geodir_custom_field_output_event_var_{$html_var}", $html, $location, $cf, $gd_post );
+			$html = apply_filters( "geodir_custom_field_output_event_var_{$html_var}", $html, $location, $cf, $output, $gd_post );
 		}
 
 		// Check if there is a custom field key specific filter.
@@ -798,13 +798,13 @@ class GeoDir_Event_Fields {
 			 * @param array $cf The custom field array.
 			 * @since 2.0.0
 			 */
-			$html = apply_filters( "geodir_custom_field_output_event_key_{$cf['field_type_key']}", $html, $location, $cf, $gd_post );
+			$html = apply_filters( "geodir_custom_field_output_event_key_{$cf['field_type_key']}", $html, $location, $cf, $output, $gd_post );
 		}
 
 		return $html;
 	}
 	
-	public static function output_event_dates( $html, $location, $cf, $the_post = array() ) {
+	public static function output_event_dates( $html, $location, $cf, $output = '', $the_post = array() ) {
 		if ( empty( $the_post ) || empty( $cf ) || $location == 'listing' ) {
 			return $html;
 		}
@@ -826,6 +826,7 @@ class GeoDir_Event_Fields {
 			if ( ! empty( $schedules_html ) ) {
 				$field_label = _n( 'Date', 'Dates', count( $schedules ), 'geodirevents' );
 				$field_icon = geodir_field_icon_proccess( $cf );
+				$output = geodir_field_output_process( $output );
 				if ( strpos( $field_icon, 'http' ) !== false ) {
 					$field_icon_af = '';
 				} elseif ( $field_icon == '' ) {
@@ -839,11 +840,12 @@ class GeoDir_Event_Fields {
 				$date_class .= ' geodir-edate-' . $cf['css_class'];
 				$date_class .= count( $schedules ) > 1 ? ' geodir-schedules-meta' : ' geodir-schedule-meta';
 
-				$html = '<div class="geodir_post_meta geodir-field-' . $htmlvar_name . ' ' . trim( $date_class ) . '" style="clear:both;"><span class="geodir-i-datepicker" style="' . $field_icon . '">' . $field_icon_af;
-				if ( $field_label != '' ) {
-					$html .= $field_label . ': ';
-				}
-				$html .= '</span>' . $schedules_html . '</div>';
+				$html = '<div class="geodir_post_meta geodir-field-' . $htmlvar_name . ' ' . trim( $date_class ) . '" style="clear:both;">';
+				if ( $output == '' || isset( $output['icon'] ) ) $html .= '<span class="geodir-i-datepicker" style="' . $field_icon . '">' . $field_icon_af;
+				if ( ( $output == '' || isset( $output['label'] ) ) && $field_label != '' ) $html .= $field_label . ': ';
+				if ( $output == '' || isset( $output['icon'] ) ) $html .= '</span>';
+				if ( $output == '' || isset( $output['value'] ) ) $html .= $schedules_html;
+				$html .= '</div>';
 			} else {
 				$html = '';
 			}
@@ -852,7 +854,7 @@ class GeoDir_Event_Fields {
 		return $html;
 	}
 
-	public static function output_event_date( $html, $cf, $the_post = array() ) {
+	public static function output_event_date( $html, $cf, $output = '', $the_post = array() ) {
 		global $post;
 
 		if ( empty( $the_post ) || empty( $cf ) ) {
@@ -887,6 +889,7 @@ class GeoDir_Event_Fields {
 
 				$field_label = __( 'Date', 'geodirevents' );
 				$field_icon = geodir_field_icon_proccess( $cf );
+				$output = geodir_field_output_process( $output );
 				if ( strpos( $field_icon, 'http' ) !== false ) {
 					$field_icon_af = '';
 				} elseif ( $field_icon == '' ) {
@@ -900,11 +903,12 @@ class GeoDir_Event_Fields {
 				$date_class .= 'geodir-schedule-meta geodir-edate-' . $cf['css_class'];
 				$field_label = '';
 
-				$html = '<div class="geodir_post_meta geodir-field-' . $htmlvar_name . ' ' . trim( $date_class ) . '" style="clear:both;"><span class="geodir-i-datepicker" style="' . $field_icon . '">' . $field_icon_af;
-				if ( $field_label != '' ) {
-					$html .= $field_label . ': ';
-				}
-				$html .= '</span>' . $value . '</div>';
+				$html = '<div class="geodir_post_meta geodir-field-' . $htmlvar_name . ' ' . trim( $date_class ) . '" style="clear:both;">';
+				if ( $output == '' || isset( $output['icon'] ) ) $html .= '<span class="geodir-i-datepicker" style="' . $field_icon . '">' . $field_icon_af;
+				if ( ( $output == '' || isset( $output['label'] ) ) && $field_label != '' ) $html .= $field_label . ': ';
+				if ( $output == '' || isset( $output['icon'] ) ) $html .= '</span>';
+				if ( $output == '' || isset( $output['value'] ) ) $html .= $value;
+				$html .= '</div>';
 			} else {
 				$html = '<div style="display:none"></div>';
 			}

@@ -26,6 +26,11 @@ It's easy to sort events by selecting "upcoming," "today," "past" or "all" and d
 
 == Changelog ==
 
+= 2.0.0.5 =
+* [gd_post_meta] always shows icon & label for event_dates - FIXED
+* [gd_listings] should not show event_type attribute by default - FIXED
+* Some timezone shows date one day ahead in calendar selected dates for custom recurring event - FIXED
+
 = 2.0.0.4 =
 * Changes for franchise manager addon - ADDED
 

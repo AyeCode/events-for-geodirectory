@@ -160,19 +160,26 @@ var GeoDir_Event_Add = {
             var start_time_options = jQuery('#geodir_event_start_time_options', $form).html();
             var end_time_options = jQuery('#geodir_event_end_time_options', $form).html();
             for (i = 0; i < total_dates; i++) {
-                var $el = jQuery('.show_different_times_div .event-multiple-times[data-date="' + spdates[i] + '"]', $self.form);
+				var sdate = spdates[i];
+                var $el = jQuery('.show_different_times_div .event-multiple-times[data-date="' + sdate + '"]', $self.form);
 				if ($el.length) {
 					$el.find('.geodir-select').removeClass('enhanced').removeClass('select2-hidden-accessible');
 					$el.find('.select2').remove();
 					date_selected = $el.html();
 				} else {
-					date_selected = '<label class="event-multiple-dateto">' + $self.dateFormat( new Date( spdates[i] ) ) + '</label><div class="event-multiple-dateto-inner"><select id="event_start_times" name="event_dates[start_times][]" class="geodir_textfield geodir-select geodir-w110">' + start_time_options + '</select></div><label class="event-multiple-end"> ' + geodir_event_params.text_to + ' </label><div class="event-multiple-dateto-inner"><select id="event_end_times" name="event_dates[end_times][]" class="geodir_textfield geodir-select geodir-w110">' + end_time_options + '</select></div>';
+					var adate = sdate.split("-");
+					if (adate.length == 3) {
+						var odate = new Date(parseInt(adate[0]), parseInt(adate[1]) - 1, parseInt(adate[2]));
+					} else {
+						var odate = new Date(sdate);
+					}
+					date_selected = '<label class="event-multiple-dateto">' + $self.dateFormat( odate ) + '</label><div class="event-multiple-dateto-inner"><select id="event_start_times" name="event_dates[start_times][]" class="geodir_textfield geodir-select geodir-w110">' + start_time_options + '</select></div><label class="event-multiple-end"> ' + geodir_event_params.text_to + ' </label><div class="event-multiple-dateto-inner"><select id="event_end_times" name="event_dates[end_times][]" class="geodir_textfield geodir-select geodir-w110">' + end_time_options + '</select></div>';
 				}
-				dates_selected += '<div data-date="' + spdates[i] + '" class="event-multiple-times clearfix">' + date_selected + '</div>';
+				dates_selected += '<div data-date="' + sdate + '" class="event-multiple-times clearfix">' + date_selected + '</div>';
             }
             jQuery('.show_different_times_div', $self.form).html(dates_selected);
             jQuery('.show_different_times_div', $self.form).find('.geodir-select').each(function() {
-                jQuery(this).trigger('geodir-select-init');
+				jQuery(this).trigger('geodir-select-init');
             });
         } else {
             jQuery('.show_different_times_div').html('');
@@ -239,13 +246,13 @@ var GeoDir_Event_Add = {
         }
     },
     dateFormat: function(date) {
-        var date_format = geodir_event_params.input_date_format;
+        var date_format = geodir_event_params.input_date_format, month = date.getMonth(), day = date.getDate();
         monthsArray = eval(geodir_event_params.monthsArray);
         date_format = date_format.replace("Y", date.getFullYear());
-        date_format = date_format.replace("m", (date.getMonth() + 1));
-        date_format = date_format.replace("d", date.getDate());
-        date_format = date_format.replace("j", date.getDate());
-        date_format = date_format.replace("F", monthsArray[date.getMonth()]);
+        date_format = date_format.replace("m", ("0" + (month + 1)).slice(-2));
+        date_format = date_format.replace("d", ("0" + day).slice(-2));
+        date_format = date_format.replace("j", day);
+        date_format = date_format.replace("F", monthsArray[month]);
         return date_format;
     },
     showFields: function(fields) {

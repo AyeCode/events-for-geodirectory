@@ -61,7 +61,7 @@ class GeoDir_Event_Query {
 	}
 
 	public static function is_rest( $query ) {
-		if ( defined( 'REST_REQUEST' ) && REST_REQUEST && ! empty( $query->query_vars ) && GeoDir_Post_types::supports( $query->query_vars['post_type'], 'events' ) ) {
+		if ( defined( 'REST_REQUEST' ) && REST_REQUEST && ! empty( $query->query_vars ) && ! empty( $query->query_vars['post_type'] ) && GeoDir_Post_types::supports( $query->query_vars['post_type'], 'events' ) ) {
 			return true;
 		}
 		return false;
