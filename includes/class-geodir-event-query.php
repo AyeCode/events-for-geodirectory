@@ -150,7 +150,11 @@ class GeoDir_Event_Query {
 	
 	public static function posts_fields( $fields, $query = array() ) {
 		global $geodir_post_type;
-		
+
+		if ( ! GeoDir_Query::is_gd_main_query( $query ) ) {
+			return $fields;
+		}
+
 		if ( ! GeoDir_Post_types::supports( $geodir_post_type, 'events' ) ) {
 			return $fields;
 		}
@@ -166,6 +170,10 @@ class GeoDir_Event_Query {
 	public static function posts_join( $join, $query = array() ) {
 		global $wpdb, $geodir_post_type;
 		
+		if ( ! GeoDir_Query::is_gd_main_query( $query ) ) {
+			return $join;
+		}
+
 		if ( ! GeoDir_Post_types::supports( $geodir_post_type, 'events' ) ) {
 			return $join;
 		}
@@ -178,6 +186,10 @@ class GeoDir_Event_Query {
 	public static function posts_where( $where, $query = array() ) {
 		global $geodir_post_type;
 		
+		if ( ! GeoDir_Query::is_gd_main_query( $query ) ) {
+			return $where;
+		}
+
 		if ( ! GeoDir_Post_types::supports( $geodir_post_type, 'events' ) ) {
 			return $where;
 		}
@@ -229,6 +241,10 @@ class GeoDir_Event_Query {
 	public static function posts_groupby( $groupby, $query = array() ) {
 		global $wpdb, $geodir_post_type;
 
+		if ( ! GeoDir_Query::is_gd_main_query( $query ) ) {
+			return $groupby;
+		}
+
 		if ( ! GeoDir_Post_types::supports( $geodir_post_type, 'events' ) ) {
 			return $groupby;
 		}
@@ -246,6 +262,10 @@ class GeoDir_Event_Query {
 
 	public static function posts_orderby( $orderby, $sortby, $table, $query = array() ) {
 		global $geodir_post_type;
+
+		if ( ! GeoDir_Query::is_gd_main_query( $query ) ) {
+			return $orderby;
+		}
 
 		if ( $sortby == 'random' || ! GeoDir_Post_types::supports( $geodir_post_type, 'events' ) ) {
 			return $orderby;
