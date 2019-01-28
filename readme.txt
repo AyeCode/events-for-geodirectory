@@ -28,6 +28,7 @@ It's easy to sort events by selecting "upcoming," "today," "past" or "all" and d
 
 = 2.0.0.6 =
 * Events query conflicts with advance ads plugin query - FIXED
+* Event detail page not generates startDate, endDate structured data - FIXED 
 
 = 2.0.0.5 =
 * [gd_post_meta] always shows icon & label for event_dates - FIXED

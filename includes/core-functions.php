@@ -226,6 +226,8 @@ function geodir_event_date_time_format() {
  * @return array The filtered schema array.
  */
 function geodir_event_schema( $schema, $post ) {
+	global $gd_post;
+
     $event_schema_types = geodir_event_get_schema_types();
     if ( isset( $event_schema_types[ $schema['@type'] ] ) ) {
 		$place = array();
@@ -237,100 +239,45 @@ function geodir_event_schema( $schema, $post ) {
 		}
 		$place["geo"] = $schema['geo'];
 
-        if (!empty($post->event_dates)) {
-            $dates = maybe_unserialize($post->event_dates);
+		if ( GeoDir_Post_types::supports( $gd_post->post_type, 'events' ) ) {
+			$schedule = NULL;
 
-            $start_date = isset($dates['start_date']) ? $dates['start_date'] : '';
-            $end_date = isset($dates['end_date']) ? $dates['end_date'] : $start_date;
-            $all_day = isset($dates['all_day']) && !empty( $dates['all_day'] ) ? true : false;
-            $start_time = isset($dates['start_time']) ? $dates['start_time'] : '';
-            $end_time = isset($dates['end_time']) ? $dates['end_time'] : '';
-            
-            $startDate = $start_date;
-            $endDate = $end_date;
-            $startTime = $start_time;
-            $endTime = $end_time;
-            
-            if (isset($dates['recurring'])) {
-                if ($dates['recurring']) {
-                    $rdates = explode(',', $dates['recurring_dates']);
-                                    
-                    $repeat_type = isset($dates['repeat_type']) && in_array($dates['repeat_type'], array('day', 'week', 'month', 'year', 'custom')) ? $dates['repeat_type'] : 'custom';
-                    $duration = isset($dates['duration_x']) && $repeat_type != 'custom' && (int)$dates['duration_x'] > 0 ? (int)$dates['duration_x'] : 1;
-                    $duration--;
-                    
-                    $different_times = isset($dates['different_times']) && !empty($dates['different_times']) ? true : false;
-                    $astarttimes = isset($dates['starttimes']) && !empty($dates['starttimes']) ? $dates['starttimes'] : array();
-                    $aendtimes = isset($dates['endtimes']) && !empty($dates['endtimes']) ? $dates['endtimes'] : array();
-                    
-                    if (isset($_REQUEST['gde']) && in_array($_REQUEST['gde'], $rdates)) {
-                        $key = array_search($_REQUEST['gde'], $rdates);
-                        
-                        $startDate =  sanitize_text_field($_REQUEST['gde']);
-                        
-                        if ($repeat_type == 'custom' && $different_times) {
-                            if (!empty($astarttimes) && isset($astarttimes[$key])) {
-                                $startTime = $astarttimes[$key];
-                                $endTime = $aendtimes[$key];
-                            } else {
-                                $startTime = '';
-                                $endTime = '';
-                            }
-                        }
-                    } else {
-                        $day_today = date_i18n('Y-m-d');
-                        
-                        foreach ($rdates as $key => $rdate) {
-                            if (strtotime($rdate) >= strtotime($day_today)) {
-                                $startDate = date_i18n('Y-m-d', strtotime($rdate));
-                                
-                                if ($repeat_type == 'custom' && $different_times) {
-                                    if (!empty($astarttimes) && isset($astarttimes[$key])) {
-                                        $startTime = $astarttimes[$key];
-                                        $endTime = $aendtimes[$key];
-                                    } else {
-                                        $startTime = '';
-                                        $endTime = '';
-                                    }
-                                }
-                                break;
-                            }
-                        }
-                    }
-                    
-                    $endDate = date_i18n('Y-m-d', strtotime($startDate . ' + ' . $duration . ' day'));
-                }
-            } else {
-                if (!empty($dates['recurring_dates']) && $event_recurring_dates = explode(',', $dates['recurring_dates'])) {
-                    $day_today = date_i18n('Y-m-d');
-                    
-                    foreach ($event_recurring_dates as $rdate) {
-                        if (strtotime($rdate) >= strtotime($day_today)) {
-                            $startDate = date_i18n('Y-m-d', strtotime($rdate));
-                            break;
-                        }
-                    }
-                    
-                    if ($startDate === '' && !empty($event_recurring_dates)) {
-                        $startDate = $event_recurring_dates[0];
-                    }
-                }
-            }
-            
-            if ($endDate === '') {
-                $endDate = $startDate;
-            }
-            
-            $startTime = $startTime !== '' ? $startTime : '00:00';
-            $endTime = $endTime !== '' ? $endTime : '00:00';
-            
-            if ($startDate == $endDate && $startTime == $endTime && $startTime == '00:00') {
-                $endTime = '23:59';
-            }
-            
-            $schema['startDate'] = $startDate . 'T' . $startTime;
-            $schema['endDate'] = $endDate . 'T' . $endTime;
-        }
+			if ( ! empty( $gd_post->recurring ) ) { // Recurring event
+				if ( ! empty( $_REQUEST['gde'] ) ) {
+					$schedule = GeoDir_Event_Schedules::get_upcoming_schedule( $gd_post->ID, sanitize_text_field( $_REQUEST['gde'] ) );
+				} else {
+					if ( ! ( $schedule = GeoDir_Event_Schedules::get_upcoming_schedule( $gd_post->ID, date_i18n( 'Y-m-d' ) ) ) ) {
+						$schedule = GeoDir_Event_Schedules::get_start_schedule( $gd_post->ID );
+					}
+				}
+			} else {
+				$schedule = GeoDir_Event_Schedules::get_start_schedule( $gd_post->ID );
+			}
+
+			if ( ! empty($schedule ) ) {
+				$startDate = $schedule->start_date;
+				$endDate = $schedule->end_date;
+				$startTime = ! empty( $schedule->start_time ) ? date_i18n( 'H:i', strtotime( $schedule->start_time ) ) : '00:00';
+				$endTime = ! empty( $schedule->end_time ) ? date_i18n( 'H:i', strtotime( $schedule->end_time ) ) : '00:00';
+				$all_day = ! empty( $schedule->all_day ) ? true : false;
+
+				if ( $endDate === '' ) {
+					$endDate = $startDate;
+				}
+
+				if ( ! empty( $schedule->all_day ) ) {
+					$startTime = '00:00';
+					$endTime = '23:59';
+				}
+
+				if ( $startDate == $endDate && $startTime == $endTime && $startTime == '00:00' ) {
+					$endTime = '23:59';
+				}
+
+				$schema['startDate'] = $startDate . 'T' . $startTime;
+				$schema['endDate'] = $endDate . 'T' . $endTime;
+			}
+		}
         $schema['location'] = $place;
 
         unset($schema['telephone']);
