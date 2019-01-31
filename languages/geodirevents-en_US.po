@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: GeoDirectory Events 2.0.0.5\n"
+"Project-Id-Version: GeoDirectory Events 2.0.0.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-17 13:49+0000\n"
-"PO-Revision-Date: 2019-01-17 13:49+0000\n"
+"POT-Creation-Date: 2019-01-30 17:30+0000\n"
+"PO-Revision-Date: 2019-01-30 17:30+0000\n"
 "Last-Translator: \n"
 "Language-Team: AyeCode Ltd <contact@ayecode.io>\n"
 "Language: en_US\n"
@@ -1016,24 +1016,24 @@ msgstr ""
 msgid "Show single listing for recurring event?"
 msgstr ""
 
-#: includes/core-functions.php:417
+#: includes/core-functions.php:364
 msgid "Today"
 msgstr ""
 
-#: includes/core-functions.php:418
+#: includes/core-functions.php:365
 msgid "Upcoming"
 msgstr ""
 
-#: includes/core-functions.php:419
+#: includes/core-functions.php:366
 msgid "Past"
 msgstr ""
 
-#: includes/core-functions.php:440
+#: includes/core-functions.php:387
 #, php-format
 msgid "%s AM"
 msgstr ""
 
-#: includes/core-functions.php:441
+#: includes/core-functions.php:388
 #, php-format
 msgid "%s PM"
 msgstr ""

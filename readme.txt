@@ -4,7 +4,7 @@ Donate link: https://wpgeodirectory.com/
 Tags: geodirectory, geodirectory events, event, event manager
 Requires at least: 4.9
 Tested up to: 5.0
-Stable tag: 2.0.0.5
+Stable tag: 2.0.0.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -28,7 +28,7 @@ It's easy to sort events by selecting "upcoming," "today," "past" or "all" and d
 
 = 2.0.0.6 =
 * Events query conflicts with advance ads plugin query - FIXED
-* Event detail page not generates startDate, endDate structured data - FIXED 
+* Event detail page not generating startDate, endDate structured data - FIXED
 
 = 2.0.0.5 =
 * [gd_post_meta] always shows icon & label for event_dates - FIXED
