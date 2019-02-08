@@ -26,6 +26,9 @@ It's easy to sort events by selecting "upcoming," "today," "past" or "all" and d
 
 == Changelog ==
 
+= 2.0.0.7 =
+* Event categories shows wrong location term counts - FIXED
+
 = 2.0.0.6 =
 * Events query conflicts with advance ads plugin query - FIXED
 * Event detail page not generating startDate, endDate structured data - FIXED
