@@ -28,6 +28,7 @@ class GeoDir_Event_Schedules {
 
 	public static function init() {
 		add_action( 'delete_post', array( __CLASS__, 'delete_schedules' ), 10, 1 );
+		add_filter( 'geodir_location_count_reviews_by_term_sql', array( __CLASS__, 'location_term_counts' ), 10, 8 );
 	}
 
 	public static function save_schedules( $event_data, $post_id ) {
@@ -563,5 +564,24 @@ class GeoDir_Event_Schedules {
 	public static function has_schedule( $post_id, $date ) {
 		$schedule = self::get_upcoming_schedule( $post_id, $date );
 		return ! empty( $schedule ) ? true : false;
+	}
+
+	public static function location_term_counts( $sql, $term_id, $taxonomy, $post_type, $location_type, $loc, $count_type, $where ) {
+		if ( GeoDir_Post_types::supports( $post_type, 'events' )  ) {
+			$table = geodir_db_cpt_table( $post_type );
+
+			$join = "LEFT JOIN " . GEODIR_EVENT_SCHEDULES_TABLE . " ON " . GEODIR_EVENT_SCHEDULES_TABLE . ".event_id = post_id";
+			$condition = self::event_type_condition( 'upcoming' );
+
+			if ( $count_type == 'review_count' ) {
+				$sql = "SELECT COALESCE(SUM(rating_count),0) FROM {$table} {$join} WHERE post_status = 'publish' $where AND FIND_IN_SET( " . $term_id . ", post_category )";
+			} else {
+				$sql = "SELECT COUNT(post_id) FROM {$table} {$join} WHERE post_status = 'publish' $where AND FIND_IN_SET( " . $term_id . ", post_category )";
+			}
+
+			 $sql .= " AND {$condition}";
+		}
+
+		return $sql;
 	}
 }

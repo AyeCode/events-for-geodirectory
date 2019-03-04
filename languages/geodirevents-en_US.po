@@ -2,20 +2,22 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GeoDirectory Events 2.0.0.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-30 17:30+0000\n"
-"PO-Revision-Date: 2019-01-30 17:30+0000\n"
+"POT-Creation-Date: 2019-03-02 18:44+0530\n"
+"PO-Revision-Date: 2019-03-02 18:44+0530\n"
 "Last-Translator: \n"
 "Language-Team: AyeCode Ltd <contact@ayecode.io>\n"
 "Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-KeywordsList: _;gettext;gettext_noop;__;_e;_n:1,2;_n_noop:1,2;"
-"_nx:1,2;esc_attr_e;esc_attr__\n"
+"X-Poedit-KeywordsList: __;__ngettext:1,2;__ngettext_noop:1,2;_c;_e;_ex:1,2c;"
+"_n:1,2;_n_noop:1,2;_nc:4c,1,2;_nx:4c,1,2;_nx_noop:4c,1,2;_x:1,2c;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;gettext;"
+"gettext_noop\n"
 "X-Poedit-Basepath: ..\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Poedit 1.8.7.1\n"
+"X-Generator: Poedit 2.2.1\n"
 "X-Poedit-SearchPath-0: .\n"
 
 #: includes/admin/admin-functions.php:94
@@ -821,6 +823,11 @@ msgid ""
 "be upgraded to 5.3 or later."
 msgstr ""
 
+#: includes/class-geodir-event-post-type.php:62
+msgctxt "URL slug"
+msgid "events"
+msgstr ""
+
 #: includes/class-geodir-event-post-type.php:157
 msgid "Event"
 msgstr ""
@@ -1016,6 +1023,12 @@ msgstr ""
 msgid "Show single listing for recurring event?"
 msgstr ""
 
+#: includes/core-functions.php:363
+#, php-format
+msgctxt "Event type filter"
+msgid "All %s"
+msgstr ""
+
 #: includes/core-functions.php:364
 msgid "Today"
 msgstr ""
@@ -1036,6 +1049,101 @@ msgstr ""
 #: includes/core-functions.php:388
 #, php-format
 msgid "%s PM"
+msgstr ""
+
+#: includes/template-functions.php:40
+msgctxt "January abbreviation"
+msgid "Jan"
+msgstr ""
+
+#: includes/template-functions.php:41
+msgctxt "February abbreviation"
+msgid "Feb"
+msgstr ""
+
+#: includes/template-functions.php:42
+msgctxt "March abbreviation"
+msgid "Mar"
+msgstr ""
+
+#: includes/template-functions.php:43
+msgctxt "April abbreviation"
+msgid "Apr"
+msgstr ""
+
+#: includes/template-functions.php:44
+msgctxt "May abbreviation"
+msgid "May"
+msgstr ""
+
+#: includes/template-functions.php:45
+msgctxt "June abbreviation"
+msgid "Jun"
+msgstr ""
+
+#: includes/template-functions.php:46
+msgctxt "July abbreviation"
+msgid "Jul"
+msgstr ""
+
+#: includes/template-functions.php:47
+msgctxt "August abbreviation"
+msgid "Aug"
+msgstr ""
+
+#: includes/template-functions.php:48
+msgctxt "September abbreviation"
+msgid "Sep"
+msgstr ""
+
+#: includes/template-functions.php:49
+msgctxt "October abbreviation"
+msgid "Oct"
+msgstr ""
+
+#: includes/template-functions.php:50
+msgctxt "November abbreviation"
+msgid "Nov"
+msgstr ""
+
+#: includes/template-functions.php:51
+msgctxt "December abbreviation"
+msgid "Dec"
+msgstr ""
+
+#: includes/template-functions.php:52
+msgctxt "Sunday initial"
+msgid "S"
+msgstr ""
+
+#: includes/template-functions.php:53
+msgctxt "Monday initial"
+msgid "M"
+msgstr ""
+
+#: includes/template-functions.php:54
+msgctxt "Tuesday initial"
+msgid "T"
+msgstr ""
+
+#: includes/template-functions.php:55
+msgctxt "Wednesday initial"
+msgid "W"
+msgstr ""
+
+#: includes/template-functions.php:56
+msgctxt "Friday initial"
+msgid "T"
+msgstr ""
+
+#: includes/template-functions.php:57
+msgctxt "Thursday initial"
+msgid "F"
+msgstr ""
+
+#: includes/template-functions.php:58
+msgctxt "Saturday initial"
+msgid "S"
 msgstr ""
 
 #: includes/template-functions.php:80
@@ -1094,6 +1202,10 @@ msgstr ""
 msgid "GD > Are You Interested?"
 msgstr ""
 
+#: includes/widgets/class-geodir-event-widget-ayi.php:27
+msgid "Displays \"Are You Interested?\" widget on front end."
+msgstr ""
+
 #: includes/widgets/class-geodir-event-widget-ayi.php:44
 #: includes/widgets/class-geodir-event-widget-calendar.php:43
 msgid "Title:"
@@ -1106,6 +1218,10 @@ msgstr ""
 
 #: includes/widgets/class-geodir-event-widget-calendar.php:24
 msgid "GD > Events Calendar"
+msgstr ""
+
+#: includes/widgets/class-geodir-event-widget-calendar.php:27
+msgid "Displays the events calendar for event post type."
 msgstr ""
 
 #: includes/widgets/class-geodir-event-widget-calendar.php:51
