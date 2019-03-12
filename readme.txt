@@ -26,6 +26,9 @@ It's easy to sort events by selecting "upcoming," "today," "past" or "all" and d
 
 == Changelog ==
 
+= 2.0.0.8 =
+* Edit form shows incorrect dates for the events created with v1 - FIXED
+
 = 2.0.0.7 =
 * Event categories shows wrong location term counts - FIXED
 * Not able to translate "All %s" string - FIXED
