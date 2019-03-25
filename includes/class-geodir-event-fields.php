@@ -300,6 +300,17 @@ class GeoDir_Event_Fields {
 		$event_data 			= geodir_get_cf_value( $field );
 		$event_data 			= maybe_unserialize( $event_data );
 
+		// v1 event data
+		if ( ! empty( $event_data ) && isset( $event_data['event_recurring_dates'] ) && isset( $event_data['event_start'] ) && empty( $event_data['recurring_dates'] ) && empty( $event_data['start_date'] ) ) {
+			$event_data['start_date'] = $event_data['event_start'];
+			$event_data['end_date'] = $event_data['event_end'];
+			$event_data['recurring_dates'] = is_array( $event_data['event_recurring_dates'] ) ? $event_data['event_recurring_dates'] : explode( ',', $event_data['event_recurring_dates'] );
+			$event_data['start_time'] = $event_data['starttime'];
+			$event_data['end_time'] = $event_data['endtime'];
+			$event_data['start_times'] = $event_data['starttimes'];
+			$event_data['end_times'] = $event_data['endtimes'];
+		}
+
 		$is_recurring_active	= geodir_event_recurring_pkg( $gd_post );
 		$format 				= geodir_event_field_date_format();
 		$default_start_date 	= date_i18n( $format );
