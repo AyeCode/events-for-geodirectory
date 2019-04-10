@@ -698,6 +698,13 @@ class GeoDir_Event_Fields {
 
 		$field_name = ! empty( $cf['name'] ) ? $cf['name'] : '';
 
+		// Set default value
+		if ( ! empty( $gd_post->post_status ) && $gd_post->post_status == 'auto-draft' ) {
+			if ( $field_name == 'recurring' && isset( $cf['default'] ) ) {
+				$value = ! empty( $cf['default'] ) && geodir_event_recurring_pkg( $gd_post ) ? 1 : 0;
+			}
+		}
+
 		if ( $field_name != 'event_dates' ) {
 			return $value;
 		}
