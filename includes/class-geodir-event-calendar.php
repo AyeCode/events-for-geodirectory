@@ -232,6 +232,7 @@ class GeoDir_Event_Calendar {
 		wp_reset_query();
 	?><div class="gd-div-loader"><i class="fas fa-sync fa-spin"></i></div><span id="cal_title"><strong><?php echo $monthNames[$month-1].' '.$year; ?></strong></span><table width="100%" border="0" cellpadding="2" cellspacing="2" class="calendar_widget"><tr><?php if ( $day != '1' ) { ?><td align="center" class="days"><strong><?php echo apply_filters( 'geodir_event_cal_single_day_sunday', $day_sun );?></strong></td><?php } ?><td class="days"><strong><?php echo apply_filters( 'geodir_event_cal_single_day_monday', $day_mon );?></strong></td><td class="days"><strong><?php echo apply_filters( 'geodir_event_cal_single_day_tuesday', $day_tue );?></strong></td><td class="days"><strong><?php echo apply_filters( 'geodir_event_cal_single_day_wednesday', $day_wed );?></strong></td><td class="days"><strong><?php echo apply_filters( 'geodir_event_cal_single_day_thursday', $day_thu );?></strong></td><td class="days"><strong><?php echo apply_filters( 'geodir_event_cal_single_day_friday', $day_fri );?></strong></td><td class="days"><strong><?php echo apply_filters( 'geodir_event_cal_single_day_saturday', $day_sat );?></strong></td><?php if ( $day == '1' ) { ?><td class="days"><strong><?php echo apply_filters('geodir_event_cal_single_day_sunday', $day_sun );?></strong></td><?php } ?></tr>
 		<?php
+		$today = date_i18n('Y-m-d');
 		$timestamp = mktime( 0, 0, 0, $month, 1, $year );
 		$maxday = date_i18n( "t", $timestamp );
 		$thismonth = getdate( $timestamp );
@@ -272,7 +273,12 @@ class GeoDir_Event_Calendar {
 				$date = date_i18n( 'Y-m-d', strtotime( $year . '-' . $month . '-' . $day ) );
 				$date_search_url = add_query_arg( array( 'event_calendar' => "$year$month$day" ), $search_url );
 
-				echo '<td valign="middle" class="gd_cal_nsat">';
+				$today_class = '';
+				if( $today == $date ){
+					$today_class = 'date_today';
+				}
+
+				echo '<td valign="middle" class="gd_cal_nsat ' . $today_class . '">';
 				if ( in_array( $date, $all_event_dates ) ) {
 					$past_class = $date < date("Y-m-d") ? 'event_past' : '';
 					echo '<a class="event_highlight '.$past_class.'" href=" ' . $date_search_url . '" title="' . esc_attr__( 'Click to view events on this date', 'geodirevents' ) . '" > ' . (int)$day . '</a>';

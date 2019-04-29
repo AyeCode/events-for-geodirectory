@@ -140,6 +140,11 @@ body .geodir-none {
     display: block
 }
 
+.geodir_event_calendar .calendar_widget tr.cal_day_nums td.gd_cal_nsat.date_today,
+.geodir_event_calendar .calendar_widget tr.cal_day_nums td.gd_cal_nsat.date_today a {
+    background: #e0f7fa;
+}
+
 .geodir_event_calendar .calendar_widget tr td a,
 .geodir_event_calendar .calendar_widget tr td span,
 .geodir_event_calendar .calendar_widget tr td strong {
