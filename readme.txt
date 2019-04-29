@@ -3,8 +3,8 @@ Contributors: stiofansisland, paoltaia
 Donate link: https://wpgeodirectory.com/
 Tags: geodirectory, geodirectory events, event, event manager
 Requires at least: 4.9
-Tested up to: 5.1
-Stable tag: 2.0.0.8
+Tested up to: 5.2
+Stable tag: 2.0.0.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -28,6 +28,8 @@ It's easy to sort events by selecting "upcoming," "today," "past" or "all" and d
 
 = 2.0.0.9 =
 * Allow to set recurring enabled by default for the event - CHANGED
+* Class and highlighting added for today on event calender - ADDED
+* Event dummy categories don't have new cat icon set - ADDED
 
 = 2.0.0.8 =
 * Edit form shows incorrect dates for the events created with v1 - FIXED
