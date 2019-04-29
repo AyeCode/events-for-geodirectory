@@ -324,35 +324,46 @@ function geodir_event_title_recurring_event( $title, $post_id = null ) {
 
 // get link for recurring event
 function geodir_event_recurring_event_link( $link ) {
-	global $post;
+	global $post, $gd_post;
 
-    if ( ! GeoDir_Post_types::supports( $post->post_type, 'events' ) ) { 
+	if ( ! ( ! empty( $post ) && ! empty( $gd_post ) && isset( $post->ID ) && isset( $gd_post->ID ) && $post->ID == $gd_post->ID ) ) {
 		return $link;
+	}
+
+    $post_type = ! empty( $gd_post->post_type ) ? $gd_post->post_type : '';
+	if ( ! GeoDir_Post_types::supports( $post_type, 'events' ) ) { 
+		return $link;
+	}
+
+	if ( isset( $gd_post->start_date ) ) {
+		$event_post = $gd_post;
+	} else {
+		$event_post = $post;
 	}
 	
 	// Check recurring enabled
-	$recurring_pkg = geodir_event_recurring_pkg( $post );
+	$recurring_pkg = geodir_event_recurring_pkg( $event_post );
 	
-	if ( !$recurring_pkg ) {
+	if ( ! $recurring_pkg ) {
 		return $link;
 	}
 	
-	if ( !empty( $post ) && isset( $post->ID ) && !empty( $post->recurring ) && !empty( $post->start_date ) ) {
-		if ( geodir_event_is_date( $post->start_date ) && get_permalink() == get_permalink( $post->ID ) ) {
+	if ( ! empty( $event_post->recurring ) && ! empty( $event_post->start_date ) ) {
+		if ( geodir_event_is_date( $event_post->start_date ) && get_permalink() == get_permalink( $event_post->ID ) ) {
 			$current_date = date_i18n( 'Y-m-d', current_time( 'timestamp' ));
-			$current_time = strtotime($current_date);
+			$current_time = strtotime( $current_date );
 			
-			$event_start_time = strtotime(date_i18n( 'Y-m-d', strtotime($post->start_date)));
-			$event_end_time = isset($post->end_date) && geodir_event_is_date($post->end_date) ? strtotime($post->end_date) : 0;
+			$event_start_time = strtotime( date_i18n( 'Y-m-d', strtotime( $event_post->start_date ) ) );
+			$event_end_time = isset( $event_post->end_date ) && geodir_event_is_date( $event_post->end_date ) ? strtotime( $event_post->end_date ) : 0;
 			
-			if ($event_end_time > $event_start_time && $event_start_time <= $current_time && $event_end_time >= $current_time) {
+			if ( $event_end_time > $event_start_time && $event_start_time <= $current_time && $event_end_time >= $current_time ) {
 				$link_date = date_i18n( 'Y-m-d', strtotime( $current_time ) );
 			} else {
-				$link_date = date_i18n( 'Y-m-d', strtotime( $post->start_date ) );
+				$link_date = date_i18n( 'Y-m-d', strtotime( $event_post->start_date ) );
 			}
 		
 			// recuring event link
-			$link = geodir_getlink( get_permalink( $post->ID ), array( 'gde' => $link_date ) );
+			$link = geodir_getlink( get_permalink( $event_post->ID ), array( 'gde' => $link_date ) );
 		}
 	}
 	return $link;
