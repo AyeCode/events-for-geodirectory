@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: GeoDirectory Events 2.0.0.8\n"
+"Project-Id-Version: GeoDirectory Events 2.0.0.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-26 10:53+0000\n"
-"PO-Revision-Date: 2019-03-26 10:54+0000\n"
+"POT-Creation-Date: 2019-04-29 14:15+0100\n"
+"PO-Revision-Date: 2019-04-29 14:15+0100\n"
 "Last-Translator: \n"
 "Language-Team: AyeCode Ltd <contact@ayecode.io>\n"
 "Language: en_US\n"
@@ -22,7 +22,7 @@ msgstr ""
 
 #: includes/admin/admin-functions.php:94
 #: includes/admin/dummy-data/recurring_events.php:37
-#: includes/admin/dummy-data/standard_events.php:37
+#: includes/admin/dummy-data/standard_events.php:41
 msgid "Event date"
 msgstr ""
 
@@ -70,17 +70,17 @@ msgid "Download Sample Events CSV"
 msgstr ""
 
 #: includes/admin/dummy-data/recurring_events.php:49
-#: includes/admin/dummy-data/standard_events.php:49
+#: includes/admin/dummy-data/standard_events.php:53
 msgid "Newest"
 msgstr ""
 
 #: includes/admin/dummy-data/recurring_events.php:61
-#: includes/admin/dummy-data/standard_events.php:61
+#: includes/admin/dummy-data/standard_events.php:65
 msgid "Title"
 msgstr ""
 
 #: includes/admin/dummy-data/recurring_events.php:73
-#: includes/admin/dummy-data/standard_events.php:73
+#: includes/admin/dummy-data/standard_events.php:77
 msgid "Rating"
 msgstr ""
 
@@ -538,7 +538,7 @@ msgstr ""
 msgid "S"
 msgstr ""
 
-#: includes/class-geodir-event-calendar.php:278
+#: includes/class-geodir-event-calendar.php:284
 msgid "Click to view events on this date"
 msgstr ""
 
@@ -772,46 +772,46 @@ msgstr ""
 msgid "Tick to set separate start and end times for each date."
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:838
-#: includes/class-geodir-event-fields.php:901
+#: includes/class-geodir-event-fields.php:845
+#: includes/class-geodir-event-fields.php:908
 msgid "Date"
 msgid_plural "Dates"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-geodir-event-fields.php:1002
-#: includes/class-geodir-event-fields.php:1072
+#: includes/class-geodir-event-fields.php:1009
+#: includes/class-geodir-event-fields.php:1079
 #: includes/template-functions.php:230
 #, php-format
 msgid "From: %s"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1002
-#: includes/class-geodir-event-fields.php:1072
+#: includes/class-geodir-event-fields.php:1009
+#: includes/class-geodir-event-fields.php:1079
 #, php-format
 msgid "%s Start Date"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1003
-#: includes/class-geodir-event-fields.php:1073
+#: includes/class-geodir-event-fields.php:1010
+#: includes/class-geodir-event-fields.php:1080
 #: includes/template-functions.php:232
 #, php-format
 msgid "To: %s"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1003
-#: includes/class-geodir-event-fields.php:1073
+#: includes/class-geodir-event-fields.php:1010
+#: includes/class-geodir-event-fields.php:1080
 #, php-format
 msgid "%s End Date"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1014
-#: includes/class-geodir-event-fields.php:1086
+#: includes/class-geodir-event-fields.php:1021
+#: includes/class-geodir-event-fields.php:1093
 #, php-format
 msgid "%s Date"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1070
+#: includes/class-geodir-event-fields.php:1077
 #, php-format
 msgid "%s Dates"
 msgstr ""

@@ -15,12 +15,16 @@ $dummy_categories  = array();
 $dummy_categories['food-drink'] = array(
 	'name'        => 'Food & Drink',
 	'icon'        => $dummy_image_url . 'cat_icon/Food_Nightlife.png',
-	'schema_type' => 'FoodEvent'
+	'schema_type' => 'FoodEvent',
+	'font_icon'   => 'fas fa-glass-martini',
+	'color'       => '#803fc7',
 );
 $dummy_categories['festivals'] = array(
 	'name'        => 'Festivals',
 	'icon'        => $dummy_image_url . 'cat_icon/Festival.png',
-	'schema_type' => 'Event'
+	'schema_type' => 'Event',
+	'font_icon'   => 'fas fa-ticket-alt',
+	'color'       => '#20abce',
 );
 
 // Custom fields
