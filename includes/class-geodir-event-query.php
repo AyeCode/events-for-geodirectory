@@ -41,6 +41,11 @@ class GeoDir_Event_Query {
 		add_filter( 'geodir_filter_widget_listings_where', array( __CLASS__, 'widget_posts_where' ), 1, 2 );
 		add_filter( 'geodir_filter_widget_listings_groupby', array( __CLASS__, 'widget_posts_groupby' ), 1, 2 );
 		add_filter( 'geodir_filter_widget_listings_orderby', array( __CLASS__, 'widget_posts_orderby' ), 1, 3 );
+
+		// Events map markers
+		add_filter( 'geodir_rest_markers_query_join', array( __CLASS__, 'rest_markers_query_join' ), 9, 2 );
+		add_filter( 'geodir_rest_markers_query_where', array( __CLASS__, 'rest_markers_query_where' ), 9, 2 );
+		add_filter( 'geodir_rest_markers_query_group_by', array( __CLASS__, 'rest_markers_query_group_by' ), 9, 2 );
 	}
 
 	public static function filter_calender_posts( $query ) {
@@ -68,7 +73,7 @@ class GeoDir_Event_Query {
 	}
 
 	public static function filter_rest_api_posts( $query ) {
-		if ( self::is_rest( $query ) ) {
+		if ( self::is_rest( $query ) ) {geodir_error_log( $query, 'query', __FILE__, __LINE__ );
 			add_filter( 'geodir_rest_posts_clauses_fields', array( __CLASS__, 'rest_posts_fields' ), 11, 3 );
 			add_filter( 'geodir_rest_posts_clauses_join', array( __CLASS__, 'rest_posts_join' ), 11, 3 );
 			add_filter( 'geodir_rest_posts_clauses_where', array( __CLASS__, 'geodir_rest_posts_clauses_where' ), 11, 3 );
@@ -90,7 +95,7 @@ class GeoDir_Event_Query {
 		global $wpdb, $gd_query_args_widgets;
 
 		if ( GeoDir_Post_types::supports( $post_type, 'events' ) ) {
-			$join .= " LEFT JOIN " . GEODIR_EVENT_SCHEDULES_TABLE . " ON " . GEODIR_EVENT_SCHEDULES_TABLE . ".event_id = " . $wpdb->posts . ".ID";	
+			$join .= " LEFT JOIN " . GEODIR_EVENT_SCHEDULES_TABLE . " ON " . GEODIR_EVENT_SCHEDULES_TABLE . ".event_id = " . $wpdb->posts . ".ID";
 		}
 		return $join;
 	}
@@ -406,5 +411,31 @@ class GeoDir_Event_Query {
 		}
 
 		return $orderby;
+	}
+
+	public static function rest_markers_query_join( $join, $request ) {
+		if ( empty( $request['post'] ) && ! empty( $request['post_type'] ) && geodir_get_option( 'event_default_filter' ) != 'all' && GeoDir_Post_types::supports( $request['post_type'], 'events' ) ) {
+			$join .= " LEFT JOIN " . GEODIR_EVENT_SCHEDULES_TABLE . " ON " . GEODIR_EVENT_SCHEDULES_TABLE . ".event_id = p.ID";
+		}
+
+		return $join;
+	}
+
+	public static function rest_markers_query_where( $where, $request ) {
+		if ( empty( $request['post'] ) && ! empty( $request['post_type'] ) && geodir_get_option( 'event_default_filter' ) != 'all' && GeoDir_Post_types::supports( $request['post_type'], 'events' ) ) {
+			if ( $condition = GeoDir_Event_Schedules::event_type_condition( geodir_get_option( 'event_default_filter' ) ) ) {
+				$where .= " AND " . $condition;
+			}
+		}
+
+		return $where;
+	}
+
+	public static function rest_markers_query_group_by( $group_by, $request ) {
+		if ( empty( $request['post'] ) && ! empty( $request['post_type'] ) && geodir_get_option( 'event_default_filter' ) != 'all' && GeoDir_Post_types::supports( $request['post_type'], 'events' ) ) {
+			$group_by = "p.ID";
+		}
+
+		return $group_by;
 	}
 }
