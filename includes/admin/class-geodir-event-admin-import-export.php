@@ -96,7 +96,7 @@ class GeoDir_Event_Admin_Import_Export {
 			}
 
 			if ( ! empty( $event_data['start_date'] ) ) {
-				$event_data['start_date'] 	= date_i18n( 'Y-m-d', strtotime( $event_data['start_date'] ) );
+				$event_data['start_date'] 	= self::parse_import_date( $event_data['start_date'] );
 			} else {
 				$event_data['start_date'] 	= $default_start_date;
 			}
@@ -143,7 +143,7 @@ class GeoDir_Event_Admin_Import_Export {
 					if ( ! empty( $parse_dates ) ) {
 						foreach ( $parse_dates as $key => $date ) {
 							if ( ! empty( $date ) ) {
-								$recurring_dates[] = date_i18n( 'Y-m-d', strtotime( $date ) );
+								$recurring_dates[] = self::parse_import_date( $date );
 							}
 						}
 					}
@@ -182,7 +182,7 @@ class GeoDir_Event_Admin_Import_Export {
 					$event_data['duration_x'] 			= absint( $event_data['duration_x'] ) > 0 ? absint( $event_data['duration_x'] ) : 1;
 					$event_data['repeat_x'] 			= absint( $event_data['repeat_x'] ) > 0 ? absint( $event_data['repeat_x'] ) : 1;
 					if ( ! empty( $event_data['repeat_end'] ) ) {
-						$event_data['repeat_end'] 		= date_i18n( 'Y-m-d', strtotime( $event_data['repeat_end'] ) );
+						$event_data['repeat_end'] 		= self::parse_import_date( $event_data['repeat_end'] );
 					}
 					if ( $event_data['repeat_end'] ) {
 						$event_data['repeat_end_type'] 	= 1;
@@ -199,7 +199,7 @@ class GeoDir_Event_Admin_Import_Export {
 				$event_data['recurring_dates'] 	= $recurring_dates;
 			} else {
 				if ( ! empty( $event_data['end_date'] ) ) {
-					$event_data['end_date'] 	= date_i18n( 'Y-m-d', strtotime( $event_data['end_date'] ) );
+					$event_data['end_date'] 	= self::parse_import_date( $event_data['end_date'] );
 				} else {
 					$event_data['end_date'] 	= $event_data['start_date'];
 				}
@@ -320,6 +320,14 @@ class GeoDir_Event_Admin_Import_Export {
 		}
 
 		return $week_days;
+	}
+
+	public static function parse_import_date( $date, $format = 'm/d/Y' ) {
+		if ( strpos( $date, '/' ) === false ) {
+			return date_i18n( 'Y-m-d', strtotime( $date ) );
+		}
+
+		return geodir_event_date_to_ymd( $date, $format );
 	}
 }
 

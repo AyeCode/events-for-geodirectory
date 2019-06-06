@@ -26,6 +26,10 @@ It's easy to sort events by selecting "upcoming," "today," "past" or "all" and d
 
 == Changelog ==
 
+= 2.0.0.10 =
+* Map shows past events markers on map - FIXED
+* Import events should supports m/d/y date format - CHANGED
+
 = 2.0.0.9 =
 * Allow to set recurring enabled by default for the event - CHANGED
 * Class and highlighting added for today on event calender - ADDED
