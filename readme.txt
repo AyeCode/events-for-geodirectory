@@ -26,6 +26,9 @@ It's easy to sort events by selecting "upcoming," "today," "past" or "all" and d
 
 == Changelog ==
 
+= 2.0.0.11 =
+* More event filter options  - ADDED
+
 = 2.0.0.10 =
 * Map shows past events markers on map - FIXED
 * Import events should supports m/d/y date format - CHANGED
