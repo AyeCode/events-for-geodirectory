@@ -586,7 +586,7 @@ class GeoDir_Event_Schedules {
 			'this_month'  	=> "( {$alias}start_date BETWEEN '$date' AND '$last_day_month' ) ",
 			'next_month'  	=> "( {$alias}start_date BETWEEN '$first_day_next_month' AND '$last_day_next_month' ) ", 
 		);
-		echo '<pre>'; var_dump($filters); echo '</pre>';  exit;
+		//echo '<pre>'; var_dump($filters); echo '</pre>';  exit;
 
 		//If no filter is provided, return all events
 		if( empty( $filters[$event_type] ) ) {
