@@ -567,6 +567,8 @@ class GeoDir_Event_Schedules {
 		$next_7_days  	 		= date( 'Y-m-d', strtotime( $date. ' + 7 days'));
 		$next_30_days 	 		= date( 'Y-m-d', strtotime( $date. ' + 30 days'));
 		$last_day_month  		= date('Y-m-t');
+		$first_day_next_week    = date( 'Y-m-d', strtotime( 'next week monday'));
+		$last_day_next_week  	= date( 'Y-m-d', strtotime( 'next week sunday'));
 		$first_day_next_month   = date( 'Y-m-d', strtotime( 'first day of next month'));
 		$last_day_next_month  	= date( 'Y-m-d', strtotime( 'last day of next month'));
 		
@@ -591,6 +593,7 @@ class GeoDir_Event_Schedules {
 			'this_weekend'  => "( {$alias}start_date BETWEEN '$weekend_start' AND '$sunday' ) ",
 			'this_month'  	=> "( {$alias}start_date BETWEEN '$date' AND '$last_day_month' ) ",
 			'next_month'  	=> "( {$alias}start_date BETWEEN '$first_day_next_month' AND '$last_day_next_month' ) ", 
+			'next_week'  	=> "( {$alias}start_date BETWEEN '$first_day_next_week' AND '$last_day_next_week' ) ", 
 		);
 		//echo '<pre>'; var_dump($filters); echo '</pre>';  exit;
 
