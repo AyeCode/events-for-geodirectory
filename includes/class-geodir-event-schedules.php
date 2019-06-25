@@ -538,6 +538,12 @@ class GeoDir_Event_Schedules {
 	}
 
 	public static function event_type_condition( $event_type, $alias = NULL, $date = '' ) {
+
+		//Maybe abort early
+		if( false === $event_type ) {
+			return '1=1 ';
+		}
+
 		if ( $alias === NULL ) {
 			$alias = GEODIR_EVENT_SCHEDULES_TABLE;
 		}
@@ -588,13 +594,26 @@ class GeoDir_Event_Schedules {
 		);
 		//echo '<pre>'; var_dump($filters); echo '</pre>';  exit;
 
-		//If no filter is provided, return all events
-		if( empty( $filters[$event_type] ) ) {
-			return '1=1 ';
+		//If the filter is provided, filter the events
+		if(! empty( $filters[$event_type] ) ) {
+			return $filters[$event_type];
 		}
 
-		//Else only return filtered events
-		return $filters[$event_type];
+		//Handle the special between filter where dates are separated by |
+		$dates 		= explode( '|', strtolower( $event_type ) );
+
+		//If there are two dates provided...
+		if( 2 === count( $dates) ) {
+			$date1  = date( 'Y-m-d', strtotime( $dates[0] ) );
+			$date2  = date( 'Y-m-d', strtotime( $dates[1] ) );
+			$filter = "( {$alias}start_date BETWEEN '$date1' AND '$date2' ) ";
+			//echo '<pre>'; var_dump($filter); echo '</pre>';  exit;
+			return $filter;
+		}
+		
+
+		//If we are here, this filter has not been implemented so we just return all events
+		return '1=1 ';
 	}
 
 	public static function has_schedule( $post_id, $date ) {
