@@ -839,6 +839,9 @@ class GeoDir_Event_Fields {
 			}
 
 			$schedules 		= GeoDir_Event_Schedules::get_schedules( $the_post->ID, $event_type, $count );
+			if ( $event_type == 'upcoming' && empty( $schedules ) ) {
+				$schedules 	= GeoDir_Event_Schedules::get_schedules( $the_post->ID, 'all', $count ); // Show all schedules for past events
+			}
 			$schedules_html = GeoDir_Event_Schedules::get_schedules_html( $schedules, ! empty( $the_post->recurring ) );
 
 			if ( ! empty( $schedules_html ) ) {

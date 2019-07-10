@@ -27,6 +27,7 @@ It's easy to sort events by selecting "upcoming," "today," "past" or "all" and d
 == Changelog ==
 
 = 2.0.0.11 =
+* Display event past schedules if event has no upcoming schedules - CHANGED
 * More event filter options  - ADDED
 
 = 2.0.0.10 =
