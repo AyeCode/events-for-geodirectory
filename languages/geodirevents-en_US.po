@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: GeoDirectory Events 2.0.0.10\n"
+"Project-Id-Version: GeoDirectory Events 2.0.0.11\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-06 18:46+0100\n"
-"PO-Revision-Date: 2019-06-06 18:46+0100\n"
+"POT-Creation-Date: 2019-07-10 13:11+0100\n"
+"PO-Revision-Date: 2019-07-10 13:11+0100\n"
 "Last-Translator: \n"
 "Language-Team: AyeCode Ltd <contact@ayecode.io>\n"
 "Language: en_US\n"
@@ -772,46 +772,46 @@ msgstr ""
 msgid "Tick to set separate start and end times for each date."
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:845
-#: includes/class-geodir-event-fields.php:908
+#: includes/class-geodir-event-fields.php:848
+#: includes/class-geodir-event-fields.php:911
 msgid "Date"
 msgid_plural "Dates"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-geodir-event-fields.php:1009
-#: includes/class-geodir-event-fields.php:1079
+#: includes/class-geodir-event-fields.php:1012
+#: includes/class-geodir-event-fields.php:1082
 #: includes/template-functions.php:230
 #, php-format
 msgid "From: %s"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1009
-#: includes/class-geodir-event-fields.php:1079
+#: includes/class-geodir-event-fields.php:1012
+#: includes/class-geodir-event-fields.php:1082
 #, php-format
 msgid "%s Start Date"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1010
-#: includes/class-geodir-event-fields.php:1080
+#: includes/class-geodir-event-fields.php:1013
+#: includes/class-geodir-event-fields.php:1083
 #: includes/template-functions.php:232
 #, php-format
 msgid "To: %s"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1010
-#: includes/class-geodir-event-fields.php:1080
+#: includes/class-geodir-event-fields.php:1013
+#: includes/class-geodir-event-fields.php:1083
 #, php-format
 msgid "%s End Date"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1021
-#: includes/class-geodir-event-fields.php:1093
+#: includes/class-geodir-event-fields.php:1024
+#: includes/class-geodir-event-fields.php:1096
 #, php-format
 msgid "%s Date"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1077
+#: includes/class-geodir-event-fields.php:1080
 #, php-format
 msgid "%s Dates"
 msgstr ""

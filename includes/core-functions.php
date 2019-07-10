@@ -361,9 +361,18 @@ function geodir_event_array_insert( $array, $position, $insert_array ) {
 function geodir_event_filter_options( $post_type = 'gd_event' ) {
 	$options = array(
 		'all' => wp_sprintf( _x( 'All %s', 'Event type filter', 'geodirevents' ), geodir_post_type_name( $post_type, true ) ),
-		'today' => __( 'Today', 'geodirevents' ),
 		'upcoming' => __( 'Upcoming', 'geodirevents' ),
-		'past' => __( 'Past', 'geodirevents' )
+		'past' => __( 'Past', 'geodirevents' ),
+		'today' => __( 'Today', 'geodirevents' ),
+		'tomorrow' => __( 'Tomorrow', 'geodirevents' ),
+		'next_7_days' => __( '+7 Days', 'geodirevents' ),
+		'next_30_days' => __( '+30 Days', 'geodirevents' ),
+		'this_weekend' => __( 'This Weekend', 'geodirevents' ),
+		'this_week' => __( 'This Week', 'geodirevents' ),
+		'this_month' => __( 'This Month', 'geodirevents' ),
+		'next_month' => __( 'Next Month', 'geodirevents' ),
+		'next_week' => __( 'Next Week', 'geodirevents' ),
+		//'custom' => __( 'Custom Dates', 'geodirevents' ), // @todo implement a lightbox to select two dates for this https://github.com/AyeCode/geodir_event_manager-v2/pull/44/files#diff-d51ba513e10b94969787eb99a1aa1e72R609
 	);
 	return apply_filters( 'geodir_event_filter_options', $options, $post_type );
 }
