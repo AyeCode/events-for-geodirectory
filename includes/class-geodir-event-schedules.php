@@ -538,6 +538,12 @@ class GeoDir_Event_Schedules {
 	}
 
 	public static function event_type_condition( $event_type, $alias = NULL, $date = '' ) {
+
+		//Maybe abort early
+		if( false === $event_type ) {
+			return '1=1 ';
+		}
+
 		if ( $alias === NULL ) {
 			$alias = GEODIR_EVENT_SCHEDULES_TABLE;
 		}
@@ -549,16 +555,68 @@ class GeoDir_Event_Schedules {
 			$date = date_i18n( 'Y-m-d' );
 		}
 
-		if ( $event_type == 'past' ) {
-			$where = "{$alias}start_date < '" . $date . "' ";
-		} elseif ( $event_type == 'today' ) {
-			$where = "( {$alias}start_date = '" . $date . "' OR ( {$alias}start_date <= '" . $date . "' AND {$alias}end_date >= '" . $date . "' ) ) ";
-		} elseif ( $event_type == 'upcoming' ) {
-			$where = "( {$alias}start_date >= '" . $date . "' OR ( {$alias}start_date <= '" . $date . "' AND {$alias}end_date >= '" . $date . "' ) ) ";
-		} else {
-			$where = "";
+		//Set end of the week
+		$day 			 = date( 'l', strtotime( $date ));
+		$sunday			 = date( 'Y-m-d', strtotime( 'this sunday'));
+		if( $day == 'sunday' ) {
+			$sunday = $date;
 		}
-		return $where;
+
+		//Prepare durations
+		$tomorrow 	  	 		= date( 'Y-m-d', strtotime( $date. ' + 1 days'));
+		$next_7_days  	 		= date( 'Y-m-d', strtotime( $date. ' + 7 days'));
+		$next_30_days 	 		= date( 'Y-m-d', strtotime( $date. ' + 30 days'));
+		$last_day_month  		= date('Y-m-t');
+		$first_day_next_week    = date( 'Y-m-d', strtotime( 'next week monday'));
+		$last_day_next_week  	= date( 'Y-m-d', strtotime( 'next week sunday'));
+		$first_day_next_month   = date( 'Y-m-d', strtotime( 'first day of next month'));
+		$last_day_next_month  	= date( 'Y-m-d', strtotime( 'last day of next month'));
+		
+
+		//Get this weekend days
+		if( in_array( $day, explode( ' ', 'friday saturday sunday'))){	
+			//Is this a weekend day
+			$weekend_start = $date;
+		} else {
+			//This is a weekday
+			$weekend_start = date( 'Y-m-d', strtotime( 'this friday'));
+		}
+
+		$filters = array(
+			'past'			=> "{$alias}start_date < '$date' ",
+			'upcoming'		=> " {$alias}start_date >= '$date' ",
+			'today'			=> " {$alias}start_date = '$date' ",
+			'tomorrow'  	=> "{$alias}start_date = '$tomorrow' ",
+			'next_7_days'   => "( {$alias}start_date BETWEEN '$date' AND '$next_7_days' ) ",
+			'next_30_days'  => "( {$alias}start_date BETWEEN '$date' AND '$next_30_days' ) ",
+			'this_week'  	=> "( {$alias}start_date BETWEEN '$date' AND '$sunday' ) ",
+			'this_weekend'  => "( {$alias}start_date BETWEEN '$weekend_start' AND '$sunday' ) ",
+			'this_month'  	=> "( {$alias}start_date BETWEEN '$date' AND '$last_day_month' ) ",
+			'next_month'  	=> "( {$alias}start_date BETWEEN '$first_day_next_month' AND '$last_day_next_month' ) ", 
+			'next_week'  	=> "( {$alias}start_date BETWEEN '$first_day_next_week' AND '$last_day_next_week' ) ", 
+		);
+		//echo '<pre>'; var_dump($filters); echo '</pre>';  exit;
+
+		//If the filter is provided, filter the events
+		if(! empty( $filters[$event_type] ) ) {
+			return $filters[$event_type];
+		}
+
+		//Handle the special between filter where dates are separated by |
+		$dates 		= explode( '|', strtolower( $event_type ) );
+
+		//If there are two dates provided...
+		if( 2 === count( $dates) ) {
+			$date1  = date( 'Y-m-d', strtotime( $dates[0] ) );
+			$date2  = date( 'Y-m-d', strtotime( $dates[1] ) );
+			$filter = "( {$alias}start_date BETWEEN '$date1' AND '$date2' ) ";
+			//echo '<pre>'; var_dump($filter); echo '</pre>';  exit;
+			return $filter;
+		}
+		
+
+		//If we are here, this filter has not been implemented so we just return all events
+		return '1=1 ';
 	}
 
 	public static function has_schedule( $post_id, $date ) {
