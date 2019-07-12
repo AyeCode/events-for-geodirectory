@@ -583,8 +583,8 @@ class GeoDir_Event_Schedules {
 		}
 
 		$filters = array(
-			'past'			=> "{$alias}start_date < '$date' ",
-			'upcoming'		=> " {$alias}start_date >= '$date' ",
+			'past'			=> "{$alias}end_date < '$date' ",
+			'upcoming'		=> " {$alias}end_date >= '$date' ",
 			'today'			=> " {$alias}start_date = '$date' ",
 			'tomorrow'  	=> "{$alias}start_date = '$tomorrow' ",
 			'next_7_days'   => "( {$alias}start_date BETWEEN '$date' AND '$next_7_days' ) ",
