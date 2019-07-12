@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: GeoDirectory Events 2.0.0.11\n"
+"Project-Id-Version: GeoDirectory Events 2.0.0.12\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-07-10 13:11+0100\n"
-"PO-Revision-Date: 2019-07-10 13:11+0100\n"
+"POT-Creation-Date: 2019-07-12 16:37+0100\n"
+"PO-Revision-Date: 2019-07-12 16:37+0100\n"
 "Last-Translator: \n"
 "Language-Team: AyeCode Ltd <contact@ayecode.io>\n"
 "Language: en_US\n"
@@ -1030,23 +1030,55 @@ msgid "All %s"
 msgstr ""
 
 #: includes/core-functions.php:364
-msgid "Today"
-msgstr ""
-
-#: includes/core-functions.php:365
 msgid "Upcoming"
 msgstr ""
 
-#: includes/core-functions.php:366
+#: includes/core-functions.php:365
 msgid "Past"
 msgstr ""
 
-#: includes/core-functions.php:387
+#: includes/core-functions.php:366
+msgid "Today"
+msgstr ""
+
+#: includes/core-functions.php:367
+msgid "Tomorrow"
+msgstr ""
+
+#: includes/core-functions.php:368
+msgid "+7 Days"
+msgstr ""
+
+#: includes/core-functions.php:369
+msgid "+30 Days"
+msgstr ""
+
+#: includes/core-functions.php:370
+msgid "This Weekend"
+msgstr ""
+
+#: includes/core-functions.php:371
+msgid "This Week"
+msgstr ""
+
+#: includes/core-functions.php:372
+msgid "This Month"
+msgstr ""
+
+#: includes/core-functions.php:373 includes/template-functions.php:81
+msgid "Next Month"
+msgstr ""
+
+#: includes/core-functions.php:374
+msgid "Next Week"
+msgstr ""
+
+#: includes/core-functions.php:396
 #, php-format
 msgid "%s AM"
 msgstr ""
 
-#: includes/core-functions.php:388
+#: includes/core-functions.php:397
 #, php-format
 msgid "%s PM"
 msgstr ""
@@ -1148,10 +1180,6 @@ msgstr ""
 
 #: includes/template-functions.php:80
 msgid "Previous Month"
-msgstr ""
-
-#: includes/template-functions.php:81
-msgid "Next Month"
 msgstr ""
 
 #: includes/template-functions.php:82

@@ -4,7 +4,7 @@ Donate link: https://wpgeodirectory.com/
 Tags: geodirectory, geodirectory events, event, event manager
 Requires at least: 4.9
 Tested up to: 5.2
-Stable tag: 2.0.0.11
+Stable tag: 2.0.0.12
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -25,6 +25,9 @@ It's easy to sort events by selecting "upcoming," "today," "past" or "all" and d
 3. Go to WordPress Admin -> Events -> Settings and customize behaviour as needed
 
 == Changelog ==
+
+= 2.0.0.12 =
+* Events spanning multiple days not shown for new sort time spans - FIXED
 
 = 2.0.0.11 =
 * Display event past schedules if event has no upcoming schedules - CHANGED

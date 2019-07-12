@@ -584,16 +584,16 @@ class GeoDir_Event_Schedules {
 
 		$filters = array(
 			'past'			=> "{$alias}start_date < '$date' ",
-			'upcoming'		=> " {$alias}start_date >= '$date' ",
-			'today'			=> " {$alias}start_date = '$date' ",
-			'tomorrow'  	=> "{$alias}start_date = '$tomorrow' ",
-			'next_7_days'   => "( {$alias}start_date BETWEEN '$date' AND '$next_7_days' ) ",
-			'next_30_days'  => "( {$alias}start_date BETWEEN '$date' AND '$next_30_days' ) ",
-			'this_week'  	=> "( {$alias}start_date BETWEEN '$date' AND '$sunday' ) ",
-			'this_weekend'  => "( {$alias}start_date BETWEEN '$weekend_start' AND '$sunday' ) ",
-			'this_month'  	=> "( {$alias}start_date BETWEEN '$date' AND '$last_day_month' ) ",
-			'next_month'  	=> "( {$alias}start_date BETWEEN '$first_day_next_month' AND '$last_day_next_month' ) ", 
-			'next_week'  	=> "( {$alias}start_date BETWEEN '$first_day_next_week' AND '$last_day_next_week' ) ", 
+			'upcoming'		=> " ( {$alias}start_date >= '$date' OR ( {$alias}start_date <= '" . $date . "' AND {$alias}end_date >= '" . $date . "' ) ) ",
+			'today'			=> " ( {$alias}start_date = '$date' OR ( {$alias}start_date <= '" . $date . "' AND {$alias}end_date >= '" . $date . "' ) ) ",
+			'tomorrow'  	=> " ( {$alias}start_date = '$tomorrow' OR ( {$alias}start_date <= '" . $tomorrow . "' AND {$alias}end_date >= '" . $tomorrow . "' ) ) ",
+			'next_7_days'   => "( {$alias}start_date BETWEEN '$date' AND '$next_7_days' OR ( {$alias}start_date <= '" . $date . "' AND {$alias}end_date >= '" . $next_7_days . "' ) ) ",
+			'next_30_days'  => "( {$alias}start_date BETWEEN '$date' AND '$next_30_days' OR ( {$alias}start_date <= '" . $date . "' AND {$alias}end_date >= '" . $next_30_days . "' ) ) ",
+			'this_week'  	=> "( {$alias}start_date BETWEEN '$date' AND '$sunday' OR ( {$alias}start_date <= '" . $date . "' AND {$alias}end_date >= '" . $sunday . "' ) ) ",
+			'this_weekend'  => "( {$alias}start_date BETWEEN '$weekend_start' AND '$sunday' OR ( {$alias}start_date <= '" . $weekend_start . "' AND {$alias}end_date >= '" . $sunday . "' ) ) ",
+			'this_month'  	=> "( {$alias}start_date BETWEEN '$date' AND '$last_day_month' OR ( {$alias}start_date <= '" . $date . "' AND {$alias}end_date >= '" . $last_day_month . "' ) ) ",
+			'next_month'  	=> "( {$alias}start_date BETWEEN '$first_day_next_month' AND '$last_day_next_month' OR ( {$alias}start_date <= '" . $first_day_next_month . "' AND {$alias}end_date >= '" . $last_day_next_month . "' ) ) ",
+			'next_week'  	=> "( {$alias}start_date BETWEEN '$first_day_next_week' AND '$last_day_next_week' OR ( {$alias}start_date <= '" . $first_day_next_week . "' AND {$alias}end_date >= '" . $last_day_next_week . "' ) ) ",
 		);
 		//echo '<pre>'; var_dump($filters); echo '</pre>';  exit;
 
@@ -609,11 +609,10 @@ class GeoDir_Event_Schedules {
 		if( 2 === count( $dates) ) {
 			$date1  = date( 'Y-m-d', strtotime( $dates[0] ) );
 			$date2  = date( 'Y-m-d', strtotime( $dates[1] ) );
-			$filter = "( {$alias}start_date BETWEEN '$date1' AND '$date2' ) ";
+			$filter = "( {$alias}start_date BETWEEN '$date1' AND '$date2' OR ( {$alias}start_date <= '" . $date1 . "' AND {$alias}end_date >= '" . $date2 . "' ) ) ";
 			//echo '<pre>'; var_dump($filter); echo '</pre>';  exit;
 			return $filter;
 		}
-		
 
 		//If we are here, this filter has not been implemented so we just return all events
 		return '1=1 ';
