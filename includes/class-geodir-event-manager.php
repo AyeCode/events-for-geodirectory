@@ -192,6 +192,7 @@ final class GeoDir_Event_Manager {
 
 		add_action( 'geodir_extra_loop_actions', 'geodir_event_display_event_type_filter', 6, 1 );
 		add_filter( 'geodir_seo_variables', 'geodir_event_seo_variables', 10, 2 );
+		add_filter( 'geodir_wpseo_replacements_vars', 'geodir_event_wpseo_replacements', 20, 2 );
 		add_filter( 'geodir_replace_seo_vars', 'geodir_event_replace_seo_vars', 10, 2 );
 		add_filter( 'geodir_filter_title_variables_vars', 'geodir_event_filter_title_seo_vars', 10, 4 );
 		add_filter( 'geodir_search_filter_searched_params', 'geodir_event_filter_searched_params', 10, 2 );

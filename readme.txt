@@ -26,6 +26,9 @@ It's easy to sort events by selecting "upcoming," "today," "past" or "all" and d
 
 == Changelog ==
 
+= 2.0.0.13 =
+* Event title meta variables not working with Yoast SEO - FIXED
+
 = 2.0.0.12 =
 * Events spanning multiple days not shown for new sort time spans - FIXED
 
