@@ -4,7 +4,7 @@ Donate link: https://wpgeodirectory.com/
 Tags: geodirectory, geodirectory events, event, event manager
 Requires at least: 4.9
 Tested up to: 5.2
-Stable tag: 2.0.0.12
+Stable tag: 2.0.0.13
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
