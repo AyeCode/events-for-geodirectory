@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: GeoDirectory Events 2.0.0.12\n"
+"Project-Id-Version: GeoDirectory Events 2.0.0.13\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-07-12 16:37+0100\n"
-"PO-Revision-Date: 2019-07-12 16:37+0100\n"
+"POT-Creation-Date: 2019-07-30 16:25+0100\n"
+"PO-Revision-Date: 2019-07-30 16:25+0100\n"
 "Last-Translator: \n"
 "Language-Team: AyeCode Ltd <contact@ayecode.io>\n"
 "Language: en_US\n"
@@ -593,7 +593,7 @@ msgid "Adds a input for a event registration description."
 msgstr ""
 
 #: includes/class-geodir-event-fields.php:369
-#: includes/template-functions.php:15 includes/template-functions.php:187
+#: includes/template-functions.php:15 includes/template-functions.php:225
 msgid "to"
 msgstr ""
 
@@ -781,7 +781,7 @@ msgstr[1] ""
 
 #: includes/class-geodir-event-fields.php:1012
 #: includes/class-geodir-event-fields.php:1082
-#: includes/template-functions.php:230
+#: includes/template-functions.php:266
 #, php-format
 msgid "From: %s"
 msgstr ""
@@ -794,7 +794,7 @@ msgstr ""
 
 #: includes/class-geodir-event-fields.php:1013
 #: includes/class-geodir-event-fields.php:1083
-#: includes/template-functions.php:232
+#: includes/template-functions.php:268
 #, php-format
 msgid "To: %s"
 msgstr ""
@@ -1220,8 +1220,8 @@ msgstr ""
 msgid "Evevt start time - end time. Eg: %s"
 msgstr ""
 
-#: includes/template-functions.php:312 includes/template-functions.php:314
-#: includes/template-functions.php:318
+#: includes/template-functions.php:348 includes/template-functions.php:350
+#: includes/template-functions.php:354
 #, php-format
 msgid "- %s"
 msgstr ""

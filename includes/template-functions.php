@@ -154,6 +154,44 @@ function geodir_event_replace_seo_vars( $title, $gd_page ) {
 		return $title;
 	}
 
+	$event_replacements = geodir_event_get_replacements();
+
+	$title = str_replace( array_keys( $event_replacements ), array_values( $event_replacements ), $title );
+
+    return $title;
+}
+
+/**
+ * Filter the title variables after standard ones have been filtered for wpseo.
+ *
+ * @since 2.0.0.13
+ *
+ * @param array $replacements The replacements.
+ * @param array $location_array The array of location variables.
+ * @return array Filtered replacements.
+ */
+function geodir_event_wpseo_replacements( $replacements, $location_array ) {
+	$event_replacements = geodir_event_get_replacements();
+
+	if ( ! empty( $event_replacements ) ) {
+		$replacements = array_merge( $replacements, $event_replacements );
+	}
+
+	return $replacements;
+}
+
+/**
+ * Get the event title & meta replacements.
+ *
+ * @since 2.0.0.13
+ *
+ * @return array The replacements.
+ */
+function geodir_event_get_replacements() {
+	global $gd_post;
+
+	$replacements = array();
+
 	$event_type_archive = '';
 	$event_start_date = '';
 	$event_end_date = '';
@@ -162,11 +200,11 @@ function geodir_event_replace_seo_vars( $title, $gd_page ) {
 	$event_end_time = '';
 	$event_start_to_end_time = '';
 
-	if ( strpos( $title, '%%event_type_archive%%' ) !== false && ! empty( $_REQUEST['etype'] ) ) {
+	if ( ! empty( $_REQUEST['etype'] ) ) {
 		$event_type_archive = geodir_event_type_title( sanitize_text_field( $_REQUEST['etype'] ) );
 	}
 	
-	if ( ( $gd_page == 'detail' || $gd_page == 'single' ) && is_single() && ! empty( $gd_post ) && GeoDir_Post_types::supports( $gd_post->post_type, 'events' ) ) {
+	if ( ! empty( $gd_post ) && is_single() && GeoDir_Post_types::supports( $gd_post->post_type, 'events' ) ) {
 		$date_format = geodir_event_date_format();
 		$time_format = geodir_event_time_format();
 
@@ -195,18 +233,16 @@ function geodir_event_replace_seo_vars( $title, $gd_page ) {
 		}
 	}
 
-	$event_title_vars = array();
-	$event_title_vars['%%event_type_archive%%'] = $event_type_archive;
-	$event_title_vars['%%event_start_date%%'] = $event_start_date;
-	$event_title_vars['%%event_end_date%%'] = $event_end_date;
-	$event_title_vars['%%event_start_to_end_date%%'] = $event_start_to_end_date;
-	$event_title_vars['%%event_start_time%%'] = $event_start_time;
-	$event_title_vars['%%event_end_time%%'] = $event_end_time;
-	$event_title_vars['%%event_start_to_end_time%%'] = $event_start_to_end_time;
+	$replacements = array();
+	$replacements['%%event_type_archive%%'] = $event_type_archive;
+	$replacements['%%event_start_date%%'] = $event_start_date;
+	$replacements['%%event_end_date%%'] = $event_end_date;
+	$replacements['%%event_start_to_end_date%%'] = $event_start_to_end_date;
+	$replacements['%%event_start_time%%'] = $event_start_time;
+	$replacements['%%event_end_time%%'] = $event_end_time;
+	$replacements['%%event_start_to_end_time%%'] = $event_start_to_end_time;
 
-	$title = str_replace( array_keys( $event_title_vars ), array_values( $event_title_vars ), $title );
-
-    return $title;
+	return $replacements;
 }
 
 function geodir_event_filter_title_seo_vars( $title, $location_array, $gd_page, $sep ) {
