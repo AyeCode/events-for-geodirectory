@@ -98,7 +98,14 @@ function geodir_event_display_event_type_filter( $post_type ) {
 
 	$event_type 	= ! empty( $_REQUEST['etype'] ) ? sanitize_text_field( $_REQUEST['etype'] ) : geodir_get_option( 'event_default_filter' );
 	$current_url 	= str_replace( '#038;', '&', geodir_curPageURL() );
-	$current_url	= remove_query_arg( array( 'etype' ), $current_url );
+
+	// @link https://wpgeodirectory.com/support/topic/event-urls-today-tomorrow-this-week-this-weekend/#post-500654
+	
+	//Search and remove the current page number from url
+	$current_url 	= preg_replace ( '/(\/page\/\d+)/mi' , '' , $current_url );
+
+	//In case of ugly permalinks
+	$current_url	= remove_query_arg( array( 'page', 'etype' ), $current_url );
 
 	$options = '';
 	foreach ( $event_types as $value => $label ) {
