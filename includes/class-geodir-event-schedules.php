@@ -574,12 +574,12 @@ class GeoDir_Event_Schedules {
 		
 
 		//Get this weekend days
-		if( in_array( $day, explode( ' ', 'friday saturday sunday'))){	
+		if( in_array( $day, explode( ' ', 'saturday sunday'))){	
 			//Is this a weekend day
 			$weekend_start = $date;
 		} else {
 			//This is a weekday
-			$weekend_start = date( 'Y-m-d', strtotime( 'this friday'));
+			$weekend_start = date( 'Y-m-d', strtotime( 'this saturday'));
 		}
 
 		$filters = array(

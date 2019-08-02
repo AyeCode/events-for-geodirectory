@@ -27,6 +27,8 @@ It's easy to sort events by selecting "upcoming," "today," "past" or "all" and d
 == Changelog ==
 
 = 2.0.0.13 =
+* Weekend starts on Saturday - CHANGED
+* Remove paginaton when an event filter is changed - FIXED
 * Event title meta variables not working with Yoast SEO - FIXED
 
 = 2.0.0.12 =
