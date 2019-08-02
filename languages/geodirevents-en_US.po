@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: GeoDirectory Events 2.0.0.13\n"
+"Project-Id-Version: GeoDirectory Events 2.0.0.14\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-07-30 16:25+0100\n"
-"PO-Revision-Date: 2019-07-30 16:25+0100\n"
+"POT-Creation-Date: 2019-08-02 10:35+0100\n"
+"PO-Revision-Date: 2019-08-02 10:35+0100\n"
 "Last-Translator: \n"
 "Language-Team: AyeCode Ltd <contact@ayecode.io>\n"
 "Language: en_US\n"
@@ -593,7 +593,7 @@ msgid "Adds a input for a event registration description."
 msgstr ""
 
 #: includes/class-geodir-event-fields.php:369
-#: includes/template-functions.php:15 includes/template-functions.php:225
+#: includes/template-functions.php:15 includes/template-functions.php:232
 msgid "to"
 msgstr ""
 
@@ -781,7 +781,7 @@ msgstr[1] ""
 
 #: includes/class-geodir-event-fields.php:1012
 #: includes/class-geodir-event-fields.php:1082
-#: includes/template-functions.php:266
+#: includes/template-functions.php:273
 #, php-format
 msgid "From: %s"
 msgstr ""
@@ -794,7 +794,7 @@ msgstr ""
 
 #: includes/class-geodir-event-fields.php:1013
 #: includes/class-geodir-event-fields.php:1083
-#: includes/template-functions.php:268
+#: includes/template-functions.php:275
 #, php-format
 msgid "To: %s"
 msgstr ""
@@ -1186,42 +1186,42 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: includes/template-functions.php:120
+#: includes/template-functions.php:127
 msgid "Event type. Eg: Past, Today, Upcoming"
 msgstr ""
 
-#: includes/template-functions.php:133
+#: includes/template-functions.php:140
 #, php-format
 msgid "Evevt start date. Eg: %s"
 msgstr ""
 
-#: includes/template-functions.php:134
+#: includes/template-functions.php:141
 #, php-format
 msgid "Evevt past date. Eg: %s"
 msgstr ""
 
-#: includes/template-functions.php:135
+#: includes/template-functions.php:142
 #, php-format
 msgid "Evevt start time. Eg: %s"
 msgstr ""
 
-#: includes/template-functions.php:136
+#: includes/template-functions.php:143
 #, php-format
 msgid "Evevt end time. Eg: %s"
 msgstr ""
 
-#: includes/template-functions.php:137
+#: includes/template-functions.php:144
 #, php-format
 msgid "Evevt start date - end date. Eg: %s"
 msgstr ""
 
-#: includes/template-functions.php:138
+#: includes/template-functions.php:145
 #, php-format
 msgid "Evevt start time - end time. Eg: %s"
 msgstr ""
 
-#: includes/template-functions.php:348 includes/template-functions.php:350
-#: includes/template-functions.php:354
+#: includes/template-functions.php:355 includes/template-functions.php:357
+#: includes/template-functions.php:361
 #, php-format
 msgid "- %s"
 msgstr ""
