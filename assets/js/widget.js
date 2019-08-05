@@ -9,7 +9,7 @@ function geodir_event_widget_post_type_changed(el) {
 	
 	$el	= jQuery(el);
 	$block = $el.closest('.sd-shortcode-settings').length ? $el.closest('.sd-shortcode-settings') : $el.closest('.widget-inside');
-	if (! jQuery('form#gd_listings', $block).length && jQuery('[name="id_base"]', $block).val() != 'gd_listings') {
+	if (! jQuery('form#gd_listings', $block).length && jQuery('[name="id_base"]', $block).val() != 'gd_listings' && ! jQuery('form#gd_linked_posts', $block).length && jQuery('[name="id_base"]', $block).val() != 'gd_linked_posts') {
 		return;
 	}
 	$category = jQuery('[data-argument="category"]', $block).find('select');
