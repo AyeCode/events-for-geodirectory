@@ -4,7 +4,7 @@ Donate link: https://wpgeodirectory.com/
 Tags: geodirectory, geodirectory events, event, event manager
 Requires at least: 4.9
 Tested up to: 5.2
-Stable tag: 2.0.0.13
+Stable tag: 2.0.0.14
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -26,8 +26,12 @@ It's easy to sort events by selecting "upcoming," "today," "past" or "all" and d
 
 == Changelog ==
 
-= 2.0.0.14 =
+= 2.0.0.15 =
 * Linked posts widget has no option to filter event type - FIXED
+
+= 2.0.0.14 =
+* Weekend starts on Saturday - CHANGED
+* Remove paginaton when an event filter is changed - FIXED
 
 = 2.0.0.13 =
 * Event title meta variables not working with Yoast SEO - FIXED
