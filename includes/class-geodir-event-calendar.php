@@ -219,13 +219,13 @@ class GeoDir_Event_Calendar {
 			break;
 			case 0:
 			default:
-				$day_mon = __( 'M', 'Monday initial' );
-				$day_tue = __( 'T', 'Tuesday initial' );
-				$day_wed = __( 'W', 'Wednesday initial' );
-				$day_thu = __( 'T', 'Thursday initial' );
-				$day_fri = __( 'F', 'Friday initial' );
-				$day_sat = __( 'S', 'Saturday initial' );
-				$day_sun = __( 'S', 'Sunday initial' );
+				$day_mon = _x( 'M', 'Monday initial' );
+				$day_tue = _x( 'T', 'Tuesday initial' );
+				$day_wed = _x( 'W', 'Wednesday initial' );
+				$day_thu = _x( 'T', 'Thursday initial' );
+				$day_fri = _x( 'F', 'Friday initial' );
+				$day_sat = _x( 'S', 'Saturday initial' );
+				$day_sun = _x( 'S', 'Sunday initial' );
 			break;
 		}
 
