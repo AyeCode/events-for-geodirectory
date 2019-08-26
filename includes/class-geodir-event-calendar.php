@@ -32,7 +32,12 @@ class GeoDir_Event_Calendar {
 		$id_base 				= !empty($args['widget_id']) ? $args['widget_id'] : 'geodir_event_listing_calendar';
 		$title 					= apply_filters('widget_title', empty($instance['title']) ? '' : $instance['title'], $instance, $id_base);
 		$post_type 				= apply_filters('geodir_event_calendar_widget_post_type_filter', empty( $instance['post_type'] ) ? 'gd_event' : $instance['post_type'], $instance, $id_base);
-		$day 					= apply_filters('widget_day', empty($instance['day']) ? '' : $instance['day'], $instance, $id_base);
+		if ( isset( $instance['week_start_day'] ) ) {
+			$week_start_day = absint( $instance['week_start_day'] );
+		} else {
+			$week_start_day = absint( get_option( 'start_of_week' ) );
+		}
+		$week_start_day 		= apply_filters('widget_day', $week_start_day, $instance, $id_base);
 		$week_day_format 		= apply_filters('widget_week_day_format', empty($instance['week_day_format']) ? 0 : $instance['week_day_format'], $instance, $id_base);
 		$add_location_filter 	= apply_filters('geodir_event_calendar_widget_add_location_filter', empty($instance['add_location_filter']) ? 0 : 1, $instance, $id_base);
 		$identifier 			= sanitize_html_class($id_base);
@@ -76,7 +81,7 @@ class GeoDir_Event_Calendar {
 	if (typeof <?php echo $function_name; ?> !== 'function') {
 		window.<?php echo $function_name; ?> = function() {
 			var $container = jQuery('#gdwgt_<?php echo $identifier;?>');
-			var sday = '<?php echo $day;?>';
+			var sday = '<?php echo $week_start_day;?>';
 			var wday = '<?php echo (int)$week_day_format;?>';
 			var gdem_loading = jQuery('.gd_cal_nav .gdem-loading', $container);
 			var loc = '&_loc=<?php echo (int)$add_location_filter;?>&_l=<?php echo (int)$location_id;?><?php echo $location_params;?>';
@@ -132,10 +137,7 @@ class GeoDir_Event_Calendar {
 			$post_type = 'gd_event';
 		}
 		
-		$day = $_REQUEST["sday"];
-		if ($day == 'monday') {
-			$day = '1';
-		}
+		$week_start_day = abs( $_REQUEST["sday"] );
 		$monthNames = Array(__("January"), __("February"), __("March"), __("April"), __("May"), __("June"), __("July"), __("August"), __("September"), __("October"), __("November"), __("December"));
 
 		if (!isset($_REQUEST["mnth"])) $_REQUEST["mnth"] = date_i18n("n");
@@ -229,21 +231,38 @@ class GeoDir_Event_Calendar {
 			break;
 		}
 
+		$week_days = array( 
+			apply_filters( 'geodir_event_cal_single_day_sunday', $day_sun ), 
+			apply_filters( 'geodir_event_cal_single_day_monday', $day_mon ), 
+			apply_filters( 'geodir_event_cal_single_day_tuesday', $day_tue ), 
+			apply_filters( 'geodir_event_cal_single_day_wednesday', $day_wed ), 
+			apply_filters( 'geodir_event_cal_single_day_thursday', $day_thu ), 
+			apply_filters( 'geodir_event_cal_single_day_friday', $day_fri ), 
+			apply_filters( 'geodir_event_cal_single_day_saturday', $day_sat )
+		);
+
+		$_week_days = '';
+		for ( $c = 0; $c <= 6; $c++ ) {
+			$day_i = $c + $week_start_day;
+			if ( $day_i > 6 ) {
+				$day_i = $day_i - 7;
+			}
+			$_week_days .= '<td class="days"><strong>' . $week_days[ $day_i ] . '</strong></td>';
+		}
+
 		wp_reset_query();
-	?><div class="gd-div-loader"><i class="fas fa-sync fa-spin"></i></div><span id="cal_title"><strong><?php echo $monthNames[$month-1].' '.$year; ?></strong></span><table width="100%" border="0" cellpadding="2" cellspacing="2" class="calendar_widget"><tr><?php if ( $day != '1' ) { ?><td align="center" class="days"><strong><?php echo apply_filters( 'geodir_event_cal_single_day_sunday', $day_sun );?></strong></td><?php } ?><td class="days"><strong><?php echo apply_filters( 'geodir_event_cal_single_day_monday', $day_mon );?></strong></td><td class="days"><strong><?php echo apply_filters( 'geodir_event_cal_single_day_tuesday', $day_tue );?></strong></td><td class="days"><strong><?php echo apply_filters( 'geodir_event_cal_single_day_wednesday', $day_wed );?></strong></td><td class="days"><strong><?php echo apply_filters( 'geodir_event_cal_single_day_thursday', $day_thu );?></strong></td><td class="days"><strong><?php echo apply_filters( 'geodir_event_cal_single_day_friday', $day_fri );?></strong></td><td class="days"><strong><?php echo apply_filters( 'geodir_event_cal_single_day_saturday', $day_sat );?></strong></td><?php if ( $day == '1' ) { ?><td class="days"><strong><?php echo apply_filters('geodir_event_cal_single_day_sunday', $day_sun );?></strong></td><?php } ?></tr>
+	?><div class="gd-div-loader"><i class="fas fa-sync fa-spin"></i></div><span id="cal_title"><strong><?php echo $monthNames[$month-1].' '.$year; ?></strong></span><table width="100%" border="0" cellpadding="2" cellspacing="2" class="calendar_widget"><tr><?php echo $_week_days; ?></tr>
 		<?php
 		$today = date_i18n('Y-m-d');
 		$timestamp = mktime( 0, 0, 0, $month, 1, $year );
 		$maxday = date_i18n( "t", $timestamp );
 		$thismonth = getdate( $timestamp );
 		$startday = $thismonth['wday'];
-		if ( $day == '1' ) {
-			if ( $startday == 0 ) {
-				$startday = $startday + 6;
-			} else {
-				$startday = $startday - 1;
-			}
-		}
+
+		$startday = $startday - $week_start_day;
+		if ( $startday < 0 ) {
+			$startday = $startday + 7;
+		}		
 
 		if ( isset( $_GET['m'] ) ) {
 			$m = $_GET['m'];

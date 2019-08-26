@@ -73,7 +73,7 @@ class GeoDir_Event_Query {
 	}
 
 	public static function filter_rest_api_posts( $query ) {
-		if ( self::is_rest( $query ) ) {geodir_error_log( $query, 'query', __FILE__, __LINE__ );
+		if ( self::is_rest( $query ) ) {
 			add_filter( 'geodir_rest_posts_clauses_fields', array( __CLASS__, 'rest_posts_fields' ), 11, 3 );
 			add_filter( 'geodir_rest_posts_clauses_join', array( __CLASS__, 'rest_posts_join' ), 11, 3 );
 			add_filter( 'geodir_rest_posts_clauses_where', array( __CLASS__, 'geodir_rest_posts_clauses_where' ), 11, 3 );

@@ -61,10 +61,15 @@ class GeoDir_Event_Widget_Calendar extends WP_Super_Duper {
                 'title' 	=> __( 'Week start day:', 'geodirevents' ),
                 'desc' 		=> __( 'Week start day of the calendar.', 'geodirevents' ),
                 'options'   =>  array(
-                    '1'	=>  __( 'Monday' ),
                     '0'	=>  __( 'Sunday' ),
+					'1'	=>  __( 'Monday' ),
+					'2'	=>  __( 'Tuesday' ),
+					'3'	=>  __( 'Wednesday' ),
+					'4'	=>  __( 'Thursday' ),
+					'5'	=>  __( 'Friday' ),
+					'6'	=>  __( 'Saturday' )
                 ),
-                'default'  => '1',
+                'default'  => get_option( 'start_of_week' ),
                 'desc_tip' => true,
                 'advanced' => true
             ),
@@ -119,7 +124,7 @@ class GeoDir_Event_Widget_Calendar extends WP_Super_Duper {
             array(
 				'title' => '',
 				'post_type' => 'gd_event',
-				'week_start_day' => '1',
+				'week_start_day' => get_option( 'start_of_week' ),
 				'week_day_format' => '0',
 				'use_viewing_post_type' => '0'
             )
