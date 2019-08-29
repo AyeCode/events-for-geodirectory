@@ -161,11 +161,11 @@ class GeoDir_Event_Calendar {
 			'is_geodir_loop' => true,
 			'gd_location' => $add_location_filter,
 			'post_type' => $post_type,
-			'posts_per_page' => -1
+			'posts_per_page' => -1,
+			'post_status' => 'publish'
 		);
 						
 		$all_events = query_posts( $query_args );
-		global $wp_query;
 
 		$all_event_dates = array();
 		if ( !empty( $all_events ) ) {
