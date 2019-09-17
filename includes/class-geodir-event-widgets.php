@@ -27,6 +27,7 @@ class GeoDir_Event_Widgets {
 		$match_classes = array(
 			'GeoDir_Widget_Listings' => 'category',
 			'GeoDir_Widget_Best_Of' => 'post_type',
+			'GeoDir_CP_Widget_Post_Linked' => 'post_type',
 		);
 
 		if ( ! empty( $widget_class ) && isset( $match_classes[ $widget_class ] ) ) {

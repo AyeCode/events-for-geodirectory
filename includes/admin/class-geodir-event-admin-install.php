@@ -368,8 +368,13 @@ class GeoDir_Event_Admin_Install {
 	 * @return string[]
 	 */
 	public static function wpmu_drop_tables( $tables ) {
-		$tables[] = geodir_db_cpt_table( 'gd_event' );
-		$tables[] = GEODIR_EVENT_SCHEDULES_TABLE;
+		global $wpdb;
+
+		$db_prefix = $wpdb->prefix;
+		$gd_prefix = 'geodir_';
+
+		$tables["{$gd_prefix}gd_event_detail"] = "{$db_prefix}{$gd_prefix}gd_event_detail";
+		$tables["{$gd_prefix}event_schedule"] = "{$db_prefix}{$gd_prefix}event_schedule";
 
 		return $tables;
 	}

@@ -194,10 +194,21 @@ var GeoDir_Event_Add = {
         try {
             gdEventMultiCal = function() {
                 geodirCalParams = {
-                    pages: 2,
-                    MULTI_SELECT: true,
-                    start_weekday: geodir_event_params.week_start_day
-                };
+					pages: 2,
+					MULTI_SELECT: true,
+					start_weekday: geodir_event_params.week_start_day,
+					MONTHS_LONG: [cal_trans.month_long_1, cal_trans.month_long_2, cal_trans.month_long_3, cal_trans.month_long_4, cal_trans.month_long_5, cal_trans.month_long_6, cal_trans.month_long_7, cal_trans.month_long_8, cal_trans.month_long_9, cal_trans.month_long_10, cal_trans.month_long_11, cal_trans.month_long_12],
+					MONTHS_SHORT: [cal_trans.month_s_1, cal_trans.month_s_2, cal_trans.month_s_3, cal_trans.month_s_4, cal_trans.month_s_5, cal_trans.month_s_6, cal_trans.month_s_7, cal_trans.month_s_8, cal_trans.month_s_9, cal_trans.month_s_10, cal_trans.month_s_11, cal_trans.month_s_12],
+					WEEKDAYS_1CHAR: [cal_trans.day_s1_1, cal_trans.day_s1_2, cal_trans.day_s1_3, cal_trans.day_s1_4, cal_trans.day_s1_5, cal_trans.day_s1_6, cal_trans.day_s1_7],
+					WEEKDAYS_LONG: [cal_trans.day_s5_1, cal_trans.day_s5_2, cal_trans.day_s5_3, cal_trans.day_s5_4, cal_trans.day_s5_5, cal_trans.day_s5_6],
+					WEEKDAYS_MEDIUM: [cal_trans.day_s3_1, cal_trans.day_s3_2, cal_trans.day_s3_3, cal_trans.day_s3_4, cal_trans.day_s3_5, cal_trans.day_s3_6, cal_trans.day_s3_7],
+					WEEKDAYS_SHORT: [cal_trans.day_s2_1, cal_trans.day_s2_2, cal_trans.day_s2_3, cal_trans.day_s2_4, cal_trans.day_s2_5, cal_trans.day_s2_6, cal_trans.day_s2_7],
+					STRINGS: {
+						previousMonth: cal_trans.s_previousMonth,
+						nextMonth: cal_trans.s_nextMonth,
+						close: cal_trans.s_close
+					},
+				};
                 geodirSetDates = jQuery('#geodir_event_default_dates', $form).text();
                 if (geodirSetDates != '') {
                     geodirCalParams.selected = geodirSetDates;

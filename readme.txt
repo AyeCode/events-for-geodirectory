@@ -26,6 +26,13 @@ It's easy to sort events by selecting "upcoming," "today," "past" or "all" and d
 
 == Changelog ==
 
+= 2.0.0.15 =
+* Linked posts widget has no option to filter event type - FIXED
+* Unable to translate month names in custom event type calendar - FIXED
+* Events calendar week start day setting not working - FIXED
+* Events calendar shows non published events on calendar - FIXED
+* Delete subsite removes data from main site on multisite network - FIXED
+
 = 2.0.0.14 =
 * Weekend starts on Saturday - CHANGED
 * Remove paginaton when an event filter is changed - FIXED
