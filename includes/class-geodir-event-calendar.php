@@ -40,8 +40,8 @@ class GeoDir_Event_Calendar {
 		$week_start_day 		= apply_filters('widget_day', $week_start_day, $instance, $id_base);
 		$week_day_format 		= apply_filters('widget_week_day_format', empty($instance['week_day_format']) ? 0 : $instance['week_day_format'], $instance, $id_base);
 		$add_location_filter 	= apply_filters('geodir_event_calendar_widget_add_location_filter', empty($instance['add_location_filter']) ? 0 : 1, $instance, $id_base);
-		$identifier 			= sanitize_html_class($id_base);
-		$function_name 			= 'geodir_event_call_calendar_' . rand(100, 999);
+		$identifier 			= sanitize_html_class($id_base) . '_' . uniqid();
+		$function_name 			= 'geodir_event_call_calendar_' . uniqid();
 		if ( ! ( ! empty( $post_type ) && in_array( $post_type, GeoDir_Event_Post_Type::get_event_post_types() ) ) ) {
 			$post_type = 'gd_event';
 		}
