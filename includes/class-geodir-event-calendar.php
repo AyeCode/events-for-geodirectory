@@ -27,7 +27,7 @@ class GeoDir_Event_Calendar {
 	}
 
 	public static function display_calendar( $args = '', $instance = '' ) {
-		global $post;
+		global $geodirectory, $post;
 
 		$id_base 				= !empty($args['widget_id']) ? $args['widget_id'] : 'geodir_event_listing_calendar';
 		$title 					= apply_filters('widget_title', empty($instance['title']) ? '' : $instance['title'], $instance, $id_base);
@@ -53,6 +53,35 @@ class GeoDir_Event_Calendar {
 		$location_params = '';
 		if ($title && strpos($title, '%%location_name%%') !== false) {
 			$title = str_replace('%%location_name%%', $location_title, $title);
+		}
+
+		// @todo: move this to location manager during new calendar features.
+		if ( $add_location_filter && defined( 'GEODIRLOCATION_VERSION' ) && ! empty( $geodirectory->location ) ) {
+			$location = $geodirectory->location;
+
+			if ( ! empty( $location->country_slug ) ) {
+				$location_params .= '&country=' . $location->country_slug;
+			}
+			if ( ! empty( $location->region_slug ) ) {
+				$location_params .= '&region=' . $location->region_slug;
+			}
+			if ( ! empty( $location->city_slug ) ) {
+				$location_params .= '&city=' . $location->city_slug;
+			}
+			if ( ! empty( $location->neighbourhood_slug ) ) {
+				$location_params .= '&neighbourhood=' . $location->neighbourhood_slug;
+			}
+
+			if ( $location->type == 'me' && ! empty( $location->latitude ) && ! empty( $location->longitude ) ) {
+				$location_params .= '&my_lat=' . $location->latitude;
+				$location_params .= '&my_lon=' . $location->longitude;
+			} elseif ( empty( $location->type ) && ! empty( $_REQUEST['sgeo_lat'] ) && ! empty( $_REQUEST['sgeo_lon'] ) ) {
+				if ( ! empty( $_REQUEST['snear'] ) ) {
+					$location_params .= '&snear=' . sanitize_text_field( $_REQUEST['snear'] );
+				}
+				$location_params .= '&my_lat=' . sanitize_text_field( $_REQUEST['sgeo_lat'] );
+				$location_params .= '&my_lon=' . sanitize_text_field( $_REQUEST['sgeo_lon'] );
+			}
 		}
 
 		$post_types = geodir_get_posttypes( 'options-plural' );
@@ -145,7 +174,7 @@ class GeoDir_Event_Calendar {
 
 		$month = (int)$_REQUEST["mnth"];
 		$year = (int)$_REQUEST["yr"];
-		$add_location_filter = !empty($_REQUEST['_loc']) && defined('POST_LOCATION_TABLE') ? true : false; // @todo LMv2
+		$add_location_filter = !empty($_REQUEST['_loc']) && defined('GEODIRLOCATION_VERSION') ? true : false; // @todo LMv2
 		$location_id = $add_location_filter && !empty($_REQUEST['_l']) ? (int)$_REQUEST['_l'] : 0;
 		
 		$location_params = '&snear=' . (isset($_REQUEST['snear']) ? sanitize_text_field(stripslashes($_REQUEST['snear'])) : '');
@@ -164,6 +193,24 @@ class GeoDir_Event_Calendar {
 			'posts_per_page' => -1,
 			'post_status' => 'publish'
 		);
+		if ( $add_location_filter && defined( 'GEODIRLOCATION_VERSION' ) ) {
+			if ( ! empty( $_REQUEST['country'] ) ) {
+				$query_args['country'] = sanitize_text_field( $_REQUEST['country'] );
+				$location_params .= '&country=' . sanitize_text_field( $_REQUEST['country'] );
+			}
+			if ( ! empty( $_REQUEST['region'] ) ) {
+				$query_args['region'] = sanitize_text_field( $_REQUEST['region'] );
+				$location_params .= '&region=' . sanitize_text_field( $_REQUEST['region'] );
+			}
+			if ( ! empty( $_REQUEST['city'] ) ) {
+				$query_args['city'] = sanitize_text_field( $_REQUEST['city'] );
+				$location_params .= '&city=' . sanitize_text_field( $_REQUEST['city'] );
+			}
+			if ( ! empty( $_REQUEST['neighbourhood'] ) ) {
+				$query_args['neighbourhood'] = sanitize_text_field( $_REQUEST['neighbourhood'] );
+				$location_params .= '&neighbourhood=' . sanitize_text_field( $_REQUEST['neighbourhood'] );
+			}
+		}
 						
 		$all_events = query_posts( $query_args );
 
