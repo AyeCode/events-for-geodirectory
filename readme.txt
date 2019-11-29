@@ -26,6 +26,10 @@ It's easy to sort events by selecting "upcoming," "today," "past" or "all" and d
 
 == Changelog ==
 
+= 2.0.0.16 =
+* Event calendar looses the location when redirected to search page - FIXED
+* Show event date & time in RSS feed - ADDED
+
 = 2.0.0.15 =
 * Linked posts widget has no option to filter event type - FIXED
 * Unable to translate month names in custom event type calendar - FIXED

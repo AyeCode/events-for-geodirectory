@@ -323,6 +323,8 @@ class GeoDir_Event_Query {
 	}
 
 	public static function calendar_posts_where( $where, $query = array() ) {
+		global $wpdb;
+
 		$table 				= geodir_db_cpt_table( $query->query_vars['post_type'] );
 		$schedules_table	= GEODIR_EVENT_SCHEDULES_TABLE;
 		$date 				= $query->query_vars['gd_event_calendar'];
@@ -332,8 +334,15 @@ class GeoDir_Event_Query {
 		$month_end 			= date_i18n( 'Y-m-t', strtotime( $month_start ) ); // Last day of the month.
 
 		$where .= " AND " . $table . ".post_id > 0 AND ( ( ( '" . $month_start . "' BETWEEN start_date AND end_date ) OR ( start_date BETWEEN '" . $month_start . "' AND end_date ) ) AND ( ( '" . $month_end . "' BETWEEN start_date AND end_date ) OR ( end_date BETWEEN start_date AND '" . $month_end . "' ) ) )";
-		if ( get_query_var( 'gd_location' ) && function_exists( 'geodir_default_location_where' ) ) {
-            $where .= geodir_default_location_where( '', $table );
+
+		// @todo: move this to location manager during new calendar features.
+		if ( get_query_var( 'gd_location' ) && function_exists( 'geodir_location_main_query_posts_where' ) ) {
+			$where .= geodir_location_main_query_posts_where( '', $query, $query->query_vars['post_type'] );
+
+			if ( ! empty( $_REQUEST['my_lat'] ) && ! empty( $_REQUEST['my_lon'] ) ) {
+				$between = geodir_get_between_latlon( sanitize_text_field( $_REQUEST['my_lat'] ), sanitize_text_field( $_REQUEST['my_lon'] ) );
+				$where .= $wpdb->prepare( " AND $table.latitude BETWEEN %f AND %f AND $table.longitude BETWEEN %f AND %f ", $between['lat1'], $between['lat2'], $between['lon1'], $between['lon2'] );
+			}
         }
 
 		return $where;

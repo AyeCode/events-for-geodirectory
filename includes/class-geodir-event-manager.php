@@ -203,6 +203,8 @@ final class GeoDir_Event_Manager {
 		add_filter( 'the_permalink', 'geodir_event_recurring_event_link', 100 );
 		add_action( 'wp_super_duper_widget_init', 'geodir_event_super_duper_widget_init', 10, 2 );
 		add_filter( 'wp_super_duper_arguments', 'geodir_event_super_duper_arguments', 2, 3 );
+		add_action( 'rss_item', 'geodir_event_rss_item' );
+		add_action( 'rss2_item', 'geodir_event_rss_item' );
     }
     
     /**

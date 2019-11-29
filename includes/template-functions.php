@@ -455,3 +455,36 @@ function geodir_event_super_duper_arguments( $arguments, $options, $instance = a
 	}
 	return $arguments;
 }
+
+/**
+ * Add event date & time in RSS feed.
+ *
+ * @since 2.0.0.16
+ *
+ * @global WP_Post $post The post to edit.
+ */
+function geodir_event_rss_item() {
+	global $post;
+
+	if ( ! empty( $post ) && ! empty( $post->start_date ) && ! empty( $post->end_date ) && isset( $post->start_time ) && isset( $post->end_time ) && geodir_is_gd_post_type( $post->post_type ) ) {
+		$start_date = $post->start_date . ' ' . $post->start_time;
+		$end_date = $post->end_date . ' ' . $post->end_time;
+		if ( strtotime( $end_date ) < strtotime( $start_date ) ) {
+			$end_date = date_i18n( 'Y-m-d ' . $post->end_time, strtotime( $end_date ) + DAY_IN_SECONDS );
+		}
+
+		$start_date = mysql2date( 'D, d M Y H:i:s +0000', get_gmt_from_date( $start_date ), false );
+		$end_date = mysql2date( 'D, d M Y H:i:s +0000', get_gmt_from_date( $end_date ), false );
+
+		$item = '<ev:gd_event_meta xmlns:ev="Event">';
+		$item .= '<ev:startdate>' . $start_date . '</ev:startdate>';
+		if ( $start_date != $end_date ) {
+			$item .= '<ev:enddate>' . $end_date . '</ev:enddate>';
+		}
+		$item .= '</ev:gd_event_meta>';
+
+		$item = apply_filters( 'geodir_event_rss_item', $item, $post );
+
+		echo $item;
+	}
+}
