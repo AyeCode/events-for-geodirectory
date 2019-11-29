@@ -230,7 +230,11 @@ class GeoDir_Event_Query {
 					} else {
 						if ( $from_date || $to_date ) {
 							$date = ! empty( $from_date ) ? $from_date : $to_date;
-							$where .= " AND ( '{$date}' BETWEEN {$schedules_table}.start_date AND {$schedules_table}.end_date ) ";
+							if($from_date){
+								$where .= " AND ( {$schedules_table}.start_date >='{$date}' OR ( '{$date}' BETWEEN {$schedules_table}.start_date AND {$schedules_table}.end_date ) ) ";
+							}elseif($to_date){
+								$where .= " AND ( {$schedules_table}.end_date <='{$date}' OR ( '{$date}' BETWEEN {$schedules_table}.start_date AND {$schedules_table}.end_date ) ) ";
+							}
 						}
 					}
 				} else {
