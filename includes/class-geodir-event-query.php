@@ -95,7 +95,7 @@ class GeoDir_Event_Query {
 		global $wpdb, $gd_query_args_widgets;
 
 		if ( GeoDir_Post_types::supports( $post_type, 'events' ) ) {
-			$join .= " LEFT JOIN " . GEODIR_EVENT_SCHEDULES_TABLE . " ON " . GEODIR_EVENT_SCHEDULES_TABLE . ".event_id = " . $wpdb->posts . ".ID";
+			$join .= " JOIN " . GEODIR_EVENT_SCHEDULES_TABLE . " ON " . GEODIR_EVENT_SCHEDULES_TABLE . ".event_id = " . $wpdb->posts . ".ID"; // An INNER JOIN is faster than a LEFT JOIN
 		}
 		return $join;
 	}
