@@ -36,6 +36,7 @@ class GeoDir_Event_Query {
 		}
 		add_action( 'pre_get_posts', array( __CLASS__, 'filter_rest_api_posts' ), 10, 1 );
 
+		add_filter( 'geodir_filter_widget_listings_count_fields', array( __CLASS__, 'widget_count_posts_fields' ), 1, 3 );
 		add_filter( 'geodir_filter_widget_listings_fields', array( __CLASS__, 'widget_posts_fields' ), 1, 3 );
 		add_filter( 'geodir_filter_widget_listings_join', array( __CLASS__, 'widget_posts_join' ), 1, 2 );
 		add_filter( 'geodir_filter_widget_listings_where', array( __CLASS__, 'widget_posts_where' ), 1, 2 );
@@ -80,6 +81,15 @@ class GeoDir_Event_Query {
 			add_filter( 'geodir_rest_posts_clauses_groupby', array( __CLASS__, 'geodir_rest_posts_clauses_groupby' ), 11, 3 );
 			add_filter( 'geodir_rest_posts_clauses_orderby', array( __CLASS__, 'geodir_rest_posts_clauses_orderby' ), 11, 3 );
 		}
+	}
+
+	public static function widget_count_posts_fields( $fields, $table, $post_type ) {
+		global  $gd_query_args_widgets;
+
+		if ( empty( $gd_query_args_widgets['single_event'] ) && GeoDir_Post_types::supports( $post_type, 'events' ) ) {
+			$fields = "COUNT( DISTINCT schedule_id ) AS total";
+		}
+		return $fields;
 	}
 
 	public static function widget_posts_fields( $fields, $table, $post_type ) {
