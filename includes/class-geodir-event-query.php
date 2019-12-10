@@ -47,6 +47,10 @@ class GeoDir_Event_Query {
 		add_filter( 'geodir_rest_markers_query_join', array( __CLASS__, 'rest_markers_query_join' ), 9, 2 );
 		add_filter( 'geodir_rest_markers_query_where', array( __CLASS__, 'rest_markers_query_where' ), 9, 2 );
 		add_filter( 'geodir_rest_markers_query_group_by', array( __CLASS__, 'rest_markers_query_group_by' ), 9, 2 );
+
+		if ( wp_doing_ajax() || ! is_admin() ) {
+			add_filter( 'get_terms', array( __CLASS__, 'get_terms' ), 9, 4 );
+		}
 	}
 
 	public static function filter_calender_posts( $query ) {
@@ -456,5 +460,69 @@ class GeoDir_Event_Query {
 		}
 
 		return $group_by;
+	}
+
+	public static function get_terms( $terms, $taxonomy, $query_vars, $term_query ) {
+		global $geodirectory;
+
+		if ( isset( $query_vars['gd_no_loop'] ) || empty( $terms ) ) {
+			return $terms;
+		}
+
+		if ( ! empty( $geodirectory->location ) && ! empty( $geodirectory->location->type ) ) {
+			return $terms;
+		}
+
+		foreach ( $terms as $key => $term ) {
+			if ( ! empty( $term->count ) && ! empty( $term->taxonomy ) && GeoDir_Taxonomies::supports( $term->taxonomy, 'events' ) && ( $count = self::get_term_count( $term->term_id, $term->taxonomy ) ) !== null ) {
+				$terms[ $key ]->count = $count;
+			}
+		}
+
+		return $terms;
+	}
+
+	public static function get_term_count( $term_id, $taxonomy ) {
+		global $wpdb;
+
+		$cache_key = 'geodir_event_term_count:' . $term_id;
+
+		$cache = wp_cache_get( $cache_key );
+		if ( $cache !== false ) {
+			return $cache;
+		}
+
+		$count = null;
+		$post_type = self::get_taxonomy_post_type( $taxonomy );
+		$term_count_sql = GeoDir_Event_Schedules::location_term_counts( '', $term_id, $taxonomy, $post_type, '', array(), 'term_count', '' );
+
+		if ( $term_count_sql ) {
+			$count = (int) $wpdb->get_var( $term_count_sql );
+		}
+
+		wp_cache_set( $cache_key, $count );
+
+		return $count;
+	}
+
+	public static function get_taxonomy_post_type( $taxonomy ) {
+		$cache_key = 'geodir_event_taxonomy_post_type:' . $taxonomy;
+
+		$cache = wp_cache_get( $cache_key );
+		if ( $cache ) {
+			return $cache;
+		}
+
+		if ( geodir_taxonomy_type( $taxonomy ) == 'category' ) {
+			$post_type = substr( $taxonomy, 0, strlen( $taxonomy ) - 8 );
+		} else if ( geodir_taxonomy_type( $taxonomy ) == 'tag' ) {
+			$post_type = substr( $taxonomy, 0, strlen( $taxonomy ) - 5 );
+		} else {
+			$post_type = $taxonomy;
+		}
+
+		wp_cache_set( $cache_key, $post_type );
+
+		return $post_type;
 	}
 }
