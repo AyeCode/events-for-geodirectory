@@ -30,6 +30,8 @@ It's easy to sort events by selecting "upcoming," "today," "past" or "all" and d
 * Event calendar looses the location when redirected to search page - FIXED
 * Show event date & time in RSS feed - ADDED
 * Event range from/to not returning all relevant results - FIXED
+* Listings widgets pagination shows wrong total number of events - FIXED
+* Event categories shows wrong terms count when no location set - FIXED
 
 = 2.0.0.15 =
 * Linked posts widget has no option to filter event type - FIXED

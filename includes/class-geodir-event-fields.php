@@ -408,7 +408,6 @@ class GeoDir_Event_Fields {
             <label for="event_end_date"><?php echo __( 'Event end date', 'geodirevents' ); ?></label>
 			<input type="text" class="geodir_textfield geodir-w200" name="<?php echo $htmlvar_name; ?>[end_date]" id="event_end_date" value="<?php echo $end_date; ?>" field_type="text">
         </div>
-        <span class="geodir_message_note"><?php _e($field['desc'], 'geodirectory');?></span>
 		<?php if ( $is_recurring_active ) { ?>
 		<div id="geodir_event_duration_x_row" class="geodir_form_row clearfix gd-fieldset-details geodir-event-field <?php echo $recurring_class; ?>">
             <label for="event_duration_x"><?php echo __( 'Event duration (days)', 'geodirevents' ); ?></label>
