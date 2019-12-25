@@ -34,6 +34,10 @@ class GeoDir_Event_API {
 	}
 
 	public static function event_collection_params( $params, $post_type_obj ) {
+		if ( empty( $post_type_obj ) ) {
+			return $params;
+		}
+
 		$params['event_type'] = array(
 			'description'        => __( 'Filter the events to show.', 'geodirevents' ),
 			'type'               => 'string',
@@ -53,7 +57,10 @@ class GeoDir_Event_API {
 			'event_type'    => 'gd_event_type',
 			'single_event' 	=> 'single_event'
 		);
-		$collection_params = self::event_collection_params( array(), array() ) ;
+
+		$post_type_obj = ! empty( $args['post_type'] ) ? get_post_type_object( $args['post_type'] ) : array();
+
+		$collection_params = self::event_collection_params( array(), $post_type_obj ) ;
 
 		foreach ( $collection_params as $key => $param ) {
 			if ( isset( $request[ $key ] ) ) {
@@ -207,6 +214,13 @@ class GeoDir_Event_API {
 
 	public static function event_post_data( $data, $gd_post, $request, $controller ) {
 		if ( isset( $gd_post->event_dates ) ) {
+			$schedule = GeoDir_Event_Schedules::get_schedule( $gd_post->set_schedule_id );
+			if ( ! empty( $schedule ) ) {
+				foreach ( $schedule as $key => $value ) {
+					$gd_post->{$key} = $value;
+				}
+			}
+
 			$event_type = geodir_get_option( 'event_hide_past_dates' ) ? 'upcoming' : 'all';
 
 			$data['event_dates'] = maybe_unserialize( $gd_post->event_dates );

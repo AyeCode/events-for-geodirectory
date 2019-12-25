@@ -300,7 +300,7 @@ class GeoDir_Event_Query {
 	public static function posts_orderby( $orderby, $sortby, $table, $query = array() ) {
 		global $geodir_post_type;
 
-		if ( ! GeoDir_Query::is_gd_main_query( $query ) ) {
+		if ( ! GeoDir_Query::is_gd_main_query( $query ) && ! self::is_rest( $query ) ) {
 			return $orderby;
 		}
 
@@ -402,6 +402,13 @@ class GeoDir_Event_Query {
 		$schedules_table = GEODIR_EVENT_SCHEDULES_TABLE;
 
 		$fields .= ", {$schedules_table}.*";
+
+		if ( ! empty( $wp_query->query_vars['single_event'] ) ) {
+			$sort_by = isset( $wp_query->query_vars['orderby'] ) ? $wp_query->query_vars['orderby'] : '';
+			$sort_by = apply_filters( 'geodir_rest_posts_order_sort_by_key', $sort_by, '', $post_type, $wp_query );
+			$order = $sort_by == 'event_dates_desc' ? 'MAX' : 'MIN';
+			$fields .= ", " . $order . "( {$schedules_table}.schedule_id ) AS set_schedule_id";
+		}
 
 		return $fields;
 	}
