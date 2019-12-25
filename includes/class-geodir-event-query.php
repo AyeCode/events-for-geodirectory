@@ -572,14 +572,22 @@ class GeoDir_Event_Query {
 	public static function the_gd_post( $post, $wp_query = array() ) {
 		global $gd_post;
 
-		if ( ! empty( $gd_post ) && is_object( $gd_post) && ! empty( $gd_post->set_schedule_id ) ) {
-			$schedule = GeoDir_Event_Schedules::get_schedule( $gd_post->set_schedule_id );
+		if ( ! empty( $post ) && is_object( $post ) && ! empty( $gd_post ) && is_object( $gd_post ) && ! empty( $post->ID ) && ! empty( $gd_post->ID ) && $post->ID == $gd_post->ID ) {
+			if ( ! empty( $post->set_schedule_id ) ) {
+				$schedule_id = $post->set_schedule_id;
+			} elseif ( ! empty( $gd_post->set_schedule_id ) ) {
+				$schedule_id = $gd_post->set_schedule_id;
+			} else {
+				return $post;
+			}
+
+			$schedule = GeoDir_Event_Schedules::get_schedule( $schedule_id );
 
 			if ( ! empty( $schedule ) ) {
 				foreach ( $schedule as $key => $value ) {
 					$gd_post->{$key} = $value;
 
-					if ( is_object( $post ) && ! empty( $post->schedule_id ) ) {
+					if ( isset( $post->start_date ) || isset( $post->post_category ) ) {
 						$post->{$key} = $value;
 					}
 				}
