@@ -49,6 +49,9 @@ class GeoDir_Event_Query {
 		add_filter( 'geodir_rest_markers_query_where', array( __CLASS__, 'rest_markers_query_where' ), 9, 2 );
 		add_filter( 'geodir_rest_markers_query_group_by', array( __CLASS__, 'rest_markers_query_group_by' ), 9, 2 );
 
+		// Set event schedule to global $gd_post data.
+		add_action( 'the_post', array( __CLASS__, 'the_gd_post' ), 20, 2 );
+
 		if ( wp_doing_ajax() || ! is_admin() ) {
 			add_filter( 'get_terms', array( __CLASS__, 'get_terms' ), 9, 4 );
 		}
@@ -102,6 +105,11 @@ class GeoDir_Event_Query {
 
 		if ( GeoDir_Post_types::supports( $post_type, 'events' ) ) {
 			$fields .= ", " . GEODIR_EVENT_SCHEDULES_TABLE . ".*";
+
+			if ( ! empty( $gd_query_args_widgets['single_event'] ) ) {
+				$order = ! empty( $gd_query_args_widgets['order_by'] ) && $gd_query_args_widgets['order_by'] == 'event_dates_desc' ? 'MAX' : 'MIN';
+				$fields .= ", " . $order . "( " . GEODIR_EVENT_SCHEDULES_TABLE . ".schedule_id ) AS set_schedule_id";
+			}
 		}
 		return $fields;
 	}
@@ -547,5 +555,37 @@ class GeoDir_Event_Query {
 		}
 
 		return $orderby;
+	}
+
+	/**
+	 * Set event schedule to global $gd_post data.
+	 *
+	 * ORDER BY & GROUP BY clause issue in sorting event by date with single event filter.
+	 *
+	 * @since 2.0.0.16
+	 *
+	 * @param WP_Post $post The Post object (passed by reference).
+	 * @param WP_Query $this The current Query object (passed by reference).
+	 *
+	 * @return WP_Post The Post object.
+	 */
+	public static function the_gd_post( $post, $wp_query = array() ) {
+		global $gd_post;
+
+		if ( ! empty( $gd_post ) && is_object( $gd_post) && ! empty( $gd_post->set_schedule_id ) ) {
+			$schedule = GeoDir_Event_Schedules::get_schedule( $gd_post->set_schedule_id );
+
+			if ( ! empty( $schedule ) ) {
+				foreach ( $schedule as $key => $value ) {
+					$gd_post->{$key} = $value;
+
+					if ( is_object( $post ) && ! empty( $post->schedule_id ) ) {
+						$post->{$key} = $value;
+					}
+				}
+			}
+		}
+
+		return $post;
 	}
 }

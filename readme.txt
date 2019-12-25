@@ -32,6 +32,7 @@ It's easy to sort events by selecting "upcoming," "today," "past" or "all" and d
 * Event range from/to not returning all relevant results - FIXED
 * Listings widgets pagination shows wrong total number of events - FIXED
 * Event categories shows wrong terms count when no location set - FIXED
+* Single event option shows incorrect event date ordering - FIXED
 
 = 2.0.0.15 =
 * Linked posts widget has no option to filter event type - FIXED
