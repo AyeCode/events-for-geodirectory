@@ -617,8 +617,8 @@ class GeoDir_Event_Schedules {
 		);
 
 		// If the filter is provided, filter the events
-		if ( ! empty( $filters[$event_type] ) ) {
-			return $filters[$event_type];
+		if ( ! empty( $filters[ $event_type ] ) ) {
+			return $filters[ $event_type ];
 		}
 
 		// Handle the special between filter where dates are separated by |
