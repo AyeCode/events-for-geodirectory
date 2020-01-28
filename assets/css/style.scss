@@ -689,4 +689,13 @@ h3.geodir-ayi-section-title span {
 		cursor: default;
 	}
 }
+.geodir-schedule-rows {
+	padding-left: 2px;
+}
+.geodir-schedule-row {
+	display: list-item;
+	padding-top: 1px;
+	padding-bottom: 1px;
+	list-style: inside;
+}
 /* END SCHEDULE DATES */

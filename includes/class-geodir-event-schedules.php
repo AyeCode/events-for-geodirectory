@@ -401,6 +401,27 @@ class GeoDir_Event_Schedules {
 		return $dates;
 	}
 
+	public static function get_schedule( $schedule_id ) {
+		global $wpdb;
+
+		if ( empty( $schedule_id ) ) {
+			return false;
+		}
+
+		$cache_key = 'geodir_event_schedule:' . $schedule_id;
+
+		$schedule = wp_cache_get( $cache_key );
+		if ( $schedule !== false ) {
+			return $schedule;
+		}
+
+		$schedule = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM " . GEODIR_EVENT_SCHEDULES_TABLE . " WHERE schedule_id = %d LIMIT 1", array( $schedule_id ) ) );
+
+		wp_cache_set( $cache_key, $schedule );
+
+		return $schedule;
+	}
+
 	public static function get_schedules( $post_id, $event_type = '', $limit = 0 ) {
 		global $wpdb;
 
@@ -538,9 +559,8 @@ class GeoDir_Event_Schedules {
 	}
 
 	public static function event_type_condition( $event_type, $alias = NULL, $date = '' ) {
-
-		//Maybe abort early
-		if( false === $event_type ) {
+		// Maybe abort early
+		if ( false === $event_type ) {
 			return '1=1 ';
 		}
 
@@ -551,70 +571,68 @@ class GeoDir_Event_Schedules {
 		if ( ! empty( $alias ) ) {
 			$alias = $alias . '.';
 		}
+
 		if ( empty( $date ) ) {
 			$date = date_i18n( 'Y-m-d' );
 		}
 
-		//Set end of the week
+		// Set end of the week
 		$day 			 = date( 'l', strtotime( $date ));
 		$sunday			 = date( 'Y-m-d', strtotime( 'this sunday'));
-		if( $day == 'sunday' ) {
+		if ( $day == 'sunday' ) {
 			$sunday = $date;
 		}
 
-		//Prepare durations
-		$tomorrow 	  	 		= date( 'Y-m-d', strtotime( $date. ' + 1 days'));
-		$next_7_days  	 		= date( 'Y-m-d', strtotime( $date. ' + 7 days'));
-		$next_30_days 	 		= date( 'Y-m-d', strtotime( $date. ' + 30 days'));
-		$last_day_month  		= date('Y-m-t');
-		$first_day_next_week    = date( 'Y-m-d', strtotime( 'next week monday'));
-		$last_day_next_week  	= date( 'Y-m-d', strtotime( 'next week sunday'));
-		$first_day_next_month   = date( 'Y-m-d', strtotime( 'first day of next month'));
-		$last_day_next_month  	= date( 'Y-m-d', strtotime( 'last day of next month'));
-		
+		// Prepare durations
+		$tomorrow				= date( 'Y-m-d', strtotime( $date. ' + 1 days' ) );
+		$next_7_days			= date( 'Y-m-d', strtotime( $tomorrow. ' + 6 days' ) );
+		$next_30_days			= date( 'Y-m-d', strtotime( $tomorrow. ' + 29 days' ) );
+		$last_day_month			= date( 'Y-m-t' );
+		$first_day_next_week	= date( 'Y-m-d', strtotime( 'next week monday' ) );
+		$last_day_next_week		= date( 'Y-m-d', strtotime( 'next week sunday' ) );
+		$first_day_next_month	= date( 'Y-m-d', strtotime( 'first day of next month' ) );
+		$last_day_next_month	= date( 'Y-m-d', strtotime( 'last day of next month' ) );
 
-		//Get this weekend days
-		if( in_array( $day, explode( ' ', 'saturday sunday'))){	
-			//Is this a weekend day
+		// Get this weekend days
+		if ( in_array( $day, explode( ' ', 'saturday sunday' ) ) ) {
+			// Is this a weekend day
 			$weekend_start = $date;
 		} else {
-			//This is a weekday
-			$weekend_start = date( 'Y-m-d', strtotime( 'this saturday'));
+			// This is a weekday
+			$weekend_start = date( 'Y-m-d', strtotime( 'this saturday' ) );
 		}
 
 		$filters = array(
 			'past'			=> "{$alias}start_date < '$date' ",
-			'upcoming'		=> " ( {$alias}start_date >= '$date' OR ( {$alias}start_date <= '" . $date . "' AND {$alias}end_date >= '" . $date . "' ) ) ",
-			'today'			=> " ( {$alias}start_date = '$date' OR ( {$alias}start_date <= '" . $date . "' AND {$alias}end_date >= '" . $date . "' ) ) ",
-			'tomorrow'  	=> " ( {$alias}start_date = '$tomorrow' OR ( {$alias}start_date <= '" . $tomorrow . "' AND {$alias}end_date >= '" . $tomorrow . "' ) ) ",
-			'next_7_days'   => "( {$alias}start_date BETWEEN '$date' AND '$next_7_days' OR ( {$alias}start_date <= '" . $date . "' AND {$alias}end_date >= '" . $next_7_days . "' ) ) ",
-			'next_30_days'  => "( {$alias}start_date BETWEEN '$date' AND '$next_30_days' OR ( {$alias}start_date <= '" . $date . "' AND {$alias}end_date >= '" . $next_30_days . "' ) ) ",
-			'this_week'  	=> "( {$alias}start_date BETWEEN '$date' AND '$sunday' OR ( {$alias}start_date <= '" . $date . "' AND {$alias}end_date >= '" . $sunday . "' ) ) ",
-			'this_weekend'  => "( {$alias}start_date BETWEEN '$weekend_start' AND '$sunday' OR ( {$alias}start_date <= '" . $weekend_start . "' AND {$alias}end_date >= '" . $sunday . "' ) ) ",
-			'this_month'  	=> "( {$alias}start_date BETWEEN '$date' AND '$last_day_month' OR ( {$alias}start_date <= '" . $date . "' AND {$alias}end_date >= '" . $last_day_month . "' ) ) ",
-			'next_month'  	=> "( {$alias}start_date BETWEEN '$first_day_next_month' AND '$last_day_next_month' OR ( {$alias}start_date <= '" . $first_day_next_month . "' AND {$alias}end_date >= '" . $last_day_next_month . "' ) ) ",
-			'next_week'  	=> "( {$alias}start_date BETWEEN '$first_day_next_week' AND '$last_day_next_week' OR ( {$alias}start_date <= '" . $first_day_next_week . "' AND {$alias}end_date >= '" . $last_day_next_week . "' ) ) ",
+			'upcoming'		=> "( {$alias}start_date >= '$date' OR ( {$alias}start_date <= '" . $date . "' AND {$alias}end_date >= '" . $date . "' ) ) ",
+			'today'			=> "( {$alias}start_date = '$date' OR ( {$alias}start_date <= '" . $date . "' AND {$alias}end_date >= '" . $date . "' ) ) ",
+			'tomorrow'  	=> "( {$alias}start_date = '$tomorrow' OR ( {$alias}start_date <= '" . $tomorrow . "' AND {$alias}end_date >= '" . $tomorrow . "' ) ) ",
+			'next_7_days'   => "( ( {$alias}start_date BETWEEN '" . $tomorrow . "' AND '" . $next_7_days . "' ) OR ( {$alias}end_date BETWEEN '" . $tomorrow . "' AND '" . $next_7_days . "' ) OR ( '" . $tomorrow . "' BETWEEN {$alias}start_date AND {$alias}end_date ) OR ( '" . $next_7_days . "' BETWEEN {$alias}start_date AND {$alias}end_date ) ) ",
+			'next_30_days'  => "( ( {$alias}start_date BETWEEN '" . $tomorrow . "' AND '" . $next_30_days . "' ) OR ( {$alias}end_date BETWEEN '" . $tomorrow . "' AND '" . $next_30_days . "' ) OR ( '" . $tomorrow . "' BETWEEN {$alias}start_date AND {$alias}end_date ) OR ( '" . $next_30_days . "' BETWEEN {$alias}start_date AND {$alias}end_date ) ) ",
+			'this_week'  	=> "( ( {$alias}start_date BETWEEN '" . $date . "' AND '" . $sunday . "' ) OR ( {$alias}end_date BETWEEN '" . $date . "' AND '" . $sunday . "' ) OR ( '" . $date . "' BETWEEN {$alias}start_date AND {$alias}end_date ) OR ( '" . $sunday . "' BETWEEN {$alias}start_date AND {$alias}end_date ) ) ",
+			'this_weekend'  => "( ( {$alias}start_date BETWEEN '" . $weekend_start . "' AND '" . $sunday . "' ) OR ( {$alias}end_date BETWEEN '" . $weekend_start . "' AND '" . $sunday . "' ) OR ( '" . $weekend_start . "' BETWEEN {$alias}start_date AND {$alias}end_date ) OR ( '" . $sunday . "' BETWEEN {$alias}start_date AND {$alias}end_date ) ) ",
+			'this_month'  	=> "( ( {$alias}start_date BETWEEN '" . $date . "' AND '" . $last_day_month . "' ) OR ( {$alias}end_date BETWEEN '" . $date . "' AND '" . $last_day_month . "' ) OR ( '" . $date . "' BETWEEN {$alias}start_date AND {$alias}end_date ) OR ( '" . $last_day_month . "' BETWEEN {$alias}start_date AND {$alias}end_date ) ) ",
+			'next_month'  	=> "( ( {$alias}start_date BETWEEN '" . $first_day_next_month . "' AND '" . $last_day_next_month . "' ) OR ( {$alias}end_date BETWEEN '" . $first_day_next_month . "' AND '" . $last_day_next_month . "' ) OR ( '" . $first_day_next_month . "' BETWEEN {$alias}start_date AND {$alias}end_date ) OR ( '" . $last_day_next_month . "' BETWEEN {$alias}start_date AND {$alias}end_date ) ) ",
+			'next_week'  	=> "( ( {$alias}start_date BETWEEN '" . $first_day_next_week . "' AND '" . $last_day_next_week . "' ) OR ( {$alias}end_date BETWEEN '" . $first_day_next_week . "' AND '" . $last_day_next_week . "' ) OR ( '" . $first_day_next_week . "' BETWEEN {$alias}start_date AND {$alias}end_date ) OR ( '" . $last_day_next_week . "' BETWEEN {$alias}start_date AND {$alias}end_date ) ) ",
 		);
-		//echo '<pre>'; var_dump($filters); echo '</pre>';  exit;
 
-		//If the filter is provided, filter the events
-		if(! empty( $filters[$event_type] ) ) {
-			return $filters[$event_type];
+		// If the filter is provided, filter the events
+		if ( ! empty( $filters[ $event_type ] ) ) {
+			return $filters[ $event_type ];
 		}
 
-		//Handle the special between filter where dates are separated by |
-		$dates 		= explode( '|', strtolower( $event_type ) );
+		// Handle the special between filter where dates are separated by |
+		$dates = explode( '|', strtolower( $event_type ) );
 
-		//If there are two dates provided...
-		if( 2 === count( $dates) ) {
+		// If there are two dates provided...
+		if ( 2 === count( $dates ) ) {
 			$date1  = date( 'Y-m-d', strtotime( $dates[0] ) );
 			$date2  = date( 'Y-m-d', strtotime( $dates[1] ) );
-			$filter = "( {$alias}start_date BETWEEN '$date1' AND '$date2' OR ( {$alias}start_date <= '" . $date1 . "' AND {$alias}end_date >= '" . $date2 . "' ) ) ";
-			//echo '<pre>'; var_dump($filter); echo '</pre>';  exit;
+			$filter = "( ( {$alias}start_date BETWEEN '" . $date1 . "' AND '" . $date2 . "' ) OR ( {$alias}end_date BETWEEN '" . $date1 . "' AND '" . $date2 . "' ) OR ( '" . $date1 . "' BETWEEN {$alias}start_date AND {$alias}end_date ) OR ( '" . $date2 . "' BETWEEN {$alias}start_date AND {$alias}end_date ) ) ";
 			return $filter;
 		}
 
-		//If we are here, this filter has not been implemented so we just return all events
+		// If we are here, this filter has not been implemented so we just return all events
 		return '1=1 ';
 	}
 

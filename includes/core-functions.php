@@ -16,10 +16,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 2.0.0
  */
 function goedir_event_register_widgets() {
-    if ( get_option( 'geodir_event_version' )) {
-        register_widget( 'GeoDir_Event_Widget_Calendar' );
-        register_widget( 'GeoDir_Event_Widget_AYI' );
-    }
+	if ( get_option( 'geodir_event_version' ) ) {
+		register_widget( 'GeoDir_Event_Widget_Calendar' );
+		register_widget( 'GeoDir_Event_Widget_AYI' );
+		register_widget( 'GeoDir_Event_Widget_Schedules' );
+	}
 }
 
 /*
