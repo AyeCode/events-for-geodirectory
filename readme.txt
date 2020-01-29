@@ -3,8 +3,8 @@ Contributors: stiofansisland, paoltaia
 Donate link: https://wpgeodirectory.com/
 Tags: geodirectory, geodirectory events, event, event manager
 Requires at least: 4.9
-Tested up to: 5.2
-Stable tag: 2.0.0.15
+Tested up to: 5.3.2
+Stable tag: 2.0.0.16
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
