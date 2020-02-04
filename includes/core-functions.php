@@ -230,7 +230,7 @@ function geodir_event_schema( $schema, $post ) {
 	global $gd_post;
 
     $event_schema_types = geodir_event_get_schema_types();
-    if ( isset( $event_schema_types[ $schema['@type'] ] ) ) {
+    if ( !empty( $schema['@type']) && isset( $event_schema_types[ $schema['@type'] ] ) ) {
 		$place = array();
 		$place["@type"] = "Place";
 		$place["name"] = $schema['name'];
