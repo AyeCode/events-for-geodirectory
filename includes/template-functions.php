@@ -17,7 +17,8 @@ function geodir_event_params() {
 		'display_date_format' => $display_date_format,
 		'jqueryui_date_format' => $jqueryui_date_format,
 		'week_start_day' => apply_filters( 'geodir_event_calendar_week_start_day', get_option( 'start_of_week' ) ),
-		'monthsArray' => '["' . __( 'January' ) . '", "' . __( 'February' ) . '", "' . __( 'March' ) . '", "' . __( 'April' ) . '", "' . __( 'May' ) . '", "' . __( 'June' ) . '", "' . __( 'July' ) . '", "' . __( 'August' ) . '", "' . __( 'September' ) . '", "' . __( 'October' ) . '", "' . __( 'November' ) . '", "' . __( 'December' ) . '"]'
+		'monthsArray' => '["' . __( 'January' ) . '", "' . __( 'February' ) . '", "' . __( 'March' ) . '", "' . __( 'April' ) . '", "' . __( 'May' ) . '", "' . __( 'June' ) . '", "' . __( 'July' ) . '", "' . __( 'August' ) . '", "' . __( 'September' ) . '", "' . __( 'October' ) . '", "' . __( 'November' ) . '", "' . __( 'December' ) . '"]',
+		'calendar_params' => apply_filters( 'geodir_event_calendar_extra_params', '' ),
     );
 
     return apply_filters( 'geodir_event_params', $params );
