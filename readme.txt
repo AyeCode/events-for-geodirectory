@@ -26,6 +26,9 @@ It's easy to sort events by selecting "upcoming," "today," "past" or "all" and d
 
 == Changelog ==
 
+= 2.0.0.17 =
+* Allow to show event date raw value with gd_post_meta - CHANGED
+
 = 2.0.0.16 =
 * Event calendar looses the location when redirected to search page - FIXED
 * Show event date & time in RSS feed - ADDED
