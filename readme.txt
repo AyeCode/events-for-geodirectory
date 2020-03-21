@@ -3,8 +3,8 @@ Contributors: stiofansisland, paoltaia
 Donate link: https://wpgeodirectory.com/
 Tags: geodirectory, geodirectory events, event, event manager
 Requires at least: 4.9
-Tested up to: 5.3.2
-Stable tag: 2.0.0.16
+Tested up to: 5.4
+Stable tag: 2.0.0.17
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -28,6 +28,8 @@ It's easy to sort events by selecting "upcoming," "today," "past" or "all" and d
 
 = 2.0.0.17 =
 * Allow to show event date raw value with gd_post_meta - CHANGED
+* Changes for Schema markup for disrupted events - ADDED
+* New pre defined field for setting event disruption status - ADDED
 
 = 2.0.0.16 =
 * Event calendar looses the location when redirected to search page - FIXED
