@@ -238,8 +238,11 @@ function geodir_event_schema( $schema, $post ) {
 		if ( ! empty( $schema['telephone'] ) ) {
 			$place["telephone"] = $schema['telephone'];
 		}
-		$place["geo"] = $schema['geo'];
 
+	    if(isset($schema['geo'])){
+		    $place["geo"] = $schema['geo'];
+	    }
+	    
 		if ( GeoDir_Post_types::supports( $gd_post->post_type, 'events' ) ) {
 			$schedule = NULL;
 
@@ -302,11 +305,14 @@ function geodir_event_schema( $schema, $post ) {
 					'cancelled' => 'https://schema.org/EventCancelled',
 					'postponed' => 'https://schema.org/EventPostponed',
 					'rescheduled' => 'https://schema.org/EventRescheduled',
-					'moved-online' => 'https://schema.org/EEventMovedOnline',
+					'moved-online' => 'https://schema.org/EventMovedOnline',
+					'scheduled' => 'https://schema.org/EventScheduled',
 				);
 				if(isset($event_statuses[$gd_post->event_status])){
 					$schema['eventStatus'] = $event_statuses[$gd_post->event_status];
 				}
+			}else{
+				$schema['eventStatus'] = 'https://schema.org/EventScheduled';
 			}
 
 		}
