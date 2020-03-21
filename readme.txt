@@ -28,6 +28,7 @@ It's easy to sort events by selecting "upcoming," "today," "past" or "all" and d
 
 = 2.0.0.17 =
 * Allow to show event date raw value with gd_post_meta - CHANGED
+* Screen keyboard on iPhone 7 prevents working with the calendar - FIXED
 
 = 2.0.0.16 =
 * Event calendar looses the location when redirected to search page - FIXED
