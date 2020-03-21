@@ -844,10 +844,18 @@ class GeoDir_Event_Fields {
 			}
 			$schedules_html = GeoDir_Event_Schedules::get_schedules_html( $schedules, ! empty( $the_post->recurring ) );
 
+			$output = geodir_field_output_process( $output );
+			if ( ! empty( $output ) && isset( $output['raw'] ) ) {
+				// Database value.
+				return $the_post->{$htmlvar_name};
+			} elseif ( ! empty( $output ) && isset( $output['strip'] ) ) {
+				// Stripped value.
+				return $schedules_html;
+			}
+
 			if ( ! empty( $schedules_html ) ) {
 				$field_label = _n( 'Date', 'Dates', count( $schedules ), 'geodirevents' );
 				$field_icon = geodir_field_icon_proccess( $cf );
-				$output = geodir_field_output_process( $output );
 				if ( strpos( $field_icon, 'http' ) !== false ) {
 					$field_icon_af = '';
 				} elseif ( $field_icon == '' ) {
@@ -918,6 +926,14 @@ class GeoDir_Event_Fields {
 				} else {
 					$field_icon_af = $field_icon;
 					$field_icon = '';
+				}
+
+				if ( ! empty( $output ) && isset( $output['raw'] ) ) {
+					// Database value.
+					return '';
+				} elseif ( ! empty( $output ) && isset( $output['strip'] ) ) {
+					// Stripped value.
+					return $value;
 				}
 
 				$date_class = $cf['css_class'];

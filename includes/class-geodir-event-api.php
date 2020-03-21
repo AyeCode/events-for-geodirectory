@@ -72,10 +72,14 @@ class GeoDir_Event_API {
 	}
 
 	public static function event_feild_schema( $args, $post_type, $field, $custom_fields, $package_id, $default ) {
-		$empty = array();
-		if ( ! GeoDir_Post_types::supports( $post_type, 'events' ) ) {
-			return $empty;
+		if ( $field['type'] != 'event' ) {
+			return $args;
 		}
+
+		if ( ! GeoDir_Post_types::supports( $post_type, 'events' ) ) {
+			return array();
+		}
+
 		if ( $field['name'] == 'recurring' ) {
 			$args['type']   = 'integer';
 		} else if ( $field['name'] == 'event_dates' ) {
@@ -205,8 +209,6 @@ class GeoDir_Event_API {
 					'field_type'   => 'event'
 				)
 			);
-		} else {
-			return $empty;
 		}
 
 		return $args;
@@ -214,10 +216,12 @@ class GeoDir_Event_API {
 
 	public static function event_post_data( $data, $gd_post, $request, $controller ) {
 		if ( isset( $gd_post->event_dates ) ) {
-			$schedule = GeoDir_Event_Schedules::get_schedule( $gd_post->set_schedule_id );
-			if ( ! empty( $schedule ) ) {
-				foreach ( $schedule as $key => $value ) {
-					$gd_post->{$key} = $value;
+			if ( ! empty( $gd_post->set_schedule_id ) ) {
+				$schedule = GeoDir_Event_Schedules::get_schedule( $gd_post->set_schedule_id );
+				if ( ! empty( $schedule ) ) {
+					foreach ( $schedule as $key => $value ) {
+						$gd_post->{$key} = $value;
+					}
 				}
 			}
 
