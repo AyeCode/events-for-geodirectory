@@ -238,8 +238,11 @@ function geodir_event_schema( $schema, $post ) {
 		if ( ! empty( $schema['telephone'] ) ) {
 			$place["telephone"] = $schema['telephone'];
 		}
-		$place["geo"] = $schema['geo'];
 
+	    if(isset($schema['geo'])){
+		    $place["geo"] = $schema['geo'];
+	    }
+	    
 		if ( GeoDir_Post_types::supports( $gd_post->post_type, 'events' ) ) {
 			$schedule = NULL;
 
@@ -278,6 +281,40 @@ function geodir_event_schema( $schema, $post ) {
 				$schema['startDate'] = $startDate . 'T' . $startTime;
 				$schema['endDate'] = $endDate . 'T' . $endTime;
 			}
+
+			// eventAttendanceMode. If we have an address then its likely not online
+			if(!empty($gd_post->city)){
+				if(isset($gd_post->event_status) && $gd_post->event_status=='moved-online'){
+					$schema['eventAttendanceMode'] = "https://schema.org/OnlineEventAttendanceMode";
+				}else{
+					$schema['eventAttendanceMode'] = "https://schema.org/OfflineEventAttendanceMode";
+				}
+			}else{
+				$schema['eventAttendanceMode'] = "https://schema.org/OnlineEventAttendanceMode";
+			}
+
+			// set if online event
+			if($schema['eventAttendanceMode']=='https://schema.org/OnlineEventAttendanceMode' && !empty($gd_post->website)){
+				$place["@type"] = "VirtualLocation";
+				$place["url"] = esc_url_raw($gd_post->website);
+			}
+
+			// eventStatus
+			if(!empty($gd_post->event_status)){
+				$event_statuses = array(
+					'cancelled' => 'https://schema.org/EventCancelled',
+					'postponed' => 'https://schema.org/EventPostponed',
+					'rescheduled' => 'https://schema.org/EventRescheduled',
+					'moved-online' => 'https://schema.org/EventMovedOnline',
+					'scheduled' => 'https://schema.org/EventScheduled',
+				);
+				if(isset($event_statuses[$gd_post->event_status])){
+					$schema['eventStatus'] = $event_statuses[$gd_post->event_status];
+				}
+			}else{
+				$schema['eventStatus'] = 'https://schema.org/EventScheduled';
+			}
+
 		}
         $schema['location'] = $place;
 
