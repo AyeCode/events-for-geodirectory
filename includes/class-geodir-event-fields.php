@@ -205,6 +205,38 @@ class GeoDir_Event_Fields {
 			)
 		);
 
+		// Event Status
+		$custom_fields['event_status'] = array(
+			'field_type'  => 'select',
+			'class'       => 'gd-event-status',
+			'icon'        => 'fas fa-exclamation-circle',
+			'name'        => __( 'Event Disruption', 'geodirevents' ),
+			'description' => __( 'Adds a input for a event status in-case of disruption.', 'geodirevents' ),
+			'single_use'  => 'event_status',
+			'defaults'    => array(
+				'data_type'          => 'VARCHAR',
+				'admin_title'        => __('Event Disruption','geodirevents'),
+				'frontend_title'     => __('Event Disruption','geodirevents'),
+				'frontend_desc'      => __("If your event has been disrupted please set its status here. If the event has been postponed to a later date, but the date isn't known yet, set this to Postponed. Once the new date is known and changed, then set this to Rescheduled.",'geodirevents'),
+				'htmlvar_name'       => 'event_status',
+				'is_active'          => true,
+				'for_admin_use'      => false,
+				'default_value'      => '',
+				'db_default'         => '',
+				'show_in'            => '[detail],[listing],[mapbubble]',
+				'is_required'        => false,
+				'option_values'      => __( 'Select Disruption Status/,No Disruption/scheduled,Cancelled/cancelled,Postponed/postponed,Rescheduled/rescheduled,Moved Online/moved-online', 'geodirevents' ),
+				'validation_pattern' => '',
+				'validation_msg'     => '',
+				'required_msg'       => '',
+				'field_icon'         => 'fas fa-exclamation-circle',
+				'css_class'          => '',
+				'cat_sort'           => true,
+				'cat_filter'         => true,
+				'single_use'         => true,
+			)
+		);
+
 		return $custom_fields;
 	}
 
