@@ -235,7 +235,7 @@ function geodir_event_schema( $schema, $post ) {
 		$place["@type"] = "Place";
 		$place["name"] = !empty( $schema['name'] )? $schema['name']: '';
 		$place["address"] = !empty( $schema['address'] )? $schema['address']: '';
-		$telephone = !empty( $schema['telephone'] )? $schema['telephone']: '': 
+		$telephone = !empty( $schema['telephone'] )? $schema['telephone']: '';
 		if ( ! empty( $telephone ) ) {
 			$place["telephone"] = $schema['telephone'];
 		}
