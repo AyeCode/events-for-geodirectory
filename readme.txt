@@ -26,6 +26,9 @@ It's easy to sort events by selecting "upcoming," "today," "past" or "all" and d
 
 == Changelog ==
 
+= 2.0.0.19 =
+* Screen keyboard on iPhone 7 prevents working with the calendar - FIXED
+
 = 2.0.0.18 =
 * Spelling mistake on online only event schema - FIXED
 * Set EventScheduled to active in schema even if no status is set - CHANGED
