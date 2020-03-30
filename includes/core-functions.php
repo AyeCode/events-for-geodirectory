@@ -241,9 +241,6 @@ function geodir_event_schema( $schema, $post ) {
 		}
 
 		$place["geo"] = !empty( $schema['geo'] )? $schema['geo']: '';
-		if(isset($schema['geo'])){
-			$place["geo"] = $schema['geo'];
-		}
 	    
 		if ( GeoDir_Post_types::supports( $gd_post->post_type, 'events' ) ) {
 			$schedule = NULL;
