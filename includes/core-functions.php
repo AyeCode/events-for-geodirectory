@@ -233,15 +233,14 @@ function geodir_event_schema( $schema, $post ) {
     if ( !empty( $schema['@type']) && isset( $event_schema_types[ $schema['@type'] ] ) ) {
 		$place = array();
 		$place["@type"] = "Place";
-		$place["name"] = $schema['name'];
-		$place["address"] = $schema['address'];
-		if ( ! empty( $schema['telephone'] ) ) {
+		$place["name"] = !empty( $schema['name'] )? $schema['name']: '';
+		$place["address"] = !empty( $schema['address'] )? $schema['address']: '';
+		$telephone = !empty( $schema['telephone'] )? $schema['telephone']: '';
+		if ( ! empty( $telephone ) ) {
 			$place["telephone"] = $schema['telephone'];
 		}
 
-	    if(isset($schema['geo'])){
-		    $place["geo"] = $schema['geo'];
-	    }
+		$place["geo"] = !empty( $schema['geo'] )? $schema['geo']: '';
 	    
 		if ( GeoDir_Post_types::supports( $gd_post->post_type, 'events' ) ) {
 			$schedule = NULL;

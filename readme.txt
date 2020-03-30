@@ -27,6 +27,7 @@ It's easy to sort events by selecting "upcoming," "today," "past" or "all" and d
 == Changelog ==
 
 = 2.0.0.19 =
+* Screen keyboard on iPhone 7 prevents working with the calendar - FIXED
 * Set event end to max no. of repeat if repeat date is empty - FIXED
 
 = 2.0.0.18 =
