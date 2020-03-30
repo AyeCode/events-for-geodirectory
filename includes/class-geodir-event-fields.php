@@ -661,15 +661,16 @@ class GeoDir_Event_Fields {
 						$repeat_x 			= isset( $data['repeat_x'] ) ? sanitize_text_field( $data['repeat_x'] ) : '';
 						$duration_x 		= isset( $data['duration_x'] ) ? sanitize_text_field( $data['duration_x'] ) : 1;
 						$repeat_end_type 	= isset( $data['repeat_end_type'] ) ? sanitize_text_field( $data['repeat_end_type'] ) : 0;
-						$max_repeat 		= $repeat_end_type != 1 && isset( $data['max_repeat'] ) ? (int)$data['max_repeat'] : 1;
 						$repeat_end 		= $repeat_end_type == 1 && isset( $data['repeat_end'] ) ? sanitize_text_field( $data['repeat_end'] ) : '';			
 						$repeat_x 			= $repeat_x > 0 ? (int)$repeat_x : 1;
 						$duration_x 		= $duration_x > 0 ? (int)$duration_x : 1;
-						$max_repeat 		= $max_repeat > 0 ? (int)$max_repeat : 1;
 						
 						if ( $repeat_end_type == 1 && ! geodir_event_is_date( $repeat_end ) ) {
+							$repeat_end_type = 0;
 							$repeat_end 	= '';
-						}	
+						}
+						$max_repeat 		= $repeat_end_type != 1 && isset( $data['max_repeat'] ) ? (int)$data['max_repeat'] : 1;
+						$max_repeat 		= $max_repeat > 0 ? (int)$max_repeat : 1;
 						
 						if ( ! geodir_event_is_date( $start_date ) ) {
 							$start_date 	= $default_start_date;
