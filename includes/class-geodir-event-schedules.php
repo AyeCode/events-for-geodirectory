@@ -511,7 +511,8 @@ class GeoDir_Event_Schedules {
 
 					if ( $start_date == $end_date ) {
 						$schedule .= date_i18n( $date_format, strtotime( $start_date ) );
-						$schedule .= ', ' . date_i18n( $time_format, strtotime( $start_time ) );
+						$date_time_sep = apply_filters('geodir_event_date_time_separator', ', ');
+						$schedule .= $date_time_sep . date_i18n( $time_format, strtotime( $start_time ) );
 						$schedule .= '</div>' . $schedule_seperator . '<div class="geodir-schedule-end">';
 						$schedule .= date_i18n( $time_format, strtotime( $end_time ) );
 					} else {
