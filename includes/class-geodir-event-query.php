@@ -330,18 +330,7 @@ class GeoDir_Event_Query {
 	}
 
 	public static function calendar_posts_fields( $fields, $query = array() ) {
-		global $wpdb;
-
-		$schedules_table	= GEODIR_EVENT_SCHEDULES_TABLE;
-		$date 				= $query->query_vars['gd_event_calendar'];
-		$current_year 		= date_i18n( 'Y', $date );
-		$current_month 		= date_i18n( 'm', $date );
-		$month_start 		= $current_year . '-' . $current_month . '-01'; // First day of the month.
-		$month_end 			= date_i18n( 'Y-m-t', strtotime( $month_start ) ); // Last day of the month.
-		
-		$condition 	= "( ( ( '" . $month_start . "' BETWEEN start_date AND end_date ) OR ( start_date BETWEEN '" . $month_start . "' AND end_date ) ) AND ( ( '" . $month_end . "' BETWEEN start_date AND end_date ) OR ( end_date BETWEEN start_date AND '" . $month_end . "' ) ) ) AND " . $schedules_table . ".event_id = " . $wpdb->posts . ".ID";
-		
-		$fields = "( SELECT GROUP_CONCAT( DISTINCT CONCAT( DATE_FORMAT( " . $schedules_table . ".start_date, '%d%m%y' ), '', DATE_FORMAT( " . $schedules_table . ".end_date, '%d%m%y' ) ) ) FROM " . $schedules_table . " WHERE " . $condition . " ) AS schedules";
+		$fields = "*";
 
 		return $fields;
 	}
@@ -364,12 +353,11 @@ class GeoDir_Event_Query {
 		$table 				= geodir_db_cpt_table( $query->query_vars['post_type'] );
 		$schedules_table	= GEODIR_EVENT_SCHEDULES_TABLE;
 		$date 				= $query->query_vars['gd_event_calendar'];
-		$current_year 		= date_i18n( 'Y', $date );
-		$current_month 		= date_i18n( 'm', $date );
-		$month_start 		= $current_year . '-' . $current_month . '-01'; // First day of the month.
-		$month_end 			= date_i18n( 'Y-m-t', strtotime( $month_start ) ); // Last day of the month.
 
-		$where .= " AND " . $table . ".post_id > 0 AND ( ( ( '" . $month_start . "' BETWEEN start_date AND end_date ) OR ( start_date BETWEEN '" . $month_start . "' AND end_date ) ) AND ( ( '" . $month_end . "' BETWEEN start_date AND end_date ) OR ( end_date BETWEEN start_date AND '" . $month_end . "' ) ) )";
+		$where .= " AND " . $table . ".post_id > 0";
+		if ( ( $condition = GeoDir_Event_Schedules::event_type_condition( 'today', $schedules_table, $date ) ) ) {
+			$where .= " AND " . $condition;
+		}
 
 		// @todo: move this to location manager during new calendar features.
 		if ( get_query_var( 'gd_location' ) && function_exists( 'geodir_location_main_query_posts_where' ) ) {
