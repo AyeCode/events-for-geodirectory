@@ -190,7 +190,7 @@ class GeoDir_Event_Calendar {
 			'is_geodir_loop' => true,
 			'gd_location' => $add_location_filter,
 			'post_type' => $post_type,
-			'posts_per_page' => -1,
+			'posts_per_page' => 1,
 			'post_status' => 'publish'
 		);
 		if ( $add_location_filter && defined( 'GEODIRLOCATION_VERSION' ) ) {
@@ -209,30 +209,6 @@ class GeoDir_Event_Calendar {
 			if ( ! empty( $_REQUEST['neighbourhood'] ) ) {
 				$query_args['neighbourhood'] = sanitize_text_field( $_REQUEST['neighbourhood'] );
 				$location_params .= '&neighbourhood=' . sanitize_text_field( $_REQUEST['neighbourhood'] );
-			}
-		}
-						
-		$all_events = query_posts( $query_args );
-
-		$all_event_dates = array();
-		if ( !empty( $all_events ) ) {
-			$filter_event_dates = array();
-			
-			foreach ( $all_events as $event ) {
-				if ( $event->schedules != '' ) {
-					$event_date_rows = explode( ',', $event->schedules );
-					$filter_event_dates = array_merge( $filter_event_dates, $event_date_rows );
-				}
-			}
-
-			if ( !empty( $filter_event_dates ) ) {
-				$filter_event_dates = array_unique($filter_event_dates);
-				
-				foreach ( $filter_event_dates as $schedule ) {
-					if ( $schedule != '' ) {
-						$all_event_dates = self::parse_calendar_schedules( $schedule, $all_event_dates );
-					}
-				}
 			}
 		}
 
@@ -345,7 +321,11 @@ class GeoDir_Event_Calendar {
 				}
 
 				echo '<td valign="middle" class="gd_cal_nsat ' . $today_class . '">';
-				if ( in_array( $date, $all_event_dates ) ) {
+
+				$query_args['gd_event_calendar'] = $year . '-' . $month . '-' . $day;
+				$results = query_posts( $query_args );
+
+				if ( ! empty( $results ) ) {
 					$past_class = $date < date("Y-m-d") ? 'event_past' : '';
 					echo '<a class="event_highlight '.$past_class.'" href=" ' . $date_search_url . '" title="' . esc_attr__( 'Click to view events on this date', 'geodirevents' ) . '" > ' . (int)$day . '</a>';
 				} else {

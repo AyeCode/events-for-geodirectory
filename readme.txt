@@ -30,6 +30,8 @@ It's easy to sort events by selecting "upcoming," "today," "past" or "all" and d
 * Screen keyboard on iPhone 7 prevents working with the calendar - FIXED
 * Set event end to max no. of repeat if repeat date is empty - FIXED
 * Add hook for date and time separator - ADDED
+* Event post type category add/edit page shows wrong event schema options - FIXED
+* Sometime event calendar fails to load data on large directory - FIXED
 
 = 2.0.0.18 =
 * Spelling mistake on online only event schema - FIXED
