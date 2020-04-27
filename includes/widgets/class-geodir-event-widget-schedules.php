@@ -376,6 +376,10 @@ class GeoDir_Event_Widget_Schedules extends WP_Super_Duper {
 			$template = self::get_schedule_template();
 		}
 
+		if ( strpos( $template, '{start_date}' ) === false && ! empty( $item['start_date'] ) && empty( $item['end_date'] ) ) {
+			$item['end_date'] = $item['start_date'];
+		}
+
 		$content = $template;
 		if ( ! empty( $item['has_times'] ) ) {
 			if ( empty( $item['end_date'] ) ) {

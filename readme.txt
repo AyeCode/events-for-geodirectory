@@ -32,6 +32,7 @@ It's easy to sort events by selecting "upcoming," "today," "past" or "all" and d
 * Add hook for date and time separator - ADDED
 * Event post type category add/edit page shows wrong event schema options - FIXED
 * Sometime event calendar fails to load data on large directory - FIXED
+* [gd_post_meta] widget/shortcode key added for start date, end date, start time, end time - ADDED
 
 = 2.0.0.18 =
 * Spelling mistake on online only event schema - FIXED
