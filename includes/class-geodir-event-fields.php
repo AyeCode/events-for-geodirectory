@@ -1264,6 +1264,8 @@ class GeoDir_Event_Fields {
 	 * @return string The html to output.
 	 */
 	public static function custom_field_output_event_date_time( $html, $location, $cf, $output, $_gd_post ) {
+		global $post;
+
 		if ( ! empty( $_gd_post ) ) {
 			$gd_post = $_gd_post;
 		} else {
@@ -1275,8 +1277,10 @@ class GeoDir_Event_Fields {
 		}
 
 		$schedule = array();
-		if ( ! empty( $gd_post->start_date ) ) {
+		if ( isset( $gd_post->start_date ) ) {
 			$schedule = $gd_post;
+		} elseif ( ! empty( $post ) && $gd_post->ID == $post->ID && isset( $post->start_date ) ) {
+			$schedule = $post;
 		} elseif ( ( $schedules = GeoDir_Event_Schedules::get_schedules( $gd_post->ID, 'upcoming', 1 ) ) ) {
 			$schedule = $schedules[0];
 		} elseif ( ( $schedules = GeoDir_Event_Schedules::get_schedules( $gd_post->ID, '', 1 ) ) ) {
@@ -1311,6 +1315,7 @@ class GeoDir_Event_Fields {
 				}
 			}
 
+			$value = '';
 			$value_raw = '';
 
 			switch ( $htmlvar_name ) {
@@ -1319,6 +1324,7 @@ class GeoDir_Event_Fields {
 						$format = $date_format;
 					}
 
+					$value = $start_date_time;
 					$value_raw = $start_date;
 					break;
 				case 'event_start_time':
@@ -1326,6 +1332,7 @@ class GeoDir_Event_Fields {
 						$format = $time_format;
 					}
 
+					$value = $start_date_time;
 					$value_raw = $start_time;
 					break;
 				case 'event_start_date_time':
@@ -1333,6 +1340,7 @@ class GeoDir_Event_Fields {
 						$format = $date_time_format;
 					}
 
+					$value = $start_date_time;
 					$value_raw = $start_date_time;
 					break;
 				case 'event_end_date':
@@ -1340,6 +1348,7 @@ class GeoDir_Event_Fields {
 						$format = $date_format;
 					}
 
+					$value = $end_date_time;
 					$value_raw = $end_date;
 					break;
 				case 'event_end_time':
@@ -1347,6 +1356,7 @@ class GeoDir_Event_Fields {
 						$format = $time_format;
 					}
 
+					$value = $end_date_time;
 					$value_raw = $end_time;
 					break;
 				case 'event_end_date_time':
@@ -1354,6 +1364,7 @@ class GeoDir_Event_Fields {
 						$format = $date_time_format;
 					}
 
+					$value = $end_date_time;
 					$value_raw = $end_date_time;
 					break;
 			}
@@ -1363,7 +1374,7 @@ class GeoDir_Event_Fields {
 				return $value_raw;
 			}
 
-			$value = date_i18n( $format, strtotime( $start_date_time ) );
+			$value = date_i18n( $format, strtotime( $value ) );
 
 			$field_icon = geodir_field_icon_proccess( $cf );
 			$output = geodir_field_output_process( $output );
