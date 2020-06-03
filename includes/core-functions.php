@@ -325,29 +325,38 @@ function geodir_event_schema( $schema, $post ) {
     return $schema;
 }
 
+/**
+ * Event Schema types filter.
+ *
+ * @return mixed
+ */
 function geodir_event_get_schema_types() {
-	$schemas = array();
-	$schemas['Event'] = 'Event';
-	$schemas['EventVenue'] = 'EventVenue';
-	$schemas['BusinessEvent'] = 'BusinessEvent';
-	$schemas['ChildrensEvent'] = 'ChildrensEvent';
-	$schemas['ComedyEvent'] = 'ComedyEvent';
-	$schemas['CourseInstance'] = 'CourseInstance';
-	$schemas['DanceEvent'] = 'DanceEvent';
-	$schemas['DeliveryEvent'] = 'DeliveryEvent';
-	$schemas['EducationEvent'] = 'EducationEvent';
-	$schemas['ExhibitionEvent'] = 'ExhibitionEvent';
-	$schemas['Festival'] = 'Festival';
-	$schemas['FoodEvent'] = 'FoodEvent';
-	$schemas['LiteraryEvent'] = 'LiteraryEvent';
-	$schemas['MusicEvent'] = 'MusicEvent';
-	$schemas['PublicationEvent'] = 'PublicationEvent';
-	$schemas['SaleEvent'] = 'SaleEvent';
-	$schemas['ScreeningEvent'] = 'ScreeningEvent';
-	$schemas['SocialEvent'] = 'SocialEvent';
-	$schemas['SportsEvent'] = 'SportsEvent';
-	$schemas['TheaterEvent'] = 'TheaterEvent';
-	$schemas['VisualArtsEvent'] = 'VisualArtsEvent';
+	$schemas = array(
+		'Event'         => 'Event',
+		'BusinessEvent' => '- BusinessEvent',
+		'ChildrensEvent' => '- ChildrensEvent',
+		'ComedyEvent' => '- ComedyEvent',
+		'CourseInstance' => '- CourseInstance',
+		'DanceEvent' => '- DanceEvent',
+		'DeliveryEvent' => '- DeliveryEvent',
+		'EducationEvent' => '- EducationEvent',
+		'EventSeries' => '- EventSeries',
+		'ExhibitionEvent' => '- ExhibitionEvent',
+		'Festival' => '- Festival',
+		'FoodEvent' => '- FoodEvent',
+		'Hackathon' => 'Hackathon',
+		'LiteraryEvent' => '- LiteraryEvent',
+		'MusicEvent' => '- MusicEvent',
+		'PublicationEvent' => '- PublicationEvent',
+		'BroadcastEvent' => '- - BroadcastEvent',
+		'OnDemandEvent' => '- - OnDemandEvent',
+		'SaleEvent' => '- SaleEvent',
+		'ScreeningEvent' => '- ScreeningEvent',
+		'SocialEvent' => '- SocialEvent',
+		'SportsEvent' => '- SportsEvent',
+		'TheaterEvent' => '- TheaterEvent',
+		'VisualArtsEvent' => '- VisualArtsEvent',
+	);
 	return apply_filters( 'geodir_event_get_schema_types', $schemas );
 }
 
