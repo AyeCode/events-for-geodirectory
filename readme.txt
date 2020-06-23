@@ -1,14 +1,15 @@
 === GeoDirectory Events ===
-Contributors: stiofansisland, paoltaia
-Donate link: https://wpgeodirectory.com/
-Tags: geodirectory, geodirectory events, event, event manager
+Contributors: stiofansisland, paoltaia, ayecode
+Donate link: https://wpgeodirectory.com
+Tags: geodirectory, event, event listings, events, events directory, event manager
 Requires at least: 4.9
 Tested up to: 5.4
-Stable tag: 2.0.0.18
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Requires PHP: 5.6
+Stable tag: 2.0.1.0
+License: GPLv3
+License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-GeoDirectory Events allows you to extend your GeoDirectory with a versatile event manager.
+GeoDirectory Events add-on allows to extend your GeoDirectory with a versatile event manager.
 
 == Description ==
 
@@ -26,7 +27,7 @@ It's easy to sort events by selecting "upcoming," "today," "past" or "all" and d
 
 == Changelog ==
 
-= 2.0.0.19 =
+= 2.0.1.0 =
 * Screen keyboard on iPhone 7 prevents working with the calendar - FIXED
 * Set event end to max no. of repeat if repeat date is empty - FIXED
 * Add hook for date and time separator - ADDED

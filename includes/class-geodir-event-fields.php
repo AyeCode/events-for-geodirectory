@@ -1176,7 +1176,7 @@ class GeoDir_Event_Fields {
 	/**
 	 * Add event fields to post meta keys.
 	 *
-	 * @since 2.0.0.19
+	 * @since 2.0.1.0
 	 *
 	 * @param array $fields Post meta custom keys.
 	 * @param string $post_type Post type.

@@ -1,27 +1,23 @@
 <?php
-
 /**
- * The plugin bootstrap file
+ * GeoDirectory Events
  *
- * This file is read by WordPress to generate the plugin information in the plugin
- * Dashboard. This file also includes all of the dependencies used by the plugin,
- * registers the activation and deactivation functions, and defines a function
- * this starts the plugin.
- *
- * @since             1.0.0
  * @package           GeoDir_Event_Manager
+ * @author            AyeCode Ltd
+ * @copyright         2019 AyeCode Ltd
+ * @license           GPLv3
  *
  * @wordpress-plugin
  * Plugin Name:       GeoDirectory Events
- * Plugin URI:        http://wpgeodirectory.com/
- * Description:       GeoDirectory Events allows you to extend your GeoDirectory with a versatile event manager.
- * Version:           2.0.0.18
- * Author:            AyeCode Ltd
- * Author URI:        https://wpgeodirectory.com/
+ * Plugin URI:        https://wpgeodirectory.com/downloads/events/
+ * Description:       Events add-on allows to extend your GeoDirectory with a versatile event manager.
+ * Version:           2.0.1.0
  * Requires at least: 4.9
- * Tested up to:      5.4
- * License:           GPL-2.0+
- * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
+ * Requires PHP:      5.6
+ * Author:            AyeCode Ltd
+ * Author URI:        https://ayecode.io
+ * License:           GPLv3
+ * License URI:       http://www.gnu.org/licenses/gpl-3.0.html
  * Text Domain:       geodirevents
  * Domain Path:       /languages
  * Update URL:        https://wpgeodirectory.com
@@ -30,11 +26,11 @@
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
-    die;
+	die;
 }
 
-if ( !defined( 'GEODIR_EVENT_VERSION' ) ) {
-	define( 'GEODIR_EVENT_VERSION', '2.0.0.18' );
+if ( ! defined( 'GEODIR_EVENT_VERSION' ) ) {
+	define( 'GEODIR_EVENT_VERSION', '2.0.1.0' );
 }
 
 /**
