@@ -798,7 +798,7 @@ class GeoDir_Event_Fields {
 		);
 		$event_data = wp_parse_args( $event_data, $defaults );
 
-		return apply_filters( 'geodir_event_dates_cf_value	', $event_data, $value, $cf, $gd_post );
+		return apply_filters( 'geodir_event_dates_cf_value', $event_data, $value, $cf, $gd_post );
 	}
 
 	public static function cf_event( $html, $location, $cf, $p = '', $output = '' ) {
