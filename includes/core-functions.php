@@ -314,6 +314,104 @@ function geodir_event_schema( $schema, $post ) {
 				$schema['eventStatus'] = 'https://schema.org/EventScheduled';
 			}
 
+			// Event performer: performer
+			$performer = array(
+				'@type' => 'Person'
+			);
+
+			// Performer name fields
+			$performer_name_fields = array( 'event_performer', 'eventperformer', 'event_performer_name', 'eventperformername', 'performer', 'performer_name', 'performername' );
+			$performer_name_fields = apply_filters( 'geodir_event_schema_performer_name_fields', $performer_name_fields, $gd_post, $schema );
+
+			if ( ! empty( $performer_name_fields ) ) {
+				foreach ( $performer_name_fields as $_field ) {
+					if ( ! empty( $gd_post->{$_field} ) ) {
+						$performer_name = stripslashes( sanitize_text_field( $gd_post->{$_field} ) );
+
+						if ( ! empty( $performer_name ) ) {
+							// performer.name
+							$performer['name'] = $performer_name;
+							break;
+						}
+					}
+				}
+
+				if ( ! empty( $performer['name'] ) ) {
+					$performer_url_fields = array( 'event_performer_url', 'eventperformerurl', 'performer_url', 'performerurl' );
+					$performer_url_fields = apply_filters( 'geodir_event_schema_performer_url_fields', $performer_url_fields, $gd_post, $schema );
+
+					if ( ! empty( $performer_url_fields ) ) {
+						foreach ( $performer_url_fields as $_field ) {
+							if ( ! empty( $gd_post->{$_field} ) ) {
+								$performer_url = esc_url_raw( $gd_post->{$_field} );
+
+								if ( ! empty( $performer_url ) ) {
+									// performer.url
+									$performer['url'] = $performer_url;
+									break;
+								}
+							}
+						}
+					}
+				}
+			}
+
+			$performer = apply_filters( 'geodir_event_schema_performer', $performer, $gd_post, $schema );
+			if ( is_array( $performer ) && ! empty( $performer['name'] ) ) {
+				$schema['performer'] = $performer;
+			}
+
+			// Event organizer: organizer
+			$organizer = array(
+				'@type' => 'Person'
+			);
+
+			// Organizer name fields
+			$organizer_name_fields = array( 'event_organizer', 'eventorganizer', 'event_organizer_name', 'eventorganizername', 'organizer', 'organizer_name', 'organizername' );
+			$organizer_name_fields = apply_filters( 'geodir_event_schema_organizer_name_fields', $organizer_name_fields, $gd_post, $schema );
+
+			if ( ! empty( $organizer_name_fields ) ) {
+				foreach ( $organizer_name_fields as $_field ) {
+					if ( ! empty( $gd_post->{$_field} ) ) {
+						$organizer_name = stripslashes( sanitize_text_field( $gd_post->{$_field} ) );
+
+						if ( ! empty( $organizer_name ) ) {
+							// organizer.name
+							$organizer['name'] = $organizer_name;
+							break;
+						}
+					}
+				}
+
+				// Use author name as organizer.
+				if ( empty( $organizer['name'] ) ) {
+					$organizer['name'] = geodir_get_client_name( $gd_post->post_author );
+				}
+
+				if ( ! empty( $organizer['name'] ) ) {
+					$organizer_url_fields = array( 'event_organizer_url', 'eventorganizerurl', 'organizer_url', 'organizerurl' );
+					$organizer_url_fields = apply_filters( 'geodir_event_schema_organizer_url_fields', $organizer_url_fields, $gd_post, $schema );
+
+					if ( ! empty( $organizer_url_fields ) ) {
+						foreach ( $organizer_url_fields as $_field ) {
+							if ( ! empty( $gd_post->{$_field} ) ) {
+								$organizer_url = esc_url_raw( $gd_post->{$_field} );
+
+								if ( ! empty( $organizer_url ) ) {
+									// organizer.url
+									$organizer['url'] = $organizer_url;
+									break;
+								}
+							}
+						}
+					}
+				}
+			}
+
+			$organizer = apply_filters( 'geodir_event_schema_organizer', $organizer, $gd_post, $schema );
+			if ( is_array( $organizer ) && ! empty( $organizer['name'] ) ) {
+				$schema['organizer'] = $organizer;
+			}
 		}
         $schema['location'] = $place;
 

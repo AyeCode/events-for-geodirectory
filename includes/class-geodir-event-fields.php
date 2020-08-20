@@ -1071,10 +1071,10 @@ class GeoDir_Event_Fields {
 			$field_label_to = ! empty( $field_label ) ? wp_sprintf( __( 'To: %s', 'geodirevents' ), $field_label ) : wp_sprintf( __( '%s End Date', 'geodirevents' ), $pt_name );
 			?>
 			<div class="gd-search-input-wrapper gd-search-field-cpt gd-search-has-date gd-search-<?php echo $htmlvar_name; ?>-from">
-				<input type="text" value="<?php echo esc_attr( $field_value_from_display ); ?>" placeholder="<?php echo esc_attr( $field_label_from ); ?>" class="cat_input gd-search-date-input" field_type="text" data-alt-field="<?php echo $htmlvar_name; ?>[from]" data-date-format="<?php echo esc_attr( $jqueryui_date_format ); ?>" data-field-key="<?php echo $htmlvar_name; ?>"/><input type="hidden" name="<?php echo $htmlvar_name; ?>[from]" value="<?php echo esc_attr( $field_value_from ); ?>">
+				<input type="text" value="<?php echo esc_attr( $field_value_from_display ); ?>" placeholder="<?php echo esc_attr( $field_label_from ); ?>" class="cat_input gd-search-date-input" field_type="text" data-alt-field="<?php echo $htmlvar_name; ?>[from]" data-date-format="<?php echo esc_attr( $jqueryui_date_format ); ?>" data-field-key="<?php echo $htmlvar_name; ?>" aria-label="<?php echo esc_attr( $field_label_from ); ?>"/><input type="hidden" name="<?php echo $htmlvar_name; ?>[from]" value="<?php echo esc_attr( $field_value_from ); ?>">
 			</div>
 			<div class="gd-search-input-wrapper gd-search-field-cpt gd-search-has-date gd-search-<?php echo $htmlvar_name; ?>-to">
-				<input type="text" value="<?php echo esc_attr( $field_value_to_display ); ?>" placeholder="<?php echo esc_attr( $field_label_to ); ?>" class="cat_input gd-search-date-input" field_type="text" data-alt-field="<?php echo $htmlvar_name; ?>[to]" data-date-format="<?php echo esc_attr( $jqueryui_date_format ); ?>" data-field-key="<?php echo $htmlvar_name; ?>"/><input type="hidden" name="<?php echo $htmlvar_name; ?>[to]" value="<?php echo esc_attr( $field_value_to ); ?>">
+				<input type="text" value="<?php echo esc_attr( $field_value_to_display ); ?>" placeholder="<?php echo esc_attr( $field_label_to ); ?>" class="cat_input gd-search-date-input" field_type="text" data-alt-field="<?php echo $htmlvar_name; ?>[to]" data-date-format="<?php echo esc_attr( $jqueryui_date_format ); ?>" data-field-key="<?php echo $htmlvar_name; ?>" aria-label="<?php echo esc_attr( $field_label_to ); ?>"/><input type="hidden" name="<?php echo $htmlvar_name; ?>[to]" value="<?php echo esc_attr( $field_value_to ); ?>">
 			</div>
 			<?php
 		} else {
@@ -1085,7 +1085,7 @@ class GeoDir_Event_Fields {
 			$field_value_display = ! empty( $field_value ) ? date_i18n( $date_format, strtotime( $field_value ) ) : '';
 			?>
 			<div class="gd-search-input-wrapper gd-search-field-cpt gd-search-has-date gd-search-<?php echo $htmlvar_name; ?>">
-				<input type="text" value="<?php echo esc_attr( $field_value_display ); ?>" placeholder="<?php echo esc_attr( $field_label ); ?>" class="cat_input gd-search-date-input" field_type="text" data-alt-field="<?php echo $htmlvar_name; ?>" data-date-format="<?php echo esc_attr( $jqueryui_date_format ); ?>" data-field-key="<?php echo $htmlvar_name; ?>"><input type="hidden" name="<?php echo $htmlvar_name; ?>" value="<?php echo esc_attr( $field_value ); ?>">
+				<input type="text" value="<?php echo esc_attr( $field_value_display ); ?>" placeholder="<?php echo esc_attr( $field_label ); ?>" class="cat_input gd-search-date-input" field_type="text" data-alt-field="<?php echo $htmlvar_name; ?>" data-date-format="<?php echo esc_attr( $jqueryui_date_format ); ?>" data-field-key="<?php echo $htmlvar_name; ?>" aria-label="<?php echo esc_attr( $field_label ); ?>"><input type="hidden" name="<?php echo $htmlvar_name; ?>" value="<?php echo esc_attr( $field_value ); ?>">
 			</div>
 			<?php			
 		}
@@ -1139,13 +1139,15 @@ class GeoDir_Event_Fields {
 			}
 			$field_label_from = ! empty( $field_label ) ? wp_sprintf( __( 'From: %s', 'geodirevents' ), $field_label ) : wp_sprintf( __( '%s Start Date', 'geodirevents' ), $pt_name );
 			$field_label_to = ! empty( $field_label ) ? wp_sprintf( __( 'To: %s', 'geodirevents' ), $field_label ) : wp_sprintf( __( '%s End Date', 'geodirevents' ), $pt_name );
+			$aria_label_from = empty( $as_fieldset_start ) ? ' aria-label="' . esc_attr( $field_label_from ) . '"' : '';
+			$aria_label_to = empty( $as_fieldset_start ) ? ' aria-label="' . esc_attr( $field_label_to ) . '"' : '';
 			?>
 			<div class="gd-search-has-date gd-search-<?php echo $htmlvar_name; ?> from-to">
 				<?php if ( ! empty( $as_fieldset_start ) ) { ?>
 					<label for="<?php echo $htmlvar_name; ?>_from"><?php echo $field_label; ?></label>
 				<?php } ?>
-				<input type="text" id="<?php echo $htmlvar_name; ?>_from" value="<?php echo esc_attr( $field_value_from_display ); ?>" placeholder="<?php echo esc_attr( $field_label_from ); ?>" class="cat_input gd-search-date-input" field_type="text" data-alt-field="<?php echo $htmlvar_name; ?>[from]" data-date-format="<?php echo esc_attr( $jqueryui_date_format ); ?>" data-field-key="<?php echo $htmlvar_name; ?>"/>
-				<input type="text" id="<?php echo $htmlvar_name; ?>_to" value="<?php echo esc_attr( $field_value_to_display ); ?>" placeholder="<?php echo esc_attr( $field_label_to ); ?>" class="cat_input gd-search-date-input" field_type="text" data-alt-field="<?php echo $htmlvar_name; ?>[to]" data-date-format="<?php echo esc_attr( $jqueryui_date_format ); ?>" data-field-key="<?php echo $htmlvar_name; ?>"/>
+				<input type="text" id="<?php echo $htmlvar_name; ?>_from" value="<?php echo esc_attr( $field_value_from_display ); ?>" placeholder="<?php echo esc_attr( $field_label_from ); ?>" class="cat_input gd-search-date-input" field_type="text" data-alt-field="<?php echo $htmlvar_name; ?>[from]" data-date-format="<?php echo esc_attr( $jqueryui_date_format ); ?>" data-field-key="<?php echo $htmlvar_name; ?>"<?php echo $aria_label_from; ?>/>
+				<input type="text" id="<?php echo $htmlvar_name; ?>_to" value="<?php echo esc_attr( $field_value_to_display ); ?>" placeholder="<?php echo esc_attr( $field_label_to ); ?>" class="cat_input gd-search-date-input" field_type="text" data-alt-field="<?php echo $htmlvar_name; ?>[to]" data-date-format="<?php echo esc_attr( $jqueryui_date_format ); ?>" data-field-key="<?php echo $htmlvar_name; ?>"<?php echo $aria_label_to; ?>/>
 				<input type="hidden" name="<?php echo $htmlvar_name; ?>[from]" value="<?php echo esc_attr( $field_value_from ); ?>"><input type="hidden" name="<?php echo $htmlvar_name; ?>[to]" value="<?php echo esc_attr( $field_value_to ); ?>">
 			</div>
 			<?php
@@ -1153,6 +1155,7 @@ class GeoDir_Event_Fields {
 			if ( empty( $field_label ) ) {
 				$field_label = wp_sprintf( __( '%s Date', 'geodirevents' ), $pt_name );
 			}
+			$aria_label = empty( $as_fieldset_start ) ? ' aria-label="' . esc_attr( $field_label ) . '"' : '';
 			$field_value = ! empty( $event_dates ) && ! is_array( $event_dates ) ? sanitize_text_field( $event_dates ) : '';
 			$field_value_display = ! empty( $field_value ) ? date_i18n( $date_format, strtotime( $field_value ) ) : '';
 			?>
@@ -1160,9 +1163,9 @@ class GeoDir_Event_Fields {
 				<?php if ( ! empty( $as_fieldset_start ) ) { ?>
 					<label for="<?php echo $htmlvar_name; ?>"><?php echo $field_label; ?></label>
 				<?php } ?>
-				<input type="text" id="<?php echo $htmlvar_name; ?>" value="<?php echo esc_attr( $field_value_display ); ?>" placeholder="<?php echo esc_attr( $field_label ); ?>" class="cat_input gd-search-date-input" field_type="text" data-alt-field="<?php echo $htmlvar_name; ?>" data-date-format="<?php echo esc_attr( $jqueryui_date_format ); ?>" data-field-key="<?php echo $htmlvar_name; ?>"/><input type="hidden" name="<?php echo $htmlvar_name; ?>" value="<?php echo esc_attr( $field_value ); ?>">
+				<input type="text" id="<?php echo $htmlvar_name; ?>" value="<?php echo esc_attr( $field_value_display ); ?>" placeholder="<?php echo esc_attr( $field_label ); ?>" class="cat_input gd-search-date-input" field_type="text" data-alt-field="<?php echo $htmlvar_name; ?>" data-date-format="<?php echo esc_attr( $jqueryui_date_format ); ?>" data-field-key="<?php echo $htmlvar_name; ?>"<?php echo $aria_label; ?>/><input type="hidden" name="<?php echo $htmlvar_name; ?>" value="<?php echo esc_attr( $field_value ); ?>">
 			</div>
-			<?php			
+			<?php
 		}
 		?></li><?php
 
