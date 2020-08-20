@@ -3,7 +3,7 @@ Contributors: stiofansisland, paoltaia, ayecode
 Donate link: https://wpgeodirectory.com
 Tags: geodirectory, event, event listings, events, events directory, event manager
 Requires at least: 4.9
-Tested up to: 5.4
+Tested up to: 5.5
 Requires PHP: 5.6
 Stable tag: 2.0.1.0
 License: GPLv3
@@ -29,6 +29,7 @@ It's easy to sort events by selecting "upcoming," "today," "past" or "all" and d
 
 = 2.0.1.1 =
 * Web accessibility changes in search by event dates - CHANGED
+* Set performer & organizer in schema from fields if exists - CHANGED
 
 = 2.0.1.0 =
 * Screen keyboard on iPhone 7 prevents working with the calendar - FIXED
