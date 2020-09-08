@@ -17,13 +17,13 @@ class GeoDir_Event_Widget_AYI extends WP_Super_Duper {
 		$options = array(
 			'textdomain'     	=> 'geodirevents',
 			'block-icon'     	=> 'calendar-alt',
-			'block-category' 	=> 'common',
+			'block-category' 	=> 'geodirectory',
 			'block-keywords' 	=> "['ayi','event','geodir event']",
 			'class_name'     	=> __CLASS__,
 			'base_id'        	=> 'geodir_event_ayi',
 			'name'           	=> __( 'GD > Are You Interested?', 'geodirevents' ),
 			'widget_ops'     	=> array(
-				'classname'     => 'geodir-wgt-event-ayi',
+				'classname'     => 'geodir-wgt-event-ayi '.geodir_bsui_class(),
 				'description'   => esc_html__( 'Displays "Are You Interested?" widget on front end.', 'geodirevents' ),
 				'geodirectory'  => true,
 				'gd_show_pages' => array(),
@@ -54,7 +54,9 @@ class GeoDir_Event_Widget_AYI extends WP_Super_Duper {
 
 	public function output( $instance = array(), $args = array(), $content = '' ) {
 		extract( $args, EXTR_SKIP );
-		
+
+		$instance['is_preview'] = $this->is_preview();
+
 		$output = GeoDir_Event_AYI::geodir_ayi_widget_display( $instance, $args );
 
 		return $output;

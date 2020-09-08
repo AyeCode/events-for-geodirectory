@@ -27,13 +27,13 @@ class GeoDir_Event_Widget_Schedules extends WP_Super_Duper {
 		$options = array(
 			'textdomain'    => 'geodirevents',
 			'block-icon'    => 'calendar-alt',
-			'block-category'=> 'widgets',
+			'block-category'=> 'geodirectory',
 			'block-keywords'=> "['event','event schedules','schedule']",
 			'class_name'    => __CLASS__,
 			'base_id'       => 'geodir_event_schedules',
 			'name'          => __( 'GD > Event Schedules', 'geodirevents' ),
 			'widget_ops'    => array(
-				'classname'   => 'geodir-event-schedules',
+				'classname'   => 'geodir-event-schedules '.geodir_bsui_class(),
 				'description' => esc_html__( 'Displays the event schedules.', 'geodirevents' ),
 				'geodirectory' => true,
 				'gd_wgt_showhide' => 'show_on',
@@ -307,6 +307,8 @@ class GeoDir_Event_Widget_Schedules extends WP_Super_Duper {
 			$template = self::get_schedule_template();
 		}
 
+		$design_style = geodir_design_style();
+
 		$_schedules = array();
 		foreach ( $schedules as $key => $row ) {
 			if ( ! ( ! empty( $row->start_date ) && $row->start_date != '0000-00-00' ) ) {
@@ -340,8 +342,9 @@ class GeoDir_Event_Widget_Schedules extends WP_Super_Duper {
 				$_schedule['end_date'] = date_i18n( $date_format, strtotime( $end_date ) );
 			}
 
+			$row_class = $design_style ? 'list-group-item px-0 py-2' : '';
 			$schedule_row = self::schedule_parse_template( $_schedule, $template, $date_format, $time_format );
-			$schedule_row = '<div class="geodir-schedule-row">' . $schedule_row . '</div>';
+			$schedule_row = '<div class="geodir-schedule-row '.$row_class.'">' . $schedule_row . '</div>';
 			$schedule_row = apply_filters( 'geodir_event_widget_schedule_html', $schedule_row, $row, $template, $date_format, $time_format );
 
 			if ( ! empty( $schedule_row ) ) {
@@ -349,7 +352,8 @@ class GeoDir_Event_Widget_Schedules extends WP_Super_Duper {
 			}
 		}
 
-		$html = ! empty( $_schedules ) ? '<div class="geodir-schedule-rows">' . implode( '', $_schedules ) . '</div>' : '';
+		$wrap_class = $design_style ? 'list-group list-group-flush' : '';
+		$html = ! empty( $_schedules ) ? '<div class="geodir-schedule-rows '.$wrap_class.'">' . implode( '', $_schedules ) . '</div>' : '';
 
 		return apply_filters( 'geodir_event_widget_schedules_html', $html, $_schedules, $schedules, $template, $date_format, $time_format );
 	}

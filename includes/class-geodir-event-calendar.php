@@ -31,6 +31,7 @@ class GeoDir_Event_Calendar {
 
 		$id_base 				= !empty($args['widget_id']) ? $args['widget_id'] : 'geodir_event_listing_calendar';
 		$title 					= apply_filters('widget_title', empty($instance['title']) ? '' : $instance['title'], $instance, $id_base);
+		$design_style           = geodir_design_style();
 		$post_type 				= apply_filters('geodir_event_calendar_widget_post_type_filter', empty( $instance['post_type'] ) ? 'gd_event' : $instance['post_type'], $instance, $id_base);
 		if ( isset( $instance['week_start_day'] ) ) {
 			$week_start_day = absint( $instance['week_start_day'] );
@@ -85,26 +86,36 @@ class GeoDir_Event_Calendar {
 		}
 
 		$post_types = geodir_get_posttypes( 'options-plural' );
-		$post_type_options = '';
+		$post_type_options = array();
 		foreach ( $post_types as $pt => $name ) {
 			if ( in_array( $pt, GeoDir_Event_Post_Type::get_event_post_types() ) ) {
-				$post_type_options .= '<option ' . selected( $post_type, $pt, false ) . ' value="' . $pt . '">' . $name . '</option>';
+				$post_type_options[] = '<option ' . selected( $post_type, $pt, false ) . ' value="' . $pt . '">' . $name . '</option>';
 			}
+		}
+
+		$tooltip_init = $design_style ? 'data-toggle="tooltip"' : '';
+		if ( $design_style ) {
+			$table_nav_class = 'p-0 m-0 border';
+			$loader = '<div class="clearfix text-center"><div class="gd-div-loader spinner-border mx-auto m-3" role="status"><span class="sr-only">'.__("Loading...","geodirevents").'</span></div></div>';
+		}else{
+			$table_nav_class = '';
+			$loader = '<div class="gd-div-loader"><i class="fas fa-sync fa-spin"></i></div>';
 		}
 		?>
 		<div class="geodir_event_cal_widget" id="gdwgt_<?php echo $identifier; ?>">
-			<?php /* if (trim($title) != '') { ?>
-			<div class="geodir_event_cal_widget_title clearfix"><?php echo $args['before_title'] . __($title, 'geodirevents') . $args['after_title'];?></div>
-			<?php } */ ?>
-			<label for="geodir_calendar_post_type" style="margin-bottom:5px;display:block"><select id="geodir_calendar_post_type" class="geodir-select" style="width:100%;max-width:400px"><?php echo $post_type_options; ?></select></label>
-			<table style="width:100%" class="gd_cal_nav">
+			<?php if(count($post_type_options) > 1 ){
+				$select_class = $design_style ? " form-control w-100 mw-100" : '';
+				?>
+			<label for="geodir_calendar_post_type" style="margin-bottom:5px;display:block"><select id="geodir_calendar_post_type" class="geodir-select <?php echo $select_class;?>" style="width:100%;max-width:400px"><?php echo implode("", $post_type_options); ?></select></label>
+			<?php } ?>
+			<table style="width:100%" class="gd_cal_nav <?php echo $table_nav_class;?>">
 				<tr align="center" class="title">
-					<td style="width:10%" class="title"><span class="geodir_cal_prev" title="<?php esc_attr_e('prev', 'geodirevents');?>"><i class="fas fa-chevron-left"></i></span></td>
-					<td style="vertical-align:top;text-align:center" class="title"></td>
-					<td style="width:10%" class="title"><span class="geodir_cal_next" title="<?php esc_attr_e('next', 'geodirevents');?>"><i class="fas fa-chevron-right"></i></span></td>
+					<td style="width:10%" class="title geodir_cal_prev <?php echo $design_style ? 'text-left c-pointer py-2 px-3' : '';?>"><span class="" <?php echo $tooltip_init;?> title="<?php esc_attr_e('prev', 'geodirevents');?>"><i class="fas fa-chevron-left"></i></span></td>
+					<td style="vertical-align:top;text-align:center" class="title gd-event-cal-title"></td>
+					<td style="width:10%" class="title geodir_cal_next <?php echo $design_style ? 'text-right c-pointer py-2 px-3' : '';?>"><span class="" <?php echo $tooltip_init;?> title="<?php esc_attr_e('next', 'geodirevents');?>"><i class="fas fa-chevron-right"></i></span></td>
 				</tr>
 			</table>
-			<div class="geodir_event_calendar geodir-calendar-loading"><div class="gd-div-loader"><i class="fas fa-sync fa-spin"></i></div></div>
+			<div class="geodir_event_calendar geodir-calendar-loading"><?php echo $loader;?></div>
 		</div>
 	<script type="text/javascript">
 	if (typeof <?php echo $function_name; ?> !== 'function') {
@@ -116,7 +127,26 @@ class GeoDir_Event_Calendar {
 			var loc = '&_loc=<?php echo (int)$add_location_filter;?>&_l=<?php echo (int)$location_id;?><?php echo $location_params;?>';
 			params = "&sday=" + sday + "&wday=" + wday + loc;
 			params += '&post_type=' + jQuery('#geodir_calendar_post_type', $container).val();
+			<?php
+			if ( $design_style ) {
+			// lazy load the cal
+			?>
+			$gdec_loaded_<?php echo $identifier;?> = false;
+			jQuery(document).ready(function(){
+				jQuery(window).scroll(function(){
+					if (!$gdec_loaded_<?php echo $identifier;?> && $container.aui_isOnScreen()) {
+						geodir_event_get_calendar($container, params);
+						$gdec_loaded_<?php echo $identifier;?> = true;
+					}
+				});
+			});
+			<?php
+			}else{
+			?>
 			geodir_event_get_calendar($container, params);
+			<?php
+			}
+			?>
 			
 			var mnth = <?php echo date_i18n("n");?>;
 			var year = <?php echo date_i18n("Y");?>;
@@ -165,7 +195,7 @@ class GeoDir_Event_Calendar {
 		if ( ! ( ! empty( $post_type ) && in_array( $post_type, GeoDir_Event_Post_Type::get_event_post_types() ) ) ) {
 			$post_type = 'gd_event';
 		}
-		
+		$design_style = geodir_design_style();
 		$week_start_day = abs( $_REQUEST["sday"] );
 		$monthNames = Array(__("January"), __("February"), __("March"), __("April"), __("May"), __("June"), __("July"), __("August"), __("September"), __("October"), __("November"), __("December"));
 
@@ -210,6 +240,18 @@ class GeoDir_Event_Calendar {
 				$query_args['neighbourhood'] = sanitize_text_field( $_REQUEST['neighbourhood'] );
 				$location_params .= '&neighbourhood=' . sanitize_text_field( $_REQUEST['neighbourhood'] );
 			}
+		}
+
+		if ( $design_style ) {
+			$title_class = 'h6 ';
+			$table_class = 'table table-hoverx table-bordered';
+			$td_class = 'text-center position-relative';
+			$loader = '<div class="clearfix text-center"><div class="gd-div-loader spinner-border mx-auto m-3" role="status"><span class="sr-only">'.__("Loading...","geodirevents").'</span></div></div>';
+		}else{
+			$title_class = '';
+			$table_class = '';
+			$td_class = '';
+			$loader = '<div class="gd-div-loader"><i class="fas fa-sync fa-spin"></i></div>';
 		}
 
 		$week_day_format = isset( $_REQUEST['wday'] ) ? (int)$_REQUEST['wday'] : 0;
@@ -270,11 +312,21 @@ class GeoDir_Event_Calendar {
 			if ( $day_i > 6 ) {
 				$day_i = $day_i - 7;
 			}
-			$_week_days .= '<td class="days"><strong>' . $week_days[ $day_i ] . '</strong></td>';
+			$_week_days .= '<td class="days '.$td_class.'"><strong>' . $week_days[ $day_i ] . '</strong></td>';
 		}
 
 		wp_reset_query();
-	?><div class="gd-div-loader"><i class="fas fa-sync fa-spin"></i></div><span id="cal_title"><strong><?php echo $monthNames[$month-1].' '.$year; ?></strong></span><table width="100%" border="0" cellpadding="2" cellspacing="2" class="calendar_widget"><tr><?php echo $_week_days; ?></tr>
+
+
+
+		echo $loader;
+	?><span id="cal_title" class="<?php echo $title_class;?>"><strong><?php echo $monthNames[$month-1].' '.$year; ?></strong></span>
+		<table width="100%" border="0" cellpadding="2" cellspacing="2" class="calendar_widget <?php echo $table_class;?>">
+
+		<thead class="thead-light">
+		<tr><?php echo $_week_days; ?></tr>
+		</thead>
+		<tbody>
 		<?php
 		$today = date_i18n('Y-m-d');
 		$timestamp = mktime( 0, 0, 0, $month, 1, $year );
@@ -285,10 +337,6 @@ class GeoDir_Event_Calendar {
 		$startday = $startday - $week_start_day;
 		if ( $startday < 0 ) {
 			$startday = $startday + 7;
-		}		
-
-		if ( isset( $_GET['m'] ) ) {
-			$m = $_GET['m'];
 		}
 
 		$search_url = geodir_search_page_base_url();
@@ -320,16 +368,19 @@ class GeoDir_Event_Calendar {
 					$today_class = 'date_today';
 				}
 
-				echo '<td valign="middle" class="gd_cal_nsat ' . $today_class . '">';
+				echo '<td valign="middle" class="gd_cal_nsat ' . $today_class . ' '.$td_class.'">';
 
 				$query_args['gd_event_calendar'] = $year . '-' . $month . '-' . $day;
 				$results = query_posts( $query_args );
 
 				if ( ! empty( $results ) ) {
 					$past_class = $date < date("Y-m-d") ? 'event_past' : '';
-					echo '<a class="event_highlight '.$past_class.'" href=" ' . $date_search_url . '" title="' . esc_attr__( 'Click to view events on this date', 'geodirevents' ) . '" > ' . (int)$day . '</a>';
+					$link_class = $design_style ? ' badge badge-primary stretched-link' : '';
+					$tooltip_init = $design_style ? 'data-toggle="tooltip"' : '';
+					echo '<a class="event_highlight '.$past_class.$link_class.'" href=" ' . $date_search_url . '" title="' . esc_attr__( 'View events on this date', 'geodirevents' ) . '" '.$tooltip_init.'> ' . (int)$day . '</a>';
 				} else {
-					echo '<span class="no_event">' . (int)$day . '</span>';
+					$link_class = $design_style ? ' badge text-muted' : '';
+					echo '<span class="no_event '.$link_class.'">' . (int)$day . '</span>';
 				}
 				echo "</td>";
 			}
@@ -338,6 +389,7 @@ class GeoDir_Event_Calendar {
 			}
 		}
 		?>
+		</tbody>
 	</table><?php
 	}
 
