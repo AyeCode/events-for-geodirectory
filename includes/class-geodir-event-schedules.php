@@ -487,12 +487,15 @@ class GeoDir_Event_Schedules {
 			$schedule_links = array();
 		}
 
+		$design_style       = geodir_design_style();
 		$date_time_format 	= geodir_event_date_time_format();
 		$date_format 		= geodir_event_date_format();
 		$time_format		= geodir_event_time_format();
-		$schedule_seperator = apply_filters( 'geodir_event_schedule_start_end_seperator', '<div class="geodir-schedule-sep">-</div>' );
+		$sep_class = $design_style ? 'd-inline-block px-1' : '';
+		$schedule_seperator = apply_filters( 'geodir_event_schedule_start_end_seperator', '<div class="geodir-schedule-sep '.$sep_class.'">-</div>' );
 		$gmt_offset			= geodir_gmt_offset();
 		$current			= ! empty( $_REQUEST['gde'] ) ? $_REQUEST['gde'] : '';
+		$count = 0;
 
 		$html		= '';
 		foreach ( $schedules as $key => $row ) {
@@ -502,8 +505,11 @@ class GeoDir_Event_Schedules {
 				$start_time		= ! empty( $row->start_time ) ? $row->start_time : '00:00:00';
 				$end_time		= ! empty( $row->end_time ) ? $row->end_time : '00:00:00';
 				$all_day		= ! empty( $row->all_day ) ? true : false;
+				$count++;
 
-				$schedule = '<div class="geodir-schedule-start"><i class="fas fa-caret-right"></i>';
+				$start_class = $design_style ? 'd-inline-block' : '';
+				$end_class = $design_style ? 'd-inline-block' : '';
+				$schedule = '<div class="geodir-schedule-start '.$start_class.'"><i class="fas fa-caret-right"></i> ';
 				if ( empty( $all_day ) ) {
 					if ( $start_date == $end_date && $start_time == $end_time && $end_time == '00:00:00' ) {
 						$end_date = date_i18n( 'Y-m-d', strtotime( $start_date . ' ' . $start_time . ' +1 day' ) );
@@ -513,11 +519,11 @@ class GeoDir_Event_Schedules {
 						$schedule .= date_i18n( $date_format, strtotime( $start_date ) );
 						$date_time_sep = apply_filters('geodir_event_date_time_separator', ', ');
 						$schedule .= $date_time_sep . date_i18n( $time_format, strtotime( $start_time ) );
-						$schedule .= '</div>' . $schedule_seperator . '<div class="geodir-schedule-end">';
+						$schedule .= '</div>' . $schedule_seperator . '<div class="geodir-schedule-end '.$end_class.'">';
 						$schedule .= date_i18n( $time_format, strtotime( $end_time ) );
 					} else {
 						$schedule .= date_i18n( $date_time_format, strtotime( $start_date . ' '. $start_time ) );
-						$schedule .= '</div>' . $schedule_seperator . '<div class="geodir-schedule-end">';
+						$schedule .= '</div>' . $schedule_seperator . '<div class="geodir-schedule-end '.$end_class.'">';
 						$schedule .= date_i18n( $date_time_format, strtotime( $end_date . ' '. $end_time ) );
 					}
 					$meta_startDate = $start_date . 'T' . date_i18n( 'H:i:s', strtotime( $start_time ) );
@@ -525,7 +531,7 @@ class GeoDir_Event_Schedules {
 				} else {
 					$schedule .= date_i18n( $date_format, strtotime( $start_date ) );
 					if ( $start_date != $end_date ) {
-						$schedule .= '</div>' . $schedule_seperator . '<div class="geodir-schedule-end">';
+						$schedule .= '</div>' . $schedule_seperator . '<div class="geodir-schedule-end '.$end_class.'">';
 						$schedule .= date_i18n( $date_format, strtotime( $end_date ) );
 						$meta_endDate = $end_date . 'T00:00:00';
 					} else {
@@ -549,11 +555,17 @@ class GeoDir_Event_Schedules {
 				}
 
 				$class = $current == $start_date ? ' geodir-schedule-current' : '';
+				$class .= $count > 5 && $design_style ? ' collapse' : '';
 				$html .= '<div class="geodir-schedule' . $class . '"><meta itemprop="startDate" content="' . $meta_startDate . $gmt_offset . '"><meta itemprop="endDate" content="' . $meta_endDate . $gmt_offset . '">' . $schedule . '</div>';
 			}
 		}
 		if ( ! empty( $html ) ) {
-			$html = '<div class="geodir-schedules">' . $html . '</div>';
+			$wrap_class = $design_style ? 'd-inline-block' : '';
+			$html = '<div class="geodir-schedules '.$wrap_class.'">' . $html . '</div>';
+			if($design_style && $count > 5){
+				$html .= '<button onclick="if(jQuery(this).text()==\'' . __( 'More', 'geodiradvancesearch' ) . '\'){jQuery(this).text(\'' . __( 'Less', 'geodiradvancesearch' ) . '\')}else{jQuery(this).text(\'' . __( 'More', 'geodiradvancesearch' ) . '\')}" class="badge badge-primary d-block mx-auto mt-2" type="button" data-toggle="collapse" data-target=".geodir-schedule.collapse" >' . __( 'More', 'geodiradvancesearch' ) . '</button>';
+
+			}
 		}
 
 		return $html;

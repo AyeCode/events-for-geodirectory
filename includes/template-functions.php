@@ -97,10 +97,10 @@ function geodir_event_display_event_type_filter( $post_type ) {
 		return;
 	}
 
+	$design_style = geodir_design_style();
+	
 	$event_type 	= ! empty( $_REQUEST['etype'] ) ? sanitize_text_field( $_REQUEST['etype'] ) : geodir_get_option( 'event_default_filter' );
 	$current_url 	= str_replace( '#038;', '&', geodir_curPageURL() );
-
-	// @link https://wpgeodirectory.com/support/topic/event-urls-today-tomorrow-this-week-this-weekend/#post-500654
 	
 	//Search and remove the current page number from url
 	$current_url 	= preg_replace ( '/(\/page\/\d+)/mi' , '' , $current_url );
@@ -108,19 +108,15 @@ function geodir_event_display_event_type_filter( $post_type ) {
 	//In case of ugly permalinks
 	$current_url	= remove_query_arg( array( 'page', 'etype' ), $current_url );
 
-	$options = '';
-	foreach ( $event_types as $value => $label ) {
-		$url = add_query_arg( array( 'etype' => $value ), $current_url );
-		$url = apply_filters( 'geodir_event_type_filter_url', $url, $value );
+	$template = $design_style ? $design_style."/loop/filter.php" : "legacy/loop/filter.php";
+	$args = array(
+		'event_types'    => $event_types,
+		'event_type'    => $event_type,
+		'current_url'  => $current_url
+	);
 
-		$options .= '<option ' . selected( $value, $event_type, false ) . ' value="' . esc_url( $url ) . '">' . $label . '</option>';
-	}
+	echo geodir_get_template_html( $template , $args, '', plugin_dir_path( GEODIR_EVENT_PLUGIN_FILE ). "templates/");
 
-	$content = '<div class="geodir-event-filter">';
-	$content .= '<select name="etype" id="etype" class="geodir-select" onchange="javascript:window.location=this.value;">' . $options . '</select>';
-	$content .= '</div>';
-
-	echo $content;
 }
 
 function geodir_event_seo_variables( $vars, $gd_page = '' ) {

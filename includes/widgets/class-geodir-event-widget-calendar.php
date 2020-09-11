@@ -23,7 +23,7 @@ class GeoDir_Event_Widget_Calendar extends WP_Super_Duper {
             'base_id'       => 'geodir_event_calendar',
             'name'          => __( 'GD > Events Calendar', 'geodirevents' ),
             'widget_ops'    => array(
-                'classname'   => 'geodir-event-calendar',
+                'classname'   => 'geodir-event-calendar '.geodir_bsui_class(),
                 'description' => esc_html__( 'Displays the events calendar for event post type.', 'geodirevents'),
                 'customize_selective_refresh' => true,
                 'geodirectory' => true,
@@ -130,6 +130,8 @@ class GeoDir_Event_Widget_Calendar extends WP_Super_Duper {
             )
         );
 
+	    add_action('wp_footer',array($this,'script'));
+
         ob_start();
 
         $this->output_html( $args, $instance );
@@ -157,7 +159,7 @@ class GeoDir_Event_Widget_Calendar extends WP_Super_Duper {
 
 		ob_start();
 
-		echo GeoDir_Event_Calendar::display_calendar( $args, $instance );
+		GeoDir_Event_Calendar::display_calendar( $args, $instance );
 
 		$output = ob_get_clean();
 
@@ -176,6 +178,37 @@ class GeoDir_Event_Widget_Calendar extends WP_Super_Duper {
 		}
 
 		return $options;
+	}
+
+	/**
+	 * JS for the widget output.
+	 */
+	public static function script(){
+		?>
+		<script>
+			function geodir_event_get_calendar($container, params) {
+				var $calendar,data;
+				$calendar = jQuery('.geodir_event_calendar', $container);
+				$calendar.addClass('geodir-calendar-loading');
+				data = 'action=geodir_ajax_calendar' + params + geodir_event_params.calendar_params;
+				jQuery.ajax({
+					type: "GET",
+					url: geodir_params.ajax_url,
+					data: data,
+					beforeSend: function() {
+						jQuery('.gd-event-cal-title', $container).html('');
+						$calendar.find('.gd-div-loader').show();
+					},
+					success: function(html) {
+						$calendar.removeClass('geodir-calendar-loading').html(html);
+						$calendar.find('.gd-div-loader').hide();
+						jQuery('#cal_title', $container).appendTo(".gd-event-cal-title");
+						aui_init();
+					}
+				});
+			}
+		</script>
+		<?php
 	}
 }
 

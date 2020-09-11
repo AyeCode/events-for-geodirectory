@@ -33,6 +33,10 @@ if ( ! defined( 'GEODIR_EVENT_VERSION' ) ) {
 	define( 'GEODIR_EVENT_VERSION', '2.0.1.0' );
 }
 
+if ( ! defined( 'GEODIR_EVENT_MIN_CORE' ) ) {
+	define( 'GEODIR_EVENT_MIN_CORE', '2.1.0.0-beta' );
+}
+
 /**
  * Begins execution of the plugin.
  *
@@ -47,6 +51,11 @@ function GeoDir_Event() {
 
 	if ( !defined( 'GEODIR_EVENT_PLUGIN_FILE' ) ) {
 		define( 'GEODIR_EVENT_PLUGIN_FILE', __FILE__ );
+	}
+
+	// min core version check
+	if( !function_exists("geodir_min_version_check") || !geodir_min_version_check("Events Manager",GEODIR_EVENT_MIN_CORE)){
+		return '';
 	}
 
 	/**

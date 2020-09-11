@@ -81,16 +81,16 @@ class GeoDir_Event_AYI {
 		if ( ! get_current_user_id() ) {
 			return false;
 		}
-		if ( ! geodir_is_page( 'detail' ) ) {
+		if ( !$args['is_preview'] && ! geodir_is_page( 'detail' ) ) {
 			return false;
 		}
-		if ( ! GeoDir_Post_types::supports( get_query_var( 'post_type' ), 'events' ) ) {
+		if ( !$args['is_preview'] && ! GeoDir_Post_types::supports( get_query_var( 'post_type' ), 'events' ) ) {
 			return false;
 		}
 
 		$current_date = date_i18n( 'Y-m-d H:i:s', time() );
 		$schedule = GeoDir_Event_Schedules::get_start_schedule( $post->ID );
-		if ( empty( $schedule ) ) {
+		if ( !$args['is_preview'] && empty( $schedule ) ) {
 			return false;
 		}
 
@@ -119,7 +119,7 @@ class GeoDir_Event_AYI {
 
 		ob_start();
 		?>
-		<div class="ayi-html-wrap">
+		<div class="ayi-html-wrap mb-3">
 			<?php self::geodir_ayi_widget_html( $post, $buttons, $gde ); ?>
 		</div>
 		<?php
@@ -133,68 +133,20 @@ class GeoDir_Event_AYI {
 
 		$no_of_users = apply_filters( 'geodir_event_rsvp_no_of_users_to_display', 10 );
 		$count = GeoDir_Event_AYI::count_interested( $post->ID, $gde );
+		$design_style = geodir_design_style();
+		
+		$template = $design_style ? $design_style."/widgets/ayi.php" : "legacy/widgets/ayi.php";
+		$args = array(
+			'cur_user_interested'    => $cur_user_interested,
+			'buttons'    => $buttons,
+			'gde'  => $gde,
+			'count'    => $count,
+			'no_of_users'  => $no_of_users,
+			'post'      => $post
+		);
 
-		if ( $buttons ) {
-			?>
-			<div class="geodir-ayi-buttons">
-				<?php
-				if ( $cur_user_interested ) {
-					if ( $cur_user_interested == 'event_rsvp_yes' ) {
-						?>
-						<p class="geodir-ayi-cur-user-interested">
-							<?php echo __('You Replied:', 'geodirevents'); ?>
-							<strong><?php echo __("I'm in!", 'geodirevents'); ?></strong>
-							<a href="#" data-action="remove" data-type="event_rsvp_yes" data-gde="<?php echo $gde; ?>" data-postid="<?php echo $post->ID; ?>" class="geodir-ayi-btn-rsvp"><?php echo __('Cancel', 'geodirevents'); ?></a>
-						</p>
-						<?php
-					} elseif ( $cur_user_interested == 'event_rsvp_maybe' ) {
-						?>
-						<p class="event-cur-user-interested">
-							<?php echo __('You Replied:', 'geodirevents'); ?>
-							<strong><?php echo __('Sounds Cool', 'geodirevents'); ?></strong>
-							<a href="#" data-action="remove" data-type="event_rsvp_maybe" data-gde="<?php echo $gde; ?>" data-postid="<?php echo $post->ID; ?>" class="geodir-ayi-btn-rsvp"><?php echo __('Cancel', 'geodirevents'); ?></a>
-						</p>
-						<?php
-					}
-				} else { ?>
-					<ul class="geodir-ayi-inline-layout">
-						<li>
-							<a href="#" data-action="add" data-type="event_rsvp_yes" data-gde="<?php echo $gde; ?>" data-postid="<?php echo $post->ID; ?>" class="geodir-ayi-btn geodir-ayi-btn-small geodir-ayi-btn-full geodir-ayi-btn-rsvp geodir-ayi-btn-rsvp-yes button button-primary"><?php echo __("I'm in!", 'geodirevents'); ?></a>
-						</li>
-						<li>
-							<a href="#" data-action="add" data-type="event_rsvp_maybe" data-gde="<?php echo $gde; ?>" data-postid="<?php echo $post->ID; ?>" class="geodir-ayi-btn geodir-ayi-btn-small geodir-ayi-btn-full geodir-ayi-btn-rsvp geodir-ayi-btn-rsvp-maybe button button-secondary"><?php echo __("Sounds Cool", 'geodirevents'); ?></a>
-						</li>
-					</ul>
-				<?php } ?>
-			</div>
-		<?php } ?>
-		<div class="geodir-ayi-wid geodir-ayi-whois-in">
-			<h3 class="geodir-ayi-section-title"><?php echo __('Who\'s in?', 'geodirevents'); ?>
-				<span><?php echo wp_sprintf( _n( '1 response', '%s responses', $count['yes'], 'geodirevents'), $count['yes'] ); ?></span></h3>
-			<?php if ($count['yes'] > 0) { ?>
-				<ul class="geodir-ayi-item-list geodir-ayi-list-users">
-					<?php self::geodir_ayi_rsvp_users_for_a_post( $post->ID, "event_rsvp_yes", $no_of_users, $gde ); ?>
-				</ul>
-			<?php } else { ?>
-				<p class="geodir-ayi-noone">
-					<?php echo __('No one is in yet.', 'geodirevents'); ?>
-				</p>
-			<?php } ?>
-		</div>
-		<div class="geodir-ayi-wid">
-			<h3 class="geodir-ayi-section-title"><?php echo __('Sounds Cool', 'geodirevents'); ?>
-				<span><?php echo wp_sprintf(_n('1 response', '%s responses', $count['maybe'], 'geodirevents'), $count['maybe'] ); ?></span></h3>
-			<?php if ($count['maybe'] > 0) { ?>
-				<ul class="geodir-ayi-item-list geodir-ayi-list-users">
-					<?php self::geodir_ayi_rsvp_users_for_a_post( $post->ID, "event_rsvp_maybe", $no_of_users, $gde ); ?>
-				</ul>
-			<?php } else { ?>
-				<p class="geodir-ayi-noone">
-					<?php echo __('No one is in yet.', 'geodirevents'); ?>
-				</p>
-			<?php } ?>
-		</div>
-		<?php
+		echo geodir_get_template_html( $template , $args, '', plugin_dir_path( GEODIR_EVENT_PLUGIN_FILE ). "templates/");
+
 		self::geodir_are_you_interested_js();
 	}
 
@@ -270,6 +222,11 @@ class GeoDir_Event_AYI {
 
 					jQuery.post('<?php echo admin_url('admin-ajax.php'); ?>', data, function (response) {
 						container.html(response);
+						<?php
+						if(geodir_design_style()){
+							echo "aui_init();";
+						}
+						?>
 					});
 				})
 			});
@@ -453,21 +410,16 @@ class GeoDir_Event_AYI {
 	}
 
 	public static function geodir_ayi_rsvp_user_avatar($user, $class='') {
-		?>
-		<li class="<?php echo $class; ?>">
-			<div class="item-avatar">
-				<a href="<?php echo self::geodir_ayi_get_user_profile_link($user->ID); ?>"><?php echo get_avatar($user->ID, 40); ?></a>
-			</div>
+		$design_style = geodir_design_style();
 
-			<div class="item">
-				<div class="item-title">
-					<a href="<?php echo self::geodir_ayi_get_user_profile_link($user->ID); ?>">
-						<?php echo self::geodir_ayi_member_name(self::geodir_ayi_get_current_user_name($user)); ?>
-					</a>
-				</div>
-			</div>
-		</li>
-		<?php
+		$template = $design_style ? $design_style."/widgets/ayi-user.php" : "legacy/widgets/ayi-user.php";
+		$args = array(
+			'class'    => $class,
+			'user'    => $user,
+		);
+
+		echo geodir_get_template_html( $template , $args, '', plugin_dir_path( GEODIR_EVENT_PLUGIN_FILE ). "templates/");
+
 	}
 
 	public static function geodir_ayi_get_user_profile_link($user_id)

@@ -27,6 +27,10 @@ It's easy to sort events by selecting "upcoming," "today," "past" or "all" and d
 
 == Changelog ==
 
+= 2.1.0.0 =
+* Changes for AyeCode UI compatibility - CHANGED
+* Event cal widget will lazy load now - CHANGED
+
 = 2.0.1.1 =
 * Web accessibility changes in search by event dates - CHANGED
 * Set performer & organizer in schema from fields if exists - CHANGED

@@ -190,6 +190,12 @@ final class GeoDir_Event_Manager {
 			add_filter( 'geodir_category_term_link', 'geodir_event_category_term_link', 20, 3 );
 		}
 
+	    if(geodir_design_style()){
+		    add_action( 'wp_enqueue_scripts', array( $this, 'add_listing_script' ), 10 );
+		    add_action( 'admin_enqueue_scripts', array( $this, 'add_listing_script' ), 15 );
+	    }
+
+
 		add_action( 'geodir_extra_loop_actions', 'geodir_event_display_event_type_filter', 6, 1 );
 		add_filter( 'geodir_seo_variables', 'geodir_event_seo_variables', 10, 2 );
 		add_filter( 'geodir_wpseo_replacements_vars', 'geodir_event_wpseo_replacements', 20, 2 );
@@ -292,16 +298,19 @@ final class GeoDir_Event_Manager {
 	 * Enqueue styles.
 	 */
 	public function add_styles() {
+		$design_style = geodir_design_style();
 
-		// Register admin styles
-		// YUI Calendar
-		wp_register_style( 'yui-calendar', GEODIR_EVENT_PLUGIN_URL . '/assets/yui/calendar.css', array(), '2.9.0' );
-		wp_register_style( 'geodir-event', GEODIR_EVENT_PLUGIN_URL . '/assets/css/style.css', array(), GEODIR_EVENT_VERSION );
+		if( ! $design_style ) {
+			// Register admin styles
+			// YUI Calendar
+			wp_register_style( 'yui-calendar', GEODIR_EVENT_PLUGIN_URL . '/assets/yui/calendar.css', array(), '2.9.0' );
+			wp_register_style( 'geodir-event', GEODIR_EVENT_PLUGIN_URL . '/assets/css/style.css', array(), GEODIR_EVENT_VERSION );
 
-		if ( is_page() && geodir_is_page( 'add-listing' ) ) {
-			wp_enqueue_style( 'yui-calendar' );
+			if ( is_page() && geodir_is_page( 'add-listing' ) ) {
+				wp_enqueue_style( 'yui-calendar' );
+			}
+			wp_enqueue_style( 'geodir-event' );
 		}
-		wp_enqueue_style( 'geodir-event' );
 	}
 
 	/**
@@ -309,21 +318,86 @@ final class GeoDir_Event_Manager {
 	 */
 	public function add_scripts() {
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+		$design_style = geodir_design_style();
 
-		// Register scripts
-		// YUI Calendar
-		wp_register_script( 'yui-calendar', GEODIR_EVENT_PLUGIN_URL . '/assets/yui/calendar.min.js', array( 'jquery' ), '2.9.0' );
-		wp_register_script( 'geodir-event', GEODIR_EVENT_PLUGIN_URL . '/assets/js/common' . $suffix . '.js', array( 'jquery', 'geodir' ), GEODIR_EVENT_VERSION );
-		wp_register_script( 'geodir-event-front', GEODIR_EVENT_PLUGIN_URL . '/assets/js/front' . $suffix . '.js', array( 'jquery', 'geodir', 'geodir-event' ), GEODIR_EVENT_VERSION );
-		wp_register_script( 'geodir-event-widget', GEODIR_EVENT_PLUGIN_URL . '/assets/js/widget' . $suffix . '.js', array( 'jquery' ), GEODIR_EVENT_VERSION );
-		
-		if ( is_page() && geodir_is_page( 'add-listing' ) ) {
-			wp_enqueue_script( 'yui-calendar' );
-			wp_localize_script( 'yui-calendar', 'cal_trans', geodir_event_yui_calendar_params() );
+		if( ! $design_style ) {
+			// Register scripts
+			// YUI Calendar
+			wp_register_script( 'yui-calendar', GEODIR_EVENT_PLUGIN_URL . '/assets/yui/calendar.min.js', array( 'jquery' ), '2.9.0' );
+			wp_register_script( 'geodir-event', GEODIR_EVENT_PLUGIN_URL . '/assets/js/common' . $suffix . '.js', array(
+				'jquery',
+				'geodir'
+			), GEODIR_EVENT_VERSION );
+			wp_register_script( 'geodir-event-widget', GEODIR_EVENT_PLUGIN_URL . '/assets/js/widget' . $suffix . '.js', array( 'jquery' ), GEODIR_EVENT_VERSION );
+
+			if ( is_page() && geodir_is_page( 'add-listing' ) ) {
+				wp_enqueue_script( 'yui-calendar' );
+				wp_localize_script( 'yui-calendar', 'cal_trans', geodir_event_yui_calendar_params() );
+			}
+
+			wp_enqueue_script( 'geodir-event' );
 		}
 
-		wp_enqueue_script( 'geodir-event' );
-		wp_enqueue_script( 'geodir-event-front' );
-		wp_localize_script( 'geodir-event', 'geodir_event_params', geodir_event_params() );
+		$script = $design_style ? 'geodir' : 'geodir-event';
+		wp_localize_script( $script, 'geodir_event_params', geodir_event_params() );
+
+
+	}
+
+	public function add_listing_script(){
+		// add listing
+		wp_add_inline_script( 'geodir-add-listing', self::add_listing() );
+	}
+	
+
+	
+	public function add_listing(){
+		ob_start();
+		if(0){ ?><script><?php }?>
+
+			jQuery(function() {
+				//event_recurring_dates
+				jQuery("#event_recurring_dates").change(function(){console.log('x');
+					geodir_event_check_custom_dates();
+				});
+
+			});
+
+			function geodir_event_check_custom_dates(){
+				console.log(jQuery("#event_recurring_dates").val());
+
+				$date_string = jQuery("#event_recurring_dates").val();
+
+				// clear the current dates
+				jQuery('.geodir_event_times_per_date').html('');
+
+				if($date_string){
+					$dates = $date_string.split(", ");
+
+					$start_val = jQuery('#event_start_time').val();
+					$end_val = jQuery('#event_end_time').val();
+
+					$dates.forEach(function(date) {
+						console.log(date);
+
+						var $el = jQuery('.event-multiple-times[data-date="' + date + '"]');
+
+						if (!$el.length) {
+							$row = '<div data-date="'+date+'" class="event-multiple-times row pb-1">' +
+								'<div class="col-2"><div class="gd-events-custom-time">'+date+'</div></div>' +
+								'<div class="col-5"><input type="text" name="event_dates[start_times][]" placeholder="<?php esc_attr_e("Start","geodirevents"); ?>" value="'+$start_val+'" class="form-control bg-initial" data-enable-time="true" data-no-calendar="true" data-alt-input="true" data-date-format="Hi" data-alt-format="H:i K" data-aui-init="flatpickr"></div>' +
+								'<div class="col-5"><input type="text" name="event_dates[end_times][]" placeholder="<?php esc_attr_e("End","geodirevents"); ?>" value="'+$end_val+'" class="form-control bg-initial" data-enable-time="true" data-no-calendar="true" data-alt-input="true" data-date-format="Hi" data-alt-format="H:i K" data-aui-init="flatpickr"></div></div>';
+							jQuery('.geodir_event_times_per_date').append($row);
+						}
+
+					});
+				}
+
+				aui_init();
+			}
+
+			<?php if(0){ ?></script><?php }
+
+		return ob_get_clean();
 	}
 }
