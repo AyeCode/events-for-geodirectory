@@ -30,6 +30,7 @@ It's easy to sort events by selecting "upcoming," "today," "past" or "all" and d
 = 2.1.0.0 =
 * Changes for AyeCode UI compatibility - CHANGED
 * Event cal widget will lazy load now - CHANGED
+* No way to show event description set in field setting - FIXED
 
 = 2.0.1.1 =
 * Web accessibility changes in search by event dates - CHANGED
