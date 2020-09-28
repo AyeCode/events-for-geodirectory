@@ -344,7 +344,7 @@ class GeoDir_Event_Fields {
 	}
 
 	public static function input_event_dates( $post_type, $package_id, $field ) {
-		global $gd_post,$geodir_label_type;
+		global $gd_post, $geodir_label_type;
 
 		if ( ! GeoDir_Post_types::supports( $post_type, 'events' ) ) {
 			return;
@@ -361,6 +361,7 @@ class GeoDir_Event_Fields {
 		$design_style           = geodir_design_style();
 
 		$htmlvar_name 			= $field['htmlvar_name'];
+		$description			= $field['desc'] != '' ? __( $field['desc'], 'geodirectory' ) : '';
 		$event_data 			= geodir_get_cf_value( $field );
 		$event_data 			= maybe_unserialize( $event_data );
 
@@ -473,7 +474,21 @@ class GeoDir_Event_Fields {
 
 
 		ob_start();
-		if($design_style){
+		if ( $design_style ) {
+			$horizontal = empty( $geodir_label_type ) || $geodir_label_type == 'horizontal' ? true : false;
+
+			// Event dates description.
+			if ( $description != '' ) {
+				echo '<div id="event_dates_desc_row" class="form-group' . ( $horizontal ? ' row' : '' ) . '" >';
+				if ( $horizontal ) {
+					echo '<label class="col-sm-2 col-form-label"></label><div class="col-sm-10">';
+				}
+				echo '<div class="form-text text-muted">' . $description . '</div>';
+				if ( $horizontal ) {
+					echo '</div>';
+				}
+				echo '</div>';
+			}
 
 			// flatpickr attributes
 			$extra_attributes['data-alt-input'] = 'true';
@@ -756,6 +771,11 @@ class GeoDir_Event_Fields {
 			
 		}else{
 	        ?>
+			<?php if ( $description != '' ) { ?>
+			<div id="geodir_event_date_desc_row" class="geodir_form_row clearfix gd-fieldset-details geodir-event-field">
+				<span class="geodir_message_note"><?php echo $description; ?></span>
+			</div>
+			<?php } ?>
 	        <div id="geodir_event_start_date_row" class="required_field geodir_form_row clearfix gd-fieldset-details geodir-event-field">
 	            <label for="event_start_date"><?php echo __( 'Event start date', 'geodirevents' ) . ' <span>*</span>'; ?></label>
 				<input type="text" class="geodir_textfield geodir-w200" name="<?php echo $htmlvar_name; ?>[start_date]" id="event_start_date" value="<?php echo $start_date; ?>" field_type="text" <?php echo ( wp_is_mobile() ) ?  'readonly="readonly"' : '';?>>
