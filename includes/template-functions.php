@@ -259,37 +259,61 @@ function geodir_event_filter_searched_params( $params = array(), $post_type, $fi
 		}
 	}
 
+	$design_style = geodir_design_style();
+
+	$label_class = 'gd-adv-search-label';
+	$sublabel_class = 'gd-adv-search-label-t';
+	if ( $design_style ) {
+		$label_class .= ' badge badge-info mr-2';
+		$sublabel_class .= ' mb-0 mr-1';
+	}
+
 	$event_date = !empty( $_REQUEST['event_date'] ) ? sanitize_text_field( $_REQUEST['event_date'] ) : '';
 
 	if ( $event_date ) {
-		$params[] = '<label class="gd-adv-search-label gd-adv-search-date gd-adv-search-event_date" data-name="event_date"><i class="fas fa-calendar-alt" aria-hidden="true"></i> <label class="gd-adv-search-label-t">' . $frontend_title . ': </label>' . date_i18n( $geodir_date_format, strtotime( $event_date ) ) . '</label>';
+		$params[] = '<label class="' . $label_class . ' gd-adv-search-date gd-adv-search-event_date" data-name="event_date"><i class="fas fa-calendar-alt" aria-hidden="true"></i> <label class="' . $sublabel_class . '">' . $frontend_title . ': </label>' . date_i18n( $geodir_date_format, strtotime( $event_date ) ) . '</label>';
 	}
 
 	if ( ! empty( $_REQUEST['event_dates'] ) ) {
 		$date_format = geodir_event_date_format();
 
-		$event_date = $_REQUEST['event_dates'];
+		$event_dates = $_REQUEST['event_dates'];
+
+		// Date range
+		if ( ! is_array( $event_dates ) && strpos( $event_dates, ' to ' ) > 0 ) {
+			$_event_dates = explode( ' to ', $event_dates, 2 );
+
+			$event_dates = array();
+			if ( ! empty( $_event_dates[0] ) ) {
+				$event_dates['from'] = trim( $_event_dates[0] );
+			}
+			if ( ! empty( $_event_dates[1] ) ) {
+				$event_dates['to'] = trim( $_event_dates[1] );
+			}
+		}
 
 		$dates = '';
-		if ( is_array( $event_date ) ) {
-			$from_date = ! empty( $event_date['from'] ) ? date_i18n( $date_format, strtotime( sanitize_text_field( $event_date['from'] ) ) ) : '';
-			$to_date = ! empty( $event_date['to'] ) ? date_i18n( $date_format, strtotime( sanitize_text_field( $event_date['to'] ) ) ) : '';
+		$extra_attrs = 'data-name="event_dates"';
+		if ( is_array( $event_dates ) ) {
+			$from_date = ! empty( $event_dates['from'] ) ? date_i18n( $date_format, strtotime( sanitize_text_field( $event_dates['from'] ) ) ) : '';
+			$to_date = ! empty( $event_dates['to'] ) ? date_i18n( $date_format, strtotime( sanitize_text_field( $event_dates['to'] ) ) ) : '';
 
-			$extra_attrs = 'data-name="event_dates[from]" data-names="event_dates[to]"';
+			if ( ! $design_style ) {
+				$extra_attrs = 'data-name="event_dates[from]" data-names="event_dates[to]"';
+			}
 			if ( $from_date != '' && $to_date == '' ) {
 				$dates .= wp_sprintf( __( 'from %s', 'geodiradvancesearch' ), $from_date );
 			} else if ( $from_date == '' && $to_date != '' ) {
 				$dates .= wp_sprintf( __( 'to %s', 'geodiradvancesearch' ), $to_date );
 			} else if ( $from_date != '' && $to_date != '' ) {
-				$dates .= $from_date.' - ' . $to_date;
+				$dates .= wp_sprintf( __( '%s to %s', 'geodiradvancesearch' ), $from_date, $to_date );
 			}
 		} else {
-			$extra_attrs = 'data-name="event_dates"';
-			$dates .= date_i18n( $date_format, strtotime( sanitize_text_field( $event_date ) ) );
+			$dates .= date_i18n( $date_format, strtotime( sanitize_text_field( $event_dates ) ) );
 		}
 
 		if ( $dates != '' ) {
-			$params[] = '<label class="gd-adv-search-label gd-adv-search-date gd-adv-search-event_dates" ' . $extra_attrs . '><i class="fas fa-times" aria-hidden="true"></i> <label class="gd-adv-search-label-t">' . $frontend_title . ': </label>' . $dates . '</label>';
+			$params[] = '<label class="' . $label_class . ' gd-adv-search-date gd-adv-search-event_dates" ' . $extra_attrs . '><i class="fas fa-times" aria-hidden="true"></i> <label class="' . $sublabel_class . '">' . $frontend_title . ': </label>' . $dates . '</label>';
 		}
 	}
 
