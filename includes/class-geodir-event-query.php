@@ -248,6 +248,18 @@ class GeoDir_Event_Query {
 			if ( ! empty( $_REQUEST['event_dates'] ) ) {
 				$event_dates = $_REQUEST['event_dates'];
 
+				if ( ! is_array( $event_dates ) && strpos( $event_dates, ' to ' ) > 0 ) {
+					$_event_dates = explode( ' to ', $event_dates, 2 );
+
+					$event_dates = array();
+					if ( ! empty( $_event_dates[0] ) ) {
+						$event_dates['from'] = trim( $_event_dates[0] );
+					}
+					if ( ! empty( $_event_dates[1] ) ) {
+						$event_dates['to'] = trim( $_event_dates[1] );
+					}
+				}
+
 				if ( is_array( $event_dates ) ) {
 					$from_date = ! empty( $event_dates['from'] ) ? date_i18n( 'Y-m-d', strtotime( sanitize_text_field( $event_dates['from'] ) ) ) : '';
 					$to_date = ! empty( $event_dates['to'] ) ? date_i18n( 'Y-m-d', strtotime( sanitize_text_field( $event_dates['to'] ) ) ) : '';

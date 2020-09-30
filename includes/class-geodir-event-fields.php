@@ -1371,6 +1371,10 @@ class GeoDir_Event_Fields {
 	}
 
 	public static function search_bar_output_event( $html, $cf, $post_type ) {
+		if ( geodir_design_style() ) {
+			return self::search_bar_output_event_aui( $html, $cf, $post_type );
+		}
+
 		if ( ! ( ! empty( $cf ) && $cf->htmlvar_name == 'event_dates' ) ) {
 			return $html;
 		}
@@ -1408,10 +1412,10 @@ class GeoDir_Event_Fields {
 			$field_label_to = ! empty( $field_label ) ? wp_sprintf( __( 'To: %s', 'geodirevents' ), $field_label ) : wp_sprintf( __( '%s End Date', 'geodirevents' ), $pt_name );
 			?>
 			<div class="gd-search-input-wrapper gd-search-field-cpt gd-search-has-date gd-search-<?php echo $htmlvar_name; ?>-from">
-				<input type="text" value="<?php echo esc_attr( $field_value_from_display ); ?>" placeholder="<?php echo esc_attr( $field_label_from ); ?>" class="cat_input gd-search-date-input" field_type="text" data-alt-field="<?php echo $htmlvar_name; ?>[from]" data-date-format="<?php echo esc_attr( $jqueryui_date_format ); ?>" data-field-key="<?php echo $htmlvar_name; ?>" aria-label="<?php echo esc_attr( $field_label_from ); ?>"/><input type="hidden" name="<?php echo $htmlvar_name; ?>[from]" value="<?php echo esc_attr( $field_value_from ); ?>">
+				<input type="text" value="<?php echo esc_attr( $field_value_from_display ); ?>" placeholder="<?php echo esc_attr( $field_label_from ); ?>" class="cat_input gd-search-date-input" field_type="text" data-alt-field="<?php echo $htmlvar_name; ?>[from]" data-date-format="<?php echo esc_attr( $jqueryui_date_format ); ?>" data-alt-format="<?php echo esc_attr( geodir_date_format_php_to_jqueryui( 'Y-m-d' ) ); ?>" data-field-key="<?php echo $htmlvar_name; ?>" aria-label="<?php echo esc_attr( $field_label_from ); ?>"/><input type="hidden" name="<?php echo $htmlvar_name; ?>[from]" value="<?php echo esc_attr( $field_value_from ); ?>">
 			</div>
 			<div class="gd-search-input-wrapper gd-search-field-cpt gd-search-has-date gd-search-<?php echo $htmlvar_name; ?>-to">
-				<input type="text" value="<?php echo esc_attr( $field_value_to_display ); ?>" placeholder="<?php echo esc_attr( $field_label_to ); ?>" class="cat_input gd-search-date-input" field_type="text" data-alt-field="<?php echo $htmlvar_name; ?>[to]" data-date-format="<?php echo esc_attr( $jqueryui_date_format ); ?>" data-field-key="<?php echo $htmlvar_name; ?>" aria-label="<?php echo esc_attr( $field_label_to ); ?>"/><input type="hidden" name="<?php echo $htmlvar_name; ?>[to]" value="<?php echo esc_attr( $field_value_to ); ?>">
+				<input type="text" value="<?php echo esc_attr( $field_value_to_display ); ?>" placeholder="<?php echo esc_attr( $field_label_to ); ?>" class="cat_input gd-search-date-input" field_type="text" data-alt-field="<?php echo $htmlvar_name; ?>[to]" data-date-format="<?php echo esc_attr( $jqueryui_date_format ); ?>"  data-alt-format="<?php echo esc_attr( geodir_date_format_php_to_jqueryui( 'Y-m-d' ) ); ?>" data-field-key="<?php echo $htmlvar_name; ?>" aria-label="<?php echo esc_attr( $field_label_to ); ?>"/><input type="hidden" name="<?php echo $htmlvar_name; ?>[to]" value="<?php echo esc_attr( $field_value_to ); ?>">
 			</div>
 			<?php
 		} else {
@@ -1422,7 +1426,7 @@ class GeoDir_Event_Fields {
 			$field_value_display = ! empty( $field_value ) ? date_i18n( $date_format, strtotime( $field_value ) ) : '';
 			?>
 			<div class="gd-search-input-wrapper gd-search-field-cpt gd-search-has-date gd-search-<?php echo $htmlvar_name; ?>">
-				<input type="text" value="<?php echo esc_attr( $field_value_display ); ?>" placeholder="<?php echo esc_attr( $field_label ); ?>" class="cat_input gd-search-date-input" field_type="text" data-alt-field="<?php echo $htmlvar_name; ?>" data-date-format="<?php echo esc_attr( $jqueryui_date_format ); ?>" data-field-key="<?php echo $htmlvar_name; ?>" aria-label="<?php echo esc_attr( $field_label ); ?>"><input type="hidden" name="<?php echo $htmlvar_name; ?>" value="<?php echo esc_attr( $field_value ); ?>">
+				<input type="text" value="<?php echo esc_attr( $field_value_display ); ?>" placeholder="<?php echo esc_attr( $field_label ); ?>" class="cat_input gd-search-date-input" field_type="text" data-alt-field="<?php echo $htmlvar_name; ?>" data-date-format="<?php echo esc_attr( $jqueryui_date_format ); ?>"  data-alt-format="<?php echo esc_attr( geodir_date_format_php_to_jqueryui( 'Y-m-d' ) ); ?>" data-field-key="<?php echo $htmlvar_name; ?>" aria-label="<?php echo esc_attr( $field_label ); ?>"><input type="hidden" name="<?php echo $htmlvar_name; ?>" value="<?php echo esc_attr( $field_value ); ?>">
 			</div>
 			<?php			
 		}
@@ -1432,8 +1436,100 @@ class GeoDir_Event_Fields {
 		return apply_filters( 'geodir_event_search_form_output_main_event_dates', $html, $cf, $post_type );
 	}
 
+	public static function search_bar_output_event_aui( $html, $cf, $post_type ) {
+		if ( ! ( ! empty( $cf ) && $cf->htmlvar_name == 'event_dates' ) ) {
+			return $html;
+		}
+
+		$pt_name = geodir_post_type_singular_name( $post_type, true );
+		$htmlvar_name = $cf->htmlvar_name;
+		$event_dates = isset( $_REQUEST[ $htmlvar_name ] ) ? $_REQUEST[ $htmlvar_name ] : '';
+		$field_label = $cf->frontend_title ? stripslashes( __( $cf->frontend_title, 'geodirectory' ) ) : '';
+
+		$date_format = geodir_event_date_format();
+
+		// Convert to jQuery UI datepicker format.
+		$datepicker_format  = geodir_date_format_php_to_aui( $date_format  );
+
+		ob_start();
+		if ( $cf->search_condition == 'FROM' ) {
+			if ( empty( $field_label ) ) {
+				$field_label = wp_sprintf( __( '%s Dates', 'geodiradvancesearch' ), $pt_name );
+			}
+			?>
+			<div class="gd-search-has-date gd-search-<?php echo $htmlvar_name; ?> from-to col-auto flex-fill">
+				<?php if ( ! empty( $field_label ) ) { ?>
+					<label for="<?php echo $htmlvar_name; ?>" class="sr-only"><?php echo $field_label; ?></label>
+				<?php }
+
+				// Flatpickr attributes
+				$extra_attributes = array();
+				$extra_attributes['data-alt-input'] = 'true';
+				$extra_attributes['data-alt-format'] = $datepicker_format;
+				$extra_attributes['data-date-format'] = 'Y-m-d';
+
+				// Range
+				$extra_attributes['data-mode'] = 'range';
+				echo aui()->input(
+					array(
+						'id'                => $htmlvar_name,
+						'name'              => $htmlvar_name,
+						'type'              => 'datepicker',
+						'placeholder'       => $field_label,
+						'class'             => '',
+						'value'             => esc_attr( $event_dates ),
+						'extra_attributes'  => $extra_attributes
+					)
+				);
+				?>
+			</div>
+			<?php
+		} else {
+			if ( empty( $field_label ) ) {
+				$field_label = wp_sprintf( __( '%s Date', 'geodirevents' ), $pt_name );
+			}
+			$aria_label = empty( $as_fieldset_start ) ? ' aria-label="' . esc_attr( $field_label ) . '"' : '';
+			$event_dates = ! empty( $event_dates ) && ! is_array( $event_dates ) ? sanitize_text_field( $event_dates ) : '';
+
+			?>
+			<div class="gd-search-has-date gd-search-<?php echo $htmlvar_name; ?> col-auto flex-fill">
+				<?php if ( ! empty( $field_label ) ) { ?>
+					<label for="<?php echo $htmlvar_name; ?>" class="sr-only"><?php echo $field_label; ?></label>
+				<?php }
+
+				// flatpickr attributes
+				$extra_attributes = array();
+				$extra_attributes['data-alt-input'] = 'true';
+				$extra_attributes['data-alt-format'] = $datepicker_date_format;
+				$extra_attributes['data-date-format'] = 'Y-m-d';
+				echo aui()->input(
+					array(
+						'id'                => $htmlvar_name,
+						'name'              => $htmlvar_name,
+						'type'              => 'datepicker',
+						'placeholder'       => $field_label,
+						'class'             => '',
+						'value'             => esc_attr( $event_dates ),
+						'extra_attributes'  => $extra_attributes
+					)
+				);
+
+				?>
+			</div>
+			<?php
+		}
+
+		$html .= ob_get_clean();
+
+		return apply_filters( 'geodir_event_search_form_output_main_event_dates', $html, $cf, $post_type );
+	}
+
 	public static function search_output_event( $html, $cf, $post_type ) {
 		global $as_fieldset_start;
+
+		if ( geodir_design_style() ) {
+			return self::search_output_event_aui( $html, $cf, $post_type );
+		}
 
 		if ( ! ( ! empty( $cf ) && $cf->htmlvar_name == 'event_dates' ) ) {
 			return $html;
@@ -1483,8 +1579,8 @@ class GeoDir_Event_Fields {
 				<?php if ( ! empty( $as_fieldset_start ) ) { ?>
 					<label for="<?php echo $htmlvar_name; ?>_from"><?php echo $field_label; ?></label>
 				<?php } ?>
-				<input type="text" id="<?php echo $htmlvar_name; ?>_from" value="<?php echo esc_attr( $field_value_from_display ); ?>" placeholder="<?php echo esc_attr( $field_label_from ); ?>" class="cat_input gd-search-date-input" field_type="text" data-alt-field="<?php echo $htmlvar_name; ?>[from]" data-date-format="<?php echo esc_attr( $jqueryui_date_format ); ?>" data-field-key="<?php echo $htmlvar_name; ?>"<?php echo $aria_label_from; ?>/>
-				<input type="text" id="<?php echo $htmlvar_name; ?>_to" value="<?php echo esc_attr( $field_value_to_display ); ?>" placeholder="<?php echo esc_attr( $field_label_to ); ?>" class="cat_input gd-search-date-input" field_type="text" data-alt-field="<?php echo $htmlvar_name; ?>[to]" data-date-format="<?php echo esc_attr( $jqueryui_date_format ); ?>" data-field-key="<?php echo $htmlvar_name; ?>"<?php echo $aria_label_to; ?>/>
+				<input type="text" id="<?php echo $htmlvar_name; ?>_from" value="<?php echo esc_attr( $field_value_from_display ); ?>" placeholder="<?php echo esc_attr( $field_label_from ); ?>" class="cat_input gd-search-date-input" field_type="text" data-alt-field="<?php echo $htmlvar_name; ?>[from]" data-date-format="<?php echo esc_attr( $jqueryui_date_format ); ?>" data-alt-format="<?php echo esc_attr( geodir_date_format_php_to_jqueryui( 'Y-m-d' ) ); ?>"  data-field-key="<?php echo $htmlvar_name; ?>"<?php echo $aria_label_from; ?>/>
+				<input type="text" id="<?php echo $htmlvar_name; ?>_to" value="<?php echo esc_attr( $field_value_to_display ); ?>" placeholder="<?php echo esc_attr( $field_label_to ); ?>" class="cat_input gd-search-date-input" field_type="text" data-alt-field="<?php echo $htmlvar_name; ?>[to]" data-date-format="<?php echo esc_attr( $jqueryui_date_format ); ?>" data-alt-format="<?php echo esc_attr( geodir_date_format_php_to_jqueryui( 'Y-m-d' ) ); ?>"  data-field-key="<?php echo $htmlvar_name; ?>"<?php echo $aria_label_to; ?>/>
 				<input type="hidden" name="<?php echo $htmlvar_name; ?>[from]" value="<?php echo esc_attr( $field_value_from ); ?>"><input type="hidden" name="<?php echo $htmlvar_name; ?>[to]" value="<?php echo esc_attr( $field_value_to ); ?>">
 			</div>
 			<?php
@@ -1500,7 +1596,101 @@ class GeoDir_Event_Fields {
 				<?php if ( ! empty( $as_fieldset_start ) ) { ?>
 					<label for="<?php echo $htmlvar_name; ?>"><?php echo $field_label; ?></label>
 				<?php } ?>
-				<input type="text" id="<?php echo $htmlvar_name; ?>" value="<?php echo esc_attr( $field_value_display ); ?>" placeholder="<?php echo esc_attr( $field_label ); ?>" class="cat_input gd-search-date-input" field_type="text" data-alt-field="<?php echo $htmlvar_name; ?>" data-date-format="<?php echo esc_attr( $jqueryui_date_format ); ?>" data-field-key="<?php echo $htmlvar_name; ?>"<?php echo $aria_label; ?>/><input type="hidden" name="<?php echo $htmlvar_name; ?>" value="<?php echo esc_attr( $field_value ); ?>">
+				<input type="text" id="<?php echo $htmlvar_name; ?>" value="<?php echo esc_attr( $field_value_display ); ?>" placeholder="<?php echo esc_attr( $field_label ); ?>" class="cat_input gd-search-date-input" field_type="text" data-alt-field="<?php echo $htmlvar_name; ?>" data-date-format="<?php echo esc_attr( $jqueryui_date_format ); ?>"  data-alt-format="<?php echo esc_attr( geodir_date_format_php_to_jqueryui( 'Y-m-d' ) ); ?>" data-field-key="<?php echo $htmlvar_name; ?>"<?php echo $aria_label; ?>/><input type="hidden" name="<?php echo $htmlvar_name; ?>" value="<?php echo esc_attr( $field_value ); ?>">
+			</div>
+			<?php
+		}
+		?></li><?php
+
+		$html .= ob_get_clean();
+
+		$html .= GeoDir_Adv_Search_Fields::field_wrapper_end( $cf );
+
+		return apply_filters( 'geodir_event_search_form_output_event_dates', $html, $cf, $post_type );
+	}
+
+	public static function search_output_event_aui( $html, $cf, $post_type ) {
+		global $as_fieldset_start;
+
+		if ( ! ( ! empty( $cf ) && $cf->htmlvar_name == 'event_dates' ) ) {
+			return $html;
+		}
+
+		$pt_name = geodir_post_type_singular_name( $post_type, true );
+		$htmlvar_name = $cf->htmlvar_name;
+		$event_dates = isset( $_REQUEST[ $htmlvar_name ] ) ? $_REQUEST[ $htmlvar_name ] : NULL;
+		$field_label = $cf->frontend_title ? stripslashes( __( $cf->frontend_title, 'geodirectory' ) ) : '';
+
+		$date_format = geodir_event_date_format();
+
+		// Convert to jQuery UI datepicker format.
+		$datepicker_format  = geodir_date_format_php_to_aui( $date_format  );
+		
+		$html .= GeoDir_Adv_Search_Fields::field_wrapper_start( $cf );
+
+		ob_start();
+		?><li class="gd-search-row-<?php echo $htmlvar_name; ?>"><?php
+		if ( $cf->search_condition == 'FROM' ) {
+			if ( empty( $field_label ) ) {
+				$field_label = wp_sprintf( __( '%s Dates', 'geodirevents' ), $pt_name );
+			}
+			?>
+			<div class="gd-search-has-date gd-search-<?php echo $htmlvar_name; ?> from-to">
+				<?php if ( ! empty( $as_fieldset_start ) ) { ?>
+					<label for="<?php echo $htmlvar_name; ?>" class="text-muted"><?php echo $field_label; ?></label>
+				<?php }
+
+				// Flatpickr attributes
+				$extra_attributes = array();
+				$extra_attributes['data-alt-input'] = 'true';
+				$extra_attributes['data-alt-format'] = $datepicker_format;
+				$extra_attributes['data-date-format'] = 'Y-m-d';
+
+				// Range
+				$extra_attributes['data-mode'] = 'range';
+				echo aui()->input(
+					array(
+						'id'                => $htmlvar_name,
+						'name'              => $htmlvar_name,
+						'type'              => 'datepicker',
+						'placeholder'       => $field_label,
+						'class'             => '',
+						'value'             => esc_attr( $event_dates ),
+						'extra_attributes'  => $extra_attributes
+					)
+				);
+				?>
+			</div>
+			<?php
+		} else {
+			if ( empty( $field_label ) ) {
+				$field_label = wp_sprintf( __( '%s Date', 'geodirevents' ), $pt_name );
+			}
+			$aria_label = empty( $as_fieldset_start ) ? ' aria-label="' . esc_attr( $field_label ) . '"' : '';
+			$event_dates = ! empty( $event_dates ) && ! is_array( $event_dates ) ? sanitize_text_field( $event_dates ) : '';
+			?>
+			<div class="gd-search-has-date gd-search-<?php echo $htmlvar_name; ?>">
+				<?php if ( ! empty( $as_fieldset_start ) ) { ?>
+					<label for="<?php echo $htmlvar_name; ?>"><?php echo $field_label; ?></label>
+				<?php }
+
+				// Flatpickr attributes
+				$extra_attributes['data-alt-input'] = 'true';
+				$extra_attributes['data-alt-format'] = $datepicker_format;
+				$extra_attributes['data-date-format'] = 'Y-m-d';
+				echo aui()->input(
+					array(
+						'id'                => $htmlvar_name,
+						'name'              => $htmlvar_name,
+						'type'              => 'datepicker',
+						'placeholder'       => $field_label,
+						'class'             => '',
+						'value'             => esc_attr( $event_dates ),
+						'extra_attributes'  => $extra_attributes
+					)
+				);
+
+				?>
 			</div>
 			<?php
 		}
