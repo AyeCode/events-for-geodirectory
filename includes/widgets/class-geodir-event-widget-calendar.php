@@ -17,7 +17,7 @@ class GeoDir_Event_Widget_Calendar extends WP_Super_Duper {
 		$options = array(
             'textdomain'    => GEODIRECTORY_TEXTDOMAIN,
             'block-icon'    => 'calendar-alt',
-            'block-category'=> 'widgets',
+            'block-category'=> 'geodirectory',
             'block-keywords'=> "['calendar','event','event calendar']",
             'class_name'    => __CLASS__,
             'base_id'       => 'geodir_event_calendar',
@@ -38,6 +38,8 @@ class GeoDir_Event_Widget_Calendar extends WP_Super_Duper {
 	 *
 	 */
 	public function set_arguments() {
+
+		$design_style = geodir_design_style();
 		$arguments = array(
 			'title'  => array(
                 'title' => __('Title:', 'geodirevents'),
@@ -105,6 +107,31 @@ class GeoDir_Event_Widget_Calendar extends WP_Super_Duper {
             )
 		);
 
+		if ( $design_style ) {
+
+			$arguments['size'] = array(
+				'type' 		=> 'select',
+				'title' 	=> __( 'Calendar Size', 'geodirevents' ),
+				'desc' 		=> __( 'Small is best used in sidebars and small spaces.', 'geodirevents' ),
+				'options'   =>  array(
+					'small'	=>  __( 'Small', 'geodirevents' ),
+					'medium'	=>  __( 'Medium', 'geodirevents' ),
+				),
+				'default'  => 'small',
+				'desc_tip' => true,
+				'advanced' => true
+			);
+
+			$arguments['disable_lazyload'] = array(
+				'title' 	=> __( 'Disable Lazyload', 'geodirevents' ),
+				'type' 		=> 'checkbox',
+				'desc_tip' 	=> true,
+				'value'  	=> '1',
+				'default'  	=> '0',
+				'advanced' 	=> true
+			);
+		}
+
 		return $arguments;
 	}
 
@@ -126,7 +153,9 @@ class GeoDir_Event_Widget_Calendar extends WP_Super_Duper {
 				'post_type' => 'gd_event',
 				'week_start_day' => get_option( 'start_of_week' ),
 				'week_day_format' => '0',
-				'use_viewing_post_type' => '0'
+				'use_viewing_post_type' => '0',
+	            'size'  =>  'small',
+	            'disable_lazyload'  =>  '0'
             )
         );
 

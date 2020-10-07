@@ -41,7 +41,7 @@ class GeoDir_Event_Calendar {
 		$week_start_day 		= apply_filters('widget_day', $week_start_day, $instance, $id_base);
 		$week_day_format 		= apply_filters('widget_week_day_format', empty($instance['week_day_format']) ? 0 : $instance['week_day_format'], $instance, $id_base);
 		$add_location_filter 	= apply_filters('geodir_event_calendar_widget_add_location_filter', empty($instance['add_location_filter']) ? 0 : 1, $instance, $id_base);
-		$identifier 			= sanitize_html_class($id_base) . '_' . uniqid();
+		$identifier 			= str_replace("-","_", sanitize_html_class($id_base) . '_' . uniqid() );
 		$function_name 			= 'geodir_event_call_calendar_' . uniqid();
 		if ( ! ( ! empty( $post_type ) && in_array( $post_type, GeoDir_Event_Post_Type::get_event_post_types() ) ) ) {
 			$post_type = 'gd_event';
@@ -95,20 +95,22 @@ class GeoDir_Event_Calendar {
 
 		$tooltip_init = $design_style ? 'data-toggle="tooltip"' : '';
 		if ( $design_style ) {
-			$table_nav_class = 'p-0 m-0 border';
+			$cal_size_class = !empty($instance['size']) && $instance['size']=='small' ? ' table-sm ' : '';
+			$table_nav_class = 'table p-0 m-0 border';
 			$loader = '<div class="clearfix text-center"><div class="gd-div-loader spinner-border mx-auto m-3" role="status"><span class="sr-only">'.__("Loading...","geodirevents").'</span></div></div>';
 		}else{
+			$cal_size_class = '';
 			$table_nav_class = '';
 			$loader = '<div class="gd-div-loader"><i class="fas fa-sync fa-spin"></i></div>';
 		}
 		?>
-		<div class="geodir_event_cal_widget" id="gdwgt_<?php echo $identifier; ?>">
+		<div class="geodir_event_cal_widget table-responsive" id="gdwgt_<?php echo $identifier; ?>">
 			<?php if(count($post_type_options) > 1 ){
 				$select_class = $design_style ? " form-control w-100 mw-100" : '';
 				?>
 			<label for="geodir_calendar_post_type" style="margin-bottom:5px;display:block"><select id="geodir_calendar_post_type" class="geodir-select <?php echo $select_class;?>" style="width:100%;max-width:400px"><?php echo implode("", $post_type_options); ?></select></label>
 			<?php } ?>
-			<table style="width:100%" class="gd_cal_nav <?php echo $table_nav_class;?>">
+			<table style="width:100%" class="gd_cal_nav  <?php echo $table_nav_class.$cal_size_class;?>">
 				<tr align="center" class="title">
 					<td style="width:10%" class="title geodir_cal_prev <?php echo $design_style ? 'text-left c-pointer py-2 px-3' : '';?>"><span class="" <?php echo $tooltip_init;?> title="<?php esc_attr_e('prev', 'geodirevents');?>"><i class="fas fa-chevron-left"></i></span></td>
 					<td style="vertical-align:top;text-align:center" class="title gd-event-cal-title"></td>
@@ -125,10 +127,12 @@ class GeoDir_Event_Calendar {
 			var wday = '<?php echo (int)$week_day_format;?>';
 			var gdem_loading = jQuery('.gd_cal_nav .gdem-loading', $container);
 			var loc = '&_loc=<?php echo (int)$add_location_filter;?>&_l=<?php echo (int)$location_id;?><?php echo $location_params;?>';
+			var size = '&size=<?php echo !empty($instance['size']) && $instance['size']=='small' ? 'small' : '';?>';
 			params = "&sday=" + sday + "&wday=" + wday + loc;
 			params += '&post_type=' + jQuery('#geodir_calendar_post_type', $container).val();
+			params+= size;
 			<?php
-			if ( $design_style ) {
+			if ( $design_style && empty($instance['disable_lazyload'])) {
 			// lazy load the cal
 			?>
 			$gdec_loaded_<?php echo $identifier;?> = false;
@@ -139,6 +143,11 @@ class GeoDir_Event_Calendar {
 						$gdec_loaded_<?php echo $identifier;?> = true;
 					}
 				});
+
+				if($container.aui_isOnScreen()){
+					geodir_event_get_calendar($container, params);
+					$gdec_loaded_<?php echo $identifier;?> = true;
+				}
 			});
 			<?php
 			}else{
@@ -157,7 +166,7 @@ class GeoDir_Event_Calendar {
 					year++;
 					mnth = 1;
 				}
-				params = "&mnth=" + mnth + "&yr=" + year + "&sday=" + sday + "&wday=" + wday + loc;
+				params = "&mnth=" + mnth + "&yr=" + year + "&sday=" + sday + "&wday=" + wday + loc + size;
 				params += '&post_type=' + jQuery('#geodir_calendar_post_type', $container).val();
 				geodir_event_get_calendar($container, params);
 			});
@@ -168,13 +177,13 @@ class GeoDir_Event_Calendar {
 					year--;
 					mnth = 12;
 				}
-				params = "&mnth=" + mnth + "&yr=" + year + "&sday=" + sday + "&wday=" + wday + loc;
+				params = "&mnth=" + mnth + "&yr=" + year + "&sday=" + sday + "&wday=" + wday + loc + size;
 				params += '&post_type=' + jQuery('#geodir_calendar_post_type', $container).val();
 				geodir_event_get_calendar($container, params);
 			});
 
 			jQuery("#geodir_calendar_post_type", $container).on('change', function() {
-				params = "&mnth=" + mnth + "&yr=" + year + "&sday=" + sday + "&wday=" + wday + loc;
+				params = "&mnth=" + mnth + "&yr=" + year + "&sday=" + sday + "&wday=" + wday + loc + size;
 				params += '&post_type=' + jQuery(this).val();
 				geodir_event_get_calendar($container, params);
 			});
@@ -315,13 +324,14 @@ class GeoDir_Event_Calendar {
 			$_week_days .= '<td class="days '.$td_class.'"><strong>' . $week_days[ $day_i ] . '</strong></td>';
 		}
 
+		$cal_size_class = !empty($_REQUEST['size']) && $_REQUEST['size']=='small' ? ' table-sm ' : '';
 		wp_reset_query();
 
 
 
 		echo $loader;
 	?><span id="cal_title" class="<?php echo $title_class;?>"><strong><?php echo $monthNames[$month-1].' '.$year; ?></strong></span>
-		<table width="100%" border="0" cellpadding="2" cellspacing="2" class="calendar_widget <?php echo $table_class;?>">
+		<table width="100%" border="0" cellpadding="2" cellspacing="2" class="calendar_widget <?php echo $table_class.$cal_size_class;?>">
 
 		<thead class="thead-light">
 		<tr><?php echo $_week_days; ?></tr>
