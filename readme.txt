@@ -27,6 +27,9 @@ It's easy to sort events by selecting "upcoming," "today," "past" or "all" and d
 
 == Changelog ==
 
+= 2.1.0.1 =
+* Change Jquery doc ready to pure JS doc ready so jQuery can be loaded without render blocking  - CHANGED
+
 = 2.1.0.0 =
 * Changes for AyeCode UI compatibility - CHANGED
 * Event cal widget will lazy load now - CHANGED

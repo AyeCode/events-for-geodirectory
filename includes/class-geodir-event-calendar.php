@@ -190,7 +190,7 @@ class GeoDir_Event_Calendar {
 		};
 	}
 
-	jQuery(function() {
+	document.addEventListener("DOMContentLoaded", function() {
 		if (typeof <?php echo $function_name; ?> == 'function') {
 			<?php echo $function_name; ?>();
 		}
