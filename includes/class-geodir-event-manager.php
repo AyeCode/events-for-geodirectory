@@ -385,8 +385,8 @@ final class GeoDir_Event_Manager {
 						if (!$el.length) {
 							$row = '<div data-date="'+date+'" class="event-multiple-times row pb-1">' +
 								'<div class="col-2"><div class="gd-events-custom-time">'+date+'</div></div>' +
-								'<div class="col-5"><input type="text" name="event_dates[start_times][]" placeholder="<?php esc_attr_e("Start","geodirevents"); ?>" value="'+$start_val+'" class="form-control bg-initial" data-enable-time="true" data-no-calendar="true" data-alt-input="true" data-date-format="Hi" data-alt-format="H:i K" data-aui-init="flatpickr"></div>' +
-								'<div class="col-5"><input type="text" name="event_dates[end_times][]" placeholder="<?php esc_attr_e("End","geodirevents"); ?>" value="'+$end_val+'" class="form-control bg-initial" data-enable-time="true" data-no-calendar="true" data-alt-input="true" data-date-format="Hi" data-alt-format="H:i K" data-aui-init="flatpickr"></div></div>';
+								'<div class="col-5"><input type="text" name="event_dates[start_times][]" placeholder="<?php esc_attr_e("Start","geodirevents"); ?>" value="'+$start_val+'" class="form-control bg-initial" data-enable-time="true" data-no-calendar="true" data-alt-input="true" data-date-format="H:i" data-alt-format="H:i K" data-aui-init="flatpickr"></div>' +
+								'<div class="col-5"><input type="text" name="event_dates[end_times][]" placeholder="<?php esc_attr_e("End","geodirevents"); ?>" value="'+$end_val+'" class="form-control bg-initial" data-enable-time="true" data-no-calendar="true" data-alt-input="true" data-date-format="H:i" data-alt-format="H:i K" data-aui-init="flatpickr"></div></div>';
 							jQuery('.geodir_event_times_per_date').append($row);
 						}
 
