@@ -27,6 +27,9 @@ It's easy to sort events by selecting "upcoming," "today," "past" or "all" and d
 
 == Changelog ==
 
+= 2.1.0.2 =
+* [gd_post_badge] now supports past, ongoing, upcoming conditions for events - ADDED
+
 = 2.1.0.1 =
 * Change Jquery doc ready to pure JS doc ready so jQuery can be loaded without render blocking  - CHANGED
 * Shows incorrect start time & end time with bootstrap style - FIXED

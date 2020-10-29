@@ -72,6 +72,10 @@ class GeoDir_Event_Fields {
 		add_filter( 'geodir_custom_field_output_custom_var_event_end_date', array( __CLASS__, 'custom_field_output_event_date_time' ), 10, 5 );
 		add_filter( 'geodir_custom_field_output_custom_var_event_end_time', array( __CLASS__, 'custom_field_output_event_date_time' ), 10, 5 );
 		add_filter( 'geodir_custom_field_output_custom_var_event_end_date_time', array( __CLASS__, 'custom_field_output_event_date_time' ), 10, 5 );
+
+		// Post badge
+		add_filter( 'geodir_badge_conditions', array( __CLASS__, 'post_badge_conditions' ), 20, 1 );
+		add_filter( 'geodir_post_badge_check_match_found', array( __CLASS__, 'post_badge_check_match_found' ), 20, 3 );
 	}
 
 	public static function event_custom_fields( $post_type, $package_id ) {
@@ -1951,5 +1955,103 @@ class GeoDir_Event_Fields {
 		}
 
 		return $html;
+	}
+
+	/**
+	 * Filter badge conditions.
+	 * 
+	 * @since 2.1.0.2
+	 * 
+	 * @global object $post The post object.
+	 *
+	 * @param array $conditions Badge conditions.
+	 * @return array Filtered conditions.
+	 */
+	public static function post_badge_conditions( $conditions ) {
+		$conditions['is_past_event'] = __( 'is past event (for events only)', 'geodirevents' );
+		$conditions['is_ongoing_event'] = __( 'is ongoing event (for events only)', 'geodirevents' );
+		$conditions['is_upcoming_event'] = __( 'is upcoming event (for events only)', 'geodirevents' );
+
+		return $conditions;
+	}
+
+	/**
+	 * Filter event dates post badge match value.
+	 * 
+	 * @since 2.1.0.2
+	 * 
+	 * @param bool $match_found True if match found else False.
+	 * @param array $args Badge arguments.
+	 * @param object $gd_post The GD post object.
+	 * @return bool
+	 */
+	public static function post_badge_check_match_found( $match_found, $args, $gd_post ) {
+		global $post;
+
+		if ( ! empty( $args['condition'] ) && in_array( $args['condition'], array( 'is_past_event', 'is_ongoing_event', 'is_upcoming_event' ) ) && GeoDir_Post_types::supports( $gd_post->post_type, 'events' ) ) {
+			if ( $args['condition'] == 'is_past_event' ) {
+				$today = strtotime( date_i18n( 'Y-m-d' ) );
+				$is_past = false;
+
+				if ( ! empty( $gd_post->end_date ) && $gd_post->end_date != '0000-00-00' ) {
+					$is_past = strtotime( $gd_post->end_date ) < $today;
+				} elseif ( ! empty( $post ) && $gd_post->ID == $post->ID && ! empty( $post->end_date ) && $post->end_date != '0000-00-00' ) {
+					$is_past = strtotime( $post->end_date ) < $today;
+				} elseif ( ( $schedules = GeoDir_Event_Schedules::get_schedules( $gd_post->ID, 'upcoming', 1 ) ) ) {
+					$is_past = false;
+				} elseif ( ( $schedules = GeoDir_Event_Schedules::get_schedules( $gd_post->ID, 'past', 1 ) ) ) {
+					$is_past = true;
+				}
+
+				$match_found = $is_past;
+			} elseif ( $args['condition'] == 'is_ongoing_event' ) {
+				$now = strtotime( date_i18n( 'Y-m-d H:i:s' ) );
+				$is_ongoing = false;
+
+				$schedule = array();
+				if ( ! empty( $gd_post->start_date ) ) {
+					$schedule = $gd_post;
+				} elseif ( ! empty( $post ) && $gd_post->ID == $post->ID && ! empty( $post->start_date ) ) {
+					$schedule = $post;
+				} elseif ( ( $schedules = GeoDir_Event_Schedules::get_schedules( $gd_post->ID, 'today', 1 ) ) ) {
+					$schedule = $schedules[0];
+				}
+
+				if ( ! empty( $schedule ) ) {
+					$start_time = ! empty( $schedule->all_day ) ? '00:00:00' : $schedule->start_time;
+					$end_time = ( $schedule->end_time == '00:00:00' || empty( $schedule->end_time ) ) && $schedule->start_date == $schedule->end_date ? '23:59:59' : $schedule->end_time;
+
+					if ( strtotime( $schedule->start_date . ' ' . $start_time ) <= $now && $now <= strtotime( $schedule->end_date . ' ' . $end_time ) ) {
+						$is_ongoing = true;
+					}
+				}
+
+				$match_found = $is_ongoing;
+			} elseif ( $args['condition'] == 'is_upcoming_event' ) {
+				$now = strtotime( date_i18n( 'Y-m-d H:i:s' ) );
+				$is_upcoming = false;
+
+				$schedule = array();
+				if ( ! empty( $gd_post->start_date ) ) {
+					$schedule = $gd_post;
+				} elseif ( ! empty( $post ) && $gd_post->ID == $post->ID && ! empty( $post->start_date ) ) {
+					$schedule = $post;
+				} elseif ( ( $schedules = GeoDir_Event_Schedules::get_schedules( $gd_post->ID, 'upcoming', 1 ) ) ) {
+					$schedule = $schedules[0];
+				}
+
+				if ( ! empty( $schedule ) ) {
+					$start_time = ! empty( $schedule->all_day ) ? '00:00:00' : $schedule->start_time;
+
+					if ( strtotime( $schedule->start_date . ' ' . $start_time ) > $now ) {
+						$is_upcoming = true;
+					}
+				}
+
+				$match_found = $is_upcoming;
+			}
+		}
+
+		return $match_found;
 	}
 }
