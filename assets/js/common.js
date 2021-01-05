@@ -9,6 +9,8 @@ var GeoDir_Event_Add = {
         this.$form = $form;
 
         jQuery('[name="event_dates[start_date]"]', $form).datepicker({
+            changeMonth: true,
+            changeYear: true,
             dateFormat: geodir_event_params.jqueryui_date_format,
             minDate: 0,
             onClose: function(selectedDate) {
@@ -19,6 +21,8 @@ var GeoDir_Event_Add = {
             }
         });
         jQuery('[name="event_dates[end_date]"]', $form).datepicker({
+            changeMonth: true,
+            changeYear: true,
             dateFormat: geodir_event_params.jqueryui_date_format,
             minDate: 0,
             onClose: function(selectedDate) {
@@ -33,6 +37,8 @@ var GeoDir_Event_Add = {
         });
         if (jQuery('[name="event_dates[repeat_end]"]', $form).length) {
             jQuery('[name="event_dates[repeat_end]"]', $form).datepicker({
+                changeMonth: true,
+                changeYear: true,
                 dateFormat: geodir_event_params.jqueryui_date_format,
                 minDate: 0,
                 onClose: function(selectedDate) {
