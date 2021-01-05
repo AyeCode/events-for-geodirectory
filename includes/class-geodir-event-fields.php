@@ -1920,7 +1920,7 @@ class GeoDir_Event_Fields {
 					$value_raw = $end_date_time;
 					break;
 			}
-
+			$value_raw = date_i18n( $format, strtotime( $value_raw ) );
 			if ( ! empty( $output ) && ( isset( $output['raw'] ) || isset( $output['strip'] ) ) ) {
 				// Stripped value.
 				return $value_raw;

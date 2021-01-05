@@ -28,6 +28,7 @@ It's easy to sort events by selecting "upcoming," "today," "past" or "all" and d
 == Changelog ==
 
 = 2.1.0.3 =
+* [gd_post_meta] Fix formatting issue in event dates shortcode - ADDED
 * Show month & year dropdown in event dates datepicker - CHANGED
 
 = 2.1.0.2 =
