@@ -45,7 +45,7 @@ $geodir_event_manager_file = __FILE__;
 $_event_current_name = 'geodir_event_manager';
 $_event_new_name = 'events-for-geodirectory';
 
-if ( strpos( $geodir_event_manager_file, $_event_current_name ) !== false ) {
+if ( strpos( $geodir_event_manager_file, $_event_current_name ) !== false && is_admin() ) {
 	require_once( dirname( $geodir_event_manager_file ) . '/includes/rename-plugin-functions.php' );
 
 	try {
