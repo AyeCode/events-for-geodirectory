@@ -1,6 +1,6 @@
 <?php
 /**
- * GeoDirectory Events
+ * Events for GeoDirectory
  *
  * @package           GeoDir_Event_Manager
  * @author            AyeCode Ltd
@@ -8,7 +8,7 @@
  * @license           GPLv3
  *
  * @wordpress-plugin
- * Plugin Name:       GeoDirectory Events
+ * Plugin Name:       Events for GeoDirectory
  * Plugin URI:        https://wpgeodirectory.com/downloads/events/
  * Description:       Events add-on allows to extend your GeoDirectory with a versatile event manager.
  * Version:           2.1.0.2
@@ -20,8 +20,6 @@
  * License URI:       http://www.gnu.org/licenses/gpl-3.0.html
  * Text Domain:       geodirevents
  * Domain Path:       /languages
- * Update URL:        https://wpgeodirectory.com
- * Update ID:         65116
  */
 
 // If this file is called directly, abort.
@@ -37,6 +35,24 @@ if ( ! defined( 'GEODIR_EVENT_MIN_CORE' ) ) {
 	define( 'GEODIR_EVENT_MIN_CORE', '2.1.0.0' );
 }
 
+global $geodir_event_manager_file;
+
+$geodir_event_manager_file = __FILE__;
+
+/**
+ * Setup plugin rename.
+ */
+$_event_current_name = 'geodir_event_manager';
+$_event_new_name = 'events-for-geodirectory';
+
+if ( strpos( $geodir_event_manager_file, $_event_current_name ) !== false ) {
+	require_once( dirname( $geodir_event_manager_file ) . '/includes/rename-plugin-functions.php' );
+
+	try {
+		geodir_event_rename_plugin( $_event_current_name, $_event_new_name );
+	} catch( Exception $error ) { }
+}
+
 /**
  * Begins execution of the plugin.
  *
@@ -47,10 +63,10 @@ if ( ! defined( 'GEODIR_EVENT_MIN_CORE' ) ) {
  * @since    1.0.0
  */
 function GeoDir_Event() {
-    global $geodir_event_manager;
+	global $geodir_event_manager, $geodir_event_manager_file;
 
-	if ( !defined( 'GEODIR_EVENT_PLUGIN_FILE' ) ) {
-		define( 'GEODIR_EVENT_PLUGIN_FILE', __FILE__ );
+	if ( ! defined( 'GEODIR_EVENT_PLUGIN_FILE' ) ) {
+		define( 'GEODIR_EVENT_PLUGIN_FILE', $geodir_event_manager_file );
 	}
 
 	// min core version check
