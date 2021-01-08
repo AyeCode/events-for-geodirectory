@@ -488,7 +488,7 @@ class GeoDir_Event_Schedules {
 		$sep_class = $design_style ? 'd-inline-block px-1' : '';
 		$schedule_seperator = apply_filters( 'geodir_event_schedule_start_end_seperator', '<div class="geodir-schedule-sep '.$sep_class.'">-</div>' );
 		$gmt_offset			= geodir_gmt_offset();
-		$current			= ! empty( $_REQUEST['gde'] ) ? $_REQUEST['gde'] : '';
+		$current			= ! empty( $_REQUEST['gde'] ) ? sanitize_text_field( $_REQUEST['gde'] ) : '';
 		$count = 0;
 
 		$html		= '';
