@@ -139,7 +139,7 @@ class GeoDir_Event_Widget_Calendar extends WP_Super_Duper {
      * The Super block output function.
      *
      * @param array $instance
-     * @param array $widget_args
+     * @param array $args
      * @param string $content
      *
      * @return mixed|string|void

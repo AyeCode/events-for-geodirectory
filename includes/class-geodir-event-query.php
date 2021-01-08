@@ -566,7 +566,7 @@ class GeoDir_Event_Query {
 	 * @since 2.0.0.16
 	 *
 	 * @param WP_Post $post The Post object (passed by reference).
-	 * @param WP_Query $this The current Query object (passed by reference).
+	 * @param WP_Query $wp_query The current Query object (passed by reference).
 	 *
 	 * @return WP_Post The Post object.
 	 */

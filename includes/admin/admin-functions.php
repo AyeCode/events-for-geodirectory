@@ -4,8 +4,6 @@
  *
  * @since 1.0.0
  * @package GeoDirectory_Events
- *
- * @param string $plugin Plugin basename.
  */
 
 function geodir_event_admin_params() {

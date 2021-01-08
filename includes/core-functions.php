@@ -581,7 +581,7 @@ function geodir_event_get_times() {
  *
  * @since 2.1.1.0
  *
- * @param array|string $str Value to sanitize.
+ * @param array|string $value Value to sanitize.
  * @return array|string Sanitized value.
  */
 function geodir_event_sanitize_text_field( $value ) {

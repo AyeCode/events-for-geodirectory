@@ -48,7 +48,6 @@ class GeoDir_Event_Calendar {
 		
 		// Set location for detail page
 		$location_id = 0;
-		$location_title = '';
 		$location_params = '';
 
 		// @todo: move this to location manager during new calendar features.

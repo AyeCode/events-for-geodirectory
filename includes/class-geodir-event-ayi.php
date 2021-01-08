@@ -27,11 +27,12 @@ class GeoDir_Event_AYI {
 	}
 
 	public static function init() {
-		return; // @todo
+		/*
 		add_action( 'geodir_event_ayi_interested_updated', array( __CLASS__, 'update_interested_count' ), 10, 5 );
 		add_action( 'wp_insert_post', array( __CLASS__, 'save_ayi_data' ), 10, 3 );
 		add_action( 'before_delete_post', array( __CLASS__, 'remove_ayi_data' ) );
 		add_action( 'wp_trash_post',      array( __CLASS__, 'remove_ayi_data' ) );
+		*/
 	}
 
 	public static function update_interested_count( $post_id, $user_id, $type, $add_or_remove, $gde ) {
@@ -601,7 +602,7 @@ class GeoDir_Event_AYI {
 		if ($city) {
 			$html .= '<span class="'.$class.'">' . $city . '</span>, ';
 		}
-		if ($post_region) {
+		if ($region) {
 			$html .= '<span class="'.$class.'">' . $region . '</span> ';
 		}
 		if ($zip) {
