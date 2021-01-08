@@ -79,7 +79,7 @@ function geodir_event_deactivation() {
  * @return array
  */
 function geodir_event_filter_schemas( $schemas ) {
-	if ( isset( $_REQUEST['taxonomy'] ) && GeoDir_Taxonomies::supports( $_REQUEST['taxonomy'], 'events' ) ) {
+	if ( isset( $_REQUEST['taxonomy'] ) && GeoDir_Taxonomies::supports( sanitize_text_field( $_REQUEST['taxonomy'] ), 'events' ) ) {
 		$schemas = geodir_event_get_schema_types();
 	}
 	return $schemas;

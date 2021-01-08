@@ -94,16 +94,16 @@ class GeoDir_Event_AYI {
 			return false;
 		}
 
-		$gde = isset( $_GET['gde'] ) ? strip_tags( $_GET['gde'] ) : false;
+		$gde = isset( $_GET['gde'] ) ? sanitize_text_field( strip_tags( $_GET['gde'] ) ) : false;
 
 		if ( ! empty( $schedule->all_day ) ) {
-			if ( $gde ) {
+			if ( ! empty( $gde ) ) {
 				$event_start_date = date_i18n( 'Y-m-d H:i:s', strtotime( $gde ) );
 			} else {
 				$event_start_date = date_i18n( 'Y-m-d H:i:s', strtotime( $schedule->start_date ) );
 			}
 		} else {
-			if ( $gde ) {
+			if ( ! empty( $gde ) ) {
 				$event_start_date = date_i18n( 'Y-m-d H:i:s', strtotime( $gde . ' ' . $schedule->start_time ) );
 			} else {
 				$event_start_date = date_i18n( 'Y-m-d H:i:s', strtotime( $schedule->start_date . ' ' . $schedule->start_time ) );
@@ -114,8 +114,6 @@ class GeoDir_Event_AYI {
 		if ( strtotime( $event_start_date ) > strtotime( $current_date ) ) {
 			$buttons = true;
 		}
-
-		$gde = isset( $_GET['gde'] ) ? strip_tags( $_GET['gde'] ) : false;
 
 		ob_start();
 		?>
@@ -168,17 +166,17 @@ class GeoDir_Event_AYI {
 		$post = geodir_get_post_info($post_id);
 
 		$current_date = date_i18n( 'Y-m-d H:i:s', time() );
-		$gde = !empty($gde) ? strip_tags($gde) : false;
+		$gde = !empty($gde) ? sanitize_text_field( strip_tags( $gde ) ) : false;
 		$schedule = GeoDir_Event_Schedules::get_start_schedule( $post->ID );
 
 		if ( ! empty( $schedule->all_day ) ) {
-			if ( $gde ) {
+			if ( ! empty( $gde ) ) {
 				$event_start_date = date_i18n( 'Y-m-d H:i:s', strtotime( $gde ) );
 			} else {
 				$event_start_date = date_i18n( 'Y-m-d H:i:s', strtotime( $schedule->start_date ) );
 			}
 		} else {
-			if ( $gde ) {
+			if ( ! empty( $gde ) ) {
 				$event_start_date = date_i18n( 'Y-m-d H:i:s', strtotime( $gde . ' ' . $schedule->start_time ) );
 			} else {
 				$event_start_date = date_i18n( 'Y-m-d H:i:s', strtotime( $schedule->start_date . ' ' . $schedule->start_time ) );
@@ -303,12 +301,12 @@ class GeoDir_Event_AYI {
 		$current_user = wp_get_current_user();
 
 		$users = get_post_meta( $rsvp_args['post_id'], $rsvp_args['type'], true );
-		$gde = ! empty( $rsvp_args['gde'] ) ? strip_tags( $rsvp_args['gde'] ) : false;
+		$gde = ! empty( $rsvp_args['gde'] ) ? sanitize_text_field( strip_tags( $rsvp_args['gde'] ) ) : false;
 
 		if ( $rsvp_args['action'] == 'add' ) {
 			$gde_users = $users;
 
-			if ( $gde ) {
+			if ( ! empty( $gde ) ) {
 				$users = isset( $users[$gde] ) ? $users[$gde] : false;
 			}
 
@@ -318,7 +316,7 @@ class GeoDir_Event_AYI {
 				$users = array( $current_user->ID => $current_user->ID );
 			}
 
-			if ( $gde ) {
+			if ( ! empty( $gde ) ) {
 				$gde_users[$gde] = $users;
 				$users = $gde_users;
 			}
@@ -329,7 +327,7 @@ class GeoDir_Event_AYI {
 
 			$gde_posts = $posts;
 
-			if ( $gde ) {
+			if ( ! empty( $gde ) ) {
 				$pid = $rsvp_args['post_id'];
 				$posts = isset( $posts[$pid] ) ? $posts[$pid] : false;
 
@@ -351,7 +349,7 @@ class GeoDir_Event_AYI {
 
 			update_user_meta( $current_user->ID, $rsvp_args['type'], $posts );
 		} else {
-			if ( $gde ) {
+			if ( ! empty( $gde ) ) {
 				if ( isset( $users[$gde][$current_user->ID] ) ) {
 					unset( $users[$gde][$current_user->ID] );
 				}
@@ -365,7 +363,7 @@ class GeoDir_Event_AYI {
 
 			$posts = get_user_meta( $current_user->ID, $rsvp_args['type'], true );
 
-			if ( $gde ) {
+			if ( ! empty( $gde ) ) {
 				if ( isset( $posts[$rsvp_args['post_id']][$gde] ) ) {
 					unset( $posts[$rsvp_args['post_id']][$gde] );
 				}
@@ -574,7 +572,7 @@ class GeoDir_Event_AYI {
 
 
 			} elseif (isset($event_details['recurring'])) {
-				$gde = isset( $_GET['gde'] ) ? strip_tags($_GET['gde']) : false;
+				$gde = isset( $_GET['gde'] ) ? sanitize_text_field( strip_tags($_GET['gde']) ) : false;
 
 				if ($gde) {
 					$event_start_date = $event_details['event_start'] ? date('l, F j, Y', strtotime($gde)) : '';
@@ -583,7 +581,7 @@ class GeoDir_Event_AYI {
 		}
 
 
-		if ($return) {
+		if ( ! empty( $return ) ) {
 			return $return;
 		}
 		return '<span class="eve-start-date">' . $event_start_date . ' ' . $event_start_time . ' - </span><span class="eve-end-date">' . $event_end_date . ' ' . $event_end_time . '</span>';
@@ -606,7 +604,7 @@ class GeoDir_Event_AYI {
 		if ($post_region) {
 			$html .= '<span class="'.$class.'">' . $region . '</span> ';
 		}
-		if ($post_zip) {
+		if ($zip) {
 			$html .= '<span class="'.$class.'">' . $zip . '</span><br>';
 		}
 		if ($country && !$review_page) {

@@ -243,8 +243,6 @@ function geodir_event_schema( $schema, $post ) {
 		$place["geo"] = !empty( $schema['geo'] )? $schema['geo']: '';
 	    
 		if ( GeoDir_Post_types::supports( $gd_post->post_type, 'events' ) ) {
-			$schedule = NULL;
-
 			if ( ! empty( $gd_post->recurring ) ) { // Recurring event
 				if ( ! empty( $_REQUEST['gde'] ) ) {
 					$schedule = GeoDir_Event_Schedules::get_upcoming_schedule( $gd_post->ID, sanitize_text_field( $_REQUEST['gde'] ) );
@@ -257,12 +255,11 @@ function geodir_event_schema( $schema, $post ) {
 				$schedule = GeoDir_Event_Schedules::get_start_schedule( $gd_post->ID );
 			}
 
-			if ( ! empty($schedule ) ) {
+			if ( ! empty( $schedule ) ) {
 				$startDate = $schedule->start_date;
 				$endDate = $schedule->end_date;
 				$startTime = ! empty( $schedule->start_time ) ? date_i18n( 'H:i', strtotime( $schedule->start_time ) ) : '00:00';
 				$endTime = ! empty( $schedule->end_time ) ? date_i18n( 'H:i', strtotime( $schedule->end_time ) ) : '00:00';
-				$all_day = ! empty( $schedule->all_day ) ? true : false;
 
 				if ( $endDate === '' ) {
 					$endDate = $startDate;
@@ -577,4 +574,28 @@ function geodir_event_get_times() {
 	}
 
 	return apply_filters( 'geodir_event_schedule_times' , $event_time_array);
+}
+
+/**
+ * Sanitizes array or string event field values.
+ *
+ * @since 2.1.1.0
+ *
+ * @param array|string $str Value to sanitize.
+ * @return array|string Sanitized value.
+ */
+function geodir_event_sanitize_text_field( $value ) {
+	if ( is_scalar( $value ) ) {
+		$value = sanitize_text_field( $value );
+	} elseif ( is_array( $value ) ) {
+		$_value = array();
+
+		foreach ( $value as $k => $v ) {
+			$_value[ sanitize_text_field( $k ) ] = geodir_event_sanitize_text_field( $v );
+		}
+
+		$value = $_value;
+	}
+
+	return $value;
 }

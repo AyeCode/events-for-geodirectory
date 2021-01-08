@@ -34,8 +34,6 @@ class GeoDir_Event_Admin_Assets {
 		global $post, $pagenow;
 		$screen         = get_current_screen();
 		$screen_id      = $screen ? $screen->id : '';
-		$page 			= ! empty( $_GET['page'] ) ? $_GET['page'] : '';
-		$gd_screen_id 	= sanitize_title( __( 'GeoDirectory', 'geodirectory' ) );
 
 		// Register admin styles
 		// YUI Calendar
@@ -60,8 +58,6 @@ class GeoDir_Event_Admin_Assets {
 
 		$screen         = get_current_screen();
 		$screen_id      = $screen ? $screen->id : '';
-		$page 			= ! empty( $_GET['page'] ) ? $_GET['page'] : '';
-		$gd_screen_id 	= sanitize_title( __( 'GeoDirectory', 'geodirectory' ) );
 
 		$suffix       	= defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		

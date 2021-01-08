@@ -1,19 +1,19 @@
-=== GeoDirectory Events ===
+=== Events for GeoDirectory ===
 Contributors: stiofansisland, paoltaia, ayecode
+Tags: calendar, geodirectory, event, event listings, events, events directory, event manager, schedule
 Donate link: https://wpgeodirectory.com
-Tags: geodirectory, event, event listings, events, events directory, event manager
 Requires at least: 4.9
-Tested up to: 5.5
+Tested up to: 5.6
 Requires PHP: 5.6
-Stable tag: 2.1.0.2
+Stable tag: 2.1.1.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-GeoDirectory Events add-on allows to extend your GeoDirectory with a versatile event manager.
+Events for GeoDirectory add-on allows to extend your GeoDirectory with a versatile event manager.
 
 == Description ==
 
-The GeoDirectory Events add-on is a compelling way to feature events in your directory, using Custom Post Types (CPT). The add-on creates the CPT Events, by adding time and date to a standard listing. Users can now choose to list a place or an event.
+The Events for GeoDirectory add-on is a compelling way to feature events in your directory, using Custom Post Types (CPT). The add-on creates the CPT Events, by adding time and date to a standard listing. Users can now choose to list a place or an event.
 
 Do you host the same event every week or every month? You can set events as recurring daily, weekly, monthly, annual events and even pick custom dates, to save entering a separate one-off listing each time.
 
@@ -21,15 +21,16 @@ It's easy to sort events by selecting "upcoming," "today," "past" or "all" and d
 
 == Installation ==
 
-1. Upload 'geodir_event_manager' directory to the '/wp-content/plugins/' directory
-2. Activate the plugin "GeoDirectory Events" through the 'Plugins' menu in WordPress
+1. Upload 'events-for-geodirectory' directory to the '/wp-content/plugins/' directory
+2. Activate the plugin "Events for GeoDirectory" through the 'Plugins' menu in WordPress
 3. Go to WordPress Admin -> Events -> Settings and customize behaviour as needed
 
 == Changelog ==
 
-= 2.1.0.3 =
+= 2.1.1.0 =
 * [gd_post_meta] Fix formatting issue in event dates shortcode - ADDED
 * Show month & year dropdown in event dates datepicker - CHANGED
+* Plugin name changed to "Events for GeoDirectory" - CHANGED
 
 = 2.1.0.2 =
 * [gd_post_badge] now supports past, ongoing, upcoming conditions for events - ADDED

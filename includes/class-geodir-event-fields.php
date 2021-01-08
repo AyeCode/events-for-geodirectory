@@ -398,11 +398,8 @@ class GeoDir_Event_Fields {
 		$repeat_end 			= '';
 		$recurring_dates 		= '';
 		$different_times 		= false;
-		$start_times 			= array();
-		$end_times 				= array();
 		$repeat_days 			= array();
 		$repeat_weeks 			= array();
-		$custom_times_list      = array();
 
 		$recurring_dates_list	= '';
 		$custom_dates_list		= '';
@@ -1305,19 +1302,8 @@ class GeoDir_Event_Fields {
 			}
 
 			if ( ! empty( $schedule->start_date ) ) {
-				$row = array(
-					'schedule_id' => ( ! empty( $schedule->schedule_id ) ? $schedule->schedule_id : $event_post->ID ),
-					'event_id' => ( ! empty( $schedule->event_id ) ? $schedule->event_id : $event_post->ID ),
-					'start_date' => $schedule->start_date,
-					'end_date' => ( ! empty( $schedule->end_date ) && $schedule->end_date != '0000-00-00' ? $schedule->end_date : $start_date ),
-					'start_time' => ( ! empty( $schedule->start_time ) ? $schedule->start_time : '00:00:00' ),
-					'end_time' => ( ! empty( $schedule->end_time ) ? $schedule->end_time : '00:00:00' ),
-					'all_day' => ( ! empty( $schedule->all_day ) ? true : false )
-				);
-
 				$value = GeoDir_Event_Schedules::get_schedules_html( array( (object)$schedule ), false );
 
-				$field_label = __( 'Date', 'geodirevents' );
 				$field_icon = geodir_field_icon_proccess( $cf );
 				$output = geodir_field_output_process( $output );
 				if ( strpos( $field_icon, 'http' ) !== false ) {
@@ -1403,7 +1389,7 @@ class GeoDir_Event_Fields {
 
 		$pt_name = geodir_post_type_singular_name( $post_type, true );
 		$htmlvar_name = $cf->htmlvar_name;
-		$event_dates = isset( $_REQUEST[ $htmlvar_name ] ) ? $_REQUEST[ $htmlvar_name ] : '';
+		$event_dates = isset( $_REQUEST[ $htmlvar_name ] ) ? geodir_event_sanitize_text_field( $_REQUEST[ $htmlvar_name ] ) : '';
 		$field_label = $cf->frontend_title ? stripslashes( __( $cf->frontend_title, 'geodirectory' ) ) : '';
 
 		$date_format = geodir_event_date_format();
@@ -1459,13 +1445,15 @@ class GeoDir_Event_Fields {
 	}
 
 	public static function search_bar_output_event_aui( $html, $cf, $post_type ) {
+		global $as_fieldset_start;
+
 		if ( ! ( ! empty( $cf ) && $cf->htmlvar_name == 'event_dates' ) ) {
 			return $html;
 		}
 
 		$pt_name = geodir_post_type_singular_name( $post_type, true );
 		$htmlvar_name = $cf->htmlvar_name;
-		$event_dates = isset( $_REQUEST[ $htmlvar_name ] ) ? $_REQUEST[ $htmlvar_name ] : '';
+		$event_dates = isset( $_REQUEST[ $htmlvar_name ] ) ? geodir_event_sanitize_text_field( $_REQUEST[ $htmlvar_name ] ) : '';
 		$field_label = $cf->frontend_title ? stripslashes( __( $cf->frontend_title, 'geodirectory' ) ) : '';
 
 		$date_format = geodir_event_date_format();
@@ -1510,7 +1498,6 @@ class GeoDir_Event_Fields {
 			if ( empty( $field_label ) ) {
 				$field_label = wp_sprintf( __( '%s Date', 'geodirevents' ), $pt_name );
 			}
-			$aria_label = empty( $as_fieldset_start ) ? ' aria-label="' . esc_attr( $field_label ) . '"' : '';
 			$event_dates = ! empty( $event_dates ) && ! is_array( $event_dates ) ? sanitize_text_field( $event_dates ) : '';
 
 			?>
@@ -1559,7 +1546,7 @@ class GeoDir_Event_Fields {
 
 		$pt_name = geodir_post_type_singular_name( $post_type, true );
 		$htmlvar_name = $cf->htmlvar_name;
-		$event_dates = isset( $_REQUEST[ $htmlvar_name ] ) ? $_REQUEST[ $htmlvar_name ] : NULL;
+		$event_dates = isset( $_REQUEST[ $htmlvar_name ] ) ? geodir_event_sanitize_text_field( $_REQUEST[ $htmlvar_name ] ) : NULL;
 		$field_label = $cf->frontend_title ? stripslashes( __( $cf->frontend_title, 'geodirectory' ) ) : '';
 
 		$date_format = geodir_event_date_format();
@@ -1640,7 +1627,7 @@ class GeoDir_Event_Fields {
 
 		$pt_name = geodir_post_type_singular_name( $post_type, true );
 		$htmlvar_name = $cf->htmlvar_name;
-		$event_dates = isset( $_REQUEST[ $htmlvar_name ] ) ? $_REQUEST[ $htmlvar_name ] : NULL;
+		$event_dates = isset( $_REQUEST[ $htmlvar_name ] ) ? geodir_event_sanitize_text_field( $_REQUEST[ $htmlvar_name ] ) : NULL;
 		$field_label = $cf->frontend_title ? stripslashes( __( $cf->frontend_title, 'geodirectory' ) ) : '';
 
 		$date_format = geodir_event_date_format();
@@ -1688,7 +1675,6 @@ class GeoDir_Event_Fields {
 			if ( empty( $field_label ) ) {
 				$field_label = wp_sprintf( __( '%s Date', 'geodirevents' ), $pt_name );
 			}
-			$aria_label = empty( $as_fieldset_start ) ? ' aria-label="' . esc_attr( $field_label ) . '"' : '';
 			$event_dates = ! empty( $event_dates ) && ! is_array( $event_dates ) ? sanitize_text_field( $event_dates ) : '';
 			?>
 			<div class="gd-search-has-date gd-search-<?php echo $htmlvar_name; ?>">
@@ -1846,7 +1832,6 @@ class GeoDir_Event_Fields {
 		$htmlvar_name = $cf['htmlvar_name'];
 
 		if ( ! empty( $schedule->start_date ) && $schedule->start_date != '0000-00-00' ) {
-			$label = $cf['frontend_title'];
 			$date_format = geodir_event_date_format();
 			$time_format = geodir_event_time_format();
 			$date_time_format = geodir_event_date_time_format();
@@ -1997,9 +1982,9 @@ class GeoDir_Event_Fields {
 					$is_past = strtotime( $gd_post->end_date ) < $today;
 				} elseif ( ! empty( $post ) && $gd_post->ID == $post->ID && ! empty( $post->end_date ) && $post->end_date != '0000-00-00' ) {
 					$is_past = strtotime( $post->end_date ) < $today;
-				} elseif ( ( $schedules = GeoDir_Event_Schedules::get_schedules( $gd_post->ID, 'upcoming', 1 ) ) ) {
+				} elseif ( ( GeoDir_Event_Schedules::get_schedules( $gd_post->ID, 'upcoming', 1 ) ) ) {
 					$is_past = false;
-				} elseif ( ( $schedules = GeoDir_Event_Schedules::get_schedules( $gd_post->ID, 'past', 1 ) ) ) {
+				} elseif ( ( GeoDir_Event_Schedules::get_schedules( $gd_post->ID, 'past', 1 ) ) ) {
 					$is_past = true;
 				}
 

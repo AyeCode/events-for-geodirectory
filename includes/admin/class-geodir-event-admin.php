@@ -24,8 +24,6 @@ class GeoDir_Event_Admin {
 	public function __construct() {
 		global $pagenow;
 
-		$post_action = ! empty( $_POST['action'] ) ? $_POST['action'] : '';
-
 		add_action( 'init', array( $this, 'includes' ) );
 		add_action( 'admin_init', array( $this, 'admin_redirects' ) );
 		add_filter( 'geodir_get_settings_pages', array( $this, 'load_settings_page' ), 10.2, 1 );
@@ -96,7 +94,7 @@ class GeoDir_Event_Admin {
 	public static function load_settings_page( $settings_pages ) {
 		$post_type = ! empty( $_REQUEST['post_type'] ) ? sanitize_text_field( $_REQUEST['post_type'] ) : 'gd_place';
 
-		if ( ! ( ! empty( $_REQUEST['page'] ) && $_REQUEST['page'] == $post_type . '-settings' ) ) {
+		if ( ! ( ! empty( $_REQUEST['page'] ) && sanitize_text_field( $_REQUEST['page'] ) == $post_type . '-settings' ) ) {
 			$settings_pages[] = include( GEODIR_EVENT_PLUGIN_DIR . 'includes/admin/settings/class-geodir-event-settings-events.php' );
 		}
 

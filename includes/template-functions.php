@@ -277,7 +277,7 @@ function geodir_event_filter_searched_params( $params = array(), $post_type, $fi
 	if ( ! empty( $_REQUEST['event_dates'] ) ) {
 		$date_format = geodir_event_date_format();
 
-		$event_dates = $_REQUEST['event_dates'];
+		$event_dates = geodir_event_sanitize_text_field( $_REQUEST['event_dates'] );
 
 		// Date range
 		if ( ! is_array( $event_dates ) && strpos( $event_dates, ' to ' ) > 0 ) {

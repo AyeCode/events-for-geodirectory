@@ -176,7 +176,6 @@ class GeoDir_Event_Widget_Schedules extends WP_Super_Duper {
 			)
 		);
 
-		$title = apply_filters( 'geodir_event_widget_schedules_title', $instance['title'], $instance, $this->id_base );
 		$post_id = apply_filters( 'geodir_event_widget_schedules_id', absint( $instance['id'] ), $instance, $this->id_base );
 		$type = apply_filters( 'geodir_event_widget_schedules_type', $instance['type'], $instance, $this->id_base );
 		$number = apply_filters( 'geodir_event_widget_schedules_number', absint( $instance['number'] ), $instance, $this->id_base );
@@ -370,12 +369,6 @@ class GeoDir_Event_Widget_Schedules extends WP_Super_Duper {
 			return NULL;
 		}
 
-		if ( empty( $date_format ) ) {
-			$date_format = geodir_event_date_format();
-		}
-		if ( empty( $time_format ) ) {
-			$time_format = geodir_event_time_format();
-		}
 		if ( empty( $template ) ) {
 			$template = self::get_schedule_template();
 		}
@@ -463,7 +456,6 @@ class GeoDir_Event_Widget_Schedules extends WP_Super_Duper {
 		}
 
 		$today = date_i18n( 'Y-m-d' );
-		$end_date = date_i18n( 'Y-m-d', strtotime( $today . ' +1 day' ) );
 
 		$schedules = array();
 		for ( $i = 0; $i < $number; $i++ ) {

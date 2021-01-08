@@ -26,11 +26,10 @@ class GeoDir_Event_Calendar {
     public function __construct() {
 	}
 
-	public static function display_calendar( $args = '', $instance = '' ) {
+	public static function display_calendar( $args = array(), $instance = array() ) {
 		global $geodirectory, $post;
 
 		$id_base 				= !empty($args['widget_id']) ? $args['widget_id'] : 'geodir_event_listing_calendar';
-		$title 					= apply_filters('widget_title', empty($instance['title']) ? '' : $instance['title'], $instance, $id_base);
 		$design_style           = geodir_design_style();
 		$post_type 				= apply_filters('geodir_event_calendar_widget_post_type_filter', empty( $instance['post_type'] ) ? 'gd_event' : $instance['post_type'], $instance, $id_base);
 		if ( isset( $instance['week_start_day'] ) ) {
@@ -50,11 +49,7 @@ class GeoDir_Event_Calendar {
 		// Set location for detail page
 		$location_id = 0;
 		$location_title = '';
-		$backup = array();
 		$location_params = '';
-		if ($title && strpos($title, '%%location_name%%') !== false) {
-			$title = str_replace('%%location_name%%', $location_title, $title);
-		}
 
 		// @todo: move this to location manager during new calendar features.
 		if ( $add_location_filter && defined( 'GEODIRLOCATION_VERSION' ) && ! empty( $geodirectory->location ) ) {
@@ -214,8 +209,7 @@ class GeoDir_Event_Calendar {
 		$month = (int)$_REQUEST["mnth"];
 		$year = (int)$_REQUEST["yr"];
 		$add_location_filter = !empty($_REQUEST['_loc']) && defined('GEODIRLOCATION_VERSION') ? true : false; // @todo LMv2
-		$location_id = $add_location_filter && !empty($_REQUEST['_l']) ? (int)$_REQUEST['_l'] : 0;
-		
+
 		$location_params = '&snear=' . (isset($_REQUEST['snear']) ? sanitize_text_field(stripslashes($_REQUEST['snear'])) : '');
 		if ($add_location_filter) {
 			if (!empty($_REQUEST['my_lat'])&& !empty($_REQUEST['my_lon'])) {
@@ -324,7 +318,7 @@ class GeoDir_Event_Calendar {
 			$_week_days .= '<td class="days '.$td_class.'"><strong>' . $week_days[ $day_i ] . '</strong></td>';
 		}
 
-		$cal_size_class = !empty($_REQUEST['size']) && $_REQUEST['size']=='small' ? ' table-sm ' : '';
+		$cal_size_class = !empty($_REQUEST['size']) && sanitize_text_field( $_REQUEST['size'] )=='small' ? ' table-sm ' : '';
 		wp_reset_query();
 
 

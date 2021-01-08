@@ -580,7 +580,5 @@ function geodir_event_extra_custom_fields_standard_events( $fields, $post_type, 
 		return $fields;
 	}
 
-	$package = $package_id != '' ? array( $package_id ) : '';
-
 	return $fields;
 }
