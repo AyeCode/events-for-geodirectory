@@ -336,7 +336,7 @@ function geodir_event_type_title( $event_type, $post_type = 'gd_event' ) {
  * @since 1.1.9
  *
  * @param string $term_link The term permalink.
- * @param int    $cat->term_id The term id.
+ * @param int    $term_id The term id.
  * @param string $post_type Wordpress post type.
  * @return string The category term link.
  */

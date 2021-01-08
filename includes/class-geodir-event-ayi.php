@@ -384,11 +384,11 @@ class GeoDir_Event_AYI {
 		do_action( 'geodir_event_ayi_interested_updated', $rsvp_args['post_id'], $current_user->ID, $rsvp_args['type'], $rsvp_args['action'], $rsvp_args['gde'] );
 	}
 
-	public static function geodir_ayi_rsvp_users_for_a_post($post_id, $type = "event_rsvp_yes", $limit = 10, $gde = false)
+	public static function geodir_ayi_rsvp_users_for_a_post($post_id, $type = "event_rsvp_yes", $limit = 10, $gde = '' )
 	{
 		$ids = get_post_meta($post_id, $type, true);
 
-		if ($gde) {
+		if ( ! empty( $gde ) ) {
 			$ids = isset( $ids[$gde] ) ? $ids[$gde] : false;
 		}
 
