@@ -187,8 +187,6 @@ function geodir_event_wpseo_replacements( $replacements, $location_array ) {
 function geodir_event_get_replacements() {
 	global $gd_post;
 
-	$replacements = array();
-
 	$event_type_archive = '';
 	$event_start_date = '';
 	$event_end_date = '';

@@ -1509,7 +1509,7 @@ class GeoDir_Event_Fields {
 				// flatpickr attributes
 				$extra_attributes = array();
 				$extra_attributes['data-alt-input'] = 'true';
-				$extra_attributes['data-alt-format'] = $datepicker_date_format;
+				$extra_attributes['data-alt-format'] = $datepicker_format;
 				$extra_attributes['data-date-format'] = 'Y-m-d';
 				echo aui()->input(
 					array(
