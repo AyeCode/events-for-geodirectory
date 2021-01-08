@@ -386,8 +386,8 @@ function geodir_event_title_recurring_event( $title, $post_id = null ) {
 				$title .= "<span class='gd-date-in-title'> " . wp_sprintf( __( '- %s', 'geodirevents' ), date_i18n( $geodir_date_format, strtotime( $event_post->start_date ) ) ) . "</span>";
 			}
 		} else {
-			if ( is_single() && isset( $_REQUEST['gde'] ) && geodir_event_is_date( $_REQUEST['gde'] ) && GeoDir_Event_Schedules::has_schedule( $post_id, sanitize_text_field( $_REQUEST['gde'] ) ) ) {
-				$title .= "<span class='gd-date-in-title'> " . wp_sprintf( __( '- %s', 'geodirevents' ), date_i18n( $geodir_date_format, strtotime( $_REQUEST['gde'] ) ) ) . "</span>";
+			if ( is_single() && isset( $_REQUEST['gde'] ) && geodir_event_is_date( sanitize_text_field( $_REQUEST['gde'] ) ) && GeoDir_Event_Schedules::has_schedule( $post_id, sanitize_text_field( $_REQUEST['gde'] ) ) ) {
+				$title .= "<span class='gd-date-in-title'> " . wp_sprintf( __( '- %s', 'geodirevents' ), date_i18n( $geodir_date_format, strtotime( sanitize_text_field( $_REQUEST['gde'] ) ) ) ) . "</span>";
 			}
 		}
 	}
