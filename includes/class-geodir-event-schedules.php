@@ -36,9 +36,6 @@ class GeoDir_Event_Schedules {
 			return false;
 		}
 
-		$format 				= geodir_event_field_date_format();
-		$default_start_date 	= date_i18n( $format );
-
 		$data					= maybe_unserialize( $event_data );
 		$recurring 				= ! empty( $data['recurring'] ) ? true : false;
 		$all_day 				= ! empty( $data['all_day'] ) ? true : false;
@@ -195,16 +192,15 @@ class GeoDir_Event_Schedules {
 						$day 	= date_i18n( 'd', $time );
 
 						$date_occurrence = $year . '-' . $month . '-' . $day;
-						$time_occurrence = strtotime( $date_occurrence );
 
 						if ( !empty( $repeat_days ) || !empty( $repeat_weeks ) ) {
-							$month_days = cal_days_in_month( CAL_GREGORIAN, $month, $year );												
+							$month_days = cal_days_in_month( CAL_GREGORIAN, $month, $year );
 							for ( $d = 1; $d <= $month_days; $d++ ) {
 								$recurr_time = strtotime( $year . '-' . $month . '-' . $d );
 								$week_day = date_i18n( 'w', $recurr_time );
 								$week_diff = ( $recurr_time - strtotime( $year . '-' . $month . '-01' ) );
 								$week_num = $week_diff > 0 ? (int)( $week_diff / ( DAY_IN_SECONDS * 7 ) ) : 0;
-								$week_num++;														
+								$week_num++;
 
 								if ( $recurr_time >= $start_time && $recurr_time <= $end_time ) {
 									if ( empty( $repeat_days ) && !empty( $repeat_weeks ) && in_array( $week_num, $repeat_weeks ) ) {
@@ -226,7 +222,6 @@ class GeoDir_Event_Schedules {
 					if ( $limit > 0 ) {
 						if ( !empty( $repeat_days ) || !empty( $repeat_weeks ) ) {
 							$dates = array();
-							$week_dates = array();
 							$days_limit = 0;
 
 							$i = 0;
@@ -234,7 +229,6 @@ class GeoDir_Event_Schedules {
 								$time = strtotime( $start_date . '+' . ( $interval * $i ) . ' month' );
 								$year = date_i18n( 'Y', $time );
 								$month = date_i18n( 'm', $time );
-								$day = date_i18n( 'd', $time );
 
 								$month_days = cal_days_in_month( CAL_GREGORIAN, $month, $year );
 								for ( $d = 1; $d <= $month_days; $d++ ) {

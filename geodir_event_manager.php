@@ -50,7 +50,9 @@ if ( strpos( $geodir_event_manager_file, $_event_current_name ) !== false && is_
 
 	try {
 		geodir_event_rename_plugin( $_event_current_name, $_event_new_name );
-	} catch( Exception $error ) { }
+	} catch( Exception $error ) {
+		// Error
+	}
 }
 
 /**

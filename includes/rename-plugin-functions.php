@@ -132,7 +132,9 @@ function geodir_event_recursive_replace( $from = '', $to = '', $data = '', $seri
 		if ( $serialised ) {
 			return maybe_serialize( $data );
 		}
-	} catch( Exception $error ) { }
+	} catch( Exception $error ) {
+		// Error
+	}
 
 	return $data;
 }

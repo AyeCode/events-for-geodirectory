@@ -42,7 +42,14 @@ final class GeoDir_Event_Manager {
      * @var    GeoDir_Event_Settings
      */
     public $settings;
-    
+
+    /**
+     * Query instance.
+     *
+     * @var GeoDir_Event_Query
+     */
+    public $query = null;
+
     /**
      * Main GeoDir_Event_Manager Instance.
      *

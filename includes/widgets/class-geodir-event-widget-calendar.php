@@ -171,11 +171,11 @@ class GeoDir_Event_Widget_Calendar extends WP_Super_Duper {
 	/**
      * Generates popular postview HTML.
      *
-     * @param array|string $args               Display arguments including before_title, after_title, before_widget, and
+     * @param array $args               Display arguments including before_title, after_title, before_widget, and
      *                                         after_widget.
-     * @param array|string $instance           The settings for the particular instance of the widget.
+     * @param array $instance           The settings for the particular instance of the widget.
      */
-    public function output_html( $args = '', $instance = '' ) {
+    public function output_html( $args = array(), $instance = array() ) {
 		$use_viewing_post_type = ! empty( $instance['use_viewing_post_type'] ) ? true : false;
 
         if ( $use_viewing_post_type ) {

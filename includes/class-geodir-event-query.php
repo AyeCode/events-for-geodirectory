@@ -239,14 +239,14 @@ class GeoDir_Event_Query {
 
 		if ( geodir_is_page( 'search' ) ) {
 			if ( ! empty( $_REQUEST['event_calendar'] ) ) {
-				$filter_date = $_REQUEST['event_calendar'];
+				$filter_date = sanitize_text_field( $_REQUEST['event_calendar'] );
 				$filter_date = substr( $filter_date, 0, 4 ) . '-' . substr( $filter_date , 4, 2 ) . '-' . substr( $filter_date, 6, 2 );
 
 				$where .= " AND ( start_date = '" . $filter_date . "' OR ( start_date <= '" . $filter_date . "' AND end_date >= '" . $filter_date . "' ) )";
 			}
 
 			if ( ! empty( $_REQUEST['event_dates'] ) ) {
-				$event_dates = $_REQUEST['event_dates'];
+				$event_dates = geodir_event_sanitize_text_field( $_REQUEST['event_dates'] );
 
 				if ( ! is_array( $event_dates ) && strpos( $event_dates, ' to ' ) > 0 ) {
 					$_event_dates = explode( ' to ', $event_dates, 2 );
@@ -296,12 +296,6 @@ class GeoDir_Event_Query {
 
 		if ( ! GeoDir_Post_types::supports( $geodir_post_type, 'events' ) ) {
 			return $groupby;
-		}
-		
-		if ( trim( $groupby ) != '' ) {
-			$groupby .= ", ";
-		} else {
-			$groupby = "GROUP BY ";
 		}
 
 		$groupby = "{$wpdb->posts}.ID, " . GEODIR_EVENT_SCHEDULES_TABLE . ".start_date";
