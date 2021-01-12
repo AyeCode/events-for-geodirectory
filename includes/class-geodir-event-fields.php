@@ -527,7 +527,7 @@ class GeoDir_Event_Fields {
 					'class'             => '',
 					'value'             => $end_date,
 					'help_text'         => __( 'Choose a end date of the event.', 'geodirevents' ),
-					'element_require'   => '[%recurring%:checked]=="0"',
+					'element_require'   => ( $is_recurring_active ? '[%recurring%:checked]=="0"' : '' ),
 					'extra_attributes'  => $extra_attributes
 				)
 			);
