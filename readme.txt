@@ -1,6 +1,6 @@
-=== Events for GeoDirectory ===
+=== Events Calendar for GeoDirectory ===
 Contributors: stiofansisland, paoltaia, ayecode
-Tags: calendar, geodirectory, event, event listings, events, events directory, event manager, schedule
+Tags: events, calendar, event, schedule, organizer, geodirectory, event listings, events directory, event manager
 Donate link: https://wpgeodirectory.com
 Requires at least: 4.9
 Tested up to: 5.6
@@ -9,15 +9,46 @@ Stable tag: 2.1.1.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Events for GeoDirectory add-on allows to extend your GeoDirectory with a versatile event manager.
+Events Calendar for GeoDirectory add-on allows to extend your GeoDirectory powered website with a versatile event manager.
 
 == Description ==
 
-The Events for GeoDirectory add-on is a compelling way to feature events in your directory, using Custom Post Types (CPT). The add-on creates the CPT Events, by adding time and date to a standard listing. Users can now choose to list a place or an event.
+The Events Calendar for GeoDirectory add-on is a compelling way to feature events in your directory, using Custom Post Types (CPT). The add-on creates the CPT Events, by adding time and date to a standard listing. Users can now choose to list a place or an event.
+
+= Recurring Events Included =
 
 Do you host the same event every week or every month? You can set events as recurring daily, weekly, monthly, annual events and even pick custom dates, to save entering a separate one-off listing each time.
 
 It's easy to sort events by selecting "upcoming," "today," "past" or "all" and display custom events lists, grids and a simple events calendar anywhere using widgets. By default, events are ordered with the upcoming event first.
+
+= Events Locator =
+
+Events can be easily displayed on a map, allowing user to locate your events with ease. Easily show distance from them and directions.
+
+= Premium add-ons =
+
+* [SEO Location Manager](https://wpgeodirectory.com/downloads/location-manager/ "Allows to create a global directory") - Create a global Events Directory with unique pages for Countries, Regions, Cities, and Neighbourhoods. Also create Virtual Events without a physical address.
+* [Pricing Manager](https://wpgeodirectory.com/downloads/pricing-manager/ "Allows to monetize your Events") - Set prices for your Events. Enable/disable features per price. It uses our free [Invoicing Plugin](https://wordpress.org/plugins/invoicing/ "Invoicing plugin for WordPress") to manage payments, taxes, and invoices.
+* [Custom Post Types](https://wpgeodirectory.com/downloads/custom-post-types/ "Allows to extend your directory categorization") - Create unlimited events custom post type, each with its own custom fields, prices and more.
+* [MultiRatings and Reviews](https://wpgeodirectory.com/downloads/multiratings-and-reviews/ "Allows you to extend your rating and reviews categorization") - Extend the review system allowing multiple rating categories (e.g., service, quality, price), add images to reviews and other cool features.
+* [Advance search filters](https://wpgeodirectory.com/downloads/advanced-search-filters/ "Allows you to extended search with custom filters") - Turns any Events custom field into an advance filter of the search widget. Adds smart autocompletes, geolocation, and much more. Search Events by date.
+* [Buddypress Integration](https://wpgeodirectory.com/downloads/buddypress-integration/ "integrates Buddypress with The events Calendar for GeoDirectory") - Smoothly integrates GeoDirectory Events with Buddypress.
+* [Claim Listing Manager](https://wpgeodirectory.com/downloads/claim-manager/ "Allows users to claim their Events") - Allow events owners to fine-tune their event listings, add images, link to places (venues) and show an 'owner-verified' badge on the listing. Now with force upgrade/paid option.
+* [Marker Cluster](https://wpgeodirectory.com/downloads/marker-cluster/ "To avoid overcrowded maps") - Avoid cluttered maps by using numbered markers at high zoom levels. Now with super fast server-side clustering!
+* [Duplicate alert](https://wpgeodirectory.com/downloads/ajax-duplicate-alert/ "Events  already exists?") - Alert users when they add an event with the same title (or other details) as another event.
+* [Custom Map Styles](https://wpgeodirectory.com/downloads/custom-google-maps/ "Customize your maps look and feel") - Modify the look and feel of all Maps widgets via an intuitive user interface, with color pickers and simple-to-use options.
+* [Social Importer](https://wpgeodirectory.com/downloads/social-importer/ "Import 1 Event at a time from Facebook!") -  Import events from Facebook. One listing at a time, no bulk scraping.
+* [GD reCAPTCHA](https://wpgeodirectory.com/downloads/gd-recaptcha/ "Stop spammers!") - Banish spam by adding the No CAPTCHA reCAPTCHA widget to any GeoDirectory form.
+* [Franchise Manager]( https://wpgeodirectory.com/downloads/franchise-manager/ "Franchise Manager") - Allows users to submit Events that span into multiple locations.
+* [List Manager]( https://wpgeodirectory.com/downloads/list-manager/ "List Manager") - Allows users to create their lists of events and make them public to other users.
+* [WP All Import]( https://wpgeodirectory.com/downloads/wp-all-import/ "WP All Import") - Use the power of WP All Import to import your listings from anywhere with this add-on that integrates Wp All Import with The Events Calendar for GeoDirectory
+* [Embeddable Ratings Badge]( https://wpgeodirectory.com/downloads/embeddable-ratings-badge/ "Embeddable Ratings Badge") - Let users embed their Events info with current ratings on their site, styled the way they want.
+* [Compare Listings]( https://wpgeodirectory.com/downloads/compare-listings/ "Compare Listings") - Let your users compare Events side by side and compare vital info about the Events.
+
+= Go Pro - Become a member! =
+
+Get your hands on all the Events Calendar for GeoDirectory premium add-ons and themes. Sign up at [wpgeodirectory.com](https://wpgeodirectory.com/downloads/membership/ "Get GeoDirectory membership.").
+
 
 == Installation ==
 
