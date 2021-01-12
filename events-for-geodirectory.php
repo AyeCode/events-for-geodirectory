@@ -11,7 +11,7 @@
  * Plugin Name:       Events for GeoDirectory
  * Plugin URI:        https://wpgeodirectory.com/downloads/events/
  * Description:       Events add-on allows to extend your GeoDirectory with a versatile event manager.
- * Version:           2.1.0.2
+ * Version:           2.1.1.0
  * Requires at least: 4.9
  * Requires PHP:      5.6
  * Author:            AyeCode Ltd
@@ -28,31 +28,21 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 if ( ! defined( 'GEODIR_EVENT_VERSION' ) ) {
-	define( 'GEODIR_EVENT_VERSION', '2.1.0.2' );
+	define( 'GEODIR_EVENT_VERSION', '2.1.1.0' );
 }
 
 if ( ! defined( 'GEODIR_EVENT_MIN_CORE' ) ) {
 	define( 'GEODIR_EVENT_MIN_CORE', '2.1.0.0' );
 }
 
-global $geodir_event_manager_file;
-
-$geodir_event_manager_file = __FILE__;
-
 /**
- * Setup plugin rename.
+ * Check & install GeoDirectory core plugin.
  */
-$_event_current_name = 'geodir_event_manager';
-$_event_new_name = 'events-for-geodirectory';
-
-if ( strpos( $geodir_event_manager_file, $_event_current_name ) !== false && is_admin() ) {
-	require_once( dirname( $geodir_event_manager_file ) . '/includes/rename-plugin-functions.php' );
-
-	try {
-		geodir_event_rename_plugin( $_event_current_name, $_event_new_name );
-	} catch( Exception $error ) {
-		// Error
-	}
+if ( ! class_exists( 'GeoDirectory' ) ) {
+	/**
+	 * Include TGM Plugin Activation library to register required plugins.
+	 */
+	require_once( dirname( __FILE__ ) . '/includes/tgm-register-plugin.php' );
 }
 
 /**
@@ -65,14 +55,14 @@ if ( strpos( $geodir_event_manager_file, $_event_current_name ) !== false && is_
  * @since    1.0.0
  */
 function GeoDir_Event() {
-	global $geodir_event_manager, $geodir_event_manager_file;
+	global $geodir_event_manager;
 
 	if ( ! defined( 'GEODIR_EVENT_PLUGIN_FILE' ) ) {
-		define( 'GEODIR_EVENT_PLUGIN_FILE', $geodir_event_manager_file );
+		define( 'GEODIR_EVENT_PLUGIN_FILE', __FILE__ );
 	}
 
-	// min core version check
-	if( !function_exists("geodir_min_version_check") || !geodir_min_version_check("Events Manager",GEODIR_EVENT_MIN_CORE)){
+	// Min core version check
+	if ( ! function_exists( "geodir_min_version_check" ) || ! geodir_min_version_check( "Events Manager", GEODIR_EVENT_MIN_CORE ) ) {
 		return '';
 	}
 
