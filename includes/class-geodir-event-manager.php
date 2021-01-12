@@ -139,7 +139,7 @@ final class GeoDir_Event_Manager {
      * @return void
      */
     public static function php_version_notice() {
-        echo '<div class="error"><p>' . __( 'Your version of PHP is below the minimum version of PHP required by GeoDirectory Events. Please contact your host and request that your version be upgraded to 5.3 or later.', 'geodirevents' ) . '</p></div>';
+        echo '<div class="error"><p>' . __( 'Your version of PHP is below the minimum version of PHP required by Events for GeoDirectory. Please contact your host and request that your version be upgraded to 5.3 or later.', 'geodirevents' ) . '</p></div>';
     }
     
     /**

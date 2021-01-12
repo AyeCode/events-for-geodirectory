@@ -59,10 +59,14 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 == Changelog ==
 
 = 2.1.1.0 =
+* Events for GeoDirectory now available on wp.org - CHANGED
+
+= 2.1.0.3 =
 * [gd_post_meta] Fix formatting issue in event dates shortcode - ADDED
 * Show month & year dropdown in event dates datepicker - CHANGED
 * Plugin name changed to "Events for GeoDirectory" - CHANGED
 * Event end date field not visible when recurring is disabled via package - FIXED
+* Changes for extension move to wp.org - CHANGED
 
 = 2.1.0.2 =
 * [gd_post_badge] now supports past, ongoing, upcoming conditions for events - ADDED
