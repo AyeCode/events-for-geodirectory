@@ -58,6 +58,9 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 
 == Changelog ==
 
+= 2.1.1.1 =
+* Draft event preview don't show event dates sometimes  - FIXED
+
 = 2.1.1.0 =
 * Events for GeoDirectory now available on wp.org - CHANGED
 

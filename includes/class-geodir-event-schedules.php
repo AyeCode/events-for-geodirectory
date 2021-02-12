@@ -423,6 +423,10 @@ class GeoDir_Event_Schedules {
 			return false;
 		}
 
+		if ( wp_is_post_revision( $post_id ) ) {
+			$post_id = wp_get_post_parent_id( $post_id );
+		}
+
 		$where = array( 'event_id = %d' );
 		if ( ( $condition = GeoDir_Event_Schedules::event_type_condition( $event_type ) ) ) {
 			$where[] = $condition;
