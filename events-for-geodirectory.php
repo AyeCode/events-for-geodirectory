@@ -46,6 +46,28 @@ if ( ! class_exists( 'GeoDirectory' ) ) {
 }
 
 /**
+ * The code that runs during plugin activation.
+ * This action is documented in includes/class-geodir-event-activator.php
+ */
+function activate_events_for_geodirectory( $network_wide = false ) {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-geodir-event-activator.php';
+
+	GeoDir_Event_Activator::activate( $network_wide );
+}
+register_activation_hook( __FILE__, 'activate_events_for_geodirectory' );
+
+/**
+ * The code that runs during plugin deactivation.
+ * This action is documented in includes/class-geodir-event-activator.php
+ */
+function deactivate_events_for_geodirectory( $network_wide = false ) {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-geodir-event-activator.php';
+
+	GeoDir_Event_Activator::deactivate( $network_wide );
+}
+register_deactivation_hook( __FILE__, 'deactivate_events_for_geodirectory' );
+
+/**
  * Begins execution of the plugin.
  *
  * Since everything within the plugin is registered via hooks,

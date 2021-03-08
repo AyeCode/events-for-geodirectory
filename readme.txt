@@ -3,7 +3,7 @@ Contributors: stiofansisland, paoltaia, ayecode
 Tags: events, calendar, event, schedule, organizer, geodirectory, event listings, events directory, event manager
 Donate link: https://wpgeodirectory.com
 Requires at least: 4.9
-Tested up to: 5.6
+Tested up to: 5.7
 Requires PHP: 5.6
 Stable tag: 2.1.1.0
 License: GPLv3
@@ -61,6 +61,7 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 = 2.1.1.1 =
 * Draft event preview don't show event dates sometimes  - FIXED
 * Show field description for Is Recurring? field - FIXED
+* Deactivating the plugin don't hides Events admin menu - FIXED
 
 = 2.1.1.0 =
 * Events for GeoDirectory now available on wp.org - CHANGED
