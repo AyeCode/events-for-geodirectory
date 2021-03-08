@@ -315,13 +315,17 @@ class GeoDir_Event_Fields {
 
 		ob_start();
 		if ( $design_style ) {
+			// Help text
+			$help_text = $field['desc'] != '' ? __( $field['desc'], 'geodirectory' ) : '';
+
 			echo aui()->radio(
 				array(
 					'id'                => $htmlvar_name,
 					'name'              => $htmlvar_name,
 					'type'              => "radio",
 					'label'             => esc_attr__($field_title, 'geodirevents').' <span class="text-danger">*</span>',
-					'label_type'       => !empty($geodir_label_type) ? $geodir_label_type : 'horizontal',
+					'label_type'        => !empty($geodir_label_type) ? $geodir_label_type : 'horizontal',
+					'help_text'         => $help_text,
 					'class'             => '',
 					'value'             => $value,
 					'options'           => array(
@@ -636,7 +640,7 @@ class GeoDir_Event_Fields {
 						'id'                => 'event_repeat_end_type',
 						'name'              => $htmlvar_name . "[repeat_end_type]",
 						'type'              => "radio",
-						'label'             => esc_html__(  'Recurring end type', 'geodirevents' ),
+						'label'             => esc_html__( 'Recurring end type', 'geodirevents' ),
 						'label_type'        => ! empty( $geodir_label_type ) ? $geodir_label_type : 'horizontal',
 						'class'             => '',
 						'value'             => $repeat_end_type,
@@ -660,7 +664,7 @@ class GeoDir_Event_Fields {
 						'value'             => $max_repeat,
 						'placeholder'       => esc_html__( 'Set a number of occurrences OR set a date below', 'geodirectory'),
 						'element_require'   => '[%recurring%:checked]=="1" && [%event_repeat_type%]!="custom" && [%event_repeat_end_type%:checked]!="1"',
-
+						'help_text'         => __( 'Event will end after number of X occurrences.', 'geodirevents' ),
 						'extra_attributes'  => array(
 							'min'       => 0,
 							'lang'      => "EN"
@@ -680,7 +684,7 @@ class GeoDir_Event_Fields {
 						'placeholder'       => esc_html__( 'Select a date recurring should stop OR set the number of occurrences above', 'geodirectory'),
 						'class'             => '',
 						'value'             => $repeat_end,
-//						'help_text'         => __( 'Choose a end date of the event.', 'geodirevents' ),
+						'help_text'         => __( 'Event will end after number of this date.', 'geodirevents' ),
 						'extra_attributes'  => $extra_attributes,
 						'element_require'   => '[%recurring%:checked]=="1" && [%event_repeat_type%]!="custom" && [%event_repeat_end_type%:checked]=="1"',
 					)

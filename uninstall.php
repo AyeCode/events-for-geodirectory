@@ -63,6 +63,8 @@ if ( ( ! empty( $geodir_settings ) && ( ! empty( $geodir_settings['admin_uninsta
 
 		$post_types = ! empty( $geodir_settings['post_types'] ) ? $geodir_settings['post_types'] : array();
 		$taxonomies = ! empty( $geodir_settings['taxonomies'] ) ? $geodir_settings['taxonomies'] : array();
+		$post_types_disabled = ! empty( $geodir_settings['post_types_disabled'] ) ? $geodir_settings['post_types_disabled'] : array();
+		$taxonomies_disabled = ! empty( $geodir_settings['taxonomies_disabled'] ) ? $geodir_settings['taxonomies_disabled'] : array();
 
 		$remove_options[] = $post_type . '_dummy_data_type';
 
@@ -76,6 +78,19 @@ if ( ( ! empty( $geodir_settings ) && ( ! empty( $geodir_settings['admin_uninsta
 
 		if ( ! empty( $taxonomies ) && isset( $taxonomies[ $post_type . '_tags' ] ) ) {
 			unset( $save_settings['taxonomies'][ $post_type . '_tags' ] );
+		}
+
+		// Remove disabled post type
+		if ( ! empty( $post_types_disabled ) && isset( $post_types_disabled[ $post_type ] ) ) {
+			unset( $save_settings['post_types_disabled'][ $post_type ] );
+		}
+
+		if ( ! empty( $taxonomies_disabled ) && isset( $taxonomies_disabled[ $post_type . 'category' ] ) ) {
+			unset( $save_settings['taxonomies_disabled'][ $post_type . 'category' ] );
+		}
+
+		if ( ! empty( $taxonomies_disabled ) && isset( $taxonomies_disabled[ $post_type . '_tags' ] ) ) {
+			unset( $save_settings['taxonomies_disabled'][ $post_type . '_tags' ] );
 		}
 
 		// Delete post table
