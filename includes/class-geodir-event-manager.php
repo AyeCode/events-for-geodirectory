@@ -364,7 +364,7 @@ final class GeoDir_Event_Manager {
 
 			jQuery(function() {
 				//event_recurring_dates
-				jQuery("#event_recurring_dates").change(function(){console.log('x');
+				jQuery("#event_recurring_dates").on("change",function(){
 					geodir_event_check_custom_dates();
 				});
 
