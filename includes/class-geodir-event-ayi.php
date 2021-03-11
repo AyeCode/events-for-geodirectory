@@ -203,7 +203,7 @@ class GeoDir_Event_AYI {
 		?>
 		<script type="text/javascript">
 			jQuery(document).ready(function () {
-				jQuery('a.geodir-ayi-btn-rsvp').click(function (e) {
+				jQuery('a.geodir-ayi-btn-rsvp').on("click",function (e) {
 					e.preventDefault();
 					var container = jQuery('.ayi-html-wrap');
 					var btnaction = jQuery(this).attr('data-action');
