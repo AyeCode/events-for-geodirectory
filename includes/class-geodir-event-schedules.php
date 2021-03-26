@@ -132,6 +132,10 @@ class GeoDir_Event_Schedules {
 			$post_type = get_post_type( $post_id );
 		}
 
+		if ( wp_is_post_revision( $post_id ) && ( $_post_id = wp_get_post_parent_id( $post_id ) ) ) {
+			$post_type = get_post_type( $_post_id );
+		}
+
 		if ( ! GeoDir_Post_types::supports( $post_type, 'events' ) ) {
 			return false;
 		}
@@ -423,10 +427,6 @@ class GeoDir_Event_Schedules {
 			return false;
 		}
 
-		if ( wp_is_post_revision( $post_id ) ) {
-			$post_id = wp_get_post_parent_id( $post_id );
-		}
-
 		$where = array( 'event_id = %d' );
 		if ( ( $condition = GeoDir_Event_Schedules::event_type_condition( $event_type ) ) ) {
 			$where[] = $condition;
@@ -540,13 +540,20 @@ class GeoDir_Event_Schedules {
 				$schedule .= '</div>';
 
 				if ( $link ) {
-					if ( ! empty( $schedule_links[ $row->event_id ] ) ) {
-						$schedule_url = $schedule_links[ $row->event_id ];
+					// Don't show link for preview.
+					if ( is_preview() ) {
+						$schedule_url = '#';
 					} else {
-						$schedule_url = get_permalink( $row->event_id );
-						$schedule_links[ $row->event_id ] = $schedule_url;
+						if ( ! empty( $schedule_links[ $row->event_id ] ) ) {
+							$schedule_url = $schedule_links[ $row->event_id ];
+						} else {
+							$schedule_url = get_permalink( $row->event_id );
+							$schedule_links[ $row->event_id ] = $schedule_url;
+						}
+
+						$schedule_url = add_query_arg( array( 'gde' => $start_date ), $schedule_url );
 					}
-					$schedule_url = add_query_arg( array( 'gde' => $start_date ), $schedule_url );
+
 					$schedule_url = apply_filters( 'geodir_event_recurring_schedule_url', $schedule_url, $row->event_id, $row );
 
 					$schedule = '<a href="' . esc_url( $schedule_url ) . '">' . $schedule . '</a>';
