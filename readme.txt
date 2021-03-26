@@ -65,6 +65,9 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 
 == Changelog ==
 
+= 2.1.1.3 =
+* Event schedules are not reflected on preview event - FIXED
+
 = 2.1.1.2 =
 * Default translation not working event start date & end date - FIXED
 

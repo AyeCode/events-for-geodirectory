@@ -933,7 +933,13 @@ class GeoDir_Event_Fields {
 	}
 
 	public static function save_event_data( $postarr, $gd_post, $post, $update ) {
-		if ( ! empty( $post->post_type ) && GeoDir_Post_types::supports( $post->post_type, 'events' ) ) {
+		$post_type = ! empty( $post->post_type ) ? $post->post_type : '';
+
+		if ( wp_is_post_revision( $post->ID ) && ( $post_id = wp_get_post_parent_id( $post->ID ) ) ) {
+			$post_type = get_post_type( $post_id );
+		}
+
+		if ( $post_type && GeoDir_Post_types::supports( $post_type, 'events' ) ) {
 			if ( isset( $postarr['event_dates'] ) ) {
 				if ( ! geodir_event_is_recurring_active() ) {
 					$postarr['recurring'] = false;
