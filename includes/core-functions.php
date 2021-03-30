@@ -229,8 +229,9 @@ function geodir_event_date_time_format() {
 function geodir_event_schema( $schema, $post ) {
 	global $gd_post;
 
-    $event_schema_types = geodir_event_get_schema_types();
-    if ( !empty( $schema['@type']) && isset( $event_schema_types[ $schema['@type'] ] ) ) {
+	$event_schema_types = geodir_event_get_schema_types();
+
+	if ( ! empty( $schema['@type']) && isset( $event_schema_types[ $schema['@type'] ] ) ) {
 		$place = array();
 		$place["@type"] = "Place";
 		$place["name"] = !empty( $schema['name'] )? $schema['name']: '';
@@ -241,7 +242,7 @@ function geodir_event_schema( $schema, $post ) {
 		}
 
 		$place["geo"] = !empty( $schema['geo'] )? $schema['geo']: '';
-	    
+
 		if ( GeoDir_Post_types::supports( $gd_post->post_type, 'events' ) ) {
 			if ( ! empty( $gd_post->recurring ) ) { // Recurring event
 				if ( ! empty( $_REQUEST['gde'] ) ) {
@@ -256,6 +257,10 @@ function geodir_event_schema( $schema, $post ) {
 			}
 
 			if ( ! empty( $schedule ) ) {
+				$timezone = geodir_gmt_offset();
+				if ( ! empty( $gd_post->timezone_offset ) ) {
+					$timezone = $gd_post->timezone_offset;
+				}
 				$startDate = $schedule->start_date;
 				$endDate = $schedule->end_date;
 				$startTime = ! empty( $schedule->start_time ) ? date_i18n( 'H:i', strtotime( $schedule->start_time ) ) : '00:00';
@@ -274,29 +279,38 @@ function geodir_event_schema( $schema, $post ) {
 					$endTime = '23:59';
 				}
 
-				$schema['startDate'] = $startDate . 'T' . $startTime;
-				$schema['endDate'] = $endDate . 'T' . $endTime;
+				$schema['startDate'] = $startDate . 'T' . $startTime . $timezone;
+				$schema['endDate'] = $endDate . 'T' . $endTime . $timezone;
 			}
 
 			// eventAttendanceMode. If we have an address then its likely not online
-			if(!empty($gd_post->city)){
-				if(isset($gd_post->event_status) && $gd_post->event_status=='moved-online'){
+			if ( ! empty( $gd_post->city ) ) {
+				if ( isset( $gd_post->event_status ) && $gd_post->event_status == 'moved-online' ) {
 					$schema['eventAttendanceMode'] = "https://schema.org/OnlineEventAttendanceMode";
-				}else{
+				} else {
 					$schema['eventAttendanceMode'] = "https://schema.org/OfflineEventAttendanceMode";
 				}
-			}else{
+			} else {
 				$schema['eventAttendanceMode'] = "https://schema.org/OnlineEventAttendanceMode";
 			}
 
 			// set if online event
-			if($schema['eventAttendanceMode']=='https://schema.org/OnlineEventAttendanceMode' && !empty($gd_post->website)){
+			if ( $schema['eventAttendanceMode'] == 'https://schema.org/OnlineEventAttendanceMode' && ! empty( $gd_post->website ) ) {
 				$place["@type"] = "VirtualLocation";
-				$place["url"] = esc_url_raw($gd_post->website);
+				$place["url"] = esc_url_raw( $gd_post->website );
+
+				// The properties address & geo are not recognized by Google for an object of type VirtualLocation.
+				if ( isset( $place["address"] ) ) {
+					unset( $place["address"] );
+				}
+
+				if ( isset( $place["geo"] ) ) {
+					unset( $place["geo"] );
+				}
 			}
 
 			// eventStatus
-			if(!empty($gd_post->event_status)){
+			if ( ! empty( $gd_post->event_status ) ) {
 				$event_statuses = array(
 					'cancelled' => 'https://schema.org/EventCancelled',
 					'postponed' => 'https://schema.org/EventPostponed',
@@ -304,10 +318,10 @@ function geodir_event_schema( $schema, $post ) {
 					'moved-online' => 'https://schema.org/EventMovedOnline',
 					'scheduled' => 'https://schema.org/EventScheduled',
 				);
-				if(isset($event_statuses[$gd_post->event_status])){
-					$schema['eventStatus'] = $event_statuses[$gd_post->event_status];
+				if ( isset( $event_statuses[ $gd_post->event_status ] ) ) {
+					$schema['eventStatus'] = $event_statuses[ $gd_post->event_status ];
 				}
-			}else{
+			} else {
 				$schema['eventStatus'] = 'https://schema.org/EventScheduled';
 			}
 
