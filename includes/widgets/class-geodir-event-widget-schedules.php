@@ -214,6 +214,16 @@ class GeoDir_Event_Widget_Schedules extends WP_Super_Duper {
 				$date = $gd_post->start_date;
 			} elseif ( ! empty( $post->start_date ) && $post->ID == $gd_post->ID ) {
 				$date = $post->start_date;
+			} elseif ( geodir_is_page( 'single' ) ) {
+				if ( ! empty( $_REQUEST['gde'] ) ) {
+					$date = sanitize_text_field( $_REQUEST['gde'] );
+				} else {
+					$schedules = GeoDir_Event_Schedules::get_schedules( $gd_post->ID, $type, 1 );
+
+					if ( ! empty( $schedules ) && ! empty( $schedules[0]->start_date ) ) {
+						$date = $schedules[0]->start_date;
+					}
+				}
 			}
 
 			if ( $date ) {
