@@ -409,6 +409,17 @@ class GeoDir_Event_Fields {
 		$custom_dates_list		= '';
 		$different_times_list	= '';
 
+		// Event start time
+		$timepicker_extras = array();
+		$timepicker_extras['data-enable-time'] = 'true';
+		$timepicker_extras['data-no-calendar'] = 'true';
+		$timepicker_extras['data-alt-input'] = 'true';
+		$timepicker_extras['data-date-format'] = 'H:i';
+		$timepicker_extras['data-alt-format'] = 'H:i K';
+		$timepicker_extras['data-time_24hr'] = 'false';
+
+		$timepicker_extras = apply_filters( 'geodir_event_aui_start_end_time_attrs', $timepicker_extras );
+
 		if ( $recurring && $is_recurring_active ) {	
 			$duration_x 		= ! empty( $event_data['duration_x'] ) && absint( $event_data['duration_x'] ) > 0 ? absint( $event_data['duration_x'] ) : 1;
 			$repeat_type 		= isset( $event_data['repeat_type'] ) && in_array( $event_data['repeat_type'], array( 'day', 'week', 'month', 'year', 'custom' ) ) ? $event_data['repeat_type'] : 'custom'; // day, week, month, year, custom
@@ -432,13 +443,18 @@ class GeoDir_Event_Fields {
 
 				$custom_dates_list 	= array();
 				if ( ! empty( $recurring_dates ) ) {
+					$timepicker_attrs = '';
+					foreach ( $timepicker_extras as $_key => $_val ) {
+						$timepicker_attrs .= " " . sanitize_html_class( $_key ) . '="' . esc_attr( $_val ) . '"';
+					}
+
 					foreach ( $recurring_dates as $key => $date ) {
 						$recurring_dates_list .= '<span data-date="' . date_i18n( 'Y-m-d', strtotime( $date ) ) . '">' . date_i18n( $format, strtotime( $date ) ) . '</span>';
 						if ( $different_times ) {
 							$start_time_selected	= ! empty( $start_times[ $key ] ) ? $start_times[$key] : ( ! empty( $start_time ) ? $start_time : '10:00' );
 							$end_time_selected 	= ! empty( $end_times[ $key ] ) ? $end_times[$key] : ( ! empty( $end_time ) ? $end_time : '18:00' );
 							if($design_style){
-								$different_times_list 	.= '<div data-date="' . date_i18n( 'Y-m-d', strtotime( $date ) ) . '" class="event-multiple-times row pb-1"><div class="col-2"><div class="gd-events-custom-time">' . date_i18n( 'Y-m-d', strtotime( $date ) ) . '</div></div><div class="col-5"><input type="text" name="event_dates[start_times][]" placeholder="Start" value="'.esc_attr($start_time_selected).'" class="form-control bg-initial" data-enable-time="true" data-no-calendar="true" data-alt-input="true" data-date-format="H:i" data-alt-format="H:i K" data-aui-init="flatpickr"></div><div class="col-5"><input type="text" name="event_dates[end_times][]" placeholder="End" value="'.esc_attr($end_time_selected).'" class="form-control bg-initial" data-enable-time="true" data-no-calendar="true" data-alt-input="true" data-date-format="H:i" data-alt-format="H:i K" data-aui-init="flatpickr"></div></div>';
+								$different_times_list 	.= '<div data-date="' . date_i18n( 'Y-m-d', strtotime( $date ) ) . '" class="event-multiple-times row pb-1"><div class="col-2"><div class="gd-events-custom-time">' . date_i18n( 'Y-m-d', strtotime( $date ) ) . '</div></div><div class="col-5"><input type="text" name="event_dates[start_times][]" placeholder="' . esc_attr__( 'Start', 'geodirevents' ) . '" value="'.esc_attr($start_time_selected).'" class="form-control bg-initial" ' . trim( $timepicker_attrs ) . ' data-aui-init="flatpickr"></div><div class="col-5"><input type="text" name="event_dates[end_times][]" placeholder="' . esc_attr__( 'End', 'geodirevents' ) . '" value="'.esc_attr($end_time_selected).'" class="form-control bg-initial" ' . trim( $timepicker_attrs ) . ' data-aui-init="flatpickr"></div></div>';
 
 							}else{
 								$different_times_list 	.= '<div data-date="' . date_i18n( 'Y-m-d', strtotime( $date ) ) . '" class="event-multiple-times clearfix"><label class="event-multiple-dateto">' . date_i18n( $format, strtotime( $date ) ) . '</label><div class="event-multiple-dateto-inner"><select id="event_start_times" name="event_dates[start_times][]" class="geodir_textfield geodir-select geodir-w110">' . geodir_event_time_options( $start_time_selected ) .  '</select></div><label class="event-multiple-end"> ' . __( 'to', 'geodirevents' ) . ' </label><div class="event-multiple-dateto-inner"><select id="event_end_times" name="event_dates[end_times][]" class="geodir_textfield geodir-select geodir-w110">' . geodir_event_time_options( $end_time_selected ) .  '</select></div></div>';
@@ -709,11 +725,6 @@ class GeoDir_Event_Fields {
 						'element_require'   => '[%recurring%:checked]=="1" && [%event_repeat_type%]=="custom"',
 					)
 				);
-
-
-
-
-
 			}
 
 			// event time all day
@@ -728,13 +739,6 @@ class GeoDir_Event_Fields {
 				'label_type'       => !empty($geodir_label_type) ? $geodir_label_type : 'horizontal',
 			));
 
-			// event start time
-			$timepicker_extras = array();
-			$timepicker_extras['data-enable-time'] = 'true';
-			$timepicker_extras['data-no-calendar'] = 'true';
-			$timepicker_extras['data-alt-input'] = 'true';
-			$timepicker_extras['data-date-format'] = 'H:i';
-			$timepicker_extras['data-alt-format'] = 'H:i K';
 			echo aui()->input(
 				array(
 					'id'                => "event_start_time",
