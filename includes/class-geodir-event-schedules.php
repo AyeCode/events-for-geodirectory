@@ -114,6 +114,24 @@ class GeoDir_Event_Schedules {
 
 		self::delete_schedules( $post_id );
 
+		// Max schedules allowed for the event.
+		$max_schedules = (int) self::max_schedules( $post_id );
+
+		if ( $max_schedules > 0 && count( $schedules ) > $max_schedules ) {
+			// Extract a slice of the schedules.
+			$schedules = array_slice( $schedules, 0, $max_schedules );
+		}
+
+		/**
+		 * Filter event created schedules.
+		 *
+		 * @since 2.1.1.5
+		 *
+		 * @param array $schedules Array of event schedules.
+		 * @param int   $post_id Post ID.
+		 */
+		$schedules = apply_filters( 'geodir_event_create_schedules', $schedules, $post_id );
+
 		foreach( $schedules as $schedule ) {
 			$wpdb->insert( GEODIR_EVENT_SCHEDULES_TABLE, $schedule, array( '%d', '%s', '%s', '%s', '%s', '%d', '%d' ) );
 		}
@@ -568,7 +586,7 @@ class GeoDir_Event_Schedules {
 			$wrap_class = $design_style ? 'd-inline-block' : '';
 			$html = '<div class="geodir-schedules '.$wrap_class.'">' . $html . '</div>';
 			if($design_style && $count > 5){
-				$html .= '<button onclick="if(jQuery(this).text()==\'' . __( 'More', 'geodiradvancesearch' ) . '\'){jQuery(this).text(\'' . __( 'Less', 'geodiradvancesearch' ) . '\')}else{jQuery(this).text(\'' . __( 'More', 'geodiradvancesearch' ) . '\')}" class="badge badge-primary d-block mx-auto mt-2" type="button" data-toggle="collapse" data-target=".geodir-schedule.collapse" >' . __( 'More', 'geodiradvancesearch' ) . '</button>';
+				$html .= '<button onclick="if(jQuery(this).text()==\'' . __( 'More', 'geodirevents' ) . '\'){jQuery(this).text(\'' . __( 'Less', 'geodirevents' ) . '\')}else{jQuery(this).text(\'' . __( 'More', 'geodirevents' ) . '\')}" class="badge badge-primary d-block mx-auto mt-2" type="button" data-toggle="collapse" data-target=".geodir-schedule.collapse" >' . __( 'More', 'geodirevents' ) . '</button>';
 
 			}
 		}
@@ -676,5 +694,29 @@ class GeoDir_Event_Schedules {
 		}
 
 		return $sql;
+	}
+
+	/**
+	 * Limit event created schedules.
+	 *
+	 * @since 2.1.1.5
+	 *
+	 * @param  int $post_id Post ID. Default 0.
+	 * @return int Allowed max no. of event schedules.
+	 */
+	public static function max_schedules( $post_id = 0 ) {
+		global $wpdb;
+
+		$max_schedules = absint( geodir_get_option( 'event_max_schedules' ) );
+
+		/**
+		 * Filter event created schedules limit.
+		 *
+		 * @since 2.1.1.5
+		 *
+		 * @param int $max_schedules Allowed max no. of event schedules.
+		 * @param int $post_id Post ID.
+		 */
+		return apply_filters( 'geodir_event_allow_max_schedules', $max_schedules, $post_id );
 	}
 }

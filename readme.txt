@@ -65,6 +65,9 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 
 == Changelog ==
 
+= 2.1.1.5 =
+* Option added to limit max. number event occurrences created for the event - ADDED
+
 = 2.1.1.4 =
 * Allow to show next schedule on single event page - ADDED
 * Hook added to enable/disable 24 hour timepicker - ADDED

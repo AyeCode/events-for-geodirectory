@@ -179,6 +179,16 @@ if ( ! class_exists( 'GeoDir_Event_Settings_Events', false ) ) :
 					),
 					array(
 						'type' => 'number',
+						'id' => 'event_max_schedules',
+						'name' => __( 'Limit Event Occurecnes', 'geodirevents' ),
+						'desc' => __( 'Sometimes people set the end date like 50 years from now and it creates like 50 extra pages of events. This will help to limit max number of event occurecnes for the event. Leave blank or use 0 to allow all possible occurecnes.', 'geodirevents' ),
+						'placeholder' => __( 'No Limit', 'geodirevents' ),
+						'default' => '',
+						'desc_tip' => true,
+						'advanced' => true
+					),
+					array(
+						'type' => 'number',
 						'id'   => 'event_map_popup_count',
 						'name' => __( 'Schedules in map popup', 'geodirevents' ),
 						'desc' => __( 'No. of schedule dates to display for event marker info window on the map. Default: 1', 'geodirevents' ),
