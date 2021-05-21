@@ -145,7 +145,7 @@ class GeoDir_Event_Fields {
 	}
 
 	public static function predefined_fields( $custom_fields, $post_type ) {
-		if ( $post_type != 'gd_event' ) {
+		if ( ! GeoDir_Post_types::supports( $post_type, 'events' ) ) {
 			return $custom_fields;
 		}
 

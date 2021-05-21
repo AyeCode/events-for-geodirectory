@@ -45,7 +45,7 @@ class GeoDir_Event_Widgets {
 					}
 					$condition = ! empty( $conditions ) ? implode( ' || ', $conditions ) : '';
 					if ( count( $conditions ) > 1 ) {
-						$condition = "( " . $conditions . ") ";
+						$condition = "( " . $condition . ") ";
 					}
 
 					$new_arguments['event_type'] = array(

@@ -67,6 +67,7 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 
 = 2.1.1.5 =
 * Option added to limit max. number event occurrences created for the event - ADDED
+* Custom event CPT don't shows predefined event fields like Event Disruption - FIXED
 
 = 2.1.1.4 =
 * Allow to show next schedule on single event page - ADDED
