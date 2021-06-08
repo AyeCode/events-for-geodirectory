@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Events for GeoDirectory 2.1.1.4\n"
+"Project-Id-Version: Events for GeoDirectory 2.1.1.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-11 20:01+0530\n"
-"PO-Revision-Date: 2021-05-11 20:01+0530\n"
+"POT-Creation-Date: 2021-06-08 21:05+0530\n"
+"PO-Revision-Date: 2021-06-08 21:05+0530\n"
 "Last-Translator: \n"
 "Language-Team: AyeCode Ltd <contact@ayecode.io>\n"
 "Language: en_US\n"
@@ -100,7 +100,7 @@ msgstr ""
 #: includes/admin/settings/class-geodir-event-settings-events.php:107
 #: includes/admin/settings/class-geodir-event-settings-events.php:119
 #: includes/admin/settings/class-geodir-event-settings-events.php:159
-#: includes/admin/settings/class-geodir-event-settings-events.php:196
+#: includes/admin/settings/class-geodir-event-settings-events.php:206
 msgid "Select"
 msgstr ""
 
@@ -149,46 +149,62 @@ msgid "Hide past event schedules on the event listings."
 msgstr ""
 
 #: includes/admin/settings/class-geodir-event-settings-events.php:183
-msgid "Schedules in map popup"
+msgid "Limit Event Occurecnes"
 msgstr ""
 
 #: includes/admin/settings/class-geodir-event-settings-events.php:184
+msgid ""
+"Sometimes people set the end date like 50 years from now and it creates like "
+"50 extra pages of events. This will help to limit max number of event "
+"occurecnes for the event. Leave blank or use 0 to allow all possible "
+"occurecnes."
+msgstr ""
+
+#: includes/admin/settings/class-geodir-event-settings-events.php:185
+msgid "No Limit"
+msgstr ""
+
+#: includes/admin/settings/class-geodir-event-settings-events.php:193
+msgid "Schedules in map popup"
+msgstr ""
+
+#: includes/admin/settings/class-geodir-event-settings-events.php:194
 msgid ""
 "No. of schedule dates to display for event marker info window on the map. "
 "Default: 1"
 msgstr ""
 
-#: includes/admin/settings/class-geodir-event-settings-events.php:192
+#: includes/admin/settings/class-geodir-event-settings-events.php:202
 msgid "Display dates in map popup"
 msgstr ""
 
-#: includes/admin/settings/class-geodir-event-settings-events.php:193
+#: includes/admin/settings/class-geodir-event-settings-events.php:203
 msgid ""
 "Set the filter to view schedule dates for event marker info window on the "
 "map."
 msgstr ""
 
-#: includes/admin/settings/class-geodir-event-settings-events.php:226
+#: includes/admin/settings/class-geodir-event-settings-events.php:236
 msgid "A-Z"
 msgstr ""
 
-#: includes/admin/settings/class-geodir-event-settings-events.php:227
+#: includes/admin/settings/class-geodir-event-settings-events.php:237
 msgid "Latest"
 msgstr ""
 
-#: includes/admin/settings/class-geodir-event-settings-events.php:228
+#: includes/admin/settings/class-geodir-event-settings-events.php:238
 msgid "Most reviews"
 msgstr ""
 
-#: includes/admin/settings/class-geodir-event-settings-events.php:229
+#: includes/admin/settings/class-geodir-event-settings-events.php:239
 msgid "Highest rating"
 msgstr ""
 
-#: includes/admin/settings/class-geodir-event-settings-events.php:230
+#: includes/admin/settings/class-geodir-event-settings-events.php:240
 msgid "Random"
 msgstr ""
 
-#: includes/admin/settings/class-geodir-event-settings-events.php:231
+#: includes/admin/settings/class-geodir-event-settings-events.php:241
 msgid "Distance to current post"
 msgstr ""
 
@@ -1170,11 +1186,11 @@ msgid ""
 "posts to draft.)</span>"
 msgstr ""
 
-#: includes/class-geodir-event-schedules.php:571
+#: includes/class-geodir-event-schedules.php:589
 msgid "More"
 msgstr ""
 
-#: includes/class-geodir-event-schedules.php:571
+#: includes/class-geodir-event-schedules.php:589
 msgid "Less"
 msgstr ""
 
