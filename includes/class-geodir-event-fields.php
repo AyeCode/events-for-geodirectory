@@ -426,6 +426,9 @@ class GeoDir_Event_Fields {
 			$repeat_x 			= ! empty( $event_data['repeat_x'] ) && absint( $event_data['repeat_x'] ) > 0 ? absint( $event_data['repeat_x'] ) : 1;
 			if ( ( $repeat_type == 'week' || $repeat_type == 'month' ) && ! empty( $event_data['repeat_days'] ) ) {
 				$repeat_days = is_array( $event_data['repeat_days'] ) ? $event_data['repeat_days'] : explode( ',', $event_data['repeat_days'] );
+				if ( ! empty( $repeat_days ) ) {
+					$repeat_days = array_filter( $repeat_days, 'strlen' );
+				}
 			}
 			if ( $repeat_type == 'month' && ! empty( $event_data['repeat_weeks'] ) ) {
 				$repeat_weeks = is_array( $event_data['repeat_weeks'] ) ? $event_data['repeat_weeks'] : explode( ',', $event_data['repeat_weeks'] );
@@ -625,7 +628,7 @@ class GeoDir_Event_Fields {
 					),
 					'multiple'          => true,
 					'select2'           => true,
-//					'help_text'         => __( 'Please select recurring interval', 'geodirevents' ),
+					'data-allow-clear'  => false,
 					'element_require'   => '[%recurring%:checked]=="1" && ([%event_repeat_type%]=="week" || [%event_repeat_type%]=="month")',
 				) );
 
@@ -647,7 +650,7 @@ class GeoDir_Event_Fields {
 					),
 					'multiple'          => true,
 					'select2'           => true,
-//					'help_text'         => __( 'Please select recurring interval', 'geodirevents' ),
+					'data-allow-clear'  => false,
 					'element_require'   => '[%recurring%:checked]=="1" && [%event_repeat_type%]=="month"',
 				) );
 
@@ -1368,7 +1371,11 @@ class GeoDir_Event_Fields {
 		if ( ! empty( $value ) ) {
 			$value = array_map( 'trim', $value );
 		}
-		
+
+		if ( ! empty( $value ) ) {
+			$value = array_filter( $value, 'strlen' );
+		}
+
 		return $value;
 	}
 
