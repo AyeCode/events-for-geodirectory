@@ -65,6 +65,9 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 
 == Changelog ==
 
+= 2.1.1.6 =
+* Repeat recurring days always shows Sunday selected - FIXED
+
 = 2.1.1.5 =
 * Option added to limit max. number event occurrences created for the event - ADDED
 * Custom event CPT don't shows predefined event fields like Event Disruption - FIXED
