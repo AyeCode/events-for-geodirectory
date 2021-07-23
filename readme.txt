@@ -3,7 +3,7 @@ Contributors: stiofansisland, paoltaia, ayecode
 Tags: events, calendar, event, schedule, organizer, geodirectory, event listings, events directory, event manager, events calendar
 Donate link: https://wpgeodirectory.com
 Requires at least: 4.9
-Tested up to: 5.7
+Tested up to: 5.8
 Requires PHP: 5.6
 Stable tag: 2.1.1.5
 License: GPLv3
@@ -67,6 +67,7 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 
 = 2.1.1.6 =
 * Repeat recurring days always shows Sunday selected - FIXED
+* Event date range search don't translates " to " in filter correct results - FIXED
 
 = 2.1.1.5 =
 * Option added to limit max. number event occurrences created for the event - ADDED
