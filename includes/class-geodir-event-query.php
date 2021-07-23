@@ -248,8 +248,8 @@ class GeoDir_Event_Query {
 			if ( ! empty( $_REQUEST['event_dates'] ) ) {
 				$event_dates = geodir_event_sanitize_text_field( $_REQUEST['event_dates'] );
 
-				if ( ! is_array( $event_dates ) && strpos( $event_dates, ' to ' ) > 0 ) {
-					$_event_dates = explode( ' to ', $event_dates, 2 );
+				if ( ! is_array( $event_dates ) && ( strpos( $event_dates, ' to ' ) > 0 || strpos( $event_dates, __( ' to ', 'geodirectory' ) ) > 0 ) ) {
+					$_event_dates = strpos( $event_dates, __( ' to ', 'geodirectory' ) ) > 0 ? explode( __( ' to ', 'geodirectory' ), $event_dates, 2 ) : explode( ' to ', $event_dates, 2 );
 
 					$event_dates = array();
 					if ( ! empty( $_event_dates[0] ) ) {

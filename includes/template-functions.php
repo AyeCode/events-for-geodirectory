@@ -278,8 +278,8 @@ function geodir_event_filter_searched_params( $params = array(), $post_type, $fi
 		$event_dates = geodir_event_sanitize_text_field( $_REQUEST['event_dates'] );
 
 		// Date range
-		if ( ! is_array( $event_dates ) && strpos( $event_dates, ' to ' ) > 0 ) {
-			$_event_dates = explode( ' to ', $event_dates, 2 );
+		if ( ! is_array( $event_dates ) && ( strpos( $event_dates, ' to ' ) > 0 || strpos( $event_dates, __( ' to ', 'geodirectory' ) ) > 0 ) ) {
+			$_event_dates = strpos( $event_dates, __( ' to ', 'geodirectory' ) ) > 0 ? explode( __( ' to ', 'geodirectory' ), $event_dates, 2 ) : explode( ' to ', $event_dates, 2 );
 
 			$event_dates = array();
 			if ( ! empty( $_event_dates[0] ) ) {
