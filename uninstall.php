@@ -16,6 +16,9 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 global $wpdb, $plugin_prefix;
 
 $geodir_settings = get_option( 'geodir_settings' );
+
+// Clear schedules
+wp_clear_scheduled_hook( 'geodir_event_schedule_handle_past_events' );
  
 if ( ( ! empty( $geodir_settings ) && ( ! empty( $geodir_settings['admin_uninstall'] ) || ! empty( $geodir_settings['uninstall_geodir_event_manager'] ) ) ) || ( defined( 'GEODIR_UNINSTALL_GEODIR_EVENT_MANAGER' ) && true === GEODIR_UNINSTALL_GEODIR_EVENT_MANAGER ) ) {
 	if ( empty( $plugin_prefix ) ) {

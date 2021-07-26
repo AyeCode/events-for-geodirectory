@@ -409,6 +409,68 @@ class GeoDir_Event_Post_Type {
 				}
 				$settings = $new_settings;
 			}
+
+			// Past events settings
+			if ( ! empty( $post_type_values['post_type'] ) && GeoDir_Post_types::supports( $post_type_values['post_type'], 'events' ) ) {
+				$new_settings = array();
+				foreach ( $settings as $key => $setting ) {
+					$new_settings[] = $setting;
+
+					if ( ! empty( $setting['id'] ) && $setting['id'] == 'cpt_settings_page' && $setting['type'] == 'sectionend' ) {
+						$new_settings[] = array(
+							'title' => __( 'Manage Past Events', 'geodirevents' ),
+							'type' => 'title',
+							'id' => 'cpt_settings_past_events',
+							'desc' => __( 'Allows to handle past events on the site.', 'geodirevents' ),
+							'desc_tip' => false,
+							'advanced' => false,
+						);
+						$new_settings[] =  array(
+							'type' => 'checkbox',
+							'id' => 'past_event',
+							'name' => __( 'Manage Past Events', 'geodirevents' ),
+							'desc' => __( 'Tick to auto unpublish or remove event after x days from the end date.', 'geodirevents' ),
+							'std' => '0',
+							'value' => ( ! empty( $post_type_values['past_event'] ) ? '1' : '0' ),
+							'desc_tip' => false,
+							'advanced' => false,
+						);
+						$new_settings[] =  array(
+							'type' => 'number',
+							'id' => 'past_event_days',
+							'name' => __( 'Unpublish/Remove After Days', 'geodirevents' ),
+							'desc' => __( 'Set days when you would like to unpublish or remove event after the end date. Examples: 0 or blank to unpublish or remove event on next day of the end date. 7 to keep event live for 7 days after the end date.', 'geodirevents' ),
+							'placeholder' => __( 'On Next Day', 'geodirevents' ),
+							'std' => '',
+							'value' => ( ! empty( $post_type_values['past_event_days'] ) ? absint( $post_type_values['past_event_days'] ) : '' ),
+							'custom_attributes' => array(
+								'min' => '0',
+								'step' => '1',
+							),
+							'desc_tip' => true,
+							'advanced' => false,
+						);
+						$new_settings[] = array(
+							'type' => 'select',
+							'id' => 'past_event_status',
+							'name' => __( 'Past Event Status', 'geodirevents' ),
+							'desc' => __( 'Set status you would like to set to the event after x days from end date. Delete status will remove event permanently.', 'geodirevents' ),
+							'placeholder' => __( 'Select Status', 'geodirevents' ),
+							'options' => self::past_event_statuses(),
+							'class' => 'geodir-select',
+							'std' => 'pending',
+							'value' => ( ! empty( $post_type_values['past_event_status'] ) ? $post_type_values['past_event_status'] : 'pending' ),
+							'desc_tip' => true,
+							'advanced' => false,
+						);
+						$new_settings[] = array( 
+							'type' => 'sectionend', 
+							'id' => 'cpt_settings_past_events' 
+						);
+					}
+				}
+				$settings = $new_settings;
+			}
 		}
 
 		return $settings;
@@ -418,6 +480,22 @@ class GeoDir_Event_Post_Type {
 		// Save supports events setting
 		if ( $post_type != 'gd_event' && defined( 'GEODIR_CP_VERSION' ) ) {
 			$data[ $post_type ]['supports_events'] = ! empty( $request['supports_events'] ) ? true : false;
+		}
+
+		if ( isset( $request['past_event_status'] ) ) {
+			$data[ $post_type ]['past_event'] = ! empty( $request['past_event'] ) ? 1 : 0;
+			$data[ $post_type ]['past_event_days'] = ! empty( $request['past_event_days'] ) ? absint( $request['past_event_days'] ) : 0;
+			$data[ $post_type ]['past_event_status'] = ! empty( $request['past_event_status'] ) ? sanitize_text_field( $request['past_event_status'] ) : 'pending';
+		} else {
+			if ( isset( $data[ $post_type ]['past_event'] ) ) {
+				unset( $data[ $post_type ]['past_event'] );
+			}
+			if ( isset( $data[ $post_type ]['past_event_days'] ) ) {
+				unset( $data[ $post_type ]['past_event_days'] );
+			}
+			if ( isset( $data[ $post_type ]['past_event_status'] ) ) {
+				unset( $data[ $post_type ]['past_event_status'] );
+			}
 		}
 
 		return $data;
@@ -562,6 +640,19 @@ class GeoDir_Event_Post_Type {
 		wp_cache_set( 'geodir_event_post_types', $post_types, 'event_post_types' );
 
 		return $post_types;
+	}
+
+	public static function past_event_statuses() {
+		$statuses = geodir_get_post_statuses();
+
+		$statuses['trash'] = _x( 'Trash', 'Listing status', 'geodirevents' );
+		$statuses['delete'] = _x( 'Delete Permanently', 'Listing status', 'geodirevents' );
+
+		if ( isset( $statuses['publish'] ) ) {
+			unset( $statuses['publish'] );
+		}
+
+		return apply_filters( 'geodir_event_past_event_statuses', $statuses );
 	}
 }
 GeoDir_Event_Post_Type::init();

@@ -68,6 +68,7 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 = 2.1.1.6 =
 * Repeat recurring days always shows Sunday selected - FIXED
 * Event date range search don't translates " to " in filter correct results - FIXED
+* Settings added to handle expired events - ADDED
 
 = 2.1.1.5 =
 * Option added to limit max. number event occurrences created for the event - ADDED

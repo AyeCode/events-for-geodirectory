@@ -118,6 +118,9 @@ class GeoDir_Event_Admin_Install {
 		// Create uncategorized category
 		self::create_uncategorized_categories();
 
+		// Schedule cron jobs
+		self::create_cron_jobs();
+
 		// Update GD version
 		self::update_gd_version();
 
@@ -383,9 +386,6 @@ class GeoDir_Event_Admin_Install {
 		return $slug[0];
 	}
 
-
-
-
 	/**
 	 * Is v1 to v2 upgrade.
 	 *
@@ -398,5 +398,18 @@ class GeoDir_Event_Admin_Install {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Create cron jobs.
+	 *
+	 * @since 2.1.1.6
+	 */
+	private static function create_cron_jobs() {
+		// Clear existing scheduled event.
+		wp_clear_scheduled_hook( 'geodir_event_schedule_handle_past_events' );
+
+		// Delay to run the first run expiration check events, so it doesn't occur in the same request.
+		wp_schedule_event( time() + 10, apply_filters( 'geodir_event_filter_schedule_handle_past_events', 'twicedaily' ), 'geodir_event_schedule_handle_past_events' ); // hourly, twicedaily, daily
 	}
 }
