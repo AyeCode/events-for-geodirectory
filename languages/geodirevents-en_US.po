@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Events for GeoDirectory 2.1.1.5\n"
+"Project-Id-Version: Events for GeoDirectory 2.1.1.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-08 21:05+0530\n"
-"PO-Revision-Date: 2021-06-08 21:05+0530\n"
+"POT-Creation-Date: 2021-07-28 18:51+0530\n"
+"PO-Revision-Date: 2021-07-28 18:52+0530\n"
 "Last-Translator: \n"
 "Language-Team: AyeCode Ltd <contact@ayecode.io>\n"
 "Language: en_US\n"
@@ -17,7 +17,7 @@ msgstr ""
 "X-Poedit-Basepath: ..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Poedit 2.2.4\n"
+"X-Generator: Poedit 3.0\n"
 "X-Poedit-SearchPath-0: .\n"
 
 #: includes/admin/admin-functions.php:92
@@ -149,15 +149,15 @@ msgid "Hide past event schedules on the event listings."
 msgstr ""
 
 #: includes/admin/settings/class-geodir-event-settings-events.php:183
-msgid "Limit Event Occurecnes"
+msgid "Limit Event Occurrences"
 msgstr ""
 
 #: includes/admin/settings/class-geodir-event-settings-events.php:184
 msgid ""
 "Sometimes people set the end date like 50 years from now and it creates like "
 "50 extra pages of events. This will help to limit max number of event "
-"occurecnes for the event. Leave blank or use 0 to allow all possible "
-"occurecnes."
+"occurrences for the event. Leave blank or use 0 to allow all possible "
+"occurrences."
 msgstr ""
 
 #: includes/admin/settings/class-geodir-event-settings-events.php:185
@@ -458,51 +458,51 @@ msgid "Su"
 msgstr ""
 
 #: includes/class-geodir-event-calendar.php:272
-#: includes/class-geodir-event-fields.php:618
-#: includes/class-geodir-event-fields.php:845
+#: includes/class-geodir-event-fields.php:621
+#: includes/class-geodir-event-fields.php:848
 #: includes/template-functions.php:68
 #: includes/widgets/class-geodir-event-widget-calendar.php:85
 msgid "Mon"
 msgstr ""
 
 #: includes/class-geodir-event-calendar.php:273
-#: includes/class-geodir-event-fields.php:619
-#: includes/class-geodir-event-fields.php:846
+#: includes/class-geodir-event-fields.php:622
+#: includes/class-geodir-event-fields.php:849
 #: includes/template-functions.php:69
 msgid "Tue"
 msgstr ""
 
 #: includes/class-geodir-event-calendar.php:274
-#: includes/class-geodir-event-fields.php:620
-#: includes/class-geodir-event-fields.php:847
+#: includes/class-geodir-event-fields.php:623
+#: includes/class-geodir-event-fields.php:850
 #: includes/template-functions.php:70
 msgid "Wed"
 msgstr ""
 
 #: includes/class-geodir-event-calendar.php:275
-#: includes/class-geodir-event-fields.php:621
-#: includes/class-geodir-event-fields.php:848
+#: includes/class-geodir-event-fields.php:624
+#: includes/class-geodir-event-fields.php:851
 #: includes/template-functions.php:71
 msgid "Thu"
 msgstr ""
 
 #: includes/class-geodir-event-calendar.php:276
-#: includes/class-geodir-event-fields.php:622
-#: includes/class-geodir-event-fields.php:849
+#: includes/class-geodir-event-fields.php:625
+#: includes/class-geodir-event-fields.php:852
 #: includes/template-functions.php:72
 msgid "Fri"
 msgstr ""
 
 #: includes/class-geodir-event-calendar.php:277
-#: includes/class-geodir-event-fields.php:623
-#: includes/class-geodir-event-fields.php:850
+#: includes/class-geodir-event-fields.php:626
+#: includes/class-geodir-event-fields.php:853
 #: includes/template-functions.php:73
 msgid "Sat"
 msgstr ""
 
 #: includes/class-geodir-event-calendar.php:278
-#: includes/class-geodir-event-fields.php:624
-#: includes/class-geodir-event-fields.php:851
+#: includes/class-geodir-event-fields.php:627
+#: includes/class-geodir-event-fields.php:854
 #: includes/template-functions.php:67
 msgid "Sun"
 msgstr ""
@@ -627,371 +627,371 @@ msgid ""
 "Postponed/postponed,Rescheduled/rescheduled,Moved Online/moved-online"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:457
+#: includes/class-geodir-event-fields.php:460
 #: includes/class-geodir-event-manager.php:410
 msgid "Start"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:457
+#: includes/class-geodir-event-fields.php:460
 #: includes/class-geodir-event-manager.php:411
 msgid "End"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:460
+#: includes/class-geodir-event-fields.php:463
 #: includes/template-functions.php:15 includes/template-functions.php:227
 msgid "to"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:526
-#: includes/class-geodir-event-fields.php:808
+#: includes/class-geodir-event-fields.php:529
+#: includes/class-geodir-event-fields.php:811
 msgid "Event start date"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:529
+#: includes/class-geodir-event-fields.php:532
 msgid "Start date"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:532
-#: includes/class-geodir-event-fields.php:810
+#: includes/class-geodir-event-fields.php:535
+#: includes/class-geodir-event-fields.php:813
 msgid "Choose a start date of the event."
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:543
-#: includes/class-geodir-event-fields.php:813
+#: includes/class-geodir-event-fields.php:546
+#: includes/class-geodir-event-fields.php:816
 msgid "Event end date"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:546
+#: includes/class-geodir-event-fields.php:549
 msgid "End date"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:549
+#: includes/class-geodir-event-fields.php:552
 msgid "Choose a end date of the event."
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:563
-#: includes/class-geodir-event-fields.php:818
+#: includes/class-geodir-event-fields.php:566
+#: includes/class-geodir-event-fields.php:821
 msgid "Event duration (days)"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:580
-#: includes/class-geodir-event-fields.php:822
+#: includes/class-geodir-event-fields.php:583
+#: includes/class-geodir-event-fields.php:825
 msgid "Repeats"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:584
-#: includes/class-geodir-event-fields.php:823
-#: includes/class-geodir-event-fields.php:824
-msgid "Select recurring type"
-msgstr ""
-
-#: includes/class-geodir-event-fields.php:585
-#: includes/class-geodir-event-fields.php:825
-msgid "Daily"
-msgstr ""
-
-#: includes/class-geodir-event-fields.php:586
-#: includes/class-geodir-event-fields.php:826
-msgid "Weekly"
-msgstr ""
-
 #: includes/class-geodir-event-fields.php:587
+#: includes/class-geodir-event-fields.php:826
 #: includes/class-geodir-event-fields.php:827
-msgid "Monthly"
+msgid "Select recurring type"
 msgstr ""
 
 #: includes/class-geodir-event-fields.php:588
 #: includes/class-geodir-event-fields.php:828
-msgid "Yearly"
+msgid "Daily"
 msgstr ""
 
 #: includes/class-geodir-event-fields.php:589
 #: includes/class-geodir-event-fields.php:829
-msgid "Custom"
+msgid "Weekly"
+msgstr ""
+
+#: includes/class-geodir-event-fields.php:590
+#: includes/class-geodir-event-fields.php:830
+msgid "Monthly"
 msgstr ""
 
 #: includes/class-geodir-event-fields.php:591
 #: includes/class-geodir-event-fields.php:831
+msgid "Yearly"
+msgstr ""
+
+#: includes/class-geodir-event-fields.php:592
+#: includes/class-geodir-event-fields.php:832
+msgid "Custom"
+msgstr ""
+
+#: includes/class-geodir-event-fields.php:594
+#: includes/class-geodir-event-fields.php:834
 msgid "Please select recurring type"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:600
-#: includes/class-geodir-event-fields.php:834
+#: includes/class-geodir-event-fields.php:603
+#: includes/class-geodir-event-fields.php:837
 msgid "Repeat every"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:604
-#: includes/class-geodir-event-fields.php:840
+#: includes/class-geodir-event-fields.php:607
+#: includes/class-geodir-event-fields.php:843
 msgid "Please select recurring interval"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:613
-#: includes/class-geodir-event-fields.php:614
-#: includes/class-geodir-event-fields.php:844
+#: includes/class-geodir-event-fields.php:616
+#: includes/class-geodir-event-fields.php:617
+#: includes/class-geodir-event-fields.php:847
 msgid "Select days"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:637
-#: includes/class-geodir-event-fields.php:855
+#: includes/class-geodir-event-fields.php:640
+#: includes/class-geodir-event-fields.php:858
 msgid "Repeat by"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:638
-#: includes/class-geodir-event-fields.php:856
-msgid "Select weeks"
-msgstr ""
-
-#: includes/class-geodir-event-fields.php:642
-#: includes/class-geodir-event-fields.php:857
-msgid "1st week"
-msgstr ""
-
-#: includes/class-geodir-event-fields.php:643
-#: includes/class-geodir-event-fields.php:858
-msgid "2nd week"
-msgstr ""
-
-#: includes/class-geodir-event-fields.php:644
+#: includes/class-geodir-event-fields.php:641
 #: includes/class-geodir-event-fields.php:859
-msgid "3rd week"
+msgid "Select weeks"
 msgstr ""
 
 #: includes/class-geodir-event-fields.php:645
 #: includes/class-geodir-event-fields.php:860
-msgid "4th week"
+msgid "1st week"
 msgstr ""
 
 #: includes/class-geodir-event-fields.php:646
 #: includes/class-geodir-event-fields.php:861
+msgid "2nd week"
+msgstr ""
+
+#: includes/class-geodir-event-fields.php:647
+#: includes/class-geodir-event-fields.php:862
+msgid "3rd week"
+msgstr ""
+
+#: includes/class-geodir-event-fields.php:648
+#: includes/class-geodir-event-fields.php:863
+msgid "4th week"
+msgstr ""
+
+#: includes/class-geodir-event-fields.php:649
+#: includes/class-geodir-event-fields.php:864
 msgid "5th week"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:659
+#: includes/class-geodir-event-fields.php:662
 msgid "Recurring end type"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:664
+#: includes/class-geodir-event-fields.php:667
 msgid "After end of occurrences"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:665
+#: includes/class-geodir-event-fields.php:668
 msgid "After recurring end date"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:677
+#: includes/class-geodir-event-fields.php:680
 msgid "Recurring ends (occurrences)"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:681
+#: includes/class-geodir-event-fields.php:684
 msgid "Set a number of occurrences OR set a date below"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:683
+#: includes/class-geodir-event-fields.php:686
 msgid "Event will end after number of X occurrences."
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:697
+#: includes/class-geodir-event-fields.php:700
 msgid "Recurring ends (date)"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:700
+#: includes/class-geodir-event-fields.php:703
 msgid ""
 "Select a date recurring should stop OR set the number of occurrences above"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:703
+#: includes/class-geodir-event-fields.php:706
 msgid "Event will end after number of this date."
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:717
-#: includes/class-geodir-event-fields.php:872
+#: includes/class-geodir-event-fields.php:720
+#: includes/class-geodir-event-fields.php:875
 msgid "Event Date(s)"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:720
+#: includes/class-geodir-event-fields.php:723
 msgid "Select one or more custom dates"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:737
-#: includes/class-geodir-event-fields.php:905
+#: includes/class-geodir-event-fields.php:740
+#: includes/class-geodir-event-fields.php:908
 msgid "Tick to set event for all day."
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:738
-#: includes/class-geodir-event-fields.php:902
+#: includes/class-geodir-event-fields.php:741
+#: includes/class-geodir-event-fields.php:905
 msgid "All day"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:746
+#: includes/class-geodir-event-fields.php:749
 msgid "Start time"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:749
+#: includes/class-geodir-event-fields.php:752
 msgid "Select the event start time"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:763
+#: includes/class-geodir-event-fields.php:766
 msgid "End time"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:766
+#: includes/class-geodir-event-fields.php:769
 msgid "Select the event end time"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:783
-#: includes/class-geodir-event-fields.php:925
+#: includes/class-geodir-event-fields.php:786
+#: includes/class-geodir-event-fields.php:928
 msgid "Tick to set separate start and end times for each date."
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:784
-#: includes/class-geodir-event-fields.php:922
+#: includes/class-geodir-event-fields.php:787
+#: includes/class-geodir-event-fields.php:925
 msgid "Different Event Times?"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:825
+#: includes/class-geodir-event-fields.php:828
 msgid "days"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:826
+#: includes/class-geodir-event-fields.php:829
 msgid "weeks"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:827
+#: includes/class-geodir-event-fields.php:830
 msgid "months"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:828
+#: includes/class-geodir-event-fields.php:831
 msgid "years"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:843
+#: includes/class-geodir-event-fields.php:846
 msgid "Repeat on"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:865
+#: includes/class-geodir-event-fields.php:868
 msgid "Recurring ends"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:867
+#: includes/class-geodir-event-fields.php:870
 msgid "After"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:867
+#: includes/class-geodir-event-fields.php:870
 msgid "occurrences"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:867
+#: includes/class-geodir-event-fields.php:870
 msgid "On"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:869
+#: includes/class-geodir-event-fields.php:872
 msgid "Recurring event duration."
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:878
+#: includes/class-geodir-event-fields.php:881
 msgid "Selected Dates"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:897
+#: includes/class-geodir-event-fields.php:900
 msgid ""
 "Click on each day your event will be held. You may choose more than one day. "
 "Selected dates appear in blue and can be unselected by clicking on them."
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:898
+#: includes/class-geodir-event-fields.php:901
 msgid "Please select at least one event date."
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:908
+#: includes/class-geodir-event-fields.php:911
 msgid "Event Time"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:910
+#: includes/class-geodir-event-fields.php:913
 msgid "Starts at"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:914
+#: includes/class-geodir-event-fields.php:917
 msgid "Ends at"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1270
+#: includes/class-geodir-event-fields.php:1273
 msgid "Date"
 msgid_plural "Dates"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-geodir-event-fields.php:1434
-#: includes/class-geodir-event-fields.php:1597
+#: includes/class-geodir-event-fields.php:1441
+#: includes/class-geodir-event-fields.php:1604
 #, php-format
 msgid "From: %s"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1434
-#: includes/class-geodir-event-fields.php:1597
+#: includes/class-geodir-event-fields.php:1441
+#: includes/class-geodir-event-fields.php:1604
 #, php-format
 msgid "%s Start Date"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1435
-#: includes/class-geodir-event-fields.php:1598
+#: includes/class-geodir-event-fields.php:1442
+#: includes/class-geodir-event-fields.php:1605
 #, php-format
 msgid "To: %s"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1435
-#: includes/class-geodir-event-fields.php:1598
+#: includes/class-geodir-event-fields.php:1442
+#: includes/class-geodir-event-fields.php:1605
 #, php-format
 msgid "%s End Date"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1446
-#: includes/class-geodir-event-fields.php:1514
-#: includes/class-geodir-event-fields.php:1613
-#: includes/class-geodir-event-fields.php:1691
+#: includes/class-geodir-event-fields.php:1453
+#: includes/class-geodir-event-fields.php:1521
+#: includes/class-geodir-event-fields.php:1620
+#: includes/class-geodir-event-fields.php:1698
 #, php-format
 msgid "%s Date"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1482
-#: includes/class-geodir-event-fields.php:1595
-#: includes/class-geodir-event-fields.php:1659
+#: includes/class-geodir-event-fields.php:1489
+#: includes/class-geodir-event-fields.php:1602
+#: includes/class-geodir-event-fields.php:1666
 #, php-format
 msgid "%s Dates"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1743
+#: includes/class-geodir-event-fields.php:1750
 msgid "Event Start Date"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1754
+#: includes/class-geodir-event-fields.php:1761
 msgid "Event Start Time"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1765
+#: includes/class-geodir-event-fields.php:1772
 msgid "Event Starts On"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1776
+#: includes/class-geodir-event-fields.php:1783
 msgid "Event End Date"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1787
+#: includes/class-geodir-event-fields.php:1794
 msgid "Event End Time"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1798
+#: includes/class-geodir-event-fields.php:1805
 msgid "Event Ends On"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1972
+#: includes/class-geodir-event-fields.php:1979
 msgid "is past event (for events only)"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1973
+#: includes/class-geodir-event-fields.php:1980
 msgid "is ongoing event (for events only)"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1974
+#: includes/class-geodir-event-fields.php:1981
 msgid "is upcoming event (for events only)"
 msgstr ""
 
@@ -1186,11 +1186,69 @@ msgid ""
 "posts to draft.)</span>"
 msgstr ""
 
-#: includes/class-geodir-event-schedules.php:589
+#: includes/class-geodir-event-post-type.php:421
+#: includes/class-geodir-event-post-type.php:431
+msgid "Manage Past Events"
+msgstr ""
+
+#: includes/class-geodir-event-post-type.php:424
+msgid "Allows to handle past events on the site."
+msgstr ""
+
+#: includes/class-geodir-event-post-type.php:432
+msgid "Tick to auto unpublish or remove event after x days from the end date."
+msgstr ""
+
+#: includes/class-geodir-event-post-type.php:441
+msgid "Unpublish/Remove After Days"
+msgstr ""
+
+#: includes/class-geodir-event-post-type.php:442
+msgid ""
+"Set days when you would like to unpublish or remove event after the end "
+"date. Examples: 0 or blank to unpublish or remove event on next day of the "
+"end date. 7 to keep event live for 7 days after the end date."
+msgstr ""
+
+#: includes/class-geodir-event-post-type.php:443
+msgid "On Next Day"
+msgstr ""
+
+#: includes/class-geodir-event-post-type.php:456
+msgid "Past Event Status"
+msgstr ""
+
+#: includes/class-geodir-event-post-type.php:457
+msgid ""
+"Set status you would like to set to the event after x days from end date. "
+"Delete status will remove event permanently."
+msgstr ""
+
+#: includes/class-geodir-event-post-type.php:458
+msgid "Select Status"
+msgstr ""
+
+#: includes/class-geodir-event-post-type.php:648
+msgctxt "Listing status"
+msgid "Trash"
+msgstr ""
+
+#: includes/class-geodir-event-post-type.php:649
+msgctxt "Listing status"
+msgid "Delete Permanently"
+msgstr ""
+
+#: includes/class-geodir-event-query.php:251
+#: includes/class-geodir-event-query.php:252
+#: includes/template-functions.php:281 includes/template-functions.php:282
+msgid " to "
+msgstr ""
+
+#: includes/class-geodir-event-schedules.php:590
 msgid "More"
 msgstr ""
 
-#: includes/class-geodir-event-schedules.php:589
+#: includes/class-geodir-event-schedules.php:590
 msgid "Less"
 msgstr ""
 
@@ -1268,6 +1326,32 @@ msgstr ""
 #: includes/core-functions.php:552
 #, php-format
 msgid "%s PM"
+msgstr ""
+
+#: includes/core-functions.php:633
+msgid "Handle Past Events"
+msgstr ""
+
+#: includes/core-functions.php:634
+msgid "Run"
+msgstr ""
+
+#: includes/core-functions.php:635
+msgid ""
+"This tool allows to unpublish / remove past events after end date. More "
+"settings are configured at Events CPT > Settings > General > Manage Past "
+"Events."
+msgstr ""
+
+#: includes/core-functions.php:677
+#, php-format
+msgid "%d past item processed."
+msgid_plural "%d past items processed."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/core-functions.php:679
+msgid "No past items found."
 msgstr ""
 
 #: includes/libraries/class-tgm-plugin-activation.php:334
