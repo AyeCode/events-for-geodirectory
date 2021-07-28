@@ -32,6 +32,7 @@ class GeoDir_Event_Admin {
 		add_filter( 'geodir_uninstall_options', 'geodir_event_uninstall_settings', 10, 1 );
 		add_action( 'geodir_pricing_package_settings', 'geodir_event_pricing_package_settings', 9, 2 );
 		add_action( 'geodir_pricing_process_data_for_save', 'geodir_event_pricing_process_data_for_save', 1, 3 );
+		add_filter( 'geodir_debug_tools' , 'geodir_event_debug_tools', 20, 1 );
 
 		// Dummy data
 		add_filter( 'geodir_dummy_data_types' , array( 'GeoDir_Event_Admin_Dummy_Data', 'dummy_data_types' ), 10, 2 );

@@ -29,6 +29,7 @@ class GeoDir_Event_Schedules {
 	public static function init() {
 		add_action( 'delete_post', array( __CLASS__, 'delete_schedules' ), 10, 1 );
 		add_filter( 'geodir_location_count_reviews_by_term_sql', array( __CLASS__, 'location_term_counts' ), 10, 8 );
+		add_action( 'geodir_event_schedule_handle_past_events', 'geodir_event_handle_past_events' );
 	}
 
 	public static function save_schedules( $event_data, $post_id ) {
@@ -718,5 +719,144 @@ class GeoDir_Event_Schedules {
 		 * @param int $post_id Post ID.
 		 */
 		return apply_filters( 'geodir_event_allow_max_schedules', $max_schedules, $post_id );
+	}
+
+	/**
+	 * Handle past events.
+	 *
+	 * @since 2.1.1.6
+	 *
+	 * @param string $post_type The post type to process expired events.
+	 * @return int No. of past events processed.
+	 */
+	public static function handle_past_events( $post_type ) {
+		global $wpdb;
+
+		$processed = 0;
+
+		if ( empty( $post_type ) ) {
+			return $processed;
+		}
+
+		$post_type_obj = geodir_post_type_object( $post_type );
+
+		if ( ! ( ! empty( $post_type_obj ) && ! empty( $post_type_obj->past_event ) ) ) {
+			return $processed;
+		}
+
+		if ( ! GeoDir_Post_types::supports( $post_type, 'events' ) ) {
+			return $processed;
+		}
+
+		/**
+		 * Fires action before past events processed.
+		 *
+		 * @since 2.1.1.6
+		 *
+		 * @param string $post_type The post type.
+		 */
+		do_action( 'geodir_event_handle_past_events_before', $post_type );
+
+		$days = absint( $post_type_obj->past_event_days );
+		$status = ! empty( $post_type_obj->past_event_status ) ? $post_type_obj->past_event_status : 'pending';
+		$cut_off_date = date_i18n( 'Y-m-d', strtotime( date_i18n( 'Y-m-d' ) ) - ( DAY_IN_SECONDS * $days ) );
+
+		$sql = $wpdb->prepare( "SELECT p.ID FROM `" . GEODIR_EVENT_SCHEDULES_TABLE . "` AS s LEFT JOIN `{$wpdb->posts}` AS p ON p.ID = s.event_id WHERE p.post_type = %s AND p.post_status != %s GROUP BY s.event_id HAVING MAX( s.end_date ) < %s", $post_type, $status, $cut_off_date );
+		$results = $wpdb->get_results( $sql );
+
+		if ( ! empty( $results ) ) {
+			foreach ( $results as $row ) {
+				if ( self::handle_past_event( $row->ID, $status ) ) {
+					$processed++;
+				}
+			}
+		}
+
+		/**
+		 * Fires action after past events processed.
+		 *
+		 * @since 2.1.1.6
+		 *
+		 * @param string $post_type The post type.
+		 */
+		do_action( 'geodir_event_handle_past_events_after', $post_type );
+
+		return $processed;
+	}
+
+	/**
+	 * Handle past event post.
+	 *
+	 * @since 2.1.1.6
+	 *
+	 * @param int    $post_ID The post ID.
+	 * @param string $status Apply status to event post on expire.
+	 * @return bool True on success else False.
+	 */
+	public static function handle_past_event( $post_ID, $status ) {
+		/**
+		 * Check to process past event or not.
+		 *
+		 * @since 2.1.1.6
+		 *
+		 * @param bool   $result True on success else False.
+		 * @param int    $post_ID The post ID.
+		 * @param string $status Apply status to event post on expire.
+		 */
+		$skip = apply_filters( 'geodir_event_handle_past_event_skip', false, $post_ID, $status );
+
+		if ( $skip ) {
+			return false;
+		}
+
+		/**
+		 * Fires action before past event processed.
+		 *
+		 * @since 2.1.1.6
+		 *
+		 * @param int    $post_ID The post ID.
+		 * @param string $status Apply status to event post on expire.
+		 * @param bool   $result True on success else False.
+		 */
+		do_action( 'geodir_event_handle_past_event_before', $post_ID, $status );
+
+		if ( $status == 'trash' ) {
+			// Trash post.
+			$result = wp_trash_post( $post_ID );
+		} else if ( $status == 'delete' ) {
+			// Delete post.
+			$result = wp_delete_post( $post_ID, true );
+		} else {
+			$post_data = array();
+			$post_data['ID'] = $post_ID;
+			$post_data['post_status'] = $status;
+
+			/**
+			 * Filter post data to update past event post.
+			 *
+			 * @since 2.1.1.6
+			 *
+			 * @param array  $post_data Post data.
+			 * @param int    $post_ID The post ID.
+			 * @param string $status Apply status to event post on expire.
+			 */
+			$post_data = apply_filters( 'geodir_event_handle_past_event_data', $post_data, $post_ID, $status );
+
+			// Update post.
+			$result = wp_update_post( $post_data );
+		}
+
+		/**
+		 * Fires action after past event processed.
+		 *
+		 * @since 2.1.1.6
+		 *
+		 * @param int    $post_ID The post ID.
+		 * @param string $status Apply status to event post on expire.
+		 * @param bool   $result True on success else False.
+		 */
+		do_action( 'geodir_event_handle_past_event_after', $post_ID, $status, $result );
+
+		return $result;
 	}
 }

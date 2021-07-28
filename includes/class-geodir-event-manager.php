@@ -197,12 +197,12 @@ final class GeoDir_Event_Manager {
 			add_filter( 'geodir_category_term_link', 'geodir_event_category_term_link', 20, 3 );
 		}
 
-	    if(geodir_design_style()){
-		    add_action( 'wp_enqueue_scripts', array( $this, 'add_listing_script' ), 10 );
-		    add_action( 'admin_enqueue_scripts', array( $this, 'add_listing_script' ), 15 );
-	    }
+		if ( geodir_design_style() ) {
+			add_action( 'wp_enqueue_scripts', array( $this, 'add_listing_script' ), 10 );
+			add_action( 'admin_enqueue_scripts', array( $this, 'add_listing_script' ), 15 );
+		}
 
-
+		add_action( 'geodir_event_schedule_handle_past_events', 'geodir_event_handle_past_events' );
 		add_action( 'geodir_extra_loop_actions', 'geodir_event_display_event_type_filter', 6, 1 );
 		add_filter( 'geodir_seo_variables', 'geodir_event_seo_variables', 10, 2 );
 		add_filter( 'geodir_wpseo_replacements_vars', 'geodir_event_wpseo_replacements', 20, 2 );

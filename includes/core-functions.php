@@ -613,3 +613,93 @@ function geodir_event_sanitize_text_field( $value ) {
 
 	return $value;
 }
+
+/**
+ * Add tool to handle pat events manually.
+ *
+ * @since 2.1.1.6
+ *
+ * @param array $tools Tools array.
+ * @return array Filtered tools array.
+ */
+function geodir_event_debug_tools( $tools = array() ) {
+	$post_types = geodir_event_past_event_types();
+
+	if ( empty( $post_types ) ) {
+		return $tools;
+	}
+
+	$tools['tool_handle_past_events'] = array(
+		'name' => __( 'Handle Past Events', 'geodirevents' ),
+		'button' => __( 'Run', 'geodirevents' ),
+		'desc' => __( 'This tool allows to unpublish / remove past events after end date. More settings are configured at Events CPT > Settings > General > Manage Past Events.', 'geodirevents' ),
+		'callback' => 'geodir_event_tool_handle_past_events'
+	);
+
+	return $tools;
+}
+
+/**
+ * Get post type to handle past events.
+ *
+ * @since 2.1.1.6
+ *
+ * @return array Post types array.
+ */
+function geodir_event_past_event_types() {
+	$_post_types = array();
+
+	$post_types = geodir_get_posttypes( 'array' );
+
+	if ( ! empty( $post_types ) ) {
+		foreach ( $post_types as $post_type => $data ) {
+			if ( GeoDir_Post_types::supports( $post_type, 'events' ) && ! empty( $data['past_event'] ) ) {
+				$_post_types[] = $post_type;
+			}
+		}
+	}
+
+	return $_post_types;
+}
+
+/**
+ * Run to auto update past events.
+ *
+ * @since 2.1.1.6
+ *
+ * @param string $post_type The post type to process expired events.
+ * @return string Tool output message.
+ */
+function geodir_event_tool_handle_past_events() {
+	$items = (int) geodir_event_handle_past_events();
+
+	if ( $items > 0 ) {
+		$message = wp_sprintf( _n( '%d past item processed.', '%d past items processed.', $items, 'geodirevents' ), $items );
+	} else {
+		$message = __( 'No past items found.', 'geodirevents' );
+	}
+
+	return $message;
+}
+
+/**
+ * Handle past events.
+ *
+ * @since 2.1.1.6
+ *
+ * @param string $post_type The post type to process expired events.
+ * @return int No. of past events processed.
+ */
+function geodir_event_handle_past_events() {
+	$post_types = geodir_event_past_event_types();
+
+	$processed = 0;
+
+	if ( ! empty( $post_types ) ) {
+		foreach ( $post_types as $post_type ) {
+			$processed += (int) GeoDir_Event_Schedules::handle_past_events( $post_type );
+		}
+	}
+
+	return $processed;
+}
