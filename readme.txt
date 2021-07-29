@@ -9,7 +9,7 @@ Stable tag: 2.1.1.6
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Events Calendar for GeoDirectory add-on allows to extend your GeoDirectory powered website with a versatile event manager.
+Events Calendar add-on for [GeoDirectory](https://wordpress.org/plugins/geodirectory/ "Best Directory Plugin for WordPress") allows to extend your GeoDirectory powered website with a versatile event manager.
 
 == Description ==
 
