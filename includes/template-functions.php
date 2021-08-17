@@ -244,7 +244,7 @@ function geodir_event_filter_title_seo_vars( $title, $location_array, $gd_page, 
     return geodir_event_replace_seo_vars( $title, $gd_page );
 }
 
-function geodir_event_filter_searched_params( $params = array(), $post_type, $fields = array() ) {
+function geodir_event_filter_searched_params( $params = array(), $post_type = '', $fields = array() ) {
 	global $geodir_date_format;
 
 	$frontend_title = __( 'Event date', 'geodirectory' );

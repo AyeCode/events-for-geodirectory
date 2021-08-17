@@ -66,6 +66,18 @@ class GeoDir_Event_Admin_Import_Export {
 				}
 			}
 
+			// Don't update event schedules when event date/time fields are included in import.
+			$event_keys = array_keys( $event_data );
+			if ( ! ( in_array( 'start_date', $event_keys ) && in_array( 'start_time', $event_keys ) && in_array( 'end_date', $event_keys ) && in_array( 'end_time', $event_keys ) ) ) {
+				unset( $post_info['recurring'] );
+
+				if ( isset( $post_info['event_dates'] ) ) {
+					unset( $post_info['event_dates'] );
+				}
+
+				return $post_info;
+			}
+
 			$defaults = array(
 				'recurring'			=> '',
 				'start_date'		=> '',

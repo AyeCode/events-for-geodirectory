@@ -107,7 +107,7 @@ function geodir_event_get_schedule_dates($post, $preview = false, $event_type = 
 /**
  * @deprecated
  */
-function geodir_event_date_occurrences( $type = 'year', $start_date, $end_date = '', $interval = 1, $limit = '', $repeat_end = '', $repeat_days = array(), $repeat_weeks = array() ) {
+function geodir_event_date_occurrences( $type = 'year', $start_date = '', $end_date = '', $interval = 1, $limit = '', $repeat_end = '', $repeat_days = array(), $repeat_weeks = array() ) {
 	_deprecated_function( 'geodir_event_date_occurrences', '2.0.0' );
 }
 
