@@ -167,7 +167,7 @@ class GeoDir_Event_Schedules {
 		return $return;
 	}
 
-	public static function get_occurrences( $type = 'year', $start_date, $end_date = '', $interval = 1, $limit = '', $repeat_end = '', $repeat_days = array(), $repeat_weeks = array() ) {
+	public static function get_occurrences( $type = 'year', $start_date = '', $end_date = '', $interval = 1, $limit = '', $repeat_end = '', $repeat_days = array(), $repeat_weeks = array() ) {
 		$dates = array();
 		$start_time = strtotime( $start_date );
 		$end_time = strtotime( $repeat_end );
