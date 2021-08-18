@@ -16,7 +16,26 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 2.0.0
  */
 function goedir_event_register_widgets() {
+	global $pagenow;
+
 	if ( get_option( 'geodir_event_version' ) ) {
+		$block_widget_init_screens = array(
+			'upload.php',
+			'edit-comments.php',
+			'edit-tags.php',
+			'index.php',
+			'media-new.php',
+			'options-discussion.php',
+			'options-writing.php',
+			'edit.php', 
+			'themes.php',
+			'users.php',
+		);
+
+		if ( is_admin() && $pagenow && in_array( $pagenow, $block_widget_init_screens ) ) {
+			return;
+		}
+
 		register_widget( 'GeoDir_Event_Widget_Calendar' );
 		register_widget( 'GeoDir_Event_Widget_AYI' );
 		register_widget( 'GeoDir_Event_Widget_Schedules' );
