@@ -209,7 +209,7 @@ final class GeoDir_Event_Manager {
 		add_filter( 'geodir_replace_seo_vars', 'geodir_event_replace_seo_vars', 10, 2 );
 		add_filter( 'geodir_filter_title_variables_vars', 'geodir_event_filter_title_seo_vars', 10, 4 );
 		add_filter( 'geodir_search_filter_searched_params', 'geodir_event_filter_searched_params', 10, 3 );
-		add_action( 'widgets_init', 'goedir_event_register_widgets' );
+		add_filter( 'geodir_get_widgets', 'goedir_event_register_widgets', 10, 1 );
 		add_filter( 'geodir_details_schema', 'geodir_event_schema', 10, 2 );
 		add_filter( 'geodir_bestof_widget_view_all_link', 'geodir_event_bestof_widget_view_all_link', 10, 3 );
 		add_filter( 'the_title', 'geodir_event_title_recurring_event', 100, 2 );
