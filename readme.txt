@@ -67,6 +67,7 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 
 = 2.1.1.7 =
 * Don't update schedules when event date/time columns are not included in import - CHANGED
+* Changes for the conditional fields compatibility - ADDED
 
 = 2.1.1.6 =
 * Repeat recurring days always shows Sunday selected - FIXED

@@ -40,6 +40,10 @@ class GeoDir_Event_Admin {
 
 		// Add the required DB columns
 		add_filter('geodir_db_cpt_default_columns', array(__CLASS__,'add_db_columns'),10,3);
+
+		// Conditional Fields
+		add_filter( 'geodir_cf_show_conditional_fields_setting', array( $this, 'cf_show_conditional_fields_setting' ), 10, 4 );
+		add_filter( 'geodir_conditional_fields_options', array( $this, 'conditional_fields_options' ), 10, 2 );
 	}
 
 	/**
@@ -100,5 +104,52 @@ class GeoDir_Event_Admin {
 		}
 
 		return $settings_pages;
+	}
+
+	/**
+	 * Skip conditional for event dates field.
+	 *
+	 * @since 2.1.1.7
+	 *
+	 * @param bool   $hide True to hide.
+	 * @param string $post_type Current post type.
+	 * @param object $field Current field object.
+	 * @param array  $data Current field data.
+	 * @return bool True to hide, False to show.
+	 */
+	public function cf_show_conditional_fields_setting( $hide, $post_type, $field, $data ) {
+		if ( GeoDir_Post_types::supports( $post_type, 'events' ) && ! empty( $field->htmlvar_name ) && $field->htmlvar_name == 'event_dates' ) {
+			$hide = true;
+		}
+
+		return $hide;
+	}
+
+	/**
+	 * Add event fields in conditional fields options.
+	 *
+	 * @since 2.1.1.7
+	 *
+	 * @param array  $fields Fields array.
+	 * @param string $post_type Current post type.
+	 * @return array Filtered field options.
+	 */
+	public function conditional_fields_options( $fields, $post_type ) {
+		if ( GeoDir_Post_types::supports( $post_type, 'events' ) ) {
+			$_fields = array();
+
+			foreach ( $fields as $key => $title ) {
+				if ( $key == 'event_dates' ) {
+					$_fields[ 'start_date' ] = __( 'Event start date', 'geodirevents' );
+					$_fields[ 'end_date' ] = __( 'Event end date', 'geodirevents' );
+				} else {
+					$_fields[ $key ] = $title;
+				}
+			}
+
+			$fields = $_fields;
+		}
+
+		return $fields;
 	}
 }
