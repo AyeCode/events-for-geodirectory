@@ -11,35 +11,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Register Widgets.
+ * Register event widgets.
  *
- * @since 2.0.0
+ * @since 2.0.0.0
+ *
+ * @param array $widgets The list of available widgets.
+ * @return array Available GD widgets.
  */
-function goedir_event_register_widgets() {
-	global $pagenow;
-
+function goedir_event_register_widgets( $widgets ) {
 	if ( get_option( 'geodir_event_version' ) ) {
-		$block_widget_init_screens = array(
-			'upload.php',
-			'edit-comments.php',
-			'edit-tags.php',
-			'index.php',
-			'media-new.php',
-			'options-discussion.php',
-			'options-writing.php',
-			'edit.php', 
-			'themes.php',
-			'users.php',
-		);
-
-		if ( is_admin() && $pagenow && in_array( $pagenow, $block_widget_init_screens ) ) {
-			return;
-		}
-
-		register_widget( 'GeoDir_Event_Widget_Calendar' );
-		register_widget( 'GeoDir_Event_Widget_AYI' );
-		register_widget( 'GeoDir_Event_Widget_Schedules' );
+		$widgets[] = 'GeoDir_Event_Widget_AYI';
+		$widgets[] = 'GeoDir_Event_Widget_Calendar';
+		$widgets[] = 'GeoDir_Event_Widget_Schedules';
 	}
+
+	return $widgets;
 }
 
 /*
