@@ -337,7 +337,7 @@ class GeoDir_Event_Fields {
 			);
 		}else{
 			?>
-			<div id="<?php echo $htmlvar_name; ?>_row" class="required_field geodir_form_row clearfix gd-fieldset-details geodir-event-field"<?php echo geodir_conditional_field_attrs( $field, '', 'radio' ); ?>>
+			<div id="<?php echo $htmlvar_name; ?>_row" class="required_field geodir_form_row clearfix gd-fieldset-details geodir-event-field">
 				<label><?php echo $field_title . ' <span>*</span>'; ?></label>
 				<span class="gd-radios"><input name="<?php echo $htmlvar_name; ?>" id="<?php echo $htmlvar_name; ?>" <?php checked( (int) $value, 1 ); ?> value="1" class="gd-checkbox" field_type="radio" type="radio" /><?php echo __( 'Yes', 'geodirevents' ); ?></span>
 				<span class="gd-radios"><input name="<?php echo $htmlvar_name; ?>" id="<?php echo $htmlvar_name; ?>" <?php checked( (int) $value, 0 ); ?> value="0" class="gd-checkbox" field_type="radio" type="radio" /><?php echo __( 'No', 'geodirevents' ); ?></span>
@@ -809,12 +809,12 @@ class GeoDir_Event_Fields {
 				<span class="geodir_message_note"><?php echo $description; ?></span>
 			</div>
 			<?php } ?>
-	        <div id="geodir_event_start_date_row" class="required_field geodir_form_row clearfix gd-fieldset-details geodir-event-field"<?php echo geodir_conditional_field_attrs( array(), 'start_date', 'text' ); ?>>
+	        <div id="geodir_event_start_date_row" class="required_field geodir_form_row clearfix gd-fieldset-details geodir-event-field">
 	            <label for="event_start_date"><?php echo __( 'Event start date', 'geodirevents' ) . ' <span>*</span>'; ?></label>
 				<input type="text" class="geodir_textfield geodir-w200" name="<?php echo $htmlvar_name; ?>[start_date]" id="event_start_date" value="<?php echo $start_date; ?>" field_type="text" <?php echo ( wp_is_mobile() ) ?  'readonly="readonly"' : '';?>>
 	            <span class="geodir_message_error"><?php _e( 'Choose a start date of the event.', 'geodirevents' );?></span>
 	        </div>
-			<div id="geodir_event_end_date_row" class="geodir_form_row clearfix gd-fieldset-details geodir-event-field"<?php echo geodir_conditional_field_attrs( array(), 'end_date', 'text' ); ?>>
+			<div id="geodir_event_end_date_row" class="geodir_form_row clearfix gd-fieldset-details geodir-event-field">
 	            <label for="event_end_date"><?php echo __( 'Event end date', 'geodirevents' ); ?></label>
 				<input type="text" class="geodir_textfield geodir-w200" name="<?php echo $htmlvar_name; ?>[end_date]" id="event_end_date" value="<?php echo $end_date; ?>" field_type="text"  <?php echo ( wp_is_mobile() ) ?  'readonly="readonly"' : '';?>>
 	        </div>
