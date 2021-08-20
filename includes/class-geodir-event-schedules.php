@@ -653,24 +653,47 @@ class GeoDir_Event_Schedules {
 			'next_week'  	=> "( ( {$alias}start_date BETWEEN '" . $first_day_next_week . "' AND '" . $last_day_next_week . "' ) OR ( {$alias}end_date BETWEEN '" . $first_day_next_week . "' AND '" . $last_day_next_week . "' ) OR ( '" . $first_day_next_week . "' BETWEEN {$alias}start_date AND {$alias}end_date ) OR ( '" . $last_day_next_week . "' BETWEEN {$alias}start_date AND {$alias}end_date ) ) ",
 		);
 
+		/**
+		 * Filter event type query conditions.
+		 *
+		 * @since 2.1.1.7
+		 *
+		 * @param array  $filters Event type query conditions.
+		 * @param string $event_type Event type.
+		 * @param string $alias Event schedule table alias.
+		 * @param string $date Filter date.
+		 */
+		$filters = apply_filters( 'geodir_event_type_query_filters', $filters, $event_type, $alias, $date );
+
 		// If the filter is provided, filter the events
 		if ( ! empty( $filters[ $event_type ] ) ) {
-			return $filters[ $event_type ];
+			$filter = $filters[ $event_type ];
+		} else {
+			// Default filter to just return all events.
+			$filter = '1=1 ';
+
+			// Handle the special between filter where dates are separated by |
+			$dates = explode( '|', strtolower( $event_type ) );
+
+			// If there are two dates provided...
+			if ( 2 === count( $dates ) ) {
+				$date1  = date( 'Y-m-d', strtotime( $dates[0] ) );
+				$date2  = date( 'Y-m-d', strtotime( $dates[1] ) );
+				$filter = "( ( {$alias}start_date BETWEEN '" . $date1 . "' AND '" . $date2 . "' ) OR ( {$alias}end_date BETWEEN '" . $date1 . "' AND '" . $date2 . "' ) OR ( '" . $date1 . "' BETWEEN {$alias}start_date AND {$alias}end_date ) OR ( '" . $date2 . "' BETWEEN {$alias}start_date AND {$alias}end_date ) ) ";
+			}
 		}
 
-		// Handle the special between filter where dates are separated by |
-		$dates = explode( '|', strtolower( $event_type ) );
-
-		// If there are two dates provided...
-		if ( 2 === count( $dates ) ) {
-			$date1  = date( 'Y-m-d', strtotime( $dates[0] ) );
-			$date2  = date( 'Y-m-d', strtotime( $dates[1] ) );
-			$filter = "( ( {$alias}start_date BETWEEN '" . $date1 . "' AND '" . $date2 . "' ) OR ( {$alias}end_date BETWEEN '" . $date1 . "' AND '" . $date2 . "' ) OR ( '" . $date1 . "' BETWEEN {$alias}start_date AND {$alias}end_date ) OR ( '" . $date2 . "' BETWEEN {$alias}start_date AND {$alias}end_date ) ) ";
-			return $filter;
-		}
-
-		// If we are here, this filter has not been implemented so we just return all events
-		return '1=1 ';
+		/**
+		 * Filter the event type query condition.
+		 *
+		 * @since 2.1.1.7
+		 *
+		 * @param string $filter Event type query condition.
+		 * @param string $event_type Event type.
+		 * @param string $alias Event schedule table alias.
+		 * @param string $date Filter date.
+		 */
+		return apply_filters( 'geodir_event_type_query_filter', $filter, $event_type, $alias, $date );
 	}
 
 	public static function has_schedule( $post_id, $date ) {
