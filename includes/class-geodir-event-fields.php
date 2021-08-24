@@ -318,6 +318,9 @@ class GeoDir_Event_Fields {
 			// Help text
 			$help_text = $field['desc'] != '' ? __( $field['desc'], 'geodirectory' ) : '';
 
+			$conditional_attrs = geodir_conditional_field_attrs( $field, '', 'radio' );
+			$conditional_icon = geodir_conditional_field_icon( $conditional_attrs, $field );
+
 			echo aui()->radio(
 				array(
 					'id'                => $htmlvar_name,
@@ -332,7 +335,7 @@ class GeoDir_Event_Fields {
 						'1' =>  __( 'Yes', 'geodirevents' ),
 						'0' =>  __( 'No', 'geodirevents' ),
 					),
-					'wrap_attributes'  => geodir_conditional_field_attrs( $field, '', 'radio' )
+					'wrap_attributes'  => $conditional_attrs
 				)
 			);
 		}else{
