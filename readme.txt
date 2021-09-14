@@ -9,11 +9,11 @@ Stable tag: 2.1.1.7
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Events Calendar for GeoDirectory add-on allows to extend your GeoDirectory powered website with a versatile event manager.
+Events Calendar add-on for GeoDirectory  allows to extend your GeoDirectory powered website with a versatile event manager.
 
 == Description ==
 
-The Events Calendar add/on for GeoDirectory is a compelling way to feature events on your directory, using Custom Post Types (CPT). This events calendar plugin creates the CPT Events, by adding time and date to a standard listing. Users can now choose to list a place or an event.
+The Events Calendar add-on for [GeoDirectory](https://wordpress.org/plugins/geodirectory/ "Best Directory Plugin for WordPress") is a compelling way to feature events on your directory, using Custom Post Types (CPT). This events calendar plugin creates the CPT Events, by adding time and date to a standard listing. Users can now choose to list a place or an event.
 
 = Recurring Events Included =
 
@@ -23,6 +23,11 @@ You can set events as recurring type daily, weekly, monthly, yearly and even pic
 The recurring interval can be from 1 to 30. 
 
 So if you select type weekly and interval 2, the events will happen every 2 weeks.
+
+= Events Custom Fields =
+
+Add unlimited custom fields to your events out of the box with our add event form builder.
+
 
 = Events Calendar Widgets, Shortcodes or Blocks =
 
