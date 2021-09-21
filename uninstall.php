@@ -55,6 +55,7 @@ if ( ( ! empty( $geodir_settings ) && ( ! empty( $geodir_settings['admin_uninsta
 			'event_default_filter',
 			'event_disable_recurring',
 			'event_hide_past_dates',
+			'event_remove_title_date',
 			'event_map_popup_count',
 			'event_map_popup_dates',
 			'event_field_date_format',

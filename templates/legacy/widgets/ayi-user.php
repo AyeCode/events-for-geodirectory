@@ -25,7 +25,7 @@
 defined( 'ABSPATH' ) || exit;
 
 ?>
-<li class="<?php echo $class; ?>">
+<li class="<?php echo esc_attr( $class ); ?>">
 	<div class="item-avatar">
 		<a href="<?php echo GeoDir_Event_AYI::geodir_ayi_get_user_profile_link($user->ID); ?>"><?php echo get_avatar($user->ID, 40); ?></a>
 	</div>
