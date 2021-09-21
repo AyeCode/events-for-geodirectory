@@ -134,12 +134,12 @@ function geodir_event_seo_variables( $vars, $gd_page = '' ) {
 		$start_time = date_i18n( $display_time_format, $current_time );
 		$end_time = date_i18n( $display_time_format, $current_time + ( HOUR_IN_SECONDS * 8 ) );
 
-		$vars['%%event_start_date%%'] = wp_sprintf( __( 'Evevt start date. Eg: %s', 'geodirevents' ), $start_date );
-		$vars['%%event_end_date%%'] = wp_sprintf( __( 'Evevt past date. Eg: %s', 'geodirevents' ), $end_date );
-		$vars['%%event_start_time%%'] = wp_sprintf( __( 'Evevt start time. Eg: %s', 'geodirevents' ), $start_time );
-		$vars['%%event_end_time%%'] = wp_sprintf( __( 'Evevt end time. Eg: %s', 'geodirevents' ), $end_time );
-		$vars['%%event_start_to_end_date%%'] = wp_sprintf( __( 'Evevt start date - end date. Eg: %s', 'geodirevents' ), $start_date . ' - ' . $end_date );
-		$vars['%%event_start_to_end_time%%'] = wp_sprintf( __( 'Evevt start time - end time. Eg: %s', 'geodirevents' ), $start_time . ' - ' . $end_time );
+		$vars['%%event_start_date%%'] = wp_sprintf( __( 'Event start date. Eg: %s', 'geodirevents' ), $start_date );
+		$vars['%%event_end_date%%'] = wp_sprintf( __( 'Event past date. Eg: %s', 'geodirevents' ), $end_date );
+		$vars['%%event_start_time%%'] = wp_sprintf( __( 'Event start time. Eg: %s', 'geodirevents' ), $start_time );
+		$vars['%%event_end_time%%'] = wp_sprintf( __( 'Event end time. Eg: %s', 'geodirevents' ), $end_time );
+		$vars['%%event_start_to_end_date%%'] = wp_sprintf( __( 'Event start date - end date. Eg: %s', 'geodirevents' ), $start_date . ' - ' . $end_date );
+		$vars['%%event_start_to_end_time%%'] = wp_sprintf( __( 'Event start time - end time. Eg: %s', 'geodirevents' ), $start_time . ' - ' . $end_time );
 	}
     return $vars;
 }
@@ -365,6 +365,22 @@ function geodir_event_title_recurring_event( $title, $post_id = null ) {
 		$event_post = $post;
 	}
 
+	$remove_date = geodir_get_option( 'event_remove_title_date' ) ? true : false;
+
+	/**
+	 * Remove date form recurring event schedule title.
+	 *
+	 * @since 2.1.1.8
+	 *
+	 * @param bool $remove_date True to remove date from title.
+	 * @param object $event_post Event post object.
+	 */
+	$remove_date = apply_filters( 'geodir_event_remove_title_recurring_date', $remove_date, $event_post );
+
+	if ( $remove_date ) {
+		return $title;
+	}
+
 	// Check recurring enabled
 	$recurring_pkg = geodir_event_recurring_pkg( $event_post );
 	if ( ! $recurring_pkg ) {
@@ -434,7 +450,7 @@ function geodir_event_recurring_event_link( $link ) {
 				$link_date = date_i18n( 'Y-m-d', strtotime( $event_post->start_date ) );
 			}
 		
-			// recuring event link
+			// recurring event link
 			$link = geodir_getlink( get_permalink( $event_post->ID ), array( 'gde' => $link_date ) );
 		}
 	}

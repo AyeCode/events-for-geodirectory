@@ -521,7 +521,7 @@ class GeoDir_Event_AYI {
 							);
 							if ($post->rsvp_count > 0) {
 								?>
-								<a href="<?php echo $interested_url; ?>">
+								<a href="<?php echo esc_url( $interested_url ); ?>">
 									<?php echo $post->rsvp_count; ?> <?php echo self::geodir_ayi_pluralize($post->rsvp_count, __('is interested', 'geodirevents'), __('are interested', 'geodirevents')); ?>
 								</a>
 								<?php

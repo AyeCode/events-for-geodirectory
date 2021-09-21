@@ -178,6 +178,14 @@ if ( ! class_exists( 'GeoDir_Event_Settings_Events', false ) ) :
 						'advanced' => true
 					),
 					array(
+						'type' => 'checkbox',
+						'id'   => 'event_remove_title_date',
+						'name' => __( 'Remove Date From Title', 'geodirevents' ),
+						'desc' => __( 'Remove the recurring date from recurring event title.', 'geodirevents' ),
+						'default' => '0',
+						'advanced' => true
+					),
+					array(
 						'type' => 'number',
 						'id' => 'event_max_schedules',
 						'name' => __( 'Limit Event Occurrences', 'geodirevents' ),

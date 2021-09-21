@@ -34,7 +34,7 @@ if ( $buttons ) {
 				<p class="geodir-ayi-cur-user-interested">
 					<?php echo __('You Replied:', 'geodirevents'); ?>
 					<strong><?php echo __("I'm in!", 'geodirevents'); ?></strong>
-					<a href="#" data-action="remove" data-type="event_rsvp_yes" data-gde="<?php echo $gde; ?>" data-postid="<?php echo $post->ID; ?>" class="geodir-ayi-btn-rsvp"><?php echo __('Cancel', 'geodirevents'); ?></a>
+					<a href="#" data-action="remove" data-type="event_rsvp_yes" data-gde="<?php echo esc_attr( $gde ); ?>" data-postid="<?php echo absint( $post->ID ); ?>" class="geodir-ayi-btn-rsvp"><?php echo __('Cancel', 'geodirevents'); ?></a>
 				</p>
 				<?php
 			} elseif ( $cur_user_interested == 'event_rsvp_maybe' ) {
@@ -42,17 +42,17 @@ if ( $buttons ) {
 				<p class="event-cur-user-interested">
 					<?php echo __('You Replied:', 'geodirevents'); ?>
 					<strong><?php echo __('Sounds Cool', 'geodirevents'); ?></strong>
-					<a href="#" data-action="remove" data-type="event_rsvp_maybe" data-gde="<?php echo $gde; ?>" data-postid="<?php echo $post->ID; ?>" class="geodir-ayi-btn-rsvp"><?php echo __('Cancel', 'geodirevents'); ?></a>
+					<a href="#" data-action="remove" data-type="event_rsvp_maybe" data-gde="<?php echo esc_attr( $gde ); ?>" data-postid="<?php echo absint( $post->ID ); ?>" class="geodir-ayi-btn-rsvp"><?php echo __('Cancel', 'geodirevents'); ?></a>
 				</p>
 				<?php
 			}
 		} else { ?>
 			<ul class="geodir-ayi-inline-layout">
 				<li>
-					<a href="#" data-action="add" data-type="event_rsvp_yes" data-gde="<?php echo $gde; ?>" data-postid="<?php echo $post->ID; ?>" class="geodir-ayi-btn geodir-ayi-btn-small geodir-ayi-btn-full geodir-ayi-btn-rsvp geodir-ayi-btn-rsvp-yes button button-primary"><?php echo __("I'm in!", 'geodirevents'); ?></a>
+					<a href="#" data-action="add" data-type="event_rsvp_yes" data-gde="<?php echo esc_attr( $gde ); ?>" data-postid="<?php echo absint( $post->ID ); ?>" class="geodir-ayi-btn geodir-ayi-btn-small geodir-ayi-btn-full geodir-ayi-btn-rsvp geodir-ayi-btn-rsvp-yes button button-primary"><?php echo __("I'm in!", 'geodirevents'); ?></a>
 				</li>
 				<li>
-					<a href="#" data-action="add" data-type="event_rsvp_maybe" data-gde="<?php echo $gde; ?>" data-postid="<?php echo $post->ID; ?>" class="geodir-ayi-btn geodir-ayi-btn-small geodir-ayi-btn-full geodir-ayi-btn-rsvp geodir-ayi-btn-rsvp-maybe button button-secondary"><?php echo __("Sounds Cool", 'geodirevents'); ?></a>
+					<a href="#" data-action="add" data-type="event_rsvp_maybe" data-gde="<?php echo esc_attr( $gde ); ?>" data-postid="<?php echo absint( $post->ID ); ?>" class="geodir-ayi-btn geodir-ayi-btn-small geodir-ayi-btn-full geodir-ayi-btn-rsvp geodir-ayi-btn-rsvp-maybe button button-secondary"><?php echo __("Sounds Cool", 'geodirevents'); ?></a>
 				</li>
 			</ul>
 		<?php } ?>
