@@ -319,7 +319,6 @@ class GeoDir_Event_Fields {
 			$help_text = $field['desc'] != '' ? __( $field['desc'], 'geodirectory' ) : '';
 
 			$conditional_attrs = geodir_conditional_field_attrs( $field, '', 'radio' );
-			$conditional_icon = geodir_conditional_field_icon( $conditional_attrs, $field );
 
 			echo aui()->radio(
 				array(
