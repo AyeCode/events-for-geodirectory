@@ -27,10 +27,7 @@ class GeoDir_Event_Fields {
     }
 
 	public static function init() {
-	
-		if ( ! ( ! empty( $_REQUEST['tab'] ) && $_REQUEST['tab'] == 'cpt' && isset( $_REQUEST['prev_supports_events'] ) ) ) {
-			add_filter( 'geodir_default_custom_fields', array( __CLASS__, 'default_custom_fields' ), 10, 3 );
-		}
+		add_filter( 'geodir_default_custom_fields', array( __CLASS__, 'default_custom_fields' ), 10, 3 );
 		add_filter( 'geodir_custom_fields_predefined', array( __CLASS__, 'predefined_fields' ), 10, 2 );
 
 		// Admin cpt cf settings
@@ -131,7 +128,7 @@ class GeoDir_Event_Fields {
 	}
 
 	public static function default_custom_fields( $fields, $post_type, $package_id ) {
-		if ( GeoDir_Post_types::supports( $post_type, 'events' ) ) {
+		if ( GeoDir_Post_types::supports( $post_type, 'events' ) && ! ( ! empty( $_REQUEST['tab'] ) && $_REQUEST['tab'] == 'cpt' && isset( $_REQUEST['prev_supports_events'] ) ) ) {
 			$event_fields = self::event_custom_fields( $post_type, $package_id );
 
 			if ( ! empty( $event_fields ) ) {

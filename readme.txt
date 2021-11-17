@@ -5,7 +5,7 @@ Donate link: https://wpgeodirectory.com
 Requires at least: 4.9
 Tested up to: 5.8
 Requires PHP: 5.6
-Stable tag: 2.1.1.8
+Stable tag: 2.1.1.9
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -69,6 +69,9 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 3. Go to WordPress Admin -> Events -> Settings and customize behaviour as needed
 
 == Changelog ==
+
+= 2.1.1.9 =
+* Fresh install sometimes don't creates event fields - FIXED
 
 = 2.1.1.8 =
 * Option added to remove date from recurring event title - ADDED

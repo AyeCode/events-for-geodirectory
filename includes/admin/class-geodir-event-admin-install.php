@@ -266,7 +266,7 @@ class GeoDir_Event_Admin_Install {
 	/*
 	 * Insert the default field for the CPTs
 	 */
-	public static function insert_default_fields(){
+	public static function insert_default_fields() {
 		$fields = GeoDir_Admin_Dummy_Data::default_custom_fields( 'gd_event' );
 
 		/**

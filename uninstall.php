@@ -33,6 +33,9 @@ if ( ( ! empty( $geodir_settings ) && ( ! empty( $geodir_settings['admin_uninsta
 	$reviews_table = defined( 'GEODIR_REVIEW_TABLE' ) ? GEODIR_REVIEW_TABLE : $plugin_prefix . 'post_review';
 	$search_fields_table = defined( 'GEODIR_ADVANCE_SEARCH_TABLE' ) ? GEODIR_ADVANCE_SEARCH_TABLE : $plugin_prefix . 'custom_advance_search_fields';
 	$tabs_layout_table = defined( 'GEODIR_TABS_LAYOUT_TABLE' ) ? GEODIR_TABS_LAYOUT_TABLE : $plugin_prefix . 'tabs_layout';
+	$pricing_packages_table = defined( 'GEODIR_PRICING_PACKAGES_TABLE' ) ? GEODIR_PRICING_PACKAGES_TABLE : $plugin_prefix . 'price';
+	$pricing_package_meta_table = defined( 'GEODIR_PRICING_PACKAGE_META_TABLE' ) ? GEODIR_PRICING_PACKAGE_META_TABLE : $plugin_prefix . 'pricemeta';
+	$pricing_post_packages_table = defined( 'GEODIR_PRICING_POST_PACKAGES_TABLE' ) ? GEODIR_PRICING_POST_PACKAGES_TABLE : $plugin_prefix . 'post_packages';
 	$link_posts_table = defined( 'GEODIR_CP_LINK_POSTS' ) ? GEODIR_CP_LINK_POSTS : $plugin_prefix . 'cp_link_posts';
 
 	// Delete table
@@ -44,6 +47,9 @@ if ( ( ! empty( $geodir_settings ) && ( ! empty( $geodir_settings['admin_uninsta
 
 		if ( ! $wpdb->get_var( "SHOW TABLES LIKE '{$search_fields_table}'" ) ) {
 			$search_fields_table = '';
+		}
+		if ( ! $wpdb->get_var( "SHOW TABLES LIKE '{$pricing_packages_table}'" ) ) {
+			$pricing_packages_table = '';
 		}
 		if ( ! $wpdb->get_var( "SHOW TABLES LIKE '{$link_posts_table}'" ) ) {
 			$link_posts_table = '';
@@ -148,6 +154,17 @@ if ( ( ! empty( $geodir_settings ) && ( ! empty( $geodir_settings['admin_uninsta
 
 		// Delete tabs layout
 		$wpdb->query( "DELETE FROM {$tabs_layout_table} WHERE post_type = '{$post_type}' OR tab_key = '{$post_type}'" );
+
+		// Delete price packages
+		if ( $pricing_packages_table ) {
+			$wpdb->query( "DELETE FROM {$pricing_packages_table} WHERE post_type = '{$post_type}'" );
+
+			// Delete orphan price metas
+			$wpdb->query( "DELETE pricemeta FROM {$pricing_package_meta_table} pricemeta LEFT JOIN {$pricing_packages_table} price ON price.id = pricemeta.package_id WHERE price.id IS NULL" );
+
+			// Delete orphan price post packages
+			$wpdb->query( "DELETE post_packages FROM {$pricing_post_packages_table} post_packages LEFT JOIN {$pricing_packages_table} price ON price.id = post_packages.package_id WHERE price.id IS NULL" );
+		}
 
 		// Delete link posts
 		if ( $link_posts_table ) {
