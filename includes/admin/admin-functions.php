@@ -61,13 +61,6 @@ function geodir_event_inactive_posttype() {
 		}
 	}
 }
-// @todo
-function geodir_event_deactivation() {
-	geodir_event_inactive_posttype();
-	
-	delete_option( 'geodir_event_recurring_feature');
-	delete_option( 'gdevents_installed');
-}
 
 /**
  * Replace schema types for even categories.

@@ -210,7 +210,10 @@ class GeoDir_Event_Post_Type {
 
 				// run the create tables function to add our new columns.
 				add_action('init',array('GeoDir_Admin_Install','create_tables'));
-				
+
+				// Run and insert default fields after table created.
+				add_action( 'init', array( 'GeoDir_Event_Admin_Install', 'insert_default_fields' ), 10.1 );
+
 				// insert default tabs
 				GeoDir_Admin_Install::insert_default_tabs( $post_type );
 			}
@@ -571,8 +574,8 @@ class GeoDir_Event_Post_Type {
 
 		$table = geodir_db_cpt_table( $post_type );
 
-		$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->posts} SET post_status = %s WHERE post_type = %s AND post_status != %s", array( 'draft', $post_type, 'draft' ) ) );
-		$wpdb->query( $wpdb->prepare( "UPDATE {$table} SET post_status = %s WHERE post_status != %s", array( 'draft', 'draft' ) ) );
+		$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->posts} SET post_status = %s WHERE post_type = %s AND post_status NOT IN( 'draft', 'auto-draft', 'inherit' )", array( 'draft', $post_type ) ) );
+		$wpdb->query( $wpdb->prepare( "UPDATE {$table} SET post_status = %s WHERE post_status NOT IN( 'draft', 'auto-draft', 'inherit' )", array( 'draft' ) ) );
 
 		$fields = GeoDir_Event_Fields::event_custom_fields( $post_type, 0 );
 
