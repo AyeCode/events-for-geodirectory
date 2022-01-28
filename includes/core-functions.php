@@ -522,6 +522,7 @@ function geodir_event_filter_options( $post_type = 'gd_event' ) {
 	$options = array(
 		'all' => wp_sprintf( _x( 'All %s', 'Event type filter', 'geodirevents' ), geodir_post_type_name( $post_type, true ) ),
 		'upcoming' => __( 'Upcoming', 'geodirevents' ),
+		'ongoing' => __( 'Ongoing', 'geodirevents' ),
 		'past' => __( 'Past', 'geodirevents' ),
 		'today' => __( 'Today', 'geodirevents' ),
 		'tomorrow' => __( 'Tomorrow', 'geodirevents' ),

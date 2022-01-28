@@ -70,6 +70,9 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 
 == Changelog ==
 
+= 2.1.1.10 =
+* Ongoing event type filter added to show ongoing events - ADDED
+
 = 2.1.1.9 =
 * Fresh install sometimes don't creates event fields - FIXED
 
