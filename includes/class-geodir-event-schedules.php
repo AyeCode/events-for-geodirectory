@@ -609,8 +609,10 @@ class GeoDir_Event_Schedules {
 			$alias = $alias . '.';
 		}
 
+		$now = $date;
 		if ( empty( $date ) ) {
 			$date = date_i18n( 'Y-m-d' );
+			$now = date_i18n( 'Y-m-d H:i:s' );
 		}
 
 		// Set end of the week
@@ -641,7 +643,8 @@ class GeoDir_Event_Schedules {
 
 		$filters = array(
 			'past'			=> "{$alias}start_date < '$date' ",
-			'upcoming'		=> "( {$alias}start_date >= '$date' OR ( {$alias}start_date <= '" . $date . "' AND {$alias}end_date >= '" . $date . "' ) ) ",
+			'upcoming'		=> "CONCAT( {$alias}start_date, ' ', {$alias}start_time ) > '{$now}' ",
+			'ongoing'		=> "( CONCAT( {$alias}start_date, ' ', {$alias}start_time ) <= '{$now}' ) AND ( CONCAT( {$alias}end_date, ' ', {$alias}end_time ) > '{$now}' OR CONCAT( {$alias}end_date, ' ', {$alias}end_time ) = '" . date_i18n( 'Y-m-d', strtotime( $now ) ) . " 00:00:00' ) ",
 			'today'			=> "( {$alias}start_date = '$date' OR ( {$alias}start_date <= '" . $date . "' AND {$alias}end_date >= '" . $date . "' ) ) ",
 			'tomorrow'  	=> "( {$alias}start_date = '$tomorrow' OR ( {$alias}start_date <= '" . $tomorrow . "' AND {$alias}end_date >= '" . $tomorrow . "' ) ) ",
 			'next_7_days'   => "( ( {$alias}start_date BETWEEN '" . $tomorrow . "' AND '" . $next_7_days . "' ) OR ( {$alias}end_date BETWEEN '" . $tomorrow . "' AND '" . $next_7_days . "' ) OR ( '" . $tomorrow . "' BETWEEN {$alias}start_date AND {$alias}end_date ) OR ( '" . $next_7_days . "' BETWEEN {$alias}start_date AND {$alias}end_date ) ) ",
@@ -650,8 +653,13 @@ class GeoDir_Event_Schedules {
 			'this_weekend'  => "( ( {$alias}start_date BETWEEN '" . $weekend_start . "' AND '" . $sunday . "' ) OR ( {$alias}end_date BETWEEN '" . $weekend_start . "' AND '" . $sunday . "' ) OR ( '" . $weekend_start . "' BETWEEN {$alias}start_date AND {$alias}end_date ) OR ( '" . $sunday . "' BETWEEN {$alias}start_date AND {$alias}end_date ) ) ",
 			'this_month'  	=> "( ( {$alias}start_date BETWEEN '" . $date . "' AND '" . $last_day_month . "' ) OR ( {$alias}end_date BETWEEN '" . $date . "' AND '" . $last_day_month . "' ) OR ( '" . $date . "' BETWEEN {$alias}start_date AND {$alias}end_date ) OR ( '" . $last_day_month . "' BETWEEN {$alias}start_date AND {$alias}end_date ) ) ",
 			'next_month'  	=> "( ( {$alias}start_date BETWEEN '" . $first_day_next_month . "' AND '" . $last_day_next_month . "' ) OR ( {$alias}end_date BETWEEN '" . $first_day_next_month . "' AND '" . $last_day_next_month . "' ) OR ( '" . $first_day_next_month . "' BETWEEN {$alias}start_date AND {$alias}end_date ) OR ( '" . $last_day_next_month . "' BETWEEN {$alias}start_date AND {$alias}end_date ) ) ",
-			'next_week'  	=> "( ( {$alias}start_date BETWEEN '" . $first_day_next_week . "' AND '" . $last_day_next_week . "' ) OR ( {$alias}end_date BETWEEN '" . $first_day_next_week . "' AND '" . $last_day_next_week . "' ) OR ( '" . $first_day_next_week . "' BETWEEN {$alias}start_date AND {$alias}end_date ) OR ( '" . $last_day_next_week . "' BETWEEN {$alias}start_date AND {$alias}end_date ) ) ",
+			'next_week'  	=> "( ( {$alias}start_date BETWEEN '" . $first_day_next_week . "' AND '" . $last_day_next_week . "' ) OR ( {$alias}end_date BETWEEN '" . $first_day_next_week . "' AND '" . $last_day_next_week . "' ) OR ( '" . $first_day_next_week . "' BETWEEN {$alias}start_date AND {$alias}end_date ) OR ( '" . $last_day_next_week . "' BETWEEN {$alias}start_date AND {$alias}end_date ) ) "
 		);
+
+		// Include ongoing events in upcoming events.
+		if ( geodir_get_option( 'event_include_ongoing' ) ) {
+			$filters['upcoming'] = "( CONCAT( {$alias}start_date, ' ', {$alias}start_time ) >= '{$now}' OR ( CONCAT( {$alias}end_date, ' ', {$alias}end_time ) > '{$now}' OR CONCAT( {$alias}end_date, ' ', {$alias}end_time ) = '" . date_i18n( 'Y-m-d', strtotime( $now ) ) . " 00:00:00' ) ) ";
+		}
 
 		/**
 		 * Filter event type query conditions.
