@@ -3,9 +3,9 @@ Contributors: stiofansisland, paoltaia, ayecode
 Tags: events, calendar, event, schedule, organizer, geodirectory, event listings, events directory, event manager, events calendar
 Donate link: https://wpgeodirectory.com
 Requires at least: 4.9
-Tested up to: 5.8
+Tested up to: 5.9
 Requires PHP: 5.6
-Stable tag: 2.1.1.9
+Stable tag: 2.1.1.10
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 

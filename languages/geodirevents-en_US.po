@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Events for GeoDirectory 2.1.1.9\n"
+"Project-Id-Version: Events for GeoDirectory 2.1.1.10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-17 12:45+0530\n"
-"PO-Revision-Date: 2021-11-17 12:45+0530\n"
+"POT-Creation-Date: 2022-02-02 17:40+0530\n"
+"PO-Revision-Date: 2022-02-02 17:40+0530\n"
 "Last-Translator: \n"
 "Language-Team: AyeCode Ltd <contact@ayecode.io>\n"
 "Language: en_US\n"
@@ -112,7 +112,7 @@ msgstr ""
 #: includes/admin/settings/class-geodir-event-settings-events.php:107
 #: includes/admin/settings/class-geodir-event-settings-events.php:119
 #: includes/admin/settings/class-geodir-event-settings-events.php:159
-#: includes/admin/settings/class-geodir-event-settings-events.php:214
+#: includes/admin/settings/class-geodir-event-settings-events.php:222
 msgid "Select"
 msgstr ""
 
@@ -161,18 +161,26 @@ msgid "Hide past event schedules on the event listings."
 msgstr ""
 
 #: includes/admin/settings/class-geodir-event-settings-events.php:183
-msgid "Remove Date From Title"
+msgid "Include Ongoing"
 msgstr ""
 
 #: includes/admin/settings/class-geodir-event-settings-events.php:184
-msgid "Remove the recurring date from recurring event title."
+msgid "Include ongoing events in upcoming events."
 msgstr ""
 
 #: includes/admin/settings/class-geodir-event-settings-events.php:191
-msgid "Limit Event Occurrences"
+msgid "Remove Date From Title"
 msgstr ""
 
 #: includes/admin/settings/class-geodir-event-settings-events.php:192
+msgid "Remove the recurring date from recurring event title."
+msgstr ""
+
+#: includes/admin/settings/class-geodir-event-settings-events.php:199
+msgid "Limit Event Occurrences"
+msgstr ""
+
+#: includes/admin/settings/class-geodir-event-settings-events.php:200
 msgid ""
 "Sometimes people set the end date like 50 years from now and it creates like "
 "50 extra pages of events. This will help to limit max number of event "
@@ -180,51 +188,51 @@ msgid ""
 "occurrences."
 msgstr ""
 
-#: includes/admin/settings/class-geodir-event-settings-events.php:193
+#: includes/admin/settings/class-geodir-event-settings-events.php:201
 msgid "No Limit"
 msgstr ""
 
-#: includes/admin/settings/class-geodir-event-settings-events.php:201
+#: includes/admin/settings/class-geodir-event-settings-events.php:209
 msgid "Schedules in map popup"
 msgstr ""
 
-#: includes/admin/settings/class-geodir-event-settings-events.php:202
+#: includes/admin/settings/class-geodir-event-settings-events.php:210
 msgid ""
 "No. of schedule dates to display for event marker info window on the map. "
 "Default: 1"
 msgstr ""
 
-#: includes/admin/settings/class-geodir-event-settings-events.php:210
+#: includes/admin/settings/class-geodir-event-settings-events.php:218
 msgid "Display dates in map popup"
 msgstr ""
 
-#: includes/admin/settings/class-geodir-event-settings-events.php:211
+#: includes/admin/settings/class-geodir-event-settings-events.php:219
 msgid ""
 "Set the filter to view schedule dates for event marker info window on the "
 "map."
 msgstr ""
 
-#: includes/admin/settings/class-geodir-event-settings-events.php:244
+#: includes/admin/settings/class-geodir-event-settings-events.php:252
 msgid "A-Z"
 msgstr ""
 
-#: includes/admin/settings/class-geodir-event-settings-events.php:245
+#: includes/admin/settings/class-geodir-event-settings-events.php:253
 msgid "Latest"
 msgstr ""
 
-#: includes/admin/settings/class-geodir-event-settings-events.php:246
+#: includes/admin/settings/class-geodir-event-settings-events.php:254
 msgid "Most reviews"
 msgstr ""
 
-#: includes/admin/settings/class-geodir-event-settings-events.php:247
+#: includes/admin/settings/class-geodir-event-settings-events.php:255
 msgid "Highest rating"
 msgstr ""
 
-#: includes/admin/settings/class-geodir-event-settings-events.php:248
+#: includes/admin/settings/class-geodir-event-settings-events.php:256
 msgid "Random"
 msgstr ""
 
-#: includes/admin/settings/class-geodir-event-settings-events.php:249
+#: includes/admin/settings/class-geodir-event-settings-events.php:257
 msgid "Distance to current post"
 msgstr ""
 
@@ -1289,78 +1297,82 @@ msgid "Upcoming"
 msgstr ""
 
 #: includes/core-functions.php:525
-msgid "Past"
+msgid "Ongoing"
 msgstr ""
 
 #: includes/core-functions.php:526
-msgid "Today"
+msgid "Past"
 msgstr ""
 
 #: includes/core-functions.php:527
-msgid "Tomorrow"
+msgid "Today"
 msgstr ""
 
 #: includes/core-functions.php:528
-msgid "+7 Days"
+msgid "Tomorrow"
 msgstr ""
 
 #: includes/core-functions.php:529
-msgid "+30 Days"
+msgid "+7 Days"
 msgstr ""
 
 #: includes/core-functions.php:530
-msgid "This Weekend"
+msgid "+30 Days"
 msgstr ""
 
 #: includes/core-functions.php:531
-msgid "This Week"
+msgid "This Weekend"
 msgstr ""
 
 #: includes/core-functions.php:532
+msgid "This Week"
+msgstr ""
+
+#: includes/core-functions.php:533
 msgid "This Month"
 msgstr ""
 
-#: includes/core-functions.php:533 includes/template-functions.php:82
+#: includes/core-functions.php:534 includes/template-functions.php:82
 msgid "Next Month"
 msgstr ""
 
-#: includes/core-functions.php:534
+#: includes/core-functions.php:535
 msgid "Next Week"
-msgstr ""
-
-#: includes/core-functions.php:556
-#, php-format
-msgid "%s AM"
 msgstr ""
 
 #: includes/core-functions.php:557
 #, php-format
+msgid "%s AM"
+msgstr ""
+
+#: includes/core-functions.php:558
+#, php-format
 msgid "%s PM"
 msgstr ""
 
-#: includes/core-functions.php:638
+#: includes/core-functions.php:639
 msgid "Handle Past Events"
 msgstr ""
 
-#: includes/core-functions.php:639
+#: includes/core-functions.php:640
 msgid "Run"
 msgstr ""
 
-#: includes/core-functions.php:640
+#: includes/core-functions.php:641
 msgid ""
 "This tool allows to unpublish / remove past events after end date. More "
 "settings are configured at Events CPT > Settings > General > Manage Past "
 "Events."
 msgstr ""
 
-#: includes/core-functions.php:682
+#: includes/core-functions.php:683
 #, php-format
 msgid "%d past item processed."
 msgid_plural "%d past items processed."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/core-functions.php:684
+#: includes/core-functions.php:685
 msgid "No past items found."
 msgstr ""
 
