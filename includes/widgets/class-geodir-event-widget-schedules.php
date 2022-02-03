@@ -258,27 +258,9 @@ class GeoDir_Event_Widget_Schedules extends WP_Super_Duper {
 	 * @return array
 	 */
 	public static function get_schedule_template_options() {
-		$templates = array_values( self::get_schedule_templates() );
+		$templates = array_values( GeoDir_Event_Schedules::get_schedule_templates() );
 
 		return array_combine( $templates, $templates );
-	}
-
-	/**
-	 * The schedule templates.
-	 *
-	 * @since 2.0.0.16
-	 *
-	 * @return array
-	 */
-	public static function get_schedule_templates() {
-		$templates = array(
-			'{start_date} @ {start_time} - {end_date} @ {end_time}',
-			'{start_date} - {end_date} @ {start_time} - {end_time}',
-			'{start_date} @ {start_time} {br} {end_date} @ {end_time}',
-			'{start_date} @ {start_time}',
-		);
-
-		return $templates;
 	}
 
 	/**
@@ -289,7 +271,7 @@ class GeoDir_Event_Widget_Schedules extends WP_Super_Duper {
 	 * @return string
 	 */
 	public static function get_schedule_template() {
-		$templates = self::get_schedule_templates();
+		$templates = GeoDir_Event_Schedules::get_schedule_templates();
 
 		return $templates[0];
 	}
@@ -352,7 +334,7 @@ class GeoDir_Event_Widget_Schedules extends WP_Super_Duper {
 			}
 
 			$row_class = $design_style ? 'list-group-item px-0 py-2' : '';
-			$schedule_row = self::schedule_parse_template( $_schedule, $template, $date_format, $time_format );
+			$schedule_row = self::schedule_parse_template( $_schedule, $row, $template, $date_format, $time_format );
 			$schedule_row = '<div class="geodir-schedule-row '.$row_class.'">' . $schedule_row . '</div>';
 			$schedule_row = apply_filters( 'geodir_event_widget_schedule_html', $schedule_row, $row, $template, $date_format, $time_format );
 
@@ -374,7 +356,7 @@ class GeoDir_Event_Widget_Schedules extends WP_Super_Duper {
 	 *
 	 * @return string
 	 */
-	public static function schedule_parse_template( $item, $template = '', $date_format = '', $time_format = '' ) {
+	public static function schedule_parse_template( $item, $schedule = array(), $template = '', $date_format = '', $time_format = '' ) {
 		if ( empty( $item ) || ! is_array( $item ) ) {
 			return NULL;
 		}
@@ -420,9 +402,9 @@ class GeoDir_Event_Widget_Schedules extends WP_Super_Duper {
 			$content = str_replace( '{' . $key .'}', $value, $content );
 		}
 
-		$content = self::normalize_chars( $content, $item );
+		$content = apply_filters( 'geodir_event_widget_schedules_parse_template', $content, $item, $schedule, $template, $date_format, $time_format );
 
-		return apply_filters( 'geodir_event_widget_schedules_parse_template', $content, $item, $template );
+		return self::normalize_chars( $content, $item );
 	}
 
 	/**

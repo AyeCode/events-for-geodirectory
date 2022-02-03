@@ -890,4 +890,22 @@ class GeoDir_Event_Schedules {
 
 		return $result;
 	}
+
+	/**
+	 * Get templates to display event schedules.
+	 *
+	 * @since 2.1.1.11
+	 *
+	 * @return array Template.
+	 */
+	public static function get_schedule_templates() {
+		$template = array(
+			'{start_date} @ {start_time} - {end_date} @ {end_time}',
+			'{start_date} - {end_date} @ {start_time} - {end_time}',
+			'{start_date} @ {start_time} {br} {end_date} @ {end_time}',
+			'{start_date} @ {start_time}',
+		);
+
+		return apply_filters( 'geodir_event_get_schedule_templates', $template );
+	}
 }
