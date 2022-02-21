@@ -208,8 +208,8 @@ class GeoDir_Event_Widget_Schedules extends WP_Super_Duper {
 		}
 
 		// Use current schedule to retrieve schedules.
+		$date = '';
 		if ( $use_current ) {
-			$date = '';
 			if ( ! empty( $gd_post->start_date ) ) {
 				$date = $gd_post->start_date;
 			} elseif ( ! empty( $post->start_date ) && $post->ID == $gd_post->ID ) {
@@ -235,7 +235,7 @@ class GeoDir_Event_Widget_Schedules extends WP_Super_Duper {
 		if ( $demo ) {
 			$schedules = self::get_demo_schedules( $number );
 		} else {
-			$schedules = GeoDir_Event_Schedules::get_schedules( $post_id, $type, $number );
+			$schedules = GeoDir_Event_Schedules::get_schedules( $post_id, $type, $number, $date );
 			if ( empty( $schedules ) && ! in_array( $type, array( 'past', 'all' ) ) && $show_past ) {
 				$schedules = GeoDir_Event_Schedules::get_schedules( $post_id, 'all', $number );
 			}

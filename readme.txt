@@ -72,6 +72,7 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 
 = 2.1.1.11 =
 * Hook added to filter event schedule templates in GD > Event Schedules - ADDED
+* GD > Event Schedules shows same date for recurring schedules when searched with dates - FIXED
 
 = 2.1.1.10 =
 * Ongoing event type filter added to show ongoing events - ADDED

@@ -439,7 +439,7 @@ class GeoDir_Event_Schedules {
 		return $schedule;
 	}
 
-	public static function get_schedules( $post_id, $event_type = '', $limit = 0 ) {
+	public static function get_schedules( $post_id, $event_type = '', $limit = 0, $min_date = '' ) {
 		global $wpdb;
 
 		if ( empty( $post_id ) ) {
@@ -447,7 +447,7 @@ class GeoDir_Event_Schedules {
 		}
 
 		$where = array( 'event_id = %d' );
-		if ( ( $condition = GeoDir_Event_Schedules::event_type_condition( $event_type ) ) ) {
+		if ( ( $condition = self::event_type_condition( $event_type, '', '', $min_date ) ) ) {
 			$where[] = $condition;
 		}
 
@@ -595,7 +595,7 @@ class GeoDir_Event_Schedules {
 		return $html;
 	}
 
-	public static function event_type_condition( $event_type, $alias = NULL, $date = '' ) {
+	public static function event_type_condition( $event_type, $alias = NULL, $date = '', $min_date = '' ) {
 		// Maybe abort early
 		if ( false === $event_type ) {
 			return '1=1 ';
@@ -688,6 +688,11 @@ class GeoDir_Event_Schedules {
 				$date1  = date( 'Y-m-d', strtotime( $dates[0] ) );
 				$date2  = date( 'Y-m-d', strtotime( $dates[1] ) );
 				$filter = "( ( {$alias}start_date BETWEEN '" . $date1 . "' AND '" . $date2 . "' ) OR ( {$alias}end_date BETWEEN '" . $date1 . "' AND '" . $date2 . "' ) OR ( '" . $date1 . "' BETWEEN {$alias}start_date AND {$alias}end_date ) OR ( '" . $date2 . "' BETWEEN {$alias}start_date AND {$alias}end_date ) ) ";
+
+				// Set min start date.
+				if ( ! empty( $min_date ) ) {
+					$filter = "{$alias}start_date >= '{$min_date}' AND " . $filter;
+				}
 			}
 		}
 
