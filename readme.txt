@@ -5,7 +5,7 @@ Donate link: https://wpgeodirectory.com
 Requires at least: 4.9
 Tested up to: 5.9
 Requires PHP: 5.6
-Stable tag: 2.1.1.10
+Stable tag: 2.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -70,9 +70,10 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 
 == Changelog ==
 
-= 2.1.1.11 =
+= 2.2 =
 * Hook added to filter event schedule templates in GD > Event Schedules - ADDED
 * GD > Event Schedules shows same date for recurring schedules when searched with dates - FIXED
+* Changes to support GeoDirectory v2.2 new settings UI - CHANGED
 
 = 2.1.1.10 =
 * Ongoing event type filter added to show ongoing events - ADDED

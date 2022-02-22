@@ -28,7 +28,7 @@ if ( ! class_exists( 'GeoDir_Event_Settings_Events', false ) ) :
 
 			add_filter( 'geodir_settings_tabs_array', array( $this, 'add_settings_page' ), 20 );
 			add_action( 'geodir_settings_' . $this->id, array( $this, 'output' ) );
-			add_action( 'geodir_sections_' . $this->id, array( $this, 'output_toggle_advanced' ) );
+			//add_action( 'geodir_sections_' . $this->id, array( $this, 'output_toggle_advanced' ) );
 
 			add_action( 'geodir_settings_save_' . $this->id, array( $this, 'save' ) );
 			add_action( 'geodir_sections_' . $this->id, array( $this, 'output_sections' ) );
@@ -124,7 +124,7 @@ if ( ! class_exists( 'GeoDir_Event_Settings_Events', false ) ) :
 					array(
 						'type' => 'checkbox',
 						'id'   => 'event_use_custom_format',
-						'name' => '',
+						'name' => ' ',
 						'desc' => __( 'OR use custom date form setting for display event dates.', 'geodirevents' ),
 						'default' => '0',
 						'advanced' => true
@@ -132,12 +132,13 @@ if ( ! class_exists( 'GeoDir_Event_Settings_Events', false ) ) :
 					array(
 						'type' => 'text',
 						'id'   => 'event_custom_date_format',
-						'name' => '',
+						'name' => __( 'Custom Date Format', 'geodirevents' ),
 						'desc' => __( 'Set the custom date format to display event dates.', 'geodirevents' ),
 						'css'  => 'min-width:300px;',
-						'default'  => '',
+						'default' => '',
 						'desc_tip' => true,
-						'advanced' => true
+						'advanced' => true,
+						'element_require' => '[%event_use_custom_format%:checked]'
 					),
 					array(
 						'type' => 'sectionend', 
