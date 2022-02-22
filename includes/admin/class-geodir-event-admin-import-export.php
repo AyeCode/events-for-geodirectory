@@ -29,9 +29,15 @@ class GeoDir_Event_Admin_Import_Export {
 
 	public static function sample_csv_download_link() {
 		$sample_csv = GEODIR_EVENT_PLUGIN_URL . '/assets/sample_events.csv';
-		?>
-		<input type="button" value="<?php echo esc_attr_e( 'Download Sample Events CSV', 'geodirevents' );?>" class="button-secondary" name="gd_ie_download_events" id="gd_ie_download_events" data-sample-csv="<?php echo $sample_csv; ?>">
-		<?php
+		echo aui()->button(
+			array(
+				'type'      => 'a',
+				'class'     => 'btn btn-outline-primary',
+				'content'   => __('Download Sample Events CSV', 'geodirevents'),
+				'icon'      => 'fas fa-download',
+				'href'      => esc_url( $sample_csv ),
+			)
+		);
 	}
 
 	public static function import_validate_post( $post_info, $row ) {
