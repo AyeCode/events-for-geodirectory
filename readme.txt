@@ -70,6 +70,9 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 
 == Changelog ==
 
+= 2.2.1 =
+* Enhance recurring event fields labels & description - CHANGED
+
 = 2.2 =
 * Hook added to filter event schedule templates in GD > Event Schedules - ADDED
 * GD > Event Schedules shows same date for recurring schedules when searched with dates - FIXED

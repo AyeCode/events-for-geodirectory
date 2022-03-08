@@ -576,6 +576,19 @@ class GeoDir_Event_Fields {
 					)
 				);
 
+				// repeat every
+				echo  aui()->select( array(
+					'id'               => "event_repeat_x",
+					'name'             => $htmlvar_name . "[repeat_x]",
+					'class'            => 'mw-100',
+					'label'            => esc_html__('Repeats every', 'geodirevents').' <span class="text-danger">*</span>',
+					'label_type'       => !empty($geodir_label_type) ? $geodir_label_type : 'horizontal',
+					'value'            => $repeat_x,
+					'options'          => array_combine( range( 1, 30 ), range( 1, 30 ) ),
+					'help_text'        => __( 'Please select recurring interval', 'geodirevents' ),
+					'element_require'  => '[%recurring%:checked]=="1" && [%event_repeat_type%]!="custom"',
+				) );
+
 				// repeats
 				echo  aui()->select( array(
 					'id'               => "event_repeat_type",
@@ -586,27 +599,14 @@ class GeoDir_Event_Fields {
 					'value'            => $repeat_type,
 					'options'          => array(
 						''      =>  esc_html__( 'Select recurring type', 'geodirevents' ),
-						'day'      =>  esc_html__( 'Daily', 'geodirevents' ),
-						'week'      =>  esc_html__( 'Weekly', 'geodirevents' ),
-						'month'      =>  esc_html__( 'Monthly', 'geodirevents' ),
-						'year'      =>  esc_html__( 'Yearly', 'geodirevents' ),
+						'day'      =>  esc_html__( 'Days', 'geodirevents' ),
+						'week'      =>  esc_html__( 'Weeks', 'geodirevents' ),
+						'month'      =>  esc_html__( 'Months', 'geodirevents' ),
+						'year'      =>  esc_html__( 'Years', 'geodirevents' ),
 						'custom'      =>  esc_html__( 'Custom', 'geodirevents' ),
 					),
 					'help_text'         => __( 'Please select recurring type', 'geodirevents' ),
 					'element_require'   => '[%recurring%:checked]=="1"',
-				) );
-
-				// repeat every
-				echo  aui()->select( array(
-					'id'               => "event_repeat_x",
-					'name'             => $htmlvar_name . "[repeat_x]",
-					'class'            => 'mw-100',
-					'label'            => esc_html__('Repeat every', 'geodirevents').' <span class="text-danger">*</span>',
-					'label_type'       => !empty($geodir_label_type) ? $geodir_label_type : 'horizontal',
-					'value'            => $repeat_x,
-					'options'          => array_combine( range( 1, 30 ), range( 1, 30 ) ),
-					'help_text'        => __( 'Please select recurring interval', 'geodirevents' ),
-					'element_require'  => '[%recurring%:checked]=="1" && [%event_repeat_type%]!="custom"',
 				) );
 
 				// repeat on
@@ -660,13 +660,13 @@ class GeoDir_Event_Fields {
 						'id'                => 'event_repeat_end_type',
 						'name'              => $htmlvar_name . "[repeat_end_type]",
 						'type'              => "radio",
-						'label'             => esc_html__( 'Recurring end type', 'geodirevents' ),
+						'label'             => esc_html__( 'Stop Recurring Events', 'geodirevents' ),
 						'label_type'        => ! empty( $geodir_label_type ) ? $geodir_label_type : 'horizontal',
 						'class'             => '',
 						'value'             => $repeat_end_type,
 						'options'           => array(
-							'0' =>  __( 'After end of occurrences', 'geodirevents' ),
-							'1' =>  __( 'After recurring end date', 'geodirevents' ),
+							'0' =>  __( 'After a certain number of occurrences', 'geodirevents' ),
+							'1' =>  __( 'After a certain date', 'geodirevents' ),
 						),
 						'element_require'   => '[%recurring%:checked]=="1" && [%event_repeat_type%]!="custom"',
 					)
@@ -678,13 +678,13 @@ class GeoDir_Event_Fields {
 						'id'                => 'event_max_repeat',
 						'name'              => $htmlvar_name . "[max_repeat]",
 						'required'          => false,
-						'label'              => esc_html__(  'Recurring ends (occurrences)', 'geodirevents' ),
+						'label'              => esc_html__(  'How many times should this event occur?', 'geodirevents' ),
 						'type'              => 'number',
 						'label_type'       => !empty($geodir_label_type) ? $geodir_label_type : 'horizontal',
 						'value'             => $max_repeat,
-						'placeholder'       => esc_html__( 'Set a number of occurrences OR set a date below', 'geodirevents'),
+						'placeholder'       => esc_html__( 'Set a number of occurrences', 'geodirevents'),
 						'element_require'   => '[%recurring%:checked]=="1" && [%event_repeat_type%]!="custom" && [%event_repeat_end_type%:checked]!="1"',
-						'help_text'         => __( 'Event will end after number of X occurrences.', 'geodirevents' ),
+						'help_text'         => __( 'Event will stop recurring after this number of instances.', 'geodirevents' ),
 						'extra_attributes'  => array(
 							'min'       => 0,
 							'lang'      => "EN"
@@ -698,13 +698,13 @@ class GeoDir_Event_Fields {
 						'id'                => "event_repeat_end",
 						'name'              => $htmlvar_name . "[repeat_end]",
 						'required'          => false,
-						'label'              => __('Recurring ends (date)', 'geodirevents'),
+						'label'              => __('Recurring end date', 'geodirevents'),
 						'label_type'       => !empty($geodir_label_type) ? $geodir_label_type : 'horizontal',
 						'type'              => 'datepicker',
-						'placeholder'       => esc_html__( 'Select a date recurring should stop OR set the number of occurrences above', 'geodirevents'),
+						'placeholder'       => esc_html__( 'Select a date recurring should stop', 'geodirevents'),
 						'class'             => '',
 						'value'             => $repeat_end,
-						'help_text'         => __( 'Event will end after number of this date.', 'geodirevents' ),
+						'help_text'         => __( 'Event will stop recurring after this date.', 'geodirevents' ),
 						'extra_attributes'  => $extra_attributes,
 						'element_require'   => '[%recurring%:checked]=="1" && [%event_repeat_type%]!="custom" && [%event_repeat_end_type%:checked]=="1"',
 					)
@@ -822,26 +822,26 @@ class GeoDir_Event_Fields {
 	            <label for="event_duration_x"><?php echo __( 'Event duration (days)', 'geodirevents' ); ?></label>
 				<input type="number" class="geodir_textfield geodir-w200" name="<?php echo esc_attr( $htmlvar_name ); ?>[duration_x]" id="event_duration_x" value="<?php echo esc_attr( $duration_x ); ?>" min="0" lang="EN" field_type="text">
 	        </div>
-			<div id="geodir_event_repeat_type_row" class="required_field geodir_form_row clearfix gd-fieldset-details geodir-event-field <?php echo $recurring_class; ?>">
-	            <label for="event_repeat_type"><?php echo __( 'Repeats', 'geodirevents' ) . ' <span>*</span>'; ?></label>
-				<select id="event_repeat_type" name="<?php echo esc_attr( $htmlvar_name ); ?>[repeat_type]" class="geodir_textfield geodir-select geodir-w200" data-placeholder="<?php echo esc_attr_e( 'Select recurring type', 'geodirevents' );?>">
-					<option value="" <?php selected( $repeat_type, '' );?>><?php _e( 'Select recurring type', 'geodirevents' );?></option>
-					<option value="day" <?php selected( $repeat_type, 'day' );?> data-title="<?php echo esc_attr( __( 'days', 'geodirevents' ) );?>"><?php _e( 'Daily', 'geodirevents' );?></option>
-					<option value="week" <?php selected( $repeat_type, 'week' );?> data-title="<?php echo esc_attr( __( 'weeks', 'geodirevents' ) );?>"><?php _e( 'Weekly', 'geodirevents' );?></option>
-					<option value="month" <?php selected( $repeat_type, 'month' );?> data-title="<?php echo esc_attr( __( 'months', 'geodirevents' ) );?>"><?php _e( 'Monthly', 'geodirevents' );?></option>
-					<option value="year" <?php selected( $repeat_type, 'year' );?> data-title="<?php echo esc_attr( __( 'years', 'geodirevents' ) );?>"><?php _e( 'Yearly', 'geodirevents' );?></option>
-					<option value="custom" <?php selected( $repeat_type, 'custom' );?>><?php _e( 'Custom', 'geodirevents' );?></option>
-				</select>
-				<span class="geodir_message_error"><?php _e( 'Please select recurring type', 'geodirevents' );?></span>
-	        </div>
 			<div id="geodir_event_repeat_x_row" class="geodir_form_row clearfix gd-fieldset-details geodir-event-field <?php echo $recurring_class; ?>">
-	            <label for="event_repeat_x"><?php echo __( 'Repeat every', 'geodirevents' ); ?></label>
+	            <label for="event_repeat_x"><?php echo __( 'Repeats every', 'geodirevents' ); ?></label>
 				<select id="event_repeat_x" name="<?php echo esc_attr( $htmlvar_name ); ?>[repeat_x]" class="geodir_textfield geodir-select geodir-w200">
 					<?php for ( $i = 1; $i <= 30; $i++ ) { ?>
 					<option value="<?php echo $i;?>" <?php selected( $repeat_x, $i ); ?>><?php echo $i;?></option>
 					<?php } ?>
 				</select>
 				<span class="geodir_message_error"><?php _e( 'Please select recurring interval', 'geodirevents' );?></span>
+	        </div>
+			<div id="geodir_event_repeat_type_row" class="required_field geodir_form_row clearfix gd-fieldset-details geodir-event-field <?php echo $recurring_class; ?>">
+	            <label for="event_repeat_type"><?php echo __( 'Repeats', 'geodirevents' ) . ' <span>*</span>'; ?></label>
+				<select id="event_repeat_type" name="<?php echo esc_attr( $htmlvar_name ); ?>[repeat_type]" class="geodir_textfield geodir-select geodir-w200" data-placeholder="<?php echo esc_attr_e( 'Select recurring type', 'geodirevents' );?>">
+					<option value="" <?php selected( $repeat_type, '' );?>><?php _e( 'Select recurring type', 'geodirevents' );?></option>
+					<option value="day" <?php selected( $repeat_type, 'day' );?> data-title="<?php echo esc_attr( __( 'days', 'geodirevents' ) );?>"><?php _e( 'Days', 'geodirevents' );?></option>
+					<option value="week" <?php selected( $repeat_type, 'week' );?> data-title="<?php echo esc_attr( __( 'weeks', 'geodirevents' ) );?>"><?php _e( 'Weeks', 'geodirevents' );?></option>
+					<option value="month" <?php selected( $repeat_type, 'month' );?> data-title="<?php echo esc_attr( __( 'months', 'geodirevents' ) );?>"><?php _e( 'Months', 'geodirevents' );?></option>
+					<option value="year" <?php selected( $repeat_type, 'year' );?> data-title="<?php echo esc_attr( __( 'years', 'geodirevents' ) );?>"><?php _e( 'Years', 'geodirevents' );?></option>
+					<option value="custom" <?php selected( $repeat_type, 'custom' );?>><?php _e( 'Custom', 'geodirevents' );?></option>
+				</select>
+				<span class="geodir_message_error"><?php _e( 'Please select recurring type', 'geodirevents' );?></span>
 	        </div>
 			<div id="geodir_event_repeat_days_row" class="geodir_form_row clearfix gd-fieldset-details geodir-event-field <?php echo $recurring_class; ?>">
 	            <label for="event_repeat_days"><?php echo __( 'Repeat on', 'geodirevents' ); ?></label>
@@ -866,11 +866,11 @@ class GeoDir_Event_Fields {
 				</select>
 	        </div>
 			<div id="geodir_event_recurring_ends_row" class="geodir_form_row clearfix gd-fieldset-details geodir-event-field <?php echo $recurring_class; ?>">
-	            <label><?php echo __( 'Recurring ends', 'geodirevents' ); ?></label>
+	            <label><?php echo __( 'Stop Recurring Events', 'geodirevents' ); ?></label>
 				<div class="geodir-inline-fields">
 					<input type="radio" class="gd-checkbox" name="<?php echo esc_attr( $htmlvar_name ); ?>[repeat_end_type]" id="event_repeat_end_type_m" value="0" <?php checked( $repeat_end_type, 0 );?> /><label for="event_repeat_end_type_m"><?php _e( 'After', 'geodirevents' );?></label>&nbsp;<input type="number" value="<?php echo $max_repeat;?>" class="geodir_textfield geodir-w110" id="event_max_repeat" name="<?php echo esc_attr( $htmlvar_name ); ?>[max_repeat]" lang="EN">&nbsp;<label for="event_repeat_end_type_m"><?php _e( 'occurrences', 'geodirevents' );?></label>&nbsp;&nbsp;<input type="radio" class="gd-checkbox" name="<?php echo esc_attr( $htmlvar_name ); ?>[repeat_end_type]" id="event_repeat_end_type_u" value="1" <?php checked( $repeat_end_type, 1 );?> /><label for="event_repeat_end_type_u"><?php _e( 'On', 'geodirevents' );?></label> <input type="text" value="<?php echo $repeat_end;?>" class="geodir_textfield geodir-w200" id="event_repeat_end" name="<?php echo esc_attr( $htmlvar_name ); ?>[repeat_end]" />
 				</div>
-				<span class="geodir_message_note"><?php _e( 'Recurring event duration.', 'geodirevents' );?></span>
+				<span class="geodir_message_note"><?php _e( 'Event will stop recurring after this number of instances / this date.', 'geodirevents' );?></span>
 	        </div>
 			<div id="geodir_event_custom_recurring_row" class="geodir_form_row clearfix gd-fieldset-details geodir-event-field <?php echo $recurring_class; ?>">
 				<label><?php echo __( 'Event Date(s)', 'geodirevents' ); ?></label>
