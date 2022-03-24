@@ -82,7 +82,7 @@ function geodir_event_custom_sort_options( $fields, $post_type ) {
 			'post_type'      => $post_type,
 			'data_type'      => '',
 			'field_type'     => 'datetime',
-			'frontend_title' => __( 'Event date', 'geodirevents' ),
+			'frontend_title' => __( 'Event Date', 'geodirevents' ),
 			'htmlvar_name'   => 'event_dates',
 			'field_icon'     => 'fas fa-calendar-alt',
 			'description'    => __( 'Sort by event date', 'geodirevents' )

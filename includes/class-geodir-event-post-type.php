@@ -521,6 +521,11 @@ class GeoDir_Event_Post_Type {
 				do_action( 'geodir_event_pt_events_supports_changed', $post_type, $current, $previous );
 			}
 		}
+
+		if ( $new && GeoDir_Post_types::supports( $post_type, 'events' ) ) {
+			// Insert default sort fields.
+			GeoDir_Event_Admin_Install::insert_default_sort_fields( $post_type );
+		}
 	}
 
 	/**

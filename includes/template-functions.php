@@ -533,3 +533,58 @@ function geodir_event_rss_item() {
 		echo $item;
 	}
 }
+
+/**
+ * Get event CPT default sort fields..
+ *
+ * @since 2.2.1
+ *
+ * @param string $post_type The post type.
+ * @return array Sort fields array.
+ */
+function geodir_event_default_sort_fields( $post_type = 'gd_event' ) {
+	$fields = array(
+		array(
+			'post_type' => $post_type,
+			'data_type' => '',
+			'field_type' => 'datetime',
+			'frontend_title' => __( 'Event Date', 'geodirevents' ),
+			'htmlvar_name' => 'event_dates',
+			'sort' => 'asc',
+			'is_active' => '1',
+			'is_default' => '1',
+		),
+		array(
+			'post_type' => $post_type,
+			'data_type' => '',
+			'field_type' => 'datetime',
+			'frontend_title' => __( 'Newest', 'geodirevents' ),
+			'htmlvar_name' => 'post_date',
+			'sort' => 'desc',
+			'is_active' => '1',
+			'is_default' => '0',
+		),
+		array(
+			'post_type' => $post_type,
+			'data_type' => 'VARCHAR',
+			'field_type' => 'text',
+			'frontend_title' => __( 'Title','geodirevents' ),
+			'htmlvar_name' => 'post_title',
+			'sort' => 'asc',
+			'is_active' => '1',
+			'is_default' => '0',
+		),
+		array(
+			'post_type' => $post_type,
+			'data_type' => 'VARCHAR',
+			'field_type' => 'float',
+			'frontend_title' => __( 'Rating', 'geodirevents' ),
+			'htmlvar_name' => 'overall_rating',
+			'sort' => 'desc',
+			'is_active' => '1',
+			'is_default' => '0',
+		)
+	);
+
+	return $fields;
+}
