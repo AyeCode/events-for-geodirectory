@@ -109,8 +109,8 @@ class GeoDir_Event_Admin_Install {
 		// Insert default fields
 		self::insert_default_fields();
 
-		// Register post type
-		//GeoDir_Event_Post_type::register_post_type();
+		// Insert default sort fields
+		self::insert_default_sort_fields();
 
 		// Register taxonomy
 		GeoDir_Event_Post_type::register_taxonomy();
@@ -279,6 +279,37 @@ class GeoDir_Event_Admin_Install {
 
 		foreach ( $fields as $field_index => $field ) {
 			geodir_custom_field_save( $field );
+		}
+	}
+
+	/*
+	 * Insert the default sort fields for the event CPTs.
+	 *
+	 * @since 2.2.1
+	 *
+	 * @param string $post_type The post type.
+	 * @return mixed
+	 */
+	public static function insert_default_sort_fields( $post_type = 'gd_event' ) {
+		if ( ! ( $post_type == 'gd_event' || GeoDir_Post_types::supports( $post_type, 'events' ) ) ) {
+			return;
+		}
+
+		$fields = geodir_event_default_sort_fields( $post_type );
+
+		/**
+		 * Filter the array of default sort fields DB table data.
+		 *
+		 * @since 2.2.1
+		 *
+		 * @param string $fields The default custom fields as an array.
+		 */
+		$fields = apply_filters( 'geodir_before_default_sort_fields_saved', $fields, $post_type );
+
+		if ( ! empty( $fields ) ) {
+			foreach ( $fields as $i => $field ) {
+				GeoDir_Settings_Cpt_Sorting::save_custom_field( $field );
+			}
 		}
 	}
 

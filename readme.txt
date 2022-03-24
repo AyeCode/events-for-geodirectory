@@ -72,6 +72,7 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 
 = 2.2.1 =
 * Enhance recurring event fields labels & description - CHANGED
+* Set event date as a default sort on new install - ADDED
 
 = 2.2 =
 * Hook added to filter event schedule templates in GD > Event Schedules - ADDED

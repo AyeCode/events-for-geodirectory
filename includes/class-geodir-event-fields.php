@@ -46,6 +46,9 @@ class GeoDir_Event_Fields {
 		// Save event data
 		add_filter( 'geodir_save_post_data', array( __CLASS__, 'save_event_data' ), 10, 4 );
 
+		// Set default sort.
+		add_filter( 'geodir_get_posts_default_sort_by', array( __CLASS__, 'set_event_default_sort' ), 10, 3 );
+
 		// Get input value
 		add_filter( 'geodir_get_cf_value', array( __CLASS__, 'event_dates_cf_value' ), 10, 2 );
 
@@ -121,7 +124,8 @@ class GeoDir_Event_Fields {
 			'clabels' => __( 'Event Dates', 'geodirevents' ),
 			'field_icon' => 'fas fa-calendar-alt',
 			'extra' => array(),
-			'single_use' => true
+			'single_use' => true,
+			'cat_sort' => true
 		);
 
 		return $fields;
@@ -2062,5 +2066,23 @@ class GeoDir_Event_Fields {
 		}
 
 		return $match_found;
+	}
+
+	/**
+	 * Set post default sort option for event type CPT.
+	 *
+	 * @since 2.2.1
+	 *
+	 * @param string $default_sort Default sort.
+	 * @param string $post_type The post type.
+	 * @param object $field Field object.
+	 * @return string Default sort field.
+	 */
+	public static function set_event_default_sort( $default_sort, $post_type, $field ) {
+		if ( empty( $default_sort ) && GeoDir_Post_types::supports( $post_type, 'events' ) ) {
+			$default_sort = 'event_dates_asc';
+		}
+
+		return $default_sort;
 	}
 }
