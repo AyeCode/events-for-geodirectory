@@ -70,6 +70,9 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 
 == Changelog ==
 
+= 2.2.2 =
+* Event time always shown in military time - FIXED
+
 = 2.2.1 =
 * Enhance recurring event fields labels & description - CHANGED
 * Set event date as a default sort on new install - ADDED
