@@ -418,7 +418,7 @@ class GeoDir_Event_Fields {
 		$timepicker_extras['data-no-calendar'] = 'true';
 		$timepicker_extras['data-alt-input'] = 'true';
 		$timepicker_extras['data-date-format'] = 'H:i';
-		$timepicker_extras['data-alt-format'] = 'H:i K';
+		$timepicker_extras['data-alt-format'] = geodir_event_input_time_format( true );
 		$timepicker_extras['data-time_24hr'] = 'false';
 
 		$timepicker_extras = apply_filters( 'geodir_event_aui_start_end_time_attrs', $timepicker_extras );

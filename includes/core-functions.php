@@ -709,3 +709,27 @@ function geodir_event_handle_past_events() {
 
 	return $processed;
 }
+
+/**
+ * Event time format for input field.
+ *
+ * @since 2.2.2
+ *
+ * @param bool $picker If true returns in jQuery UI/Flatpickr format. Default False.
+ * @return string Time format.
+ */
+function geodir_event_input_time_format( $picker = false ) {
+	$time_format = geodir_time_format();
+
+	$time_format = apply_filters( 'geodir_event_input_time_format', $time_format );
+
+	if ( $picker ) {
+		if ( geodir_design_style() ) {
+			$time_format = geodir_date_format_php_to_aui( $time_format ); // AUI Flatpickr
+		} else {
+			$time_format = geodir_date_format_php_to_jqueryui( $time_format );
+		}
+	}
+
+	return $time_format;
+}
