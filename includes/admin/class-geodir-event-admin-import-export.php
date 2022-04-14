@@ -22,22 +22,8 @@ class GeoDir_Event_Admin_Import_Export {
 	 * Constructor.
 	 */
 	public function __construct() {
-		add_action( 'geodir_sample_csv_download_link', array( __CLASS__, 'sample_csv_download_link' ), 10 );
 		add_filter( 'geodir_export_posts', array( __CLASS__, 'export_events' ), 10, 2 );
 		add_filter( 'geodir_import_validate_post', array( __CLASS__, 'import_validate_post' ), 10, 2 );
-	}
-
-	public static function sample_csv_download_link() {
-		$sample_csv = GEODIR_EVENT_PLUGIN_URL . '/assets/sample_events.csv';
-		echo aui()->button(
-			array(
-				'type'      => 'a',
-				'class'     => 'btn btn-outline-primary',
-				'content'   => __('Download Sample Events CSV', 'geodirevents'),
-				'icon'      => 'fas fa-download',
-				'href'      => esc_url( $sample_csv ),
-			)
-		);
 	}
 
 	public static function import_validate_post( $post_info, $row ) {
