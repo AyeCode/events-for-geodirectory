@@ -71,7 +71,7 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 == Changelog ==
 
 = 2.2.3 =
-* Event calender preview not working on block preview - FIXED
+* Event calendar preview not working on block preview - FIXED
 
 = 2.2.2 =
 * Event time always shown in military time - FIXED

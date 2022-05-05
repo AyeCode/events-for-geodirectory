@@ -16,7 +16,7 @@
  *
  * @see        https://docs.wpgeodirectory.com/article/346-customizing-templates/
  * @package    GeoDir_Event_Manager
- * @version    2.1.0.0
+ * @version    2.2.3
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -34,12 +34,10 @@ foreach ( $event_types as $value => $label ) {
 	if( $event_type == $value ){
 		$button_label = $label;
 	}
-	$options .= '<a href="'.esc_url( $url ).'" class="dropdown-item '.$active.'">'.esc_attr( $label ).'</a>';
+	$options .= '<a href="'.esc_url( $url ).'" data-etype="' . esc_attr( $value ) . '" class="dropdown-item '.$active.'">'.esc_attr( $label ).'</a>';
 }
-
 ?>
-
-<div class="btn-group btn-group-sm geodir-sort-by" role="group" aria-label="<?php esc_attr_e("Filter Events","geodirevents");?>">
+<div class="btn-group btn-group-sm geodir-sort-by geodir-loop-event-filter" role="group" aria-label="<?php esc_attr_e("Filter Events","geodirevents");?>">
 	<div class="btn-group btn-group-sm" role="group">
 		<button id="geodir-sort-by" type="button" class="btn btn-outline-primary rounded-right" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 			<?php echo $button_label;?> <i class="fas fa-sort"></i>
