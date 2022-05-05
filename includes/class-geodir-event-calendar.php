@@ -97,6 +97,19 @@ class GeoDir_Event_Calendar {
 			$table_nav_class = '';
 			$loader = '<div class="gd-div-loader"><i class="fas fa-sync fa-spin"></i></div>';
 		}
+
+		$instance['_week_start_day'] = $week_start_day;
+		$instance['_week_day_format'] = $week_day_format;
+
+		// Block preview
+		$month_title = '';
+		if ( ! empty( $instance['is_preview'] ) || ! empty( $instance['block_preview'] ) ) {
+			$month_title = date_i18n( 'F Y' );
+			$tooltip_init = '';
+			ob_start();
+			GeoDir_Event_Calendar::ajax_calendar( $args, $instance );
+			$loader = ob_get_clean();
+		}
 		?>
 		<div class="geodir_event_cal_widget table-responsive" id="gdwgt_<?php echo $identifier; ?>">
 			<?php if(count($post_type_options) > 1 ){
@@ -107,12 +120,13 @@ class GeoDir_Event_Calendar {
 			<table style="width:100%" class="gd_cal_nav  <?php echo $table_nav_class.$cal_size_class;?>">
 				<tr align="center" class="title">
 					<td style="width:10%" class="title geodir_cal_prev <?php echo $design_style ? 'text-left c-pointer py-2 px-3' : '';?>"><span class="" <?php echo $tooltip_init;?> title="<?php esc_attr_e('prev', 'geodirevents');?>"><i class="fas fa-chevron-left"></i></span></td>
-					<td style="vertical-align:top;text-align:center" class="title gd-event-cal-title"></td>
+					<td style="vertical-align:top;text-align:center" class="title gd-event-cal-title"><?php echo $month_title; ?></td>
 					<td style="width:10%" class="title geodir_cal_next <?php echo $design_style ? 'text-right c-pointer py-2 px-3' : '';?>"><span class="" <?php echo $tooltip_init;?> title="<?php esc_attr_e('next', 'geodirevents');?>"><i class="fas fa-chevron-right"></i></span></td>
 				</tr>
 			</table>
 			<div class="geodir_event_calendar geodir-calendar-loading"><?php echo $loader;?></div>
 		</div>
+<?php if ( empty( $instance['is_preview'] ) && empty( $instance['block_preview'] ) ) { ?>
 	<script type="text/javascript">
 	if (typeof <?php echo $function_name; ?> !== 'function') {
 		window.<?php echo $function_name; ?> = function() {
@@ -190,16 +204,27 @@ class GeoDir_Event_Calendar {
 		}
 	});
 	</script>
+<?php } else { ?>
+<style>#gdwgt_<?php echo $identifier;?> .gd-div-loader,#gdwgt_<?php echo $identifier;?> #cal_title{display:none;}</style>
+<?php } ?>
 		<?php
 	}
 
-	public static function ajax_calendar() {
+	public static function ajax_calendar( $args = array(), $instance = array() ) {
+		$is_preview = ! empty( $instance['is_preview'] ) || ! empty( $instance['block_preview'] ) ? true : false;
+
 		$post_type = !empty( $_REQUEST['post_type'] ) ? sanitize_text_field( $_REQUEST['post_type'] ) : '';
 		if ( ! ( ! empty( $post_type ) && in_array( $post_type, GeoDir_Event_Post_Type::get_event_post_types() ) ) ) {
 			$post_type = 'gd_event';
 		}
 		$design_style = geodir_design_style();
-		$week_start_day = abs( $_REQUEST["sday"] );
+		if ( isset( $_REQUEST['sday'] ) ) {
+			$week_start_day = absint( $_REQUEST["sday"] );
+		} else if ( isset( $instance['_week_start_day'] ) ) {
+			$week_start_day = absint( $instance["_week_start_day"] );
+		} else {
+			$week_start_day = absint( get_option( 'start_of_week' ) );
+		}
 		$monthNames = Array(__("January"), __("February"), __("March"), __("April"), __("May"), __("June"), __("July"), __("August"), __("September"), __("October"), __("November"), __("December"));
 
 		if (!isset($_REQUEST["mnth"])) $_REQUEST["mnth"] = date_i18n("n");
@@ -256,7 +281,7 @@ class GeoDir_Event_Calendar {
 			$loader = '<div class="gd-div-loader"><i class="fas fa-sync fa-spin"></i></div>';
 		}
 
-		$week_day_format = isset( $_REQUEST['wday'] ) ? (int)$_REQUEST['wday'] : 0;
+		$week_day_format = isset( $_REQUEST['wday'] ) ? (int)$_REQUEST['wday'] : ( isset( $instance['_week_day_format'] ) ? $instance['_week_day_format'] : 0 );
 
 		switch ( $week_day_format ) {
 			case 1:
@@ -317,10 +342,16 @@ class GeoDir_Event_Calendar {
 			$_week_days .= '<td class="days '.$td_class.'"><strong>' . $week_days[ $day_i ] . '</strong></td>';
 		}
 
-		$cal_size_class = !empty($_REQUEST['size']) && sanitize_text_field( $_REQUEST['size'] )=='small' ? ' table-sm ' : '';
+		if ( ! empty( $_REQUEST['size'] ) ) {
+			$size = sanitize_text_field( $_REQUEST['size'] );
+		} else if ( ! empty( $instance['size'] ) ) {
+			$size = sanitize_text_field( $instance['size'] );
+		} else {
+			$size = 'small';
+		}
+
+		$cal_size_class = $size == 'small' ? ' table-sm ' : '';
 		wp_reset_query();
-
-
 
 		echo $loader;
 	?><span id="cal_title" class="<?php echo $title_class;?>"><strong><?php echo $monthNames[$month-1].' '.$year; ?></strong></span>
@@ -364,7 +395,11 @@ class GeoDir_Event_Calendar {
 					$month = "0" . $month;
 				}
 				$date = date_i18n( 'Y-m-d', strtotime( $year . '-' . $month . '-' . $day ) );
-				$date_search_url = add_query_arg( array( 'event_calendar' => "$year$month$day" ), $search_url );
+				if ( $is_preview ) {
+					$date_search_url = 'javascript:void(0);';
+				} else {
+					$date_search_url = add_query_arg( array( 'event_calendar' => "$year$month$day" ), $search_url );
+				}
 
 				$today_class = '';
 				if( $today == $date ){
