@@ -1011,6 +1011,7 @@ class GeoDir_Event_Fields {
 					$different_times 	= !empty( $data['different_times'] ) ? true : false;
 					$start_times 		= $different_times && ! $all_day && isset( $data['start_times'] ) ? self::parse_array( $data['start_times'] ) : array();
 					$end_times 			= $different_times && ! $all_day && isset( $data['end_times'] ) && !empty( $data['end_times'] ) ? self::parse_array( $data['end_times'] ) : array();
+					$duration_x 		= ! empty( $data['duration_x'] ) && (int) $data['duration_x'] > 0 ? (int) $data['duration_x'] : 1;
 
 					// week days
 					if ( $repeat_type == 'week' || $repeat_type == 'month' ) {
@@ -1040,19 +1041,16 @@ class GeoDir_Event_Fields {
 
 						$start_date 		= '';
 						$end_date 			= '';
-						$duration_x 		= 1;
 						$repeat_x 			= 1;
 						$repeat_end_type 	= 0;
 						$max_repeat 		= 1;
 						$repeat_end 		= '';
 					} else {
 						$repeat_x 			= isset( $data['repeat_x'] ) ? sanitize_text_field( $data['repeat_x'] ) : '';
-						$duration_x 		= isset( $data['duration_x'] ) ? sanitize_text_field( $data['duration_x'] ) : 1;
 						$repeat_end_type 	= isset( $data['repeat_end_type'] ) ? sanitize_text_field( $data['repeat_end_type'] ) : 0;
-						$repeat_end 		= $repeat_end_type == 1 && isset( $data['repeat_end'] ) ? sanitize_text_field( $data['repeat_end'] ) : '';			
+						$repeat_end 		= $repeat_end_type == 1 && isset( $data['repeat_end'] ) ? sanitize_text_field( $data['repeat_end'] ) : '';
 						$repeat_x 			= $repeat_x > 0 ? (int)$repeat_x : 1;
-						$duration_x 		= $duration_x > 0 ? (int)$duration_x : 1;
-						
+
 						if ( $repeat_end_type == 1 && ! geodir_event_is_date( $repeat_end ) ) {
 							$repeat_end_type = 0;
 							$repeat_end 	= '';
@@ -1665,13 +1663,12 @@ class GeoDir_Event_Fields {
 		$html .= GeoDir_Adv_Search_Fields::field_wrapper_start( $cf );
 
 		ob_start();
-		?><li class="gd-search-row-<?php echo $htmlvar_name; ?>"><?php
 		if ( $cf->search_condition == 'FROM' ) {
 			if ( empty( $field_label ) ) {
 				$field_label = wp_sprintf( __( '%s Dates', 'geodirevents' ), $pt_name );
 			}
 			?>
-			<div class="gd-search-has-date gd-search-<?php echo $htmlvar_name; ?> from-to">
+			<div class="gd-search-has-date gd-search-<?php echo esc_attr( $htmlvar_name ); ?> from-to gd-search-row-<?php echo esc_attr( $htmlvar_name ); ?>">
 				<?php if ( ! empty( $as_fieldset_start ) ) { ?>
 					<label for="<?php echo esc_attr( $htmlvar_name ); ?>" class="text-muted"><?php echo $field_label; ?></label>
 				<?php }
@@ -1704,7 +1701,7 @@ class GeoDir_Event_Fields {
 			}
 			$event_dates = ! empty( $event_dates ) && ! is_array( $event_dates ) ? sanitize_text_field( $event_dates ) : '';
 			?>
-			<div class="gd-search-has-date gd-search-<?php echo $htmlvar_name; ?>">
+			<div class="gd-search-has-date gd-search-<?php echo esc_attr( $htmlvar_name ); ?> gd-search-row-<?php echo esc_attr( $htmlvar_name ); ?>">
 				<?php if ( ! empty( $as_fieldset_start ) ) { ?>
 					<label for="<?php echo esc_attr( $htmlvar_name ); ?>"><?php echo $field_label; ?></label>
 				<?php }
@@ -1730,7 +1727,6 @@ class GeoDir_Event_Fields {
 			</div>
 			<?php
 		}
-		?></li><?php
 
 		$html .= ob_get_clean();
 

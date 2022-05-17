@@ -47,7 +47,7 @@ class GeoDir_Event_Schedules {
 
 		$schedules = array();
 		if ( $recurring ) {
-			$duration 			= isset( $data['duration_x'] ) && (int)$data['duration_x'] > 0 ? (int)$data['duration_x'] : 1;
+			$duration 			= isset( $data['duration_x'] ) && (int) $data['duration_x'] > 0 ? (int) $data['duration_x'] : 1;
 			$repeat_type 		= !empty( $data['repeat_type'] ) ? $data['repeat_type'] : 'custom';
 			$different_times 	= !empty( $data['different_times'] ) ? true : false;
 			$start_times 		= $different_times && ! $all_day && isset( $data['start_times'] ) ? $data['start_times'] : array();
@@ -66,9 +66,8 @@ class GeoDir_Event_Schedules {
 
 			foreach ( $recurring_dates as $key => $date ) {
 				if ( $data['repeat_type'] == 'custom' && $different_times ) {
-					$duration 		= 0;
-					$start_time 	= ! empty( $start_times[ $key ] ) ? $start_times[ $key ] : '';
-					$end_time 		= ! empty( $end_times[ $key ] ) ? $end_times[ $key ] : '';
+					$start_time = ! empty( $start_times[ $key ] ) ? $start_times[ $key ] : '';
+					$end_time = ! empty( $end_times[ $key ] ) ? $end_times[ $key ] : '';
 				}
 				if ( $all_day == 1 ) {
 					$start_time = '';

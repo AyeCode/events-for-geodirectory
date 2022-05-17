@@ -70,6 +70,9 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 
 == Changelog ==
 
+= 2.2.4 =
+* Event duration field not saved for custom recurring - FIXED
+
 = 2.2.3 =
 * Event calendar preview not working on block preview - FIXED
 

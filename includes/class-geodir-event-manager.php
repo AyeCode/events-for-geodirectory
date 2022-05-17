@@ -374,51 +374,34 @@ final class GeoDir_Event_Manager {
 		foreach ( $timepicker_extras as $_key => $_val ) {
 			$timepicker_attrs .= " " . sanitize_html_class( $_key ) . '="' . esc_attr( $_val ) . '"';
 		}
+
 		ob_start();
-		if(0){ ?><script><?php }?>
+if ( 0 ) { ?><script><?php } ?>
+jQuery(function() {
+	jQuery("#event_recurring_dates,#event_different_times").on("change", function() {
+		geodir_event_check_custom_dates();
+	});
+});
 
-			jQuery(function() {
-				//event_recurring_dates
-				jQuery("#event_recurring_dates").on("change",function(){
-					geodir_event_check_custom_dates();
-				});
+function geodir_event_check_custom_dates(){
+	$date_string = jQuery("#event_recurring_dates").val();
+	jQuery('.geodir_event_times_per_date').html('');
+	if($date_string){
+		$dates = $date_string.split(", ");
+		$start_val = jQuery('#event_start_time').val();
+		$end_val = jQuery('#event_end_time').val();
 
-			});
-
-			function geodir_event_check_custom_dates(){
-				console.log(jQuery("#event_recurring_dates").val());
-
-				$date_string = jQuery("#event_recurring_dates").val();
-
-				// clear the current dates
-				jQuery('.geodir_event_times_per_date').html('');
-
-				if($date_string){
-					$dates = $date_string.split(", ");
-
-					$start_val = jQuery('#event_start_time').val();
-					$end_val = jQuery('#event_end_time').val();
-
-					$dates.forEach(function(date) {
-						console.log(date);
-
-						var $el = jQuery('.event-multiple-times[data-date="' + date + '"]');
-
-						if (!$el.length) {
-							$row = '<div data-date="'+date+'" class="event-multiple-times row pb-1">' +
-								'<div class="col-2"><div class="gd-events-custom-time">'+date+'</div></div>' +
-								'<div class="col-5"><input type="text" name="event_dates[start_times][]" placeholder="<?php esc_attr_e("Start","geodirevents"); ?>" value="'+$start_val+'" class="form-control bg-initial" <?php echo trim( $timepicker_attrs ); ?> data-aui-init="flatpickr"></div>' +
-								'<div class="col-5"><input type="text" name="event_dates[end_times][]" placeholder="<?php esc_attr_e("End","geodirevents"); ?>" value="'+$end_val+'" class="form-control bg-initial" <?php echo trim( $timepicker_attrs ); ?> data-aui-init="flatpickr"></div></div>';
-							jQuery('.geodir_event_times_per_date').append($row);
-						}
-
-					});
-				}
-
-				aui_init();
+		$dates.forEach(function(date) {
+			var $el = jQuery('.event-multiple-times[data-date="' + date + '"]');
+			if (!$el.length) {
+				$row = '<div data-date="'+date+'" class="event-multiple-times row pb-1"><div class="col-2"><div class="gd-events-custom-time">'+date+'</div></div><div class="col-5"><input type="text" name="event_dates[start_times][]" placeholder="<?php esc_attr_e("Start","geodirevents"); ?>" value="'+$start_val+'" class="form-control bg-initial" <?php echo trim( $timepicker_attrs ); ?> data-aui-init="flatpickr"></div><div class="col-5"><input type="text" name="event_dates[end_times][]" placeholder="<?php esc_attr_e("End","geodirevents"); ?>" value="'+$end_val+'" class="form-control bg-initial" <?php echo trim( $timepicker_attrs ); ?> data-aui-init="flatpickr"></div></div>';
+				jQuery('.geodir_event_times_per_date').append($row);
 			}
-
-			<?php if(0){ ?></script><?php }
+		});
+	}
+	aui_init();
+}
+<?php if ( 0 ) { ?></script><?php }
 
 		return ob_get_clean();
 	}
