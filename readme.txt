@@ -71,7 +71,7 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 == Changelog ==
 
 = 2.2.4 =
-* Different time field is not working on page load #191
+* Different time field is not working on page load - FIXED
 
 = 2.2.3 =
 * Event calendar preview not working on block preview - FIXED
