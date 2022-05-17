@@ -382,7 +382,7 @@ final class GeoDir_Event_Manager {
 				jQuery("#event_recurring_dates").on("change",function(){
 					geodir_event_check_custom_dates();
 				});
-
+				geodir_event_check_custom_dates();
 			});
 
 			function geodir_event_check_custom_dates(){
