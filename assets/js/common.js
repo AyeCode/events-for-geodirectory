@@ -91,8 +91,8 @@ var GeoDir_Event_Add = {
         var repeat_type = $el.val();
 
         if (repeat_type == 'custom') {
-            $self.hideFields(['start_date', 'end_date', 'duration_x', 'repeat_days', 'repeat_weeks', 'repeat_x', 'repeat_end_type']);
-            $self.showFields(['recurring_dates', 'different_times', 'all_day']);
+            $self.hideFields(['start_date', 'end_date', 'repeat_days', 'repeat_weeks', 'repeat_x', 'repeat_end_type']);
+            $self.showFields(['duration_x', 'recurring_dates', 'different_times', 'all_day']);
             if (parseInt($all_day.val()) === 1) {
                 $self.hideFields(['start_time']);
             } else {

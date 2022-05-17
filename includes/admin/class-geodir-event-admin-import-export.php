@@ -114,6 +114,7 @@ class GeoDir_Event_Admin_Import_Export {
 
 			if ( ! empty( $event_data['recurring'] ) ) {
 				$event_data['repeat_type'] 		= in_array( $event_data['repeat_type'], array( 'day', 'week', 'month', 'year', 'custom' ) ) ? $event_data['repeat_type'] : 'custom';
+				$event_data['duration_x'] 		= absint( $event_data['duration_x'] ) > 0 ? absint( $event_data['duration_x'] ) : 1;
 
 				if ( $event_data['repeat_type'] == 'custom' ) {
 					if ( ! empty( $event_data['start_times'] ) ) {
@@ -157,7 +158,6 @@ class GeoDir_Event_Admin_Import_Export {
 					$repeat_days 					= array();
 					$repeat_weeks 					= array();
 					$event_data['start_date'] 		= '';
-					$event_data['duration_x'] 		= 1;
 					$event_data['repeat_x'] 		= 1;
 					$event_data['repeat_end_type'] 	= 0;
 					$event_data['max_repeat'] 		= 1;
@@ -183,7 +183,6 @@ class GeoDir_Event_Admin_Import_Export {
 					if ( $event_data['repeat_type'] == 'month' && ! empty( $event_data['repeat_weeks'] ) ) {
 						$repeat_weeks = GeoDir_Event_Fields::parse_array( $event_data['repeat_weeks'] );
 					}
-					$event_data['duration_x'] 			= absint( $event_data['duration_x'] ) > 0 ? absint( $event_data['duration_x'] ) : 1;
 					$event_data['repeat_x'] 			= absint( $event_data['repeat_x'] ) > 0 ? absint( $event_data['repeat_x'] ) : 1;
 					if ( ! empty( $event_data['repeat_end'] ) ) {
 						$event_data['repeat_end'] 		= self::parse_import_date( $event_data['repeat_end'] );

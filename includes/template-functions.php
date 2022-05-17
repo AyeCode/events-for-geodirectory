@@ -262,8 +262,8 @@ function geodir_event_filter_searched_params( $params = array(), $post_type = ''
 	$label_class = 'gd-adv-search-label';
 	$sublabel_class = 'gd-adv-search-label-t';
 	if ( $design_style ) {
-		$label_class .= ' badge badge-info mr-2';
-		$sublabel_class .= ' mb-0 mr-1';
+		$label_class .= ' badge badge-info mr-2 c-pointer';
+		$sublabel_class .= ' mb-0 mr-1 c-pointer';
 	}
 
 	$event_date = !empty( $_REQUEST['event_date'] ) ? sanitize_text_field( $_REQUEST['event_date'] ) : '';
