@@ -116,6 +116,8 @@ class GeoDir_Event_Calendar {
 				$select_class = $design_style ? " form-control w-100 mw-100" : '';
 				?>
 			<label for="geodir_calendar_post_type" style="margin-bottom:5px;display:block"><select id="geodir_calendar_post_type" class="geodir-select <?php echo $select_class;?>" style="width:100%;max-width:400px"><?php echo implode("", $post_type_options); ?></select></label>
+			<?php } else { ?>
+			<input type="hidden" value="<?php echo esc_attr( $post_type); ?>" id="geodir_calendar_post_type">
 			<?php } ?>
 			<table style="width:100%" class="gd_cal_nav  <?php echo $table_nav_class.$cal_size_class;?>">
 				<tr align="center" class="title">
