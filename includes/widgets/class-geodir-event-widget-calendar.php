@@ -227,7 +227,7 @@ class GeoDir_Event_Widget_Calendar extends WP_Super_Duper {
 				data = 'action=geodir_ajax_calendar' + params + geodir_event_params.calendar_params;
 				jQuery.ajax({
 					type: "GET",
-					url: geodir_params.ajax_url,
+					url: geodir_params.gd_ajax_url,
 					data: data,
 					beforeSend: function() {
 						jQuery('.gd-event-cal-title', $container).html('');
