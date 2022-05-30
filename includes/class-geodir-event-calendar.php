@@ -107,7 +107,7 @@ class GeoDir_Event_Calendar {
 			$month_title = date_i18n( 'F Y' );
 			$tooltip_init = '';
 			ob_start();
-			GeoDir_Event_Calendar::ajax_calendar( $args, $instance );
+			self::ajax_calendar( $args, $instance );
 			$loader = ob_get_clean();
 		}
 		?>
@@ -356,13 +356,7 @@ class GeoDir_Event_Calendar {
 		wp_reset_query();
 
 		echo $loader;
-	?><span id="cal_title" class="<?php echo $title_class;?>"><strong><?php echo $monthNames[$month-1].' '.$year; ?></strong></span>
-		<table width="100%" border="0" cellpadding="2" cellspacing="2" class="calendar_widget <?php echo $table_class.$cal_size_class;?>">
-
-		<thead class="thead-light">
-		<tr><?php echo $_week_days; ?></tr>
-		</thead>
-		<tbody>
+	?><span id="cal_title" class="<?php echo $title_class;?>"><strong><?php echo $monthNames[$month-1].' '.$year; ?></strong></span><table width="100%" border="0" cellpadding="2" cellspacing="2" class="calendar_widget <?php echo $table_class.$cal_size_class;?>"><thead class="thead-light"><tr><?php echo $_week_days; ?></tr></thead><tbody>
 		<?php
 		$today = date_i18n('Y-m-d');
 		$timestamp = mktime( 0, 0, 0, $month, 1, $year );
@@ -411,7 +405,11 @@ class GeoDir_Event_Calendar {
 				echo '<td valign="middle" class="gd_cal_nsat ' . $today_class . ' '.$td_class.'">';
 
 				$query_args['gd_event_calendar'] = $year . '-' . $month . '-' . $day;
-				$results = query_posts( $query_args );
+				if ( $is_preview ) {
+					$results = array();
+				} else {
+					$results = query_posts( $query_args );
+				}
 
 				if ( ! empty( $results ) ) {
 					$past_class = $date < date("Y-m-d") ? 'event_past' : '';
@@ -425,12 +423,10 @@ class GeoDir_Event_Calendar {
 				echo "</td>";
 			}
 			if ( ( $i % 7 ) == 6 ) {
-				echo "</tr>\n";
+				echo "</tr>";
 			}
 		}
-		?>
-		</tbody>
-	</table><?php
+		?></tbody></table><?php
 	}
 
 	public static function parse_calendar_schedules( $event_dates, $all_event_dates = array() ) {
