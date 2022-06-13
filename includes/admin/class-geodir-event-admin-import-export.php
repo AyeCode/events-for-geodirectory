@@ -43,6 +43,7 @@ class GeoDir_Event_Admin_Import_Export {
 				'recurring_limit' 			=> 'max_repeat',
 				'recurring_end_date' 		=> 'repeat_end',
 				'recurring_custom_dates' 	=> 'recurring_dates',
+				'recurring_different_times' => 'different_times',
 				'recurring_start_times' 	=> 'start_times',
 				'recurring_end_times' 		=> 'end_times',
 			);
@@ -288,6 +289,7 @@ class GeoDir_Event_Admin_Import_Export {
 						$data['recurring_limit'] 			= $recurring_limit;
 						$data['recurring_end_date'] 		= $recurring_end_date;
 						$data['recurring_custom_dates'] 	= is_array( $event_data['recurring_dates'] ) ? implode( ',', $event_data['recurring_dates'] ) : $event_data['recurring_dates'];
+						$data['recurring_different_times']	= ! empty( $event_data['different_times'] ) ? '1' : '';
 						$data['recurring_start_times'] 		= is_array( $event_data['start_times'] ) ? implode( ',', $event_data['start_times'] ) : $event_data['start_times'];
 						$data['recurring_end_times'] 		= is_array( $event_data['end_times'] ) ? implode( ',', $event_data['end_times'] ) : $event_data['end_times'];
 					} else {
@@ -299,6 +301,7 @@ class GeoDir_Event_Admin_Import_Export {
 						$data['recurring_limit'] 			= '';
 						$data['recurring_end_date'] 		= '';
 						$data['recurring_custom_dates'] 	= '';
+						$data['recurring_different_times'] 	= '';
 						$data['recurring_start_times'] 		= '';
 						$data['recurring_end_times'] 		= '';
 					}

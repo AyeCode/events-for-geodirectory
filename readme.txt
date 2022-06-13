@@ -72,6 +72,7 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 
 = 2.2.5 =
 * Event calendar preview not working on Elementor preview - FIXED
+* Export events missing different times field - FIXED
 
 = 2.2.4 =
 * Event duration field not saved for custom recurring - FIXED
