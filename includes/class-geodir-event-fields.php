@@ -1485,6 +1485,7 @@ class GeoDir_Event_Fields {
 
 		// Convert to jQuery UI datepicker format.
 		$datepicker_format  = geodir_date_format_php_to_aui( $date_format  );
+		$wrap_attrs = function_exists( 'geodir_search_conditional_field_attrs' ) ? geodir_search_conditional_field_attrs( $cf ) : '';
 
 		ob_start();
 		if ( $cf->search_condition == 'FROM' ) {
@@ -1492,7 +1493,7 @@ class GeoDir_Event_Fields {
 				$field_label = wp_sprintf( __( '%s Dates', 'geodiradvancesearch' ), $pt_name );
 			}
 			?>
-			<div class="gd-search-has-date gd-search-<?php echo $htmlvar_name; ?> from-to col-auto flex-fill">
+			<div class="gd-search-has-date gd-search-<?php echo $htmlvar_name; ?> from-to col-auto flex-fill"<?php echo $wrap_attrs; ?>>
 				<?php if ( ! empty( $field_label ) ) { ?>
 					<label for="<?php echo esc_attr( $htmlvar_name ); ?>" class="sr-only"><?php echo $field_label; ?></label>
 				<?php }
@@ -1526,7 +1527,7 @@ class GeoDir_Event_Fields {
 			$event_dates = ! empty( $event_dates ) && ! is_array( $event_dates ) ? sanitize_text_field( $event_dates ) : '';
 
 			?>
-			<div class="gd-search-has-date gd-search-<?php echo $htmlvar_name; ?> col-auto flex-fill">
+			<div class="gd-search-has-date gd-search-<?php echo $htmlvar_name; ?> col-auto flex-fill"<?php echo $wrap_attrs; ?>>
 				<?php if ( ! empty( $field_label ) ) { ?>
 					<label for="<?php echo esc_attr( $htmlvar_name ); ?>" class="sr-only"><?php echo $field_label; ?></label>
 				<?php }
@@ -1547,7 +1548,6 @@ class GeoDir_Event_Fields {
 						'extra_attributes'  => $extra_attributes
 					)
 				);
-
 				?>
 			</div>
 			<?php
