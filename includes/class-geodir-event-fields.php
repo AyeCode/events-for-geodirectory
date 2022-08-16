@@ -536,6 +536,7 @@ class GeoDir_Event_Fields {
 					'class'             => '',
 					'value'             => $start_date,
 					'help_text'         => __( 'Choose a start date of the event.', 'geodirevents' ),
+					'element_require'   => ( $is_recurring_active ? '!([%recurring%:checked] && [%event_repeat_type%]=="custom")' : '' ),
 					'extra_attributes'  => $extra_attributes,
 					'wrap_attributes'   => geodir_conditional_field_attrs( array(), 'start_date', 'hidden' )
 				)

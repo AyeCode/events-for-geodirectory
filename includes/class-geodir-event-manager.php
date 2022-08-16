@@ -384,6 +384,13 @@ jQuery(function() {
 });
 
 function geodir_event_check_custom_dates(){
+	var aDates = [];
+	if (jQuery('.event-multiple-times[data-date]').length) {
+		jQuery('.event-multiple-times[data-date]').each(function() {
+			var sDate = jQuery(this).data('date').trim();
+			aDates[sDate] = [jQuery(this).find('[name="event_dates[start_times][]"]').val().trim(), jQuery(this).find('[name="event_dates[end_times][]"]').val().trim()];
+		});
+	}
 	$date_string = jQuery("#event_recurring_dates").val();
 	jQuery('.geodir_event_times_per_date').html('');
 	if($date_string){
@@ -394,7 +401,13 @@ function geodir_event_check_custom_dates(){
 		$dates.forEach(function(date) {
 			var $el = jQuery('.event-multiple-times[data-date="' + date + '"]');
 			if (!$el.length) {
-				$row = '<div data-date="'+date+'" class="event-multiple-times row pb-1"><div class="col-2"><div class="gd-events-custom-time">'+date+'</div></div><div class="col-5"><input type="text" name="event_dates[start_times][]" placeholder="<?php esc_attr_e("Start","geodirevents"); ?>" value="'+$start_val+'" class="form-control bg-initial" <?php echo trim( $timepicker_attrs ); ?> data-aui-init="flatpickr"></div><div class="col-5"><input type="text" name="event_dates[end_times][]" placeholder="<?php esc_attr_e("End","geodirevents"); ?>" value="'+$end_val+'" class="form-control bg-initial" <?php echo trim( $timepicker_attrs ); ?> data-aui-init="flatpickr"></div></div>';
+				$_start_val = $start_val;
+				$_end_val = $end_val;
+				if (aDates[date]) {
+					$_start_val = aDates[date][0];
+					$_end_val = aDates[date][1];
+				}
+				$row = '<div data-date="'+date+'" class="event-multiple-times row pb-1"><div class="col-2"><div class="gd-events-custom-time">'+date+'</div></div><div class="col-5"><input type="text" name="event_dates[start_times][]" placeholder="<?php esc_attr_e("Start","geodirevents"); ?>" value="'+$_start_val+'" class="form-control bg-initial" <?php echo trim( $timepicker_attrs ); ?> data-aui-init="flatpickr"></div><div class="col-5"><input type="text" name="event_dates[end_times][]" placeholder="<?php esc_attr_e("End","geodirevents"); ?>" value="'+$_end_val+'" class="form-control bg-initial" <?php echo trim( $timepicker_attrs ); ?> data-aui-init="flatpickr"></div></div>';
 				jQuery('.geodir_event_times_per_date').append($row);
 			}
 		});

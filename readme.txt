@@ -70,6 +70,9 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 
 == Changelog ==
 
+= 2.2.6 =
+* Custom recurring different event times resets on date select or deselect - FIXED
+
 = 2.2.5 =
 * Event calendar preview not working on Elementor preview - FIXED
 * Export events missing different times field - FIXED
