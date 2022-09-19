@@ -76,6 +76,10 @@ class GeoDir_Event_Fields {
 		// Post badge
 		add_filter( 'geodir_badge_conditions', array( __CLASS__, 'post_badge_conditions' ), 20, 1 );
 		add_filter( 'geodir_post_badge_check_match_found', array( __CLASS__, 'post_badge_check_match_found' ), 20, 3 );
+
+		// Elementor custom fields.
+		add_filter( 'geodir_elementor_tag_text_fields', array( __CLASS__, 'elementor_tag_text_fields' ), 20, 2 );
+		add_filter( 'geodir_elementor_tag_text_render_value', array( __CLASS__, 'elementor_tag_text_render_value' ), 20, 3 );
 	}
 
 	public static function event_custom_fields( $post_type, $package_id ) {
@@ -1930,7 +1934,7 @@ class GeoDir_Event_Fields {
 					$value_raw = $end_date_time;
 					break;
 			}
-			$value_raw = date_i18n( $format, strtotime( $value_raw ) );
+
 			if ( ! empty( $output ) && ( isset( $output['raw'] ) || isset( $output['strip'] ) ) ) {
 				// Stripped value.
 				return $value_raw;
@@ -2081,5 +2085,48 @@ class GeoDir_Event_Fields {
 		}
 
 		return $default_sort;
+	}
+
+	/*
+	 * Filter element tag text custom fields.
+	 *
+	 * @since 2.2.6
+	 *
+	 * @param array  $groups Field groups.
+	 * @param object $tag Tag object.
+	 * @return array Fields groups.
+	 */
+	public static function elementor_tag_text_fields( $groups, $tag ) {
+		$event_fields = self::post_meta_standard_fields( array(), 'gd_event' );
+
+		foreach ( $event_fields as $key => $field ) {
+			$groups[0]['options'][ $key ] = $key;
+		}
+
+		return $groups;
+	}
+
+	/*
+	 * Render the elementor tag event field value.
+	 *
+	 * @since 2.2.6
+	 *
+	 * @param mixed  $value Tag value.
+	 * @param string $key Tag key.
+	 * @param object $tag Tag object.
+	 * @return mixed Rendered value.
+	 */
+	public static function elementor_tag_text_render_value( $value, $key, $tag ) {
+		if ( strpos( $key, 'event_' ) === 0 ) {
+			$event_fields = array_keys( self::post_meta_standard_fields( array(), 'gd_event' ) );
+
+			if ( in_array( $key, $event_fields ) ) {
+				$show = $tag->get_settings( 'show' );
+
+				$value = do_shortcode( '[gd_post_meta key="' . esc_attr( $key ) . '" show="' . esc_attr( $show ) . '" no_wrap=1]' );
+			}
+		}
+
+		return $value;
 	}
 }
