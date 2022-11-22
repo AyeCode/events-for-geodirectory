@@ -3,7 +3,7 @@ Contributors: stiofansisland, paoltaia, ayecode
 Tags: events, calendar, event, schedule, organizer, geodirectory, event listings, events directory, event manager, events calendar
 Donate link: https://wpgeodirectory.com
 Requires at least: 4.9
-Tested up to: 6.0
+Tested up to: 6.1
 Requires PHP: 5.6
 Stable tag: 2.2.6
 License: GPLv3
@@ -69,6 +69,9 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 3. Go to WordPress Admin -> Events -> Settings and customize behaviour as needed
 
 == Changelog ==
+
+= 2.2.7 =
+* GD clear versions tool don't execute events details DB table columns - FIXED
 
 = 2.2.6 =
 * Custom recurring different event times resets on date select or deselect - FIXED

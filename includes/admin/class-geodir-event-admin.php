@@ -54,10 +54,8 @@ class GeoDir_Event_Admin {
 	 *
 	 * @return mixed
 	 */
-	public static function add_db_columns($columns,$cpt,$post_type){
-
-		// check if ratings are disabled on the CPT first.
-		if(isset($cpt['supports_events']) && $cpt['supports_events']){
+	public static function add_db_columns( $columns, $cpt, $post_type ) {
+		if ( $post_type == 'gd_event' || ! empty( $cpt['supports_events'] ) || GeoDir_Post_types::supports( $post_type, 'events' ) ) {
 			$columns['recurring'] = "recurring TINYINT(1) DEFAULT '0'";
 			$columns['event_dates'] = "event_dates TEXT NOT NULL";
 			$columns['rsvp_count'] = "rsvp_count INT(11) DEFAULT '0'";
