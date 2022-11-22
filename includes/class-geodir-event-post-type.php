@@ -24,24 +24,24 @@ class GeoDir_Event_Post_Type {
 	 * Hook in methods.
 	 */
 	public static function init() {
-		add_action( 'init', array( __CLASS__, 'register_taxonomy' ), 5.1 );
-		add_action( 'init', array( __CLASS__, 'register_post_type' ), 5.1 );
+		add_action( 'init', array( __CLASS__, 'register_taxonomy' ), 6 );
+		add_action( 'init', array( __CLASS__, 'register_post_type' ), 6 );
 		add_filter( 'rest_api_allowed_post_types', array( __CLASS__, 'rest_api_allowed_post_types' ) );
 
 		// Add cpt setting events support option.
-		add_filter( 'geodir_get_settings_cpt', array( __CLASS__, 'filter_cpt_settings' ), 10.1, 3 );
+		add_filter( 'geodir_get_settings_cpt', array( __CLASS__, 'filter_cpt_settings' ), 11, 3 );
 
 		// Sanitize post type data.
-		add_filter( 'geodir_save_post_type', array( __CLASS__, 'sanitize_post_type' ), 10.1, 3 );
+		add_filter( 'geodir_save_post_type', array( __CLASS__, 'sanitize_post_type' ), 11, 3 );
 
 		// Post type saved.
-		add_action( 'geodir_post_type_saved', array( __CLASS__, 'post_type_saved' ), 10.1, 3 );
+		add_action( 'geodir_post_type_saved', array( __CLASS__, 'post_type_saved' ), 11, 3 );
 
 		// Post type events supports enabled.
-		add_action( 'geodir_event_pt_events_supports_enabled', array( __CLASS__, 'pt_events_supports_enabled' ), 10.1, 1 );
+		add_action( 'geodir_event_pt_events_supports_enabled', array( __CLASS__, 'pt_events_supports_enabled' ), 11, 1 );
 
 		// Post type events supports disabled.
-		add_action( 'geodir_event_pt_events_supports_disabled', array( __CLASS__, 'pt_events_supports_disabled' ), 10.1, 1 );
+		add_action( 'geodir_event_pt_events_supports_disabled', array( __CLASS__, 'pt_events_supports_disabled' ), 11, 1 );
 
 		add_filter( 'geodir_post_type_supports', array( __CLASS__, 'post_type_supports' ), 10, 3 );
 	}
