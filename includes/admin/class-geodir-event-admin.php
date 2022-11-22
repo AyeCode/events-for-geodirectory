@@ -26,7 +26,7 @@ class GeoDir_Event_Admin {
 
 		add_action( 'init', array( $this, 'includes' ) );
 		add_action( 'admin_init', array( $this, 'admin_redirects' ) );
-		add_filter( 'geodir_get_settings_pages', array( $this, 'load_settings_page' ), 10.2, 1 );
+		add_filter( 'geodir_get_settings_pages', array( $this, 'load_settings_page' ), 12, 1 );
 		add_filter( 'geodir_cat_schemas', 'geodir_event_filter_schemas', 10, 1 );
 		add_filter( 'geodir_add_custom_sort_options', 'geodir_event_custom_sort_options', 10, 2 );
 		add_filter( 'geodir_uninstall_options', 'geodir_event_uninstall_settings', 10, 1 );
