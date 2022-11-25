@@ -245,7 +245,7 @@ function geodir_event_filter_title_seo_vars( $title, $location_array, $gd_page, 
 }
 
 function geodir_event_filter_searched_params( $params = array(), $post_type = '', $fields = array() ) {
-	global $geodir_date_format;
+	global $geodir_date_format, $aui_bs5;
 
 	$frontend_title = __( 'Event date', 'geodirectory' );
 	if ( ! empty( $fields ) ) {
@@ -262,8 +262,9 @@ function geodir_event_filter_searched_params( $params = array(), $post_type = ''
 	$label_class = 'gd-adv-search-label';
 	$sublabel_class = 'gd-adv-search-label-t';
 	if ( $design_style ) {
-		$label_class .= ' badge badge-info mr-2 c-pointer';
-		$sublabel_class .= ' mb-0 mr-1 c-pointer';
+		$label_class .= ' badge mr-2 me-2 c-pointer ';
+		$label_class .= $aui_bs5 ? 'text-bg-info' : 'badge-info';
+		$sublabel_class .= ' mb-0 mr-1 me-1 c-pointer';
 	}
 
 	$event_date = !empty( $_REQUEST['event_date'] ) ? sanitize_text_field( $_REQUEST['event_date'] ) : '';

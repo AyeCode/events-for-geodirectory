@@ -510,7 +510,7 @@ class GeoDir_Event_Fields {
 
 			// Event dates description.
 			if ( $description != '' ) {
-				echo '<div id="event_dates_desc_row" class="form-group' . ( $horizontal ? ' row' : '' ) . '" >';
+				echo '<div id="event_dates_desc_row" class="form-group mb-3' . ( $horizontal ? ' row' : '' ) . '" >';
 				if ( $horizontal ) {
 					echo '<label class="col-sm-2 col-form-label"></label><div class="col-sm-10">';
 				}
@@ -802,7 +802,7 @@ class GeoDir_Event_Fields {
 
 			$output = $different_times_list;
 
-			$wrap_class = empty($geodir_label_type) ?  'form-group rowx' : 'form-group';
+			$wrap_class = empty($geodir_label_type) ? 'form-group mb-3 rowx' : 'form-group mb-3';
 			echo AUI_Component_Input::wrap(array(
 				'content' => $output,
 				'class'   => 'geodir_event_times_per_date '.$wrap_class,
@@ -1500,7 +1500,7 @@ class GeoDir_Event_Fields {
 			?>
 			<div class="gd-search-has-date gd-search-<?php echo $htmlvar_name; ?> from-to col-auto flex-fill"<?php echo $wrap_attrs; ?>>
 				<?php if ( ! empty( $field_label ) ) { ?>
-					<label for="<?php echo esc_attr( $htmlvar_name ); ?>" class="sr-only"><?php echo $field_label; ?></label>
+					<label for="<?php echo esc_attr( $htmlvar_name ); ?>" class="sr-only visually-hidden"><?php echo $field_label; ?></label>
 				<?php }
 
 				// Flatpickr attributes
@@ -1534,7 +1534,7 @@ class GeoDir_Event_Fields {
 			?>
 			<div class="gd-search-has-date gd-search-<?php echo $htmlvar_name; ?> col-auto flex-fill"<?php echo $wrap_attrs; ?>>
 				<?php if ( ! empty( $field_label ) ) { ?>
-					<label for="<?php echo esc_attr( $htmlvar_name ); ?>" class="sr-only"><?php echo $field_label; ?></label>
+					<label for="<?php echo esc_attr( $htmlvar_name ); ?>" class="sr-only visually-hidden"><?php echo $field_label; ?></label>
 				<?php }
 
 				// flatpickr attributes

@@ -72,6 +72,7 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 
 = 2.2.7 =
 * GD clear versions tool don't execute events details DB table columns - FIXED
+* Changes for AUI Bootstrap 5 compatibility - ADDED
 
 = 2.2.6 =
 * Custom recurring different event times resets on date select or deselect - FIXED

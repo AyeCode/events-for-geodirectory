@@ -493,7 +493,7 @@ class GeoDir_Event_Schedules {
 	}
 
 	public static function get_schedules_html( $schedules, $link = true ) {
-		global $schedule_links;
+		global $schedule_links, $aui_bs5;
 
 		if ( empty( $schedules ) ) {
 			return NULL;
@@ -586,8 +586,8 @@ class GeoDir_Event_Schedules {
 			$wrap_class = $design_style ? 'd-inline-block' : '';
 			$html = '<div class="geodir-schedules '.$wrap_class.'">' . $html . '</div>';
 			if($design_style && $count > 5){
-				$html .= '<button onclick="if(jQuery(this).text()==\'' . __( 'More', 'geodirevents' ) . '\'){jQuery(this).text(\'' . __( 'Less', 'geodirevents' ) . '\')}else{jQuery(this).text(\'' . __( 'More', 'geodirevents' ) . '\')}" class="badge badge-primary d-block mx-auto mt-2" type="button" data-toggle="collapse" data-target=".geodir-schedule.collapse" >' . __( 'More', 'geodirevents' ) . '</button>';
-
+				$badge_class = $aui_bs5 ? 'text-bg-primary' : 'badge-primary';
+				$html .= '<button onclick="if(jQuery(this).text()==\'' . __( 'More', 'geodirevents' ) . '\'){jQuery(this).text(\'' . __( 'Less', 'geodirevents' ) . '\')}else{jQuery(this).text(\'' . __( 'More', 'geodirevents' ) . '\')}" class="badge ' . $badge_class . ' d-block mx-auto mt-2" type="button" data-toggle="collapse" data-target=".geodir-schedule.collapse" >' . __( 'More', 'geodirevents' ) . '</button>';
 			}
 		}
 
