@@ -512,9 +512,9 @@ class GeoDir_Event_Fields {
 			if ( $description != '' ) {
 				echo '<div id="event_dates_desc_row" class="form-group mb-3' . ( $horizontal ? ' row' : '' ) . '" >';
 				if ( $horizontal ) {
-					echo '<label class="col-sm-2 col-form-label"></label><div class="col-sm-10">';
+					echo '<label class="col-sm-2 col-form-label form-label"></label><div class="col-sm-10">';
 				}
-				echo '<div class="form-text text-muted">' . $description . '</div>';
+				echo '<div class="form-text text-muted d-block">' . $description . '</div>';
 				if ( $horizontal ) {
 					echo '</div>';
 				}
