@@ -359,7 +359,7 @@ class GeoDir_Event_Fields {
 	}
 
 	public static function input_event_dates( $post_type, $package_id, $field ) {
-		global $gd_post, $geodir_label_type;
+		global $aui_bs5, $gd_post, $geodir_label_type;
 
 		if ( ! GeoDir_Post_types::supports( $post_type, 'events' ) ) {
 			return;
@@ -510,7 +510,7 @@ class GeoDir_Event_Fields {
 
 			// Event dates description.
 			if ( $description != '' ) {
-				echo '<div id="event_dates_desc_row" class="form-group mb-3' . ( $horizontal ? ' row' : '' ) . '" >';
+				echo '<div id="event_dates_desc_row" class="' . ( $aui_bs5 ? 'mb-3' : 'form-group' ) . ( $horizontal ? ' row' : '' ) . '" >';
 				if ( $horizontal ) {
 					echo '<label class="col-sm-2 col-form-label form-label"></label><div class="col-sm-10">';
 				}
@@ -802,7 +802,10 @@ class GeoDir_Event_Fields {
 
 			$output = $different_times_list;
 
-			$wrap_class = empty($geodir_label_type) ? 'form-group mb-3 rowx' : 'form-group mb-3';
+			$wrap_class = ( $aui_bs5 ? 'mb-3' : 'form-group' );
+			if ( empty( $geodir_label_type ) ) {
+				$wrap_class .= ' rowx';
+			}
 			echo AUI_Component_Input::wrap(array(
 				'content' => $output,
 				'class'   => 'geodir_event_times_per_date '.$wrap_class,
@@ -1475,7 +1478,7 @@ class GeoDir_Event_Fields {
 	}
 
 	public static function search_bar_output_event_aui( $html, $cf, $post_type ) {
-		global $as_fieldset_start;
+		global $aui_bs5, $as_fieldset_start;
 
 		if ( ! ( ! empty( $cf ) && $cf->htmlvar_name == 'event_dates' ) ) {
 			return $html;
@@ -1498,7 +1501,7 @@ class GeoDir_Event_Fields {
 				$field_label = wp_sprintf( __( '%s Dates', 'geodiradvancesearch' ), $pt_name );
 			}
 			?>
-			<div class="gd-search-has-date gd-search-<?php echo $htmlvar_name; ?> from-to col-auto flex-fill"<?php echo $wrap_attrs; ?>>
+			<div class="gd-search-has-date gd-search-<?php echo $htmlvar_name; ?> from-to col-auto flex-fill<?php echo ( $aui_bs5 ? ' px-0' : '' ); ?>"<?php echo $wrap_attrs; ?>>
 				<?php if ( ! empty( $field_label ) ) { ?>
 					<label for="<?php echo esc_attr( $htmlvar_name ); ?>" class="sr-only visually-hidden"><?php echo $field_label; ?></label>
 				<?php }
@@ -1532,7 +1535,7 @@ class GeoDir_Event_Fields {
 			$event_dates = ! empty( $event_dates ) && ! is_array( $event_dates ) ? sanitize_text_field( $event_dates ) : '';
 
 			?>
-			<div class="gd-search-has-date gd-search-<?php echo $htmlvar_name; ?> col-auto flex-fill"<?php echo $wrap_attrs; ?>>
+			<div class="gd-search-has-date gd-search-<?php echo $htmlvar_name; ?> col-auto flex-fill<?php echo ( $aui_bs5 ? ' px-0' : '' ); ?>"<?php echo $wrap_attrs; ?>>
 				<?php if ( ! empty( $field_label ) ) { ?>
 					<label for="<?php echo esc_attr( $htmlvar_name ); ?>" class="sr-only visually-hidden"><?php echo $field_label; ?></label>
 				<?php }
