@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Events for GeoDirectory 2.2.6\n"
+"Project-Id-Version: Events for GeoDirectory 2.2.7\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-22 09:59+0530\n"
-"PO-Revision-Date: 2022-09-22 09:59+0530\n"
+"POT-Creation-Date: 2022-12-22 14:15+0530\n"
+"PO-Revision-Date: 2022-12-22 14:15+0530\n"
 "Last-Translator: \n"
 "Language-Team: AyeCode Ltd <contact@ayecode.io>\n"
 "Language: en_US\n"
@@ -59,13 +59,13 @@ msgstr ""
 msgid "With Recurring Events"
 msgstr ""
 
-#: includes/admin/class-geodir-event-admin.php:143
+#: includes/admin/class-geodir-event-admin.php:141
 #: includes/class-geodir-event-fields.php:536
 #: includes/class-geodir-event-fields.php:821
 msgid "Event start date"
 msgstr ""
 
-#: includes/admin/class-geodir-event-admin.php:144
+#: includes/admin/class-geodir-event-admin.php:142
 #: includes/class-geodir-event-fields.php:555
 #: includes/class-geodir-event-fields.php:826
 msgid "Event end date"

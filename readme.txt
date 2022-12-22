@@ -5,7 +5,7 @@ Donate link: https://wpgeodirectory.com
 Requires at least: 4.9
 Tested up to: 6.1
 Requires PHP: 5.6
-Stable tag: 2.2.6
+Stable tag: 2.2.7
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -70,33 +70,33 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 
 == Changelog ==
 
-= 2.2.7 =
+= 2.2.7 - 2022-12-22 =
 * GD clear versions tool don't execute events details DB table columns - FIXED
 * Replace dummy images CDN url - CHANGED
 
-= 2.2.6 =
+= 2.2.6 - 2022-09-22 =
 * Custom recurring different event times resets on date select or deselect - FIXED
 * Elementor tag now supports event start date & end date - ADDED
 
-= 2.2.5 =
+= 2.2.5 - 2022-07-06 =
 * Event calendar preview not working on Elementor preview - FIXED
 * Export events missing different times field - FIXED
 
-= 2.2.4 =
+= 2.2.4 - 2022-05-26 =
 * Event duration field not saved for custom recurring - FIXED
 * Changes for Fast AJAX feature - CHANGED
 
-= 2.2.3 =
+= 2.2.3 - 2022-05-05 =
 * Event calendar preview not working on block preview - FIXED
 
-= 2.2.2 =
+= 2.2.2 - 2022-03-29 =
 * Event time always shown in military time - FIXED
 
-= 2.2.1 =
+= 2.2.1 - 2022-03-28 =
 * Enhance recurring event fields labels & description - CHANGED
 * Set event date as a default sort on new install - ADDED
 
-= 2.2 =
+= 2.2 - 2022-02-22 =
 * Hook added to filter event schedule templates in GD > Event Schedules - ADDED
 * GD > Event Schedules shows same date for recurring schedules when searched with dates - FIXED
 * Changes to support GeoDirectory v2.2 new settings UI - CHANGED
