@@ -70,6 +70,9 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 
 == Changelog ==
 
+= 2.2.8 =
+* Changes for AUI Bootstrap 5 compatibility - ADDED
+
 = 2.2.7 - 2022-12-22 =
 * GD clear versions tool don't execute events details DB table columns - FIXED
 * Replace dummy images CDN url - CHANGED
