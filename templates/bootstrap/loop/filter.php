@@ -39,7 +39,7 @@ foreach ( $event_types as $value => $label ) {
 ?>
 <div class="btn-group btn-group-sm geodir-sort-by geodir-loop-event-filter" role="group" aria-label="<?php esc_attr_e("Filter Events","geodirevents");?>">
 	<div class="btn-group btn-group-sm" role="group">
-		<button id="geodir-sort-by" type="button" class="btn btn-outline-primary rounded-right" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		<button id="geodir-sort-by" type="button" class="btn btn-outline-primary rounded-right rounded-end" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 			<?php echo $button_label;?> <i class="fas fa-sort"></i>
 		</button>
 		<div class="dropdown-menu dropdown-caret-0 scrollbars-ios overflow-auto p-0 m-0 my-3" aria-labelledby="gd-list-view-select-grid" style="max-height: 50vh">
