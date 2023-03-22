@@ -526,6 +526,7 @@ class GeoDir_Event_Fields {
 			$extra_attributes['data-alt-input'] = 'true';
 			$extra_attributes['data-alt-format'] = geodir_date_format_php_to_aui( $format  );
 			$extra_attributes['data-date-format'] = 'Y-m-d';
+			$extra_attributes['data-disable-mobile'] = 'true'; // Disable mobile native datetime input.
 
 			// start date
 			echo aui()->input(
@@ -1511,6 +1512,7 @@ class GeoDir_Event_Fields {
 				$extra_attributes['data-alt-input'] = 'true';
 				$extra_attributes['data-alt-format'] = $datepicker_format;
 				$extra_attributes['data-date-format'] = 'Y-m-d';
+				$extra_attributes['data-disable-mobile'] = 'true'; // Disable mobile native datetime input.
 
 				// Range
 				$extra_attributes['data-mode'] = 'range';
@@ -1545,6 +1547,7 @@ class GeoDir_Event_Fields {
 				$extra_attributes['data-alt-input'] = 'true';
 				$extra_attributes['data-alt-format'] = $datepicker_format;
 				$extra_attributes['data-date-format'] = 'Y-m-d';
+				$extra_attributes['data-disable-mobile'] = 'true'; // Disable mobile native datetime input.
 				echo aui()->input(
 					array(
 						'id'                => $htmlvar_name,
@@ -1686,6 +1689,7 @@ class GeoDir_Event_Fields {
 				$extra_attributes['data-alt-input'] = 'true';
 				$extra_attributes['data-alt-format'] = $datepicker_format;
 				$extra_attributes['data-date-format'] = 'Y-m-d';
+				$extra_attributes['data-disable-mobile'] = 'true'; // Disable mobile native datetime input.
 
 				// Range
 				$extra_attributes['data-mode'] = 'range';
@@ -1719,6 +1723,7 @@ class GeoDir_Event_Fields {
 				$extra_attributes['data-alt-input'] = 'true';
 				$extra_attributes['data-alt-format'] = $datepicker_format;
 				$extra_attributes['data-date-format'] = 'Y-m-d';
+				$extra_attributes['data-disable-mobile'] = 'true'; // Disable mobile native datetime input.
 				echo aui()->input(
 					array(
 						'id'                => $htmlvar_name,
