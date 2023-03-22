@@ -70,7 +70,10 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 
 == Changelog ==
 
-= 2.3.1 2023-03-16 =
+= 2.3.2 =
+* Disable date native datetime input on mobile - CHANGED
+
+= 2.3.1 - 2023-03-16 =
 * Add .distignore file - CHANGED
 
 = 2.3 - 2023-03-16 =
