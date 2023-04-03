@@ -1524,7 +1524,8 @@ class GeoDir_Event_Fields {
 						'placeholder'       => $field_label,
 						'class'             => '',
 						'value'             => esc_attr( $event_dates ),
-						'extra_attributes'  => $extra_attributes
+						'extra_attributes'  => $extra_attributes,
+						'form_group_class'  => ( $aui_bs5 ? ' ' : '' ), // Remove bottom margin for BS5
 					)
 				);
 				?>
@@ -1556,7 +1557,8 @@ class GeoDir_Event_Fields {
 						'placeholder'       => $field_label,
 						'class'             => '',
 						'value'             => esc_attr( $event_dates ),
-						'extra_attributes'  => $extra_attributes
+						'extra_attributes'  => $extra_attributes,
+						'form_group_class'  => ( $aui_bs5 ? ' ' : '' ), // Remove bottom margin for BS5
 					)
 				);
 				?>
