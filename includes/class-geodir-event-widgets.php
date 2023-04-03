@@ -57,6 +57,7 @@ class GeoDir_Event_Widgets {
 						'desc_tip' => true,
 						'advanced' => true,
 						'element_require' => $condition,
+						'group' => __( 'Filters', 'geodirectory' )
 					);
 
 					$new_arguments['single_event'] = array(
@@ -67,6 +68,7 @@ class GeoDir_Event_Widgets {
 						'desc_tip' => true,
 						'advanced' => true,
 						'element_require' => $condition,
+						'group' => __( 'Filters', 'geodirectory' )
 					);
 				}
 			}
