@@ -30,6 +30,7 @@ class GeoDir_Event_Schedules {
 		add_action( 'delete_post', array( __CLASS__, 'delete_schedules' ), 10, 1 );
 		add_filter( 'geodir_location_count_reviews_by_term_sql', array( __CLASS__, 'location_term_counts' ), 10, 8 );
 		add_action( 'geodir_event_schedule_handle_past_events', 'geodir_event_handle_past_events' );
+		add_filter( 'seopress_sitemaps_single_url', array( __CLASS__, 'seopress_sitemaps_single_url' ), 10, 2 );
 	}
 
 	public static function save_schedules( $event_data, $post_id ) {
@@ -911,5 +912,28 @@ class GeoDir_Event_Schedules {
 		);
 
 		return apply_filters( 'geodir_event_get_schedule_templates', $template );
+	}
+
+	/**
+	 * Filter SEOPress sitemap single url.
+	 *
+	 * @since 2.3.2
+	 *
+	 * @param array  $seopress_url Sitemap url set.
+	 * @param object $post Post object.
+	 * @return array Sitemap url set.
+	 */
+	public static function seopress_sitemaps_single_url( $seopress_url, $post ) {
+		if ( ! empty( $post->post_type ) && geodir_is_gd_post_type( $post->post_type ) && geodir_get_option( 'seopress_recurring_schedules' ) && ! empty( $seopress_url['loc'] ) && GeoDir_Post_types::supports( $post->post_type, 'events' ) ) {
+			if ( ! empty( $post->recurring ) && ! empty( $post->start_date ) ) {
+				$seopress_url['loc'] = add_query_arg(
+					'gde',
+					$post->start_date,
+					$seopress_url['loc']
+				);
+			}
+		}
+
+		return $seopress_url;
 	}
 }

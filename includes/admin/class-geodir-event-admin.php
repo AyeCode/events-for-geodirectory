@@ -27,6 +27,7 @@ class GeoDir_Event_Admin {
 		add_action( 'init', array( $this, 'includes' ) );
 		add_action( 'admin_init', array( $this, 'admin_redirects' ) );
 		add_filter( 'geodir_get_settings_pages', array( $this, 'load_settings_page' ), 12, 1 );
+		add_filter( 'geodir_seo_options', array( $this, 'seo_options' ), 12, 1 );
 		add_filter( 'geodir_cat_schemas', 'geodir_event_filter_schemas', 10, 1 );
 		add_filter( 'geodir_add_custom_sort_options', 'geodir_event_custom_sort_options', 10, 2 );
 		add_filter( 'geodir_uninstall_options', 'geodir_event_uninstall_settings', 10, 1 );
@@ -149,5 +150,30 @@ class GeoDir_Event_Admin {
 		}
 
 		return $fields;
+	}
+
+	public function seo_options( $settings ) {
+		// SEOPress
+		if ( function_exists( 'seopress_activation' ) ) {
+			$new_settings = array();
+
+			foreach ( $settings as $key => $setting ) {
+				$new_settings[] = $setting;
+
+				if ( ! empty( $setting['id'] ) && $setting['id'] == 'seopress_disable' ) {
+					$new_settings[] = array(
+						'id' => 'seopress_recurring_schedules',
+						'type' => 'checkbox',
+						'name' => __( 'Recurring Schedules in Sitemap', 'geodirectory' ),
+						'desc' => __( 'Show recurring schedules for recurring event in SEOPress XML sitemaps.', 'geodirectory' ),
+						'default' => '0',
+					);
+				}
+			}
+			
+			$settings = $new_settings;
+		}
+
+		return $settings;
 	}
 }

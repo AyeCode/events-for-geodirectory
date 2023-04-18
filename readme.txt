@@ -72,6 +72,7 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 
 = 2.3.2 =
 * Disable date native datetime input on mobile - CHANGED
+* Option added to enable/disable recurring event schedules in SEOPress XML sitemap - ADDED
 
 = 2.3.1 - 2023-03-16 =
 * Add .distignore file - CHANGED
