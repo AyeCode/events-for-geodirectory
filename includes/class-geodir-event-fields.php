@@ -1884,7 +1884,7 @@ class GeoDir_Event_Fields {
 
 			$format = '';
 			if ( $cf['extra_fields'] != '' ) {
-				$_date_format = stripslashes_deep( maybe_unserialize( $cf['extra_fields'] ) );
+				$_date_format = maybe_unserialize( $cf['extra_fields'] );
 
 				if ( ! empty( $_date_format['date_format'] ) ) {
 					$format = $_date_format['date_format'];
@@ -1904,9 +1904,7 @@ class GeoDir_Event_Fields {
 					$value_raw = $start_date;
 					break;
 				case 'event_start_time':
-					if ( empty( $format ) ) {
-						$format = $time_format;
-					}
+					$format = $time_format;
 
 					$value = $start_date_time;
 					$value_raw = $start_time;
@@ -1928,9 +1926,7 @@ class GeoDir_Event_Fields {
 					$value_raw = $end_date;
 					break;
 				case 'event_end_time':
-					if ( empty( $format ) ) {
-						$format = $time_format;
-					}
+					$format = $time_format;
 
 					$value = $end_date_time;
 					$value_raw = $end_time;
@@ -1945,9 +1941,12 @@ class GeoDir_Event_Fields {
 					break;
 			}
 
-			if ( ! empty( $output ) && ( isset( $output['raw'] ) || isset( $output['strip'] ) ) ) {
-				// Stripped value.
+			if ( ! empty( $output ) && isset( $output['raw'] ) ) {
+				// Database value.
 				return $value_raw;
+			} else if ( ! empty( $output ) && isset( $output['strip'] ) ) {
+				// Stripped value.
+				return $value;
 			}
 
 			$value = date_i18n( $format, strtotime( $value ) );
@@ -1961,11 +1960,6 @@ class GeoDir_Event_Fields {
 			} else {
 				$field_icon_af = $field_icon;
 				$field_icon = '';
-			}
-
-			if ( ( ! empty( $output ) && isset( $output['raw'] ) ) || ( ! empty( $output ) && isset( $output['strip'] ) ) ) {
-				// Database value / stripped value.
-				return $value_raw;
 			}
 
 			$html = '<div class="geodir_post_meta ' . $cf['css_class'] . ' geodir-field-' . $cf['htmlvar_name'] . '">';

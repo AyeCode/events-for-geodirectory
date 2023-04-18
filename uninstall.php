@@ -70,6 +70,7 @@ if ( ( ! empty( $geodir_settings ) && ( ! empty( $geodir_settings['admin_uninsta
 			'event_custom_date_format',
 			'event_max_schedules',
 			'event_include_ongoing',
+			'seopress_recurring_schedules',
 			'uninstall_geodir_event_manager',
 		);
 

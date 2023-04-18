@@ -55,6 +55,10 @@ class GeoDir_Event_Query {
 		if ( wp_doing_ajax() || ! is_admin() ) {
 			add_filter( 'get_terms', array( __CLASS__, 'get_terms' ), 9, 4 );
 		}
+
+		add_filter( 'seopress_sitemaps_index_post_types_query', array( __CLASS__, 'seopress_sitemaps_index_post_types_query' ), 10, 2 );
+		add_filter( 'seopress_sitemaps_single_query', array( __CLASS__, 'seopress_sitemaps_single_query' ), 10, 2 );
+		add_filter( 'posts_clauses_request', array( __CLASS__, 'seopress_posts_clauses_request' ), 10, 2 );
 	}
 
 	public static function filter_calender_posts( $query ) {
@@ -596,5 +600,69 @@ class GeoDir_Event_Query {
 		}
 
 		return $post;
+	}
+
+	/**
+	 * Filter SEOPress sitemaps index post types query args.
+	 *
+	 * @since 2.3.2
+	 *
+	 * @param array  $args Query args.
+	 * @param string $cpt_key Post type.
+	 * @return array Query args.
+	 */
+	public static function seopress_sitemaps_index_post_types_query( $args, $cpt_key ) {
+		if ( geodir_is_gd_post_type( $cpt_key ) && geodir_get_option( 'seopress_recurring_schedules' ) && GeoDir_Post_types::supports( $cpt_key, 'events' ) ) {
+			$args['is_event_post_type'] = true;
+			$args['is_event_index'] = true;
+			$args['suppress_filters'] = false;
+		}
+
+		return $args;
+	}
+
+	/**
+	 * Filter SEOPress single sitemap query args.
+	 *
+	 * @since 2.3.2
+	 *
+	 * @param array  $args Query args.
+	 * @param string $path Current path.
+	 * @return array Query args.
+	 */
+	public static function seopress_sitemaps_single_query( $args, $path ) {
+		if ( ! empty( $args['post_type'] ) && geodir_is_gd_post_type( $args['post_type'] ) && geodir_get_option( 'seopress_recurring_schedules' ) && GeoDir_Post_types::supports( $args['post_type'], 'events' ) ) {
+			$args['is_event_post_type'] = true;
+			$args['is_event_archive'] = true;
+			$args['suppress_filters'] = false;
+		}
+
+		return $args;
+	}
+
+	/**
+	 * Filter posts query clauses.
+	 *
+	 * @since 2.3.2
+	 *
+	 * @param array  $clauses Query clauses.
+	 * @param object $wp_query WP_Query.
+	 * @return array Query clauses.
+	 */
+	public static function seopress_posts_clauses_request( $clauses, $wp_query ) {
+		global $wpdb;
+
+		if ( ! empty( $wp_query->query_vars['is_event_post_type'] ) && function_exists( 'seopress_activation' ) && geodir_get_option( 'seopress_recurring_schedules' ) && ! empty( $wp_query->query_vars['post_type'] ) && GeoDir_Post_types::supports( $wp_query->query_vars['post_type'], 'events' ) ) {
+			$table = geodir_db_cpt_table( $wp_query->query_vars['post_type'] );
+
+			if ( ! empty( $wp_query->query_vars['is_event_archive'] ) ) {
+				$clauses['fields'] .= ", gdes.*";
+			}
+			$clauses['join'] .= " INNER JOIN `{$table}` AS `gdp` ON `gdp`.`post_id` = `{$wpdb->posts}`.`ID` LEFT JOIN `" . GEODIR_EVENT_SCHEDULES_TABLE . "` AS `gdes` ON `gdes`.`event_id` = `{$wpdb->posts}`.`ID`";
+			$clauses['groupby'] = "{$wpdb->posts}.ID, `gdes`.`start_date` ASC";
+			$clauses['orderby'] .= ", `gdes`.`start_date`";
+		}
+
+		return $clauses;
 	}
 }
