@@ -25,137 +25,143 @@
  * @author     GeoDirectory <info@wpgeodirectory.com>
  */
 final class GeoDir_Event_Manager {
-    
-    /**
-     * GeoDirectory Event Manager instance.
-     *
-     * @access private
-     * @since  2.0.0
-     */
-    private static $instance = null;
-    
-    /**
-     * The settings instance variable
-     *
-     * @access public
-     * @since  2.0.0
-     * @var    GeoDir_Event_Settings
-     */
-    public $settings;
 
-    /**
-     * Query instance.
-     *
-     * @var GeoDir_Event_Query
-     */
-    public $query = null;
+	/**
+	 * GeoDirectory Event Manager instance.
+	 *
+	 * @access private
+	 * @since  2.0.0
+	 */
+	private static $instance = null;
 
-    /**
-     * Main GeoDir_Event_Manager Instance.
-     *
-     * Ensures only one instance of GeoDirectory Event Manager is loaded or can be loaded.
-     *
-     * @since 2.0.0
-     * @static
-     * @see GeoDir()
-     * @return GeoDir_Event_Manager - Main instance.
-     */
-    public static function instance() {
-        if ( ! isset( self::$instance ) && ! ( self::$instance instanceof GeoDir_Event_Manager ) ) {
-            self::$instance = new GeoDir_Event_Manager;
-            self::$instance->setup_constants();
-            
-            add_action( 'plugins_loaded', array( self::$instance, 'load_textdomain' ) );
+	/**
+	 * The settings instance variable
+	 *
+	 * @access public
+	 * @since  2.0.0
+	 * @var    GeoDir_Event_Settings
+	 */
+	public $settings;
 
-            if ( version_compare( PHP_VERSION, '5.3', '<' ) ) {
-                add_action( 'admin_notices', array( self::$instance, 'php_version_notice' ) );
+	/**
+	 * Query instance.
+	 *
+	 * @var GeoDir_Event_Query
+	 */
+	public $query = null;
 
-                return self::$instance;
-            }
+	/**
+	 * Main GeoDir_Event_Manager Instance.
+	 *
+	 * Ensures only one instance of GeoDirectory Event Manager is loaded or can be loaded.
+	 *
+	 * @since 2.0.0
+	 * @static
+	 * @see GeoDir()
+	 * @return GeoDir_Event_Manager - Main instance.
+	 */
+	public static function instance() {
+		if ( ! isset( self::$instance ) && ! ( self::$instance instanceof GeoDir_Event_Manager ) ) {
+			self::$instance = new GeoDir_Event_Manager;
+			self::$instance->setup_constants();
+			
+			add_action( 'plugins_loaded', array( self::$instance, 'load_textdomain' ) );
 
-            self::$instance->includes();
-            self::$instance->init_hooks();
+			if ( version_compare( PHP_VERSION, '5.3', '<' ) ) {
+				add_action( 'admin_notices', array( self::$instance, 'php_version_notice' ) );
 
-            do_action( 'geodir_event_manager_loaded' );
-        }
-        
-        return self::$instance;
-    }
-    
-    /**
-     * Setup plugin constants.
-     *
-     * @access private
-     * @since 2.0.0
-     * @return void
-     */
-    private function setup_constants() {
-        global $plugin_prefix;
+				return self::$instance;
+			}
+
+			self::$instance->includes();
+			self::$instance->init_hooks();
+
+			do_action( 'geodir_event_manager_loaded' );
+		}
+		
+		return self::$instance;
+	}
+
+	/**
+	 * Setup plugin constants.
+	 *
+	 * @access private
+	 * @since 2.0.0
+	 * @return void
+	 */
+	private function setup_constants() {
+		global $plugin_prefix;
 
 		if ( $this->is_request( 'test' ) ) {
-            $plugin_path = dirname( GEODIR_EVENT_PLUGIN_FILE );
-        } else {
-            $plugin_path = plugin_dir_path( GEODIR_EVENT_PLUGIN_FILE );
-        }
-        
-        $this->define( 'GEODIR_EVENT_PLUGIN_DIR', $plugin_path );
-        $this->define( 'GEODIR_EVENT_PLUGIN_URL', untrailingslashit( plugins_url( '/', GEODIR_EVENT_PLUGIN_FILE ) ) );
-        $this->define( 'GEODIR_EVENT_PLUGIN_BASENAME', plugin_basename( GEODIR_EVENT_PLUGIN_FILE ) );
+			$plugin_path = dirname( GEODIR_EVENT_PLUGIN_FILE );
+		} else {
+			$plugin_path = plugin_dir_path( GEODIR_EVENT_PLUGIN_FILE );
+		}
+		
+		$this->define( 'GEODIR_EVENT_PLUGIN_DIR', $plugin_path );
+		$this->define( 'GEODIR_EVENT_PLUGIN_URL', untrailingslashit( plugins_url( '/', GEODIR_EVENT_PLUGIN_FILE ) ) );
+		$this->define( 'GEODIR_EVENT_PLUGIN_BASENAME', plugin_basename( GEODIR_EVENT_PLUGIN_FILE ) );
 
-        // Database tables
+		// Database tables
 		$this->define( 'GEODIR_EVENT_SCHEDULES_TABLE', $plugin_prefix . 'event_schedule' );
-    }
-    
-    /**
-     * Loads the plugin language files
-     *
-     * @access public
-     * @since 2.0.0
-     * @return void
-     */
-    public function load_textdomain() {
-        global $wp_version;
-        
-        $locale = $wp_version >= 4.7 ? get_user_locale() : get_locale();
-        
-        /**
-         * Filter the plugin locale.
-         *
-         * @since   1.0.0
-         * @package GeoDir_Event_Manager
-         */
-        $locale = apply_filters( 'plugin_locale', $locale, 'geodirevents' );
+	}
 
-        load_textdomain( 'geodirevents', WP_LANG_DIR . '/' . 'geodirevents' . '/' . 'geodirevents' . '-' . $locale . '.mo' );
-        load_plugin_textdomain( 'geodirevents', FALSE, basename( dirname( GEODIR_EVENT_PLUGIN_FILE ) ) . '/languages/' );
-    }
-    
-    /**
-     * Show a warning to sites running PHP < 5.3
-     *
-     * @static
-     * @access private
-     * @since 2.0.0
-     * @return void
-     */
-    public static function php_version_notice() {
-        echo '<div class="error"><p>' . __( 'Your version of PHP is below the minimum version of PHP required by Events for GeoDirectory. Please contact your host and request that your version be upgraded to 5.3 or later.', 'geodirevents' ) . '</p></div>';
-    }
-    
-    /**
-     * Include required files.
-     *
-     * @access private
-     * @since 2.0.0
-     * @return void
-     */
-    private function includes() {
-        global $pagenow, $geodir_options, $geodirectory;
+	/**
+	 * Loads the plugin language files
+	 *
+	 * @access public
+	 * @since 2.0.0
+	 * @return void
+	 */
+	public function load_textdomain() {
+		// Determines the current locale.
+		if ( function_exists( 'determine_locale' ) ) {
+			$locale = determine_locale();
+		} else if ( function_exists( 'get_user_locale' ) ) {
+			$locale = get_user_locale();
+		} else {
+			$locale = get_locale();
+		}
 
-        /**
-         * Class autoloader.
-         */
-        include_once( GEODIR_EVENT_PLUGIN_DIR . 'includes/class-geodir-event-autoloader.php' );
+		/**
+		 * Filter the plugin locale.
+		 *
+		 * @since   1.0.0
+		 * @package GeoDir_Event_Manager
+		 */
+		$locale = apply_filters( 'plugin_locale', $locale, 'geodirevents' );
+
+		unload_textdomain( 'geodirevents' );
+		load_textdomain( 'geodirevents', WP_LANG_DIR . '/geodirevents/geodirevents-' . $locale . '.mo' );
+		load_plugin_textdomain( 'geodirevents', false, basename( dirname( GEODIR_EVENT_PLUGIN_FILE ) ) . '/languages/' );
+	}
+
+	/**
+	 * Show a warning to sites running PHP < 5.3
+	 *
+	 * @static
+	 * @access private
+	 * @since 2.0.0
+	 * @return void
+	 */
+	public static function php_version_notice() {
+		echo '<div class="error"><p>' . __( 'Your version of PHP is below the minimum version of PHP required by Events for GeoDirectory. Please contact your host and request that your version be upgraded to 5.3 or later.', 'geodirevents' ) . '</p></div>';
+	}
+
+	/**
+	 * Include required files.
+	 *
+	 * @access private
+	 * @since 2.0.0
+	 * @return void
+	 */
+	private function includes() {
+		global $pagenow, $geodir_options, $geodirectory;
+
+		/**
+		 * Class autoloader.
+		 */
+		include_once( GEODIR_EVENT_PLUGIN_DIR . 'includes/class-geodir-event-autoloader.php' );
 		
 		include_once( GEODIR_EVENT_PLUGIN_DIR . 'includes/class-geodir-event-post-type.php' ); // Registers post type
 
@@ -166,30 +172,30 @@ final class GeoDir_Event_Manager {
 		GeoDir_Event_Widgets::init();
 
 		require_once( GEODIR_EVENT_PLUGIN_DIR . 'includes/deprecated-functions.php' );
-        require_once( GEODIR_EVENT_PLUGIN_DIR . 'includes/core-functions.php' );
+		require_once( GEODIR_EVENT_PLUGIN_DIR . 'includes/core-functions.php' );
 		require_once( GEODIR_EVENT_PLUGIN_DIR . 'includes/template-functions.php' );
-		
+
 		GeoDir_Event_API::init();
 
-        if ( $this->is_request( 'admin' ) || $this->is_request( 'test' ) || $this->is_request( 'cli' ) ) {
-            new GeoDir_Event_Admin();
+		if ( $this->is_request( 'admin' ) || $this->is_request( 'test' ) || $this->is_request( 'cli' ) ) {
+			new GeoDir_Event_Admin();
 
-	        require_once( GEODIR_EVENT_PLUGIN_DIR . 'includes/admin/admin-functions.php' );
+			require_once( GEODIR_EVENT_PLUGIN_DIR . 'includes/admin/admin-functions.php' );
 
 			GeoDir_Event_Admin_Install::init();
 
-			require_once( GEODIR_EVENT_PLUGIN_DIR . 'upgrade.php' );	        
-        }
+			require_once( GEODIR_EVENT_PLUGIN_DIR . 'upgrade.php' );
+		}
 
 		$this->query = new GeoDir_Event_Query();
-    }
-    
-    /**
-     * Hook into actions and filters.
-     * @since  2.3
-     */
-    private function init_hooks() {
-        add_action( 'init', array( $this, 'init' ), 0 );
+	}
+
+	/**
+	 * Hook into actions and filters.
+	 * @since  2.3
+	 */
+	private function init_hooks() {
+		add_action( 'init', array( $this, 'init' ), 0 );
 
 		if ( $this->is_request( 'frontend' ) ) {
 			add_action( 'wp_enqueue_scripts', array( $this, 'add_styles' ), 10 );
@@ -218,62 +224,62 @@ final class GeoDir_Event_Manager {
 		add_filter( 'wp_super_duper_arguments', 'geodir_event_super_duper_arguments', 2, 3 );
 		add_action( 'rss_item', 'geodir_event_rss_item' );
 		add_action( 'rss2_item', 'geodir_event_rss_item' );
-    }
-    
-    /**
-     * Init GeoDirectory Event Manager when WordPress Initialises.
-     */
-    public function init() {
-        // Before init action.
-        do_action( 'geodir_event_before_init' );
+	}
 
-        // Init action.
-        do_action( 'geodir_event_init' );
-    }
-    
-    /**
-     * Define constant if not already set.
-     *
-     * @param  string $name
-     * @param  string|bool $value
-     */
-    private function define( $name, $value ) {
-        if ( ! defined( $name ) ) {
-            define( $name, $value );
-        }
-    }
-    
-    /**
-     * Request type.
-     *
-     * @param  string $type admin, frontend, ajax, cron, test or CLI.
-     * @return bool
-     */
-    private function is_request( $type ) {
-        switch ( $type ) {
-            case 'admin' :
-                return is_admin();
-                break;
-            case 'ajax' :
-                return wp_doing_ajax();
-                break;
-            case 'cli' :
-                return ( defined( 'WP_CLI' ) && WP_CLI );
-                break;
-            case 'cron' :
-                return wp_doing_cron();
-                break;
-            case 'frontend' :
-                return ( ! is_admin() || wp_doing_ajax() ) && ! wp_doing_cron();
-                break;
-            case 'test' :
-                return defined( 'GD_TESTING_MODE' );
-                break;
-        }
-        
-        return null;
-    }
-	
+	/**
+	 * Init GeoDirectory Event Manager when WordPress Initialises.
+	 */
+	public function init() {
+		// Before init action.
+		do_action( 'geodir_event_before_init' );
+
+		// Init action.
+		do_action( 'geodir_event_init' );
+	}
+
+	/**
+	 * Define constant if not already set.
+	 *
+	 * @param  string $name
+	 * @param  string|bool $value
+	 */
+	private function define( $name, $value ) {
+		if ( ! defined( $name ) ) {
+			define( $name, $value );
+		}
+	}
+
+	/**
+	 * Request type.
+	 *
+	 * @param  string $type admin, frontend, ajax, cron, test or CLI.
+	 * @return bool
+	 */
+	private function is_request( $type ) {
+		switch ( $type ) {
+			case 'admin' :
+				return is_admin();
+				break;
+			case 'ajax' :
+				return wp_doing_ajax();
+				break;
+			case 'cli' :
+				return ( defined( 'WP_CLI' ) && WP_CLI );
+				break;
+			case 'cron' :
+				return wp_doing_cron();
+				break;
+			case 'frontend' :
+				return ( ! is_admin() || wp_doing_ajax() ) && ! wp_doing_cron();
+				break;
+			case 'test' :
+				return defined( 'GD_TESTING_MODE' );
+				break;
+		}
+		
+		return null;
+	}
+
 	/**
 	 * Get the plugin url.
 	 *
@@ -300,7 +306,7 @@ final class GeoDir_Event_Manager {
 	public function ajax_url() {
 		return admin_url( 'admin-ajax.php', 'relative' );
 	}
-	
+
 	/**
 	 * Enqueue styles.
 	 */
@@ -347,17 +353,13 @@ final class GeoDir_Event_Manager {
 
 		$script = $design_style ? 'geodir' : 'geodir-event';
 		wp_localize_script( $script, 'geodir_event_params', geodir_event_params() );
-
-
 	}
 
 	public function add_listing_script(){
 		// add listing
 		wp_add_inline_script( 'geodir-add-listing', self::add_listing() );
 	}
-	
 
-	
 	public function add_listing() {
 		// Event start time
 		$timepicker_extras = array();
@@ -415,7 +417,6 @@ function geodir_event_check_custom_dates(){
 	aui_init();
 }
 <?php if ( 0 ) { ?></script><?php }
-
 		return ob_get_clean();
 	}
 }
