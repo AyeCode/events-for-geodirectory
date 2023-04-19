@@ -5,7 +5,7 @@ Donate link: https://wpgeodirectory.com
 Requires at least: 4.9
 Tested up to: 6.2
 Requires PHP: 5.6
-Stable tag: 2.3.1
+Stable tag: 2.3.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -70,7 +70,7 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 
 == Changelog ==
 
-= 2.3.2 =
+= 2.3.2 - 2023-04-19 =
 * Disable date native datetime input on mobile - CHANGED
 * Option added to enable/disable recurring event schedules in SEOPress XML sitemap - ADDED
 
