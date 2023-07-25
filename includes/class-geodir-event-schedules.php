@@ -29,7 +29,6 @@ class GeoDir_Event_Schedules {
 	public static function init() {
 		add_action( 'delete_post', array( __CLASS__, 'delete_schedules' ), 10, 1 );
 		add_filter( 'geodir_location_count_reviews_by_term_sql', array( __CLASS__, 'location_term_counts' ), 10, 8 );
-		add_action( 'geodir_event_schedule_handle_past_events', 'geodir_event_handle_past_events' );
 		add_filter( 'seopress_sitemaps_single_url', array( __CLASS__, 'seopress_sitemaps_single_url' ), 10, 2 );
 	}
 
