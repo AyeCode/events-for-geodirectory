@@ -72,6 +72,7 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 
 = 2.3.3 =
 * Remove past events cron hook executed twice - FIXED
+* Option added to set event filter to directory map markers - ADDED
 
 = 2.3.2 - 2023-04-19 =
 * Disable date native datetime input on mobile - CHANGED

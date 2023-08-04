@@ -463,17 +463,51 @@ class GeoDir_Event_Query {
 		return $orderby;
 	}
 
+	/**
+	 * REST API request get event type filter.
+	 *
+	 * @since 2.3.3
+	 *
+	 * @param array $request REST request.
+	 * @return string REST API event type filter.
+	 */
+	public static function rest_markers_event_type( $request ) {
+		if ( ! empty( $request['event_type'] ) ) {
+			$event_type = $request['event_type'];
+		} else if ( ! empty( $_REQUEST['event_type'] ) ) {
+			$event_type = sanitize_text_field( $_REQUEST['event_type'] );
+		} else {
+			$event_type = geodir_get_option( 'event_map_filter' );
+		}
+
+		if ( empty( $event_type ) ) {
+			$event_type = 'ongoing_upcoming';
+		}
+
+		/**
+		 * Filter REST API request get event type.
+		 *
+		 * @since 2.3.3
+		 *
+		 * @param string $event_type Event type filter.
+		 * @param array  $request REST request.
+		 */
+		return apply_filters( 'geodir_event_rest_markers_event_type', $event_type, $request );
+	}
+
 	public static function rest_markers_query_join( $join, $request ) {
-		if ( empty( $request['post'] ) && ! empty( $request['post_type'] ) && geodir_get_option( 'event_default_filter' ) != 'all' && GeoDir_Post_types::supports( $request['post_type'], 'events' ) ) {
-			$join .= " LEFT JOIN " . GEODIR_EVENT_SCHEDULES_TABLE . " ON " . GEODIR_EVENT_SCHEDULES_TABLE . ".event_id = p.ID";
+		if ( empty( $request['post'] ) && ! empty( $request['post_type'] ) && ( $event_type = self::rest_markers_event_type( $request ) ) ) {
+			if ( $event_type != 'all' && GeoDir_Post_types::supports( $request['post_type'], 'events' ) ) {
+				$join .= " LEFT JOIN " . GEODIR_EVENT_SCHEDULES_TABLE . " ON " . GEODIR_EVENT_SCHEDULES_TABLE . ".event_id = p.ID";
+			}
 		}
 
 		return $join;
 	}
 
 	public static function rest_markers_query_where( $where, $request ) {
-		if ( empty( $request['post'] ) && ! empty( $request['post_type'] ) && geodir_get_option( 'event_default_filter' ) != 'all' && GeoDir_Post_types::supports( $request['post_type'], 'events' ) ) {
-			if ( $condition = GeoDir_Event_Schedules::event_type_condition( geodir_get_option( 'event_default_filter' ) ) ) {
+		if ( empty( $request['post'] ) && ! empty( $request['post_type'] ) && ( $event_type = self::rest_markers_event_type( $request ) ) ) {
+			if ( $event_type != 'all' && GeoDir_Post_types::supports( $request['post_type'], 'events' ) && ( $condition = GeoDir_Event_Schedules::event_type_condition( $event_type ) ) ) {
 				$where .= " AND " . $condition;
 			}
 		}
@@ -482,8 +516,10 @@ class GeoDir_Event_Query {
 	}
 
 	public static function rest_markers_query_group_by( $group_by, $request ) {
-		if ( empty( $request['post'] ) && ! empty( $request['post_type'] ) && geodir_get_option( 'event_default_filter' ) != 'all' && GeoDir_Post_types::supports( $request['post_type'], 'events' ) ) {
-			$group_by = "p.ID";
+		if ( empty( $request['post'] ) && ! empty( $request['post_type'] ) && ( $event_type = self::rest_markers_event_type( $request ) ) ) {
+			if ( $event_type != 'all' && GeoDir_Post_types::supports( $request['post_type'], 'events' ) ) {
+				$group_by = "p.ID";
+			}
 		}
 
 		return $group_by;
