@@ -644,6 +644,7 @@ class GeoDir_Event_Schedules {
 			'past'			=> "{$alias}start_date < '$date' ",
 			'upcoming'		=> "CONCAT( {$alias}start_date, ' ', {$alias}start_time ) > '{$now}' ",
 			'ongoing'		=> "( CONCAT( {$alias}start_date, ' ', {$alias}start_time ) <= '{$now}' ) AND ( CONCAT( {$alias}end_date, ' ', {$alias}end_time ) > '{$now}' OR CONCAT( {$alias}end_date, ' ', {$alias}end_time ) = '" . date_i18n( 'Y-m-d', strtotime( $now ) ) . " 00:00:00' ) ",
+			'ongoing_upcoming' => "( CONCAT( {$alias}start_date, ' ', {$alias}start_time ) >= '{$now}' OR ( CONCAT( {$alias}end_date, ' ', {$alias}end_time ) > '{$now}' OR CONCAT( {$alias}end_date, ' ', {$alias}end_time ) = '" . date_i18n( 'Y-m-d', strtotime( $now ) ) . " 00:00:00' ) ) ",
 			'today'			=> "( {$alias}start_date = '$date' OR ( {$alias}start_date <= '" . $date . "' AND {$alias}end_date >= '" . $date . "' ) ) ",
 			'tomorrow'  	=> "( {$alias}start_date = '$tomorrow' OR ( {$alias}start_date <= '" . $tomorrow . "' AND {$alias}end_date >= '" . $tomorrow . "' ) ) ",
 			'next_7_days'   => "( ( {$alias}start_date BETWEEN '" . $tomorrow . "' AND '" . $next_7_days . "' ) OR ( {$alias}end_date BETWEEN '" . $tomorrow . "' AND '" . $next_7_days . "' ) OR ( '" . $tomorrow . "' BETWEEN {$alias}start_date AND {$alias}end_date ) OR ( '" . $next_7_days . "' BETWEEN {$alias}start_date AND {$alias}end_date ) ) ",
@@ -657,7 +658,7 @@ class GeoDir_Event_Schedules {
 
 		// Include ongoing events in upcoming events.
 		if ( geodir_get_option( 'event_include_ongoing' ) ) {
-			$filters['upcoming'] = "( CONCAT( {$alias}start_date, ' ', {$alias}start_time ) >= '{$now}' OR ( CONCAT( {$alias}end_date, ' ', {$alias}end_time ) > '{$now}' OR CONCAT( {$alias}end_date, ' ', {$alias}end_time ) = '" . date_i18n( 'Y-m-d', strtotime( $now ) ) . " 00:00:00' ) ) ";
+			$filters['upcoming'] = $filters['ongoing_upcoming'];
 		}
 
 		/**

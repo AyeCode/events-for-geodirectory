@@ -89,6 +89,8 @@ if ( ! class_exists( 'GeoDir_Event_Settings_Events', false ) ) :
 				$display_date_options[$format] = $format . ' ( ' . date_i18n( $format, time() ) . ' )';
 			}
 
+			$event_options = geodir_event_filter_options();
+
 			$settings = apply_filters( 'geodir_event_settings_general_options', 
 				array(
 					array( 
@@ -102,7 +104,6 @@ if ( ! class_exists( 'GeoDir_Event_Settings_Events', false ) ) :
 						'id' => 'event_field_date_format',
 						'name' => __( 'Input date format', 'geodirevents' ),
 						'desc' => __( 'Date format to use in the add event form.', 'geodirevents' ),
-						'class' => 'geodir-select',
 						'default'  => 'Y-m-d',
 						'placeholder' => __( 'Select', 'geodirevents' ),
 						'options' => array_unique( $input_date_options ),
@@ -114,7 +115,6 @@ if ( ! class_exists( 'GeoDir_Event_Settings_Events', false ) ) :
 						'id' => 'event_display_date_format',
 						'name' => __( 'Display date format', 'geodirevents' ),
 						'desc' => __( 'Date format to display event dates.', 'geodirevents' ),
-						'class' => 'geodir-select',
 						'default'  => get_option( 'date_format' ),
 						'placeholder' => __( 'Select', 'geodirevents' ),
 						'options' => array_unique( $display_date_options ),
@@ -155,10 +155,20 @@ if ( ! class_exists( 'GeoDir_Event_Settings_Events', false ) ) :
 						'id' => 'event_default_filter',
 						'name' => __( 'Default event filter', 'geodirevents' ),
 						'desc' => __( 'Set the default filter view of event on listing page.', 'geodirevents' ),
-						'class' => 'geodir-select',
 						'default'  => 'upcoming',
 						'placeholder' => __( 'Select', 'geodirevents' ),
-						'options' => geodir_event_filter_options(),
+						'options' => $event_options,
+						'desc_tip' => true,
+						'advanced' => false,
+					),
+					array(
+						'type' => 'select',
+						'id' => 'event_map_filter',
+						'name' => __( 'Directory Map Event Filter', 'geodirevents' ),
+						'desc' => __( 'Set the event type filter to show on the events directory map.', 'geodirevents' ),
+						'default'  => 'ongoing_upcoming',
+						'placeholder' => __( 'Select', 'geodirevents' ),
+						'options' => $event_options,
 						'desc_tip' => true,
 						'advanced' => false,
 					),
@@ -218,10 +228,9 @@ if ( ! class_exists( 'GeoDir_Event_Settings_Events', false ) ) :
 						'id' => 'event_map_popup_dates',
 						'name' => __( 'Display dates in map popup', 'geodirevents' ),
 						'desc' => __( 'Set the filter to view schedule dates for event marker info window on the map.', 'geodirevents' ),
-						'class' => 'geodir-select',
 						'default'  => 'upcoming',
 						'placeholder' => __( 'Select', 'geodirevents' ),
-						'options' => geodir_event_filter_options(),
+						'options' => $event_options,
 						'desc_tip' => true,
 						'advanced' => false,
 					),
