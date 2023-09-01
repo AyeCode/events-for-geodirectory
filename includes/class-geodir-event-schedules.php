@@ -484,12 +484,21 @@ class GeoDir_Event_Schedules {
 			return false;
 		}
 
-		$where = array( 'event_id = %d' );
-		$where = implode( ' AND ', $where );
+		$schedule = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM " . GEODIR_EVENT_SCHEDULES_TABLE . " WHERE event_id = %d ORDER BY start_date ASC, start_time ASC LIMIT 1", array( $post_id ) ) );
 
-		$schedules = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM " . GEODIR_EVENT_SCHEDULES_TABLE . " WHERE {$where} ORDER BY start_date ASC, start_time ASC LIMIT 1", array( $post_id ) ) );
+		return $schedule;
+	}
 
-		return $schedules;
+	public static function get_last_schedule( $post_id ) {
+		global $wpdb;
+
+		if ( empty( $post_id ) ) {
+			return false;
+		}
+
+		$schedule = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM " . GEODIR_EVENT_SCHEDULES_TABLE . " WHERE event_id = %d ORDER BY start_date DESC, start_time DESC LIMIT 1", array( $post_id ) ) );
+
+		return $schedule;
 	}
 
 	public static function get_schedules_html( $schedules, $link = true ) {

@@ -70,6 +70,9 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 
 == Changelog ==
 
+= 2.3.5 =
+* Custom keys added in GD > Post Meta to show first & last schedules - ADDED
+
 = 2.3.4 - 2023-08-10 =
 * WordPress v6.3 compatibility - CHANGED
 

@@ -66,12 +66,12 @@ class GeoDir_Event_Fields {
 
 		// Post meta custom fields
 		add_action( 'geodir_post_meta_standard_fields', array( __CLASS__, 'post_meta_standard_fields' ), 10, 2 );
-		add_filter( 'geodir_custom_field_output_custom_var_event_start_date', array( __CLASS__, 'custom_field_output_event_date_time' ), 10, 5 );
-		add_filter( 'geodir_custom_field_output_custom_var_event_start_time', array( __CLASS__, 'custom_field_output_event_date_time' ), 10, 5 );
-		add_filter( 'geodir_custom_field_output_custom_var_event_start_date_time', array( __CLASS__, 'custom_field_output_event_date_time' ), 10, 5 );
-		add_filter( 'geodir_custom_field_output_custom_var_event_end_date', array( __CLASS__, 'custom_field_output_event_date_time' ), 10, 5 );
-		add_filter( 'geodir_custom_field_output_custom_var_event_end_time', array( __CLASS__, 'custom_field_output_event_date_time' ), 10, 5 );
-		add_filter( 'geodir_custom_field_output_custom_var_event_end_date_time', array( __CLASS__, 'custom_field_output_event_date_time' ), 10, 5 );
+
+		$schedule_keys = array( 'event_start_date', 'event_start_time', 'event_start_date_time', 'event_end_date', 'event_end_time', 'event_end_date_time', 'event_first_start_date', 'event_first_start_time', 'event_first_start_date_time', 'event_first_end_date', 'event_first_end_time', 'event_first_end_date_time', 'event_last_start_date', 'event_last_start_time', 'event_last_start_date_time', 'event_last_end_date', 'event_last_end_time', 'event_last_end_date_time' );
+
+		foreach ( $schedule_keys as $schedule_key ) {
+			add_filter( 'geodir_custom_field_output_custom_var_' . $schedule_key, array( __CLASS__, 'custom_field_output_event_date_time' ), 10, 5 );
+		}
 
 		// Post badge
 		add_filter( 'geodir_badge_conditions', array( __CLASS__, 'post_badge_conditions' ), 20, 1 );
@@ -1826,6 +1826,138 @@ class GeoDir_Event_Fields {
 			'extra_fields' => array( 'date_format' => geodir_event_date_time_format() ),
 		);
 
+		$fields['event_first_start_date'] = array(
+			'name' => 'event_first_start_date',
+			'htmlvar_name' => 'event_first_start_date',
+			'frontend_title' => __( 'First Schedule Start Date', 'geodirevents' ),
+			'type' => 'custom',
+			'field_icon' => 'fas fa-calendar-alt',
+			'field_type_key' => '',
+			'css_class' => '',
+			'extra_fields' => array( 'date_format' => geodir_event_date_format() ),
+		);
+
+		$fields['event_first_start_time'] = array(
+			'name' => 'event_first_start_time',
+			'htmlvar_name' => 'event_first_start_time',
+			'frontend_title' => __( 'First Schedule Start Time', 'geodirevents' ),
+			'type' => 'custom',
+			'field_icon' => 'fas fa-clock',
+			'field_type_key' => '',
+			'css_class' => '',
+			'extra_fields' => array( 'date_format' => geodir_event_time_format() ),
+		);
+
+		$fields['event_first_start_date_time'] = array(
+			'name' => 'event_first_start_date_time',
+			'htmlvar_name' => 'event_first_start_date_time',
+			'frontend_title' => __( 'First Schedule Starts On', 'geodirevents' ),
+			'type' => 'custom',
+			'field_icon' => 'fas fa-calendar-alt',
+			'field_type_key' => '',
+			'css_class' => '',
+			'extra_fields' => array( 'date_format' => geodir_event_date_time_format() ),
+		);
+
+		$fields['event_first_end_date'] = array(
+			'name' => 'event_first_end_date',
+			'htmlvar_name' => 'event_first_end_date',
+			'frontend_title' => __( 'First Schedule End Date', 'geodirevents' ),
+			'type' => 'custom',
+			'field_icon' => 'fas fa-calendar-alt',
+			'field_type_key' => '',
+			'css_class' => '',
+			'extra_fields' => array( 'date_format' => geodir_event_date_format() ),
+		);
+
+		$fields['event_first_end_time'] = array(
+			'name' => 'event_first_end_time',
+			'htmlvar_name' => 'event_first_end_time',
+			'frontend_title' => __( 'First Schedule End Time', 'geodirevents' ),
+			'type' => 'custom',
+			'field_icon' => 'fas fa-clock',
+			'field_type_key' => '',
+			'css_class' => '',
+			'extra_fields' => array( 'date_format' => geodir_event_time_format() ),
+		);
+
+		$fields['event_first_end_date_time'] = array(
+			'name' => 'event_first_end_date_time',
+			'htmlvar_name' => 'event_first_end_date_time',
+			'frontend_title' => __( 'First Schedule Ends On', 'geodirevents' ),
+			'type' => 'custom',
+			'field_icon' => 'fas fa-calendar-alt',
+			'field_type_key' => '',
+			'css_class' => '',
+			'extra_fields' => array( 'date_format' => geodir_event_date_time_format() ),
+		);
+
+		$fields['event_last_start_date'] = array(
+			'name' => 'event_last_start_date',
+			'htmlvar_name' => 'event_last_start_date',
+			'frontend_title' => __( 'Last Schedule Start Date', 'geodirevents' ),
+			'type' => 'custom',
+			'field_icon' => 'fas fa-calendar-alt',
+			'field_type_key' => '',
+			'css_class' => '',
+			'extra_fields' => array( 'date_format' => geodir_event_date_format() ),
+		);
+
+		$fields['event_last_start_time'] = array(
+			'name' => 'event_last_start_time',
+			'htmlvar_name' => 'event_last_start_time',
+			'frontend_title' => __( 'Last Schedule Start Time', 'geodirevents' ),
+			'type' => 'custom',
+			'field_icon' => 'fas fa-clock',
+			'field_type_key' => '',
+			'css_class' => '',
+			'extra_fields' => array( 'date_format' => geodir_event_time_format() ),
+		);
+
+		$fields['event_last_start_date_time'] = array(
+			'name' => 'event_last_start_date_time',
+			'htmlvar_name' => 'event_last_start_date_time',
+			'frontend_title' => __( 'Last Schedule Starts On', 'geodirevents' ),
+			'type' => 'custom',
+			'field_icon' => 'fas fa-calendar-alt',
+			'field_type_key' => '',
+			'css_class' => '',
+			'extra_fields' => array( 'date_format' => geodir_event_date_time_format() ),
+		);
+
+		$fields['event_last_end_date'] = array(
+			'name' => 'event_last_end_date',
+			'htmlvar_name' => 'event_last_end_date',
+			'frontend_title' => __( 'Last Schedule End Date', 'geodirevents' ),
+			'type' => 'custom',
+			'field_icon' => 'fas fa-calendar-alt',
+			'field_type_key' => '',
+			'css_class' => '',
+			'extra_fields' => array( 'date_format' => geodir_event_date_format() ),
+		);
+
+		$fields['event_last_end_time'] = array(
+			'name' => 'event_last_end_time',
+			'htmlvar_name' => 'event_last_end_time',
+			'frontend_title' => __( 'Last Schedule End Time', 'geodirevents' ),
+			'type' => 'custom',
+			'field_icon' => 'fas fa-clock',
+			'field_type_key' => '',
+			'css_class' => '',
+			'extra_fields' => array( 'date_format' => geodir_event_time_format() ),
+		);
+
+		$fields['event_last_end_date_time'] = array(
+			'name' => 'event_last_end_date_time',
+			'htmlvar_name' => 'event_last_end_date_time',
+			'frontend_title' => __( 'Last Schedule Ends On', 'geodirevents' ),
+			'type' => 'custom',
+			'field_icon' => 'fas fa-calendar-alt',
+			'field_type_key' => '',
+			'css_class' => '',
+			'extra_fields' => array( 'date_format' => geodir_event_date_time_format() ),
+		);
+
 		return $fields;
 	}
 
@@ -1854,14 +1986,25 @@ class GeoDir_Event_Fields {
 		}
 
 		$schedule = array();
-		if ( isset( $gd_post->start_date ) ) {
-			$schedule = $gd_post;
-		} elseif ( ! empty( $post ) && $gd_post->ID == $post->ID && isset( $post->start_date ) ) {
-			$schedule = $post;
-		} elseif ( ( $schedules = GeoDir_Event_Schedules::get_schedules( $gd_post->ID, 'upcoming', 1 ) ) ) {
-			$schedule = $schedules[0];
-		} elseif ( ( $schedules = GeoDir_Event_Schedules::get_schedules( $gd_post->ID, '', 1 ) ) ) {
-			$schedule = $schedules[0];
+
+		if ( ! empty( $gd_post->recurring ) ) {
+			if ( strpos( $cf['htmlvar_name'], 'event_first_start' ) === 0 || strpos( $cf['htmlvar_name'], 'event_first_end' ) === 0 ) {
+				$schedule = GeoDir_Event_Schedules::get_start_schedule( $gd_post->ID );
+			} else if ( strpos( $cf['htmlvar_name'], 'event_last_start' ) === 0 || strpos( $cf['htmlvar_name'], 'event_last_end' ) === 0 ) {
+				$schedule = GeoDir_Event_Schedules::get_last_schedule( $gd_post->ID );
+			}
+		}
+
+		if ( empty( $schedule ) ) {
+			if ( isset( $gd_post->start_date ) ) {
+				$schedule = $gd_post;
+			} elseif ( ! empty( $post ) && $gd_post->ID == $post->ID && isset( $post->start_date ) ) {
+				$schedule = $post;
+			} elseif ( ( $schedules = GeoDir_Event_Schedules::get_schedules( $gd_post->ID, 'upcoming', 1 ) ) ) {
+				$schedule = $schedules[0];
+			} elseif ( ( $schedules = GeoDir_Event_Schedules::get_schedules( $gd_post->ID, '', 1 ) ) ) {
+				$schedule = $schedules[0];
+			}
 		}
 
 		if ( empty( $schedule ) ) {
@@ -1896,6 +2039,8 @@ class GeoDir_Event_Fields {
 
 			switch ( $htmlvar_name ) {
 				case 'event_start_date':
+				case 'event_first_start_date':
+				case 'event_last_start_date':
 					if ( empty( $format ) ) {
 						$format = $date_format;
 					}
@@ -1904,12 +2049,16 @@ class GeoDir_Event_Fields {
 					$value_raw = $start_date;
 					break;
 				case 'event_start_time':
+				case 'event_first_start_time':
+				case 'event_last_start_time':
 					$format = $time_format;
 
 					$value = $start_date_time;
 					$value_raw = $start_time;
 					break;
 				case 'event_start_date_time':
+				case 'event_first_start_date_time':
+				case 'event_last_start_date_time':
 					if ( empty( $format ) ) {
 						$format = $date_time_format;
 					}
@@ -1918,6 +2067,8 @@ class GeoDir_Event_Fields {
 					$value_raw = $start_date_time;
 					break;
 				case 'event_end_date':
+				case 'event_first_end_date':
+				case 'event_last_end_date':
 					if ( empty( $format ) ) {
 						$format = $date_format;
 					}
@@ -1926,12 +2077,16 @@ class GeoDir_Event_Fields {
 					$value_raw = $end_date;
 					break;
 				case 'event_end_time':
+				case 'event_first_end_time':
+				case 'event_last_end_time':
 					$format = $time_format;
 
 					$value = $end_date_time;
 					$value_raw = $end_time;
 					break;
 				case 'event_end_date_time':
+				case 'event_first_end_date_time':
+				case 'event_last_end_date_time':
 					if ( empty( $format ) ) {
 						$format = $date_time_format;
 					}
@@ -1940,6 +2095,8 @@ class GeoDir_Event_Fields {
 					$value_raw = $end_date_time;
 					break;
 			}
+
+			$output = geodir_field_output_process( $output );
 
 			if ( ! empty( $output ) && isset( $output['raw'] ) ) {
 				// Database value.
@@ -1952,7 +2109,7 @@ class GeoDir_Event_Fields {
 			$value = date_i18n( $format, strtotime( $value ) );
 
 			$field_icon = geodir_field_icon_proccess( $cf );
-			$output = geodir_field_output_process( $output );
+
 			if ( strpos( $field_icon, 'http' ) !== false ) {
 				$field_icon_af = '';
 			} elseif ( $field_icon == '' ) {
