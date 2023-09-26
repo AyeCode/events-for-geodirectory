@@ -133,6 +133,11 @@ function geodir_event_seo_variables( $vars, $gd_page = '' ) {
 		$end_date = date_i18n( $display_date_format, $current_time + DAY_IN_SECONDS );
 		$start_time = date_i18n( $display_time_format, $current_time );
 		$end_time = date_i18n( $display_time_format, $current_time + ( HOUR_IN_SECONDS * 8 ) );
+		$start_date_ymd = date( 'Y-m-d', $current_time );
+		$end_date_ymd = date( 'Y-m-d', $current_time + DAY_IN_SECONDS );
+		$start_time_hi = date( 'H:i:s', $current_time );
+		$end_time_hi = date( 'H:i:s', $current_time + ( HOUR_IN_SECONDS * 8 ) );
+		$timezone = geodir_gmt_offset();
 
 		$vars['%%event_start_date%%'] = wp_sprintf( __( 'Event start date. Eg: %s', 'geodirevents' ), $start_date );
 		$vars['%%event_end_date%%'] = wp_sprintf( __( 'Event past date. Eg: %s', 'geodirevents' ), $end_date );
@@ -140,6 +145,13 @@ function geodir_event_seo_variables( $vars, $gd_page = '' ) {
 		$vars['%%event_end_time%%'] = wp_sprintf( __( 'Event end time. Eg: %s', 'geodirevents' ), $end_time );
 		$vars['%%event_start_to_end_date%%'] = wp_sprintf( __( 'Event start date - end date. Eg: %s', 'geodirevents' ), $start_date . ' - ' . $end_date );
 		$vars['%%event_start_to_end_time%%'] = wp_sprintf( __( 'Event start time - end time. Eg: %s', 'geodirevents' ), $start_time . ' - ' . $end_time );
+		$vars['%%event_start_date_ymd%%'] = wp_sprintf( __( 'Event start date (Y-m-d). Eg: %s', 'geodirevents' ), $start_date_ymd );
+		$vars['%%event_end_date_ymd%%'] = wp_sprintf( __( 'Event past date (Y-m-d). Eg: %s', 'geodirevents' ), $end_date_ymd );
+		$vars['%%event_start_time_hi%%'] = wp_sprintf( __( 'Event start time (H:i:s). Eg: %s', 'geodirevents' ), $start_time_hi );
+		$vars['%%event_end_time_hi%%'] = wp_sprintf( __( 'Event end time (H:i:s). Eg: %s', 'geodirevents' ), $end_time_hi );
+		$vars['%%event_start_datetime_iso%%'] = wp_sprintf( __( 'Event start time (ISO). Eg: %s', 'geodirevents' ), $start_date_ymd . 'T' . $start_time_hi . $timezone );
+		$vars['%%event_end_datetime_iso%%'] = wp_sprintf( __( 'Event start time (ISO). Eg: %s', 'geodirevents' ), $end_date_ymd . 'T' . $end_time_hi . $timezone );
+		$vars['%%event_tz_offset%%'] = wp_sprintf( __( 'Event Timezone Offset. Eg: %s', 'geodirevents' ), $timezone );
 	}
     return $vars;
 }
@@ -194,6 +206,16 @@ function geodir_event_get_replacements() {
 	$event_start_time = '';
 	$event_end_time = '';
 	$event_start_to_end_time = '';
+	$start_date_ymd = '';
+	$end_date_ymd = '';
+	$start_time_hi = '';
+	$end_time_hi = '';
+	$start_datetime_iso = '';
+	$end_datetime_iso = '';
+	$timezone = geodir_gmt_offset();
+	if ( ! empty( $gd_post->timezone_offset ) ) {
+		$timezone = $gd_post->timezone_offset;
+	}
 
 	if ( ! empty( $_REQUEST['etype'] ) ) {
 		$event_type_archive = geodir_event_type_title( sanitize_text_field( $_REQUEST['etype'] ) );
@@ -216,15 +238,38 @@ function geodir_event_get_replacements() {
 		}
 
 		if ( ! empty( $schedule ) ) {
+			$startTime = ! empty( $schedule->start_time ) ? date( 'H:i', strtotime( $schedule->start_time ) ) : '00:00';
+			$endTime = ! empty( $schedule->end_time ) ? date( 'H:i', strtotime( $schedule->end_time ) ) : '00:00';
+
 			$event_start_date = date_i18n( $date_format, strtotime( $schedule->start_date ) );
 			$event_end_date = date_i18n( $date_format, strtotime( $schedule->end_date ) );
-			$event_start_time = date_i18n( $time_format, strtotime( $schedule->start_time ) );
-			$event_end_time = date_i18n( $time_format, strtotime( $schedule->end_time ) );
+			if ( $event_end_date === '' || empty( $schedule->end_date ) ) {
+				$event_end_date = $event_start_date;
+			}
+			$event_start_time = date_i18n( $time_format, strtotime( $startTime ) );
+			$event_end_time = date_i18n( $time_format, strtotime( $endTime ) );
 			$event_start_to_end_date = $event_start_date;
 			if ( $event_start_date !== $event_end_date ) {
 				$event_start_to_end_date .= ' - ' . $event_end_date;
 			}
 			$event_start_to_end_time = $event_start_time . ' ' . __( 'to', 'geodirevents' ) . ' ' . $event_end_time;
+			
+			$start_date_ymd = $schedule->start_date;
+			$end_date_ymd = $schedule->end_date;
+			if ( $end_date_ymd === '' || empty( $end_date_ymd ) || $end_date_ymd === '0000-00-00' ) {
+				$end_date_ymd = $start_date_ymd;
+			}
+			$start_time_hi = date( 'H:i:s', strtotime( $startTime ) );
+			$end_time_hi = date( 'H:i:s', strtotime( $endTime ) );
+			if ( ! empty( $schedule->all_day ) ) {
+				$start_time_hi = '00:00:00';
+				$end_time_hi = '23:59:59';
+			}
+			if ( $start_date_ymd == $end_date_ymd && $start_time_hi == $end_time_hi && $start_time_hi == '00:00' ) {
+				$end_time_hi = '23:59:59';
+			}
+			$start_datetime_iso = $start_date_ymd . 'T' . $start_time_hi . $timezone;
+			$end_datetime_iso = $end_date_ymd . 'T' . $end_time_hi . $timezone;
 		}
 	}
 
@@ -236,6 +281,13 @@ function geodir_event_get_replacements() {
 	$replacements['%%event_start_time%%'] = $event_start_time;
 	$replacements['%%event_end_time%%'] = $event_end_time;
 	$replacements['%%event_start_to_end_time%%'] = $event_start_to_end_time;
+	$replacements['%%event_start_date_ymd%%'] = $start_date_ymd;
+	$replacements['%%event_end_date_ymd%%'] = $end_date_ymd;
+	$replacements['%%event_start_time_hi%%'] = $start_time_hi;
+	$replacements['%%event_end_time_hi%%'] = $end_time_hi;
+	$replacements['%%event_start_datetime_iso%%'] = $start_datetime_iso;
+	$replacements['%%event_end_datetime_iso%%'] = $end_datetime_iso;
+	$replacements['%%event_tz_offset%%'] = $timezone;
 
 	return $replacements;
 }

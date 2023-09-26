@@ -70,6 +70,9 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 
 == Changelog ==
 
+= 2.3.6 =
+* Added post meta variables to show events dates & time in Ymd & Hi format - ADDED
+
 = 2.3.5 - 2023-09-13 =
 * Custom keys added in GD > Post Meta to show first & last schedules - ADDED
 
