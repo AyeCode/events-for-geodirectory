@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Events for GeoDirectory 2.3.5\n"
+"Project-Id-Version: Events for GeoDirectory 2.3.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-13 12:24+0530\n"
-"PO-Revision-Date: 2023-09-13 12:24+0530\n"
+"POT-Creation-Date: 2023-10-05 16:02+0530\n"
+"PO-Revision-Date: 2023-10-05 16:02+0530\n"
 "Last-Translator: \n"
 "Language-Team: AyeCode Ltd <contact@ayecode.io>\n"
 "Language: en_US\n"
@@ -20,7 +20,7 @@ msgstr ""
 "X-Generator: Poedit 3.0\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: includes/admin/admin-functions.php:85 includes/template-functions.php:552
+#: includes/admin/admin-functions.php:85 includes/template-functions.php:604
 msgid "Event Date"
 msgstr ""
 
@@ -81,25 +81,25 @@ msgstr ""
 
 #: includes/admin/dummy-data/recurring_events.php:37
 #: includes/admin/dummy-data/standard_events.php:41
-#: includes/template-functions.php:250
+#: includes/template-functions.php:302
 msgid "Event date"
 msgstr ""
 
 #: includes/admin/dummy-data/recurring_events.php:49
 #: includes/admin/dummy-data/standard_events.php:53
-#: includes/template-functions.php:562
+#: includes/template-functions.php:614
 msgid "Newest"
 msgstr ""
 
 #: includes/admin/dummy-data/recurring_events.php:61
 #: includes/admin/dummy-data/standard_events.php:65
-#: includes/template-functions.php:572
+#: includes/template-functions.php:624
 msgid "Title"
 msgstr ""
 
 #: includes/admin/dummy-data/recurring_events.php:73
 #: includes/admin/dummy-data/standard_events.php:77
-#: includes/template-functions.php:582
+#: includes/template-functions.php:634
 msgid "Rating"
 msgstr ""
 
@@ -689,7 +689,7 @@ msgid "End"
 msgstr ""
 
 #: includes/class-geodir-event-fields.php:470
-#: includes/template-functions.php:15 includes/template-functions.php:227
+#: includes/template-functions.php:15 includes/template-functions.php:255
 msgid "to"
 msgstr ""
 
@@ -1325,7 +1325,7 @@ msgstr ""
 
 #: includes/class-geodir-event-query.php:255
 #: includes/class-geodir-event-query.php:256
-#: includes/template-functions.php:282 includes/template-functions.php:283
+#: includes/template-functions.php:334 includes/template-functions.php:335
 msgid " to "
 msgstr ""
 
@@ -1981,53 +1981,83 @@ msgstr ""
 msgid "Event type. Eg: Past, Today, Upcoming"
 msgstr ""
 
-#: includes/template-functions.php:137
+#: includes/template-functions.php:142
 #, php-format
 msgid "Event start date. Eg: %s"
 msgstr ""
 
-#: includes/template-functions.php:138
+#: includes/template-functions.php:143
 #, php-format
 msgid "Event past date. Eg: %s"
 msgstr ""
 
-#: includes/template-functions.php:139
+#: includes/template-functions.php:144
 #, php-format
 msgid "Event start time. Eg: %s"
 msgstr ""
 
-#: includes/template-functions.php:140
+#: includes/template-functions.php:145
 #, php-format
 msgid "Event end time. Eg: %s"
 msgstr ""
 
-#: includes/template-functions.php:141
+#: includes/template-functions.php:146
 #, php-format
 msgid "Event start date - end date. Eg: %s"
 msgstr ""
 
-#: includes/template-functions.php:142
+#: includes/template-functions.php:147
 #, php-format
 msgid "Event start time - end time. Eg: %s"
 msgstr ""
 
-#: includes/template-functions.php:304
+#: includes/template-functions.php:148
+#, php-format
+msgid "Event start date (Y-m-d). Eg: %s"
+msgstr ""
+
+#: includes/template-functions.php:149
+#, php-format
+msgid "Event past date (Y-m-d). Eg: %s"
+msgstr ""
+
+#: includes/template-functions.php:150
+#, php-format
+msgid "Event start time (H:i:s). Eg: %s"
+msgstr ""
+
+#: includes/template-functions.php:151
+#, php-format
+msgid "Event end time (H:i:s). Eg: %s"
+msgstr ""
+
+#: includes/template-functions.php:152 includes/template-functions.php:153
+#, php-format
+msgid "Event start time (ISO). Eg: %s"
+msgstr ""
+
+#: includes/template-functions.php:154
+#, php-format
+msgid "Event Timezone Offset. Eg: %s"
+msgstr ""
+
+#: includes/template-functions.php:356
 #, php-format
 msgid "from %s"
 msgstr ""
 
-#: includes/template-functions.php:306
+#: includes/template-functions.php:358
 #, php-format
 msgid "to %s"
 msgstr ""
 
-#: includes/template-functions.php:308
+#: includes/template-functions.php:360
 #, php-format
 msgid "%s to %s"
 msgstr ""
 
-#: includes/template-functions.php:401 includes/template-functions.php:403
-#: includes/template-functions.php:407
+#: includes/template-functions.php:453 includes/template-functions.php:455
+#: includes/template-functions.php:459
 #, php-format
 msgid "- %s"
 msgstr ""
