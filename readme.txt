@@ -5,7 +5,7 @@ Donate link: https://wpgeodirectory.com
 Requires at least: 4.9
 Tested up to: 6.3
 Requires PHP: 5.6
-Stable tag: 2.3.5
+Stable tag: 2.3.6
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -70,7 +70,7 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 
 == Changelog ==
 
-= 2.3.6 =
+= 2.3.6 - 2023-10-05 =
 * Added post meta variables to show events dates & time in Ymd & Hi format - ADDED
 
 = 2.3.5 - 2023-09-13 =
