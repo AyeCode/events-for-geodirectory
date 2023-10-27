@@ -76,6 +76,7 @@ class GeoDir_Event_Fields {
 		// Post badge
 		add_filter( 'geodir_badge_conditions', array( __CLASS__, 'post_badge_conditions' ), 20, 1 );
 		add_filter( 'geodir_post_badge_check_match_found', array( __CLASS__, 'post_badge_check_match_found' ), 20, 3 );
+		add_filter( 'geodir_dynamic_content_check_match_found', array( __CLASS__, 'post_badge_check_match_found' ), 20, 3 );
 
 		// Elementor custom fields.
 		add_filter( 'geodir_elementor_tag_text_fields', array( __CLASS__, 'elementor_tag_text_fields' ), 20, 2 );
