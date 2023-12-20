@@ -70,6 +70,9 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 
 == Changelog ==
 
+= 2.3.8 - TBD =
+* TGM_Plugin_Activation class from other plugin conflicts - CHANGED
+
 = 2.3.7 - 2023-11-08 =
 * Dynamic content event dates conditions are not working - FIXED
 

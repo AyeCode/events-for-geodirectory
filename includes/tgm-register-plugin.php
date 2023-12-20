@@ -64,7 +64,7 @@ function geodir_event_register_required_plugins() {
 			'slug'               => 'geodirectory', // The plugin slug (typically the folder name).
 			'source'             => '',             // The plugin source.
 			'required'           => true,           // If false, the plugin is only 'recommended' instead of required.
-			'version'            => '2.1.0.0',      // E.g. 1.0.0. If set, the active plugin must be this version or higher. 
+			'version'            => '2.3.0',        // E.g. 1.0.0. If set, the active plugin must be this version or higher. 
 			                                        // If the plugin version is higher than the plugin version installed, the user will be notified to update the plugin.
 			'force_activation'   => true,           // If true, plugin is activated upon plugin activation and cannot be deactivated until plugin switch.
 			'force_deactivation' => false,          // If true, plugin is deactivated upon plugin switch, useful for plugin-specific plugins.
@@ -169,6 +169,13 @@ function geodir_event_register_required_plugins() {
 			'nag_type'                        => '', // Determines admin notice type - can only be one of the typical WP notice classes, such as 'updated', 'update-nag', 'notice-warning', 'notice-info' or 'error'. Some of which may not work as expected in older WP versions.
 		),
 	);
+
+	if ( class_exists( 'GeoDirectory' ) ) {
+		// Prevent overwriting messages when TGM_Plugin_Activation is loaded from other theme/plugin.
+		$config['dismissable'] = true;
+		unset( $config['strings']['notice_can_install_required'] );
+		unset( $config['strings']['notice_can_install_recommended'] );
+	}
 
 	tgmpa( $plugins, $config );
 }
