@@ -5,7 +5,7 @@ Donate link: https://wpgeodirectory.com
 Requires at least: 4.9
 Tested up to: 6.5
 Requires PHP: 5.6
-Stable tag: 2.3.9
+Stable tag: 2.3.10
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -69,6 +69,9 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 3. Go to WordPress Admin -> Events -> Settings and customize behaviour as needed
 
 == Changelog ==
+
+= 2.3.10 - 2024-04-09 =
+* Dummy data using old CDN url which can cauSE broken images - FIXED
 
 = 2.3.9 - 2024-04-04 =
 * WordPress v6.5 compatibility check - CHANGED
