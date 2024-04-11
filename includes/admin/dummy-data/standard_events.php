@@ -8,7 +8,7 @@
 
 global $dummy_image_url, $dummy_categories, $dummy_custom_fields, $dummy_posts, $dummy_sort_fields;
 
-$dummy_image_url = 'https://u8e8u2d3.stackpathcdn.com/dummy/';
+$dummy_image_url = 'https://ayecode.b-cdn.net/dummy/';
 
 // Dummy categories
 $dummy_categories  = array();
