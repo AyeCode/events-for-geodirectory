@@ -70,6 +70,9 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 
 == Changelog ==
 
+= 2.3.11 - TBD =
+* Are You Interested widget breaks the page - FIXED
+
 = 2.3.10 - 2024-04-09 =
 * Dummy data using old CDN url which can cauSE broken images - FIXED
 

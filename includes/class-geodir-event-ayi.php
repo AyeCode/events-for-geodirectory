@@ -58,10 +58,10 @@ class GeoDir_Event_AYI {
 
 		$yes_count = 0;
 		$maybe_count = 0;
-		if ( $yes_users ) {
+		if ( $yes_users && is_array( $yes_users ) ) {
 			$yes_count = count( $yes_users );
 		}
-		if ( $maybe_users ) {
+		if ( $maybe_users && is_array( $maybe_users ) ) {
 			$maybe_count = count( $maybe_users );
 		}
 		$total = $yes_count + $maybe_count;
@@ -234,32 +234,33 @@ class GeoDir_Event_AYI {
 	}
 
 
-	public static function geodir_ayi_event_is_current_user_interested($post_id, $gde = false) {
+	public static function geodir_ayi_event_is_current_user_interested( $post_id, $gde = false ) {
 		if ( ! get_current_user_id() ) {
 			return false;
 		}
 		$current_user = wp_get_current_user();
 
-		$yes_users = get_post_meta($post_id, 'event_rsvp_yes', true);
-		$maybe_users = get_post_meta($post_id, 'event_rsvp_maybe', true);
+		$yes_users = get_post_meta( $post_id, 'event_rsvp_yes', true );
+		$maybe_users = get_post_meta( $post_id, 'event_rsvp_maybe', true );
 
-		if ($gde) {
-			$yes_users = isset( $yes_users[$gde] ) ? $yes_users[$gde] : false;
+		if ( $gde ) {
+			$yes_users = isset( $yes_users[ $gde] ) ? $yes_users[$gde] : false;
 			$maybe_users = isset( $maybe_users[$gde] ) ? $maybe_users[$gde] : false;
 		}
 
 		$type = null;
-		if ($yes_users) {
-			foreach ($yes_users as $uid) {
-				if ($uid == $current_user->ID) {
+		if ( $yes_users && is_array( $yes_users ) ) {
+			foreach ( $yes_users as $uid ) {
+				if ( $uid == $current_user->ID ) {
 					$type = 'event_rsvp_yes';
 					break;
 				}
 			}
 		}
-		if ($maybe_users) {
-			foreach ($maybe_users as $uid) {
-				if ($uid == $current_user->ID) {
+
+		if ( $maybe_users && is_array( $maybe_users ) ) {
+			foreach ( $maybe_users as $uid ) {
+				if ( $uid == $current_user->ID ) {
 					$type = 'event_rsvp_maybe';
 					break;
 				}
