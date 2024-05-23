@@ -79,9 +79,9 @@ class GeoDir_Event_AYI {
 
 		extract( $args, EXTR_SKIP );
 
-		if ( ! get_current_user_id() ) {
-			return false;
-		}
+//		if ( ! get_current_user_id() ) {
+//			return false;
+//		}
 		if ( !$args['is_preview'] && ! geodir_is_page( 'detail' ) ) {
 			return false;
 		}

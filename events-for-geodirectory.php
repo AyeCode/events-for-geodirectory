@@ -11,9 +11,9 @@
  * Plugin Name:       Events for GeoDirectory
  * Plugin URI:        https://wpgeodirectory.com/downloads/events/
  * Description:       Events add-on allows to extend your GeoDirectory with a versatile event manager.
- * Version:           2.3.11
+ * Version:           2.3.12
  * Requires at least: 4.9
- * Requires PHP:      5.6
+ * Requires PHP:      7.2
  * Author:            AyeCode Ltd
  * Author URI:        https://ayecode.io
  * License:           GPLv3
@@ -28,7 +28,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 if ( ! defined( 'GEODIR_EVENT_VERSION' ) ) {
-	define( 'GEODIR_EVENT_VERSION', '2.3.11' );
+	define( 'GEODIR_EVENT_VERSION', '2.3.12' );
 }
 
 if ( ! defined( 'GEODIR_EVENT_MIN_CORE' ) ) {

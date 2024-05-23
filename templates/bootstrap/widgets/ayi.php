@@ -49,13 +49,15 @@ if ( $buttons ) {
 			}
 		} else {
 
+            $uwp_login_class = get_current_user_id() ? '' : ' uwp-login-link';
+
 			echo aui()->button(
 				array(
 					'type'       => 'a',
-					'class'      =>  "geodir-ayi-btn-rsvp geodir-ayi-btn-rsvp-yes btn btn-sm btn-primary mb-2",
+					'class'      =>  "geodir-ayi-btn-rsvp geodir-ayi-btn-rsvp-yes btn btn-sm btn-primary mb-2" .  $uwp_login_class,
 					'content'    => __("Going", 'geodirevents'),
 					'icon'      => !empty($action['icon']) ? $action['icon'] : '',
-					'href'       => '#going',
+					'href'       => get_current_user_id() ? '#going' : wp_login_url( geodir_curPageURL() ),
 					'extra_attributes'  =>  array(
 						'data-action'   =>  'add',
 						'data-type'   =>  'event_rsvp_yes',
@@ -67,10 +69,10 @@ if ( $buttons ) {
 			echo aui()->button(
 				array(
 					'type'       => 'a',
-					'class'      =>  "geodir-ayi-btn-rsvp geodir-ayi-btn-rsvp-maybe btn btn-sm btn-outline-primary mb-2",
+					'class'      =>  "geodir-ayi-btn-rsvp geodir-ayi-btn-rsvp-maybe btn btn-sm btn-outline-primary mb-2".  $uwp_login_class,
 					'content'    => __("Interested", 'geodirevents'),
 					'icon'      => !empty($action['icon']) ? $action['icon'] : '',
-					'href'       => '#interested',
+					'href'       => get_current_user_id() ? '#interested' : wp_login_url( geodir_curPageURL() ),
 					'extra_attributes'  =>  array(
 						'data-action'   =>  'add',
 						'data-type'   =>  'event_rsvp_maybe',

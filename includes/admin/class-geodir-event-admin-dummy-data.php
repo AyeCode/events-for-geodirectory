@@ -38,11 +38,11 @@ class GeoDir_Event_Admin_Dummy_Data {
 		$types = array(
 			'standard_events' => array(
 				'name'  => __( 'Default', 'geodirevents' ),
-				'count' => 10
+				'count' => 22
 			),
 			'recurring_events'   => array(
 				'name'  => __( 'With Recurring Events', 'geodirevents' ),
-				'count' => 10
+				'count' => 22
 			)
 		);
 
