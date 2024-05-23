@@ -41,7 +41,7 @@ class GeoDir_Event_API {
 		$params['event_type'] = array(
 			'description'        => __( 'Filter the events to show.', 'geodirevents' ),
 			'type'               => 'string',
-			'default'            => geodir_get_option( 'event_default_filter' ),
+			'default'            => geodir_get_option( 'event_default_filter' ) ? geodir_get_option( 'event_default_filter' ) : 'upcoming',
 			'enum'               => array_keys( geodir_event_filter_options( $post_type_obj->name ) ),
 		);
 		$params['single_event'] = array(
