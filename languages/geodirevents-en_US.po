@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Events for GeoDirectory 2.3.11\n"
+"Project-Id-Version: Events for GeoDirectory 2.3.13\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-02 19:23+0530\n"
-"PO-Revision-Date: 2024-05-02 19:23+0530\n"
+"POT-Creation-Date: 2024-08-20 14:14+0530\n"
+"PO-Revision-Date: 2024-08-20 14:14+0530\n"
 "Last-Translator: \n"
 "Language-Team: AyeCode Ltd <contact@ayecode.io>\n"
 "Language: en_US\n"
@@ -59,46 +59,42 @@ msgstr ""
 msgid "With Recurring Events"
 msgstr ""
 
-#: includes/admin/class-geodir-event-admin.php:142
+#: includes/admin/class-geodir-event-admin.php:152
 #: includes/class-geodir-event-fields.php:538
 #: includes/class-geodir-event-fields.php:826
 msgid "Event start date"
 msgstr ""
 
-#: includes/admin/class-geodir-event-admin.php:143
+#: includes/admin/class-geodir-event-admin.php:153
 #: includes/class-geodir-event-fields.php:557
 #: includes/class-geodir-event-fields.php:831
 msgid "Event end date"
 msgstr ""
 
-#: includes/admin/class-geodir-event-admin.php:167
+#: includes/admin/class-geodir-event-admin.php:177
 msgid "Recurring Schedules in Sitemap"
 msgstr ""
 
-#: includes/admin/class-geodir-event-admin.php:168
+#: includes/admin/class-geodir-event-admin.php:178
 msgid "Show recurring schedules for recurring event in SEOPress XML sitemaps."
 msgstr ""
 
-#: includes/admin/dummy-data/recurring_events.php:37
-#: includes/admin/dummy-data/standard_events.php:41
+#: includes/admin/dummy-data/standard_events.php:72
 #: includes/template-functions.php:302
 msgid "Event date"
 msgstr ""
 
-#: includes/admin/dummy-data/recurring_events.php:49
-#: includes/admin/dummy-data/standard_events.php:53
+#: includes/admin/dummy-data/standard_events.php:84
 #: includes/template-functions.php:614
 msgid "Newest"
 msgstr ""
 
-#: includes/admin/dummy-data/recurring_events.php:61
-#: includes/admin/dummy-data/standard_events.php:65
+#: includes/admin/dummy-data/standard_events.php:96
 #: includes/template-functions.php:624
 msgid "Title"
 msgstr ""
 
-#: includes/admin/dummy-data/recurring_events.php:73
-#: includes/admin/dummy-data/standard_events.php:77
+#: includes/admin/dummy-data/standard_events.php:108
 #: includes/template-functions.php:634
 msgid "Rating"
 msgstr ""
@@ -2272,18 +2268,18 @@ msgstr ""
 msgid "You Replied: <b>Interested!</b> %s"
 msgstr ""
 
-#: templates/bootstrap/widgets/ayi.php:56
-#: templates/bootstrap/widgets/ayi.php:88
+#: templates/bootstrap/widgets/ayi.php:58
+#: templates/bootstrap/widgets/ayi.php:90
 msgid "Going"
 msgstr ""
 
-#: templates/bootstrap/widgets/ayi.php:71
-#: templates/bootstrap/widgets/ayi.php:103
+#: templates/bootstrap/widgets/ayi.php:73
+#: templates/bootstrap/widgets/ayi.php:105
 msgid "Interested"
 msgstr ""
 
-#: templates/bootstrap/widgets/ayi.php:89
-#: templates/bootstrap/widgets/ayi.php:104 templates/legacy/widgets/ayi.php:63
+#: templates/bootstrap/widgets/ayi.php:91
+#: templates/bootstrap/widgets/ayi.php:106 templates/legacy/widgets/ayi.php:63
 #: templates/legacy/widgets/ayi.php:76
 #, php-format
 msgid "1 response"
@@ -2291,11 +2287,11 @@ msgid_plural "%s responses"
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/bootstrap/widgets/ayi.php:97
+#: templates/bootstrap/widgets/ayi.php:99
 msgid "No responses yet."
 msgstr ""
 
-#: templates/bootstrap/widgets/ayi.php:112
+#: templates/bootstrap/widgets/ayi.php:114
 msgid "No responses yet.."
 msgstr ""
 

@@ -26,6 +26,7 @@ class GeoDir_Event_Admin {
 
 		add_action( 'init', array( $this, 'includes' ) );
 		add_action( 'admin_init', array( $this, 'admin_redirects' ) );
+		add_action( 'geodir_clear_version_numbers', array( $this, 'clear_version_number' ), 12 );
 		add_filter( 'geodir_get_settings_pages', array( $this, 'load_settings_page' ), 12, 1 );
 		add_filter( 'geodir_seo_options', array( $this, 'seo_options' ), 12, 1 );
 		add_filter( 'geodir_cat_schemas', 'geodir_event_filter_schemas', 10, 1 );
@@ -93,6 +94,15 @@ class GeoDir_Event_Admin {
 		if ( get_transient( '_geodir_event_activation_redirect' ) ) {
 			delete_transient( '_geodir_event_activation_redirect' );
 		}
+	}
+
+	/**
+	 * Deletes the version number from the DB to run install functions again.
+	 *
+	 * @since 2.3.13
+	 */
+	public function clear_version_number(){
+		delete_option( 'geodir_event_version' );
 	}
 
 	public static function load_settings_page( $settings_pages ) {
