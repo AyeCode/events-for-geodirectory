@@ -19,11 +19,13 @@ class GeoDir_Event_Admin_Install {
 
 	/** @var array DB updates and callbacks that need to be run per version */
 	private static $db_updates = array(
-		/*'2.0.0' => array(
+		/*
+		'2.0.0' => array(
 			'geodir_update_200_file_paths',
 			'geodir_update_200_permalinks',
 		)*/
-		/*'2.0.0.1-dev' => array(
+		/*
+		'2.0.0.1-dev' => array(
 			'geodir_update_2001_dev_db_version',
 		),*/
 	);
@@ -46,7 +48,7 @@ class GeoDir_Event_Admin_Install {
 	 */
 	public static function init_background_updater() {
 		if ( ! class_exists( 'GeoDir_Background_Updater' ) ) {
-			include_once( GEODIRECTORY_PLUGIN_DIR . 'includes/class-geodir-background-updater.php' );
+			include_once GEODIRECTORY_PLUGIN_DIR . 'includes/class-geodir-background-updater.php';
 		}
 		self::$background_updater = new GeoDir_Background_Updater();
 	}
@@ -60,7 +62,7 @@ class GeoDir_Event_Admin_Install {
 		if ( ! defined( 'IFRAME_REQUEST' ) ) {
 			if ( self::is_v2_upgrade() ) {
 				// v2 upgrade
-			} else if ( get_option( 'geodir_event_version' ) !== GEODIR_EVENT_VERSION ) {
+			} elseif ( get_option( 'geodir_event_version' ) !== GEODIR_EVENT_VERSION ) {
 				self::install();
 				do_action( 'geodir_event_updated' );
 			}
@@ -133,7 +135,7 @@ class GeoDir_Event_Admin_Install {
 		// Trigger action
 		do_action( 'geodir_event_installed' );
 	}
-	
+
 	/**
 	 * Is this a brand new GeoDirectory install?
 	 *
@@ -213,6 +215,7 @@ class GeoDir_Event_Admin_Install {
 
 	/**
 	 * Update DB version to current.
+	 *
 	 * @param string $version
 	 */
 	public static function update_db_version( $version = null ) {
@@ -222,14 +225,13 @@ class GeoDir_Event_Admin_Install {
 
 	/**
 	 * Set up the database tables which the plugin needs to function.
-	 *
 	 */
 	private static function create_tables() {
 		global $wpdb;
 
 		$wpdb->hide_errors();
 
-		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
 		dbDelta( self::get_schema() );
 	}
@@ -241,8 +243,8 @@ class GeoDir_Event_Admin_Install {
 	 */
 	private static function create_options() {
 		// Include settings so that we can run through defaults
-		include_once( GEODIRECTORY_PLUGIN_DIR . 'includes/admin/class-geodir-admin-settings.php' );
-		
+		include_once GEODIRECTORY_PLUGIN_DIR . 'includes/admin/class-geodir-admin-settings.php';
+
 		$current_settings = geodir_get_settings();
 
 		$settings = GeoDir_Admin_Settings::get_settings_pages();
@@ -255,8 +257,8 @@ class GeoDir_Event_Admin_Install {
 
 			foreach ( $subsections as $subsection ) {
 				foreach ( $section->get_settings( $subsection ) as $value ) {
-					if ( !isset($current_settings[$value['id']]) && isset( $value['default'] ) && isset( $value['id'] ) ) {
-						//geodir_update_option($value['id'], $value['default']);
+					if ( ! isset( $current_settings[ $value['id'] ] ) && isset( $value['default'] ) && isset( $value['id'] ) ) {
+						// geodir_update_option($value['id'], $value['default']);
 					}
 				}
 			}
@@ -324,8 +326,8 @@ class GeoDir_Event_Admin_Install {
 				'uncategorized' => array(
 					'name'        => 'Uncategorized',
 					'icon'        => GEODIRECTORY_PLUGIN_URL . '/assets/images/pin.png',
-					'schema_type' => ''
-				)
+					'schema_type' => '',
+				),
 			);
 
 			GeoDir_Admin_Dummy_Data::create_taxonomies( $post_type, $dummy_categories );
@@ -353,11 +355,11 @@ class GeoDir_Event_Admin_Install {
 		if ( $wpdb->has_cap( 'collation' ) ) {
 			$collate = $wpdb->get_charset_collate();
 		}
-		
+
 		$tables = '';
 
-		// Event schedules table
-		$tables .= "CREATE TABLE " . GEODIR_EVENT_SCHEDULES_TABLE . " (
+		// Event schedules table.
+		$tables .= 'CREATE TABLE ' . GEODIR_EVENT_SCHEDULES_TABLE . " (
 						schedule_id int(11) NOT NULL AUTO_INCREMENT,
 						event_id int(11) NOT NULL,
 						start_date date NOT NULL DEFAULT '0000-00-00',
@@ -375,9 +377,9 @@ class GeoDir_Event_Admin_Install {
 	/**
 	 * Show row meta on the plugin screen.
 	 *
-	 * @param	mixed $links Plugin Row Meta
-	 * @param	mixed $file  Plugin Base file
-	 * @return	array
+	 * @param   mixed $links Plugin Row Meta
+	 * @param   mixed $file  Plugin Base file
+	 * @return  array
 	 */
 	public static function plugin_row_meta( $links, $file ) {
 		if ( GEODIR_EVENT_PLUGIN_BASENAME == $file ) {
@@ -391,6 +393,7 @@ class GeoDir_Event_Admin_Install {
 
 	/**
 	 * Uninstall tables when MU blog is deleted.
+	 *
 	 * @param  array $tables
 	 * @return string[]
 	 */
@@ -400,14 +403,15 @@ class GeoDir_Event_Admin_Install {
 		$db_prefix = $wpdb->prefix;
 		$gd_prefix = 'geodir_';
 
-		$tables["{$gd_prefix}gd_event_detail"] = "{$db_prefix}{$gd_prefix}gd_event_detail";
-		$tables["{$gd_prefix}event_schedule"] = "{$db_prefix}{$gd_prefix}event_schedule";
+		$tables[ "{$gd_prefix}gd_event_detail" ] = "{$db_prefix}{$gd_prefix}gd_event_detail";
+		$tables[ "{$gd_prefix}event_schedule" ]  = "{$db_prefix}{$gd_prefix}event_schedule";
 
 		return $tables;
 	}
 
 	/**
 	 * Get slug from path
+	 *
 	 * @param  string $key
 	 * @return string
 	 */

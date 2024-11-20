@@ -66,34 +66,34 @@ function geodir_event_date_format_php_to_jqueryui( $php_format ) {
 		'H' => 'HH',
 		'i' => 'mm',
 		's' => '',
-		'u' => ''
+		'u' => '',
 	);
 
-	$jqueryui_format = "";
-	$escaping = false;
+	$jqueryui_format = '';
+	$escaping        = false;
 
 	for ( $i = 0; $i < strlen( $php_format ); $i++ ) {
-		$char = $php_format[$i];
+		$char = $php_format[ $i ];
 
 		// PHP date format escaping character
 		if ( $char === '\\' ) {
-			$i++;
+			++$i;
 
 			if ( $escaping ) {
-				$jqueryui_format .= $php_format[$i];
+				$jqueryui_format .= $php_format[ $i ];
 			} else {
-				$jqueryui_format .= '\'' . $php_format[$i];
+				$jqueryui_format .= '\'' . $php_format[ $i ];
 			}
 
 			$escaping = true;
 		} else {
 			if ( $escaping ) {
 				$jqueryui_format .= "'";
-				$escaping = false;
+				$escaping         = false;
 			}
 
-			if ( isset( $symbols[$char] ) ) {
-				$jqueryui_format .= $symbols[$char];
+			if ( isset( $symbols[ $char ] ) ) {
+				$jqueryui_format .= $symbols[ $char ];
 			} else {
 				$jqueryui_format .= $char;
 			}
@@ -105,20 +105,20 @@ function geodir_event_date_format_php_to_jqueryui( $php_format ) {
 
 function geodir_event_is_date( $date ) {
 	$date = trim( $date );
-	
+
 	if ( $date == '' || $date == '0000-00-00 00:00:00' || $date == '0000-00-00' ) {
 		return false;
 	}
-	
-	$year = (int)date_i18n( 'Y', strtotime( $date ) );
-	
+
+	$year = (int) date_i18n( 'Y', strtotime( $date ) );
+
 	if ( $year > 1970 ) {
 		return true;
 	}
-	
+
 	return false;
 }
- 
+
 function geodir_event_is_recurring_active() {
 	if ( geodir_get_option( 'event_disable_recurring' ) ) {
 		$active = false;
@@ -138,20 +138,20 @@ function geodir_event_recurring_pkg( $post ) {
 	$package = geodir_get_post_package( $post );
 	if ( ! empty( $package ) && ! empty( $package->no_recurring ) ) {
 		$recurring_pkg = false;
-	};
+	}
 
 	return apply_filters( 'geodir_event_recurring_pkg', $recurring_pkg, $post, $package );
 }
 
 function geodir_event_parse_dates( $dates_input, $array = true ) {
 	$dates = array();
-	
-	if ( !empty( $dates_input ) && $dates_input != '' ) {
-		if ( !is_array( $dates_input ) ) {
+
+	if ( ! empty( $dates_input ) && $dates_input != '' ) {
+		if ( ! is_array( $dates_input ) ) {
 			$dates_input = explode( ',', $dates_input );
 		}
-		
-		if ( !empty( $dates_input ) ) {
+
+		if ( ! empty( $dates_input ) ) {
 			foreach ( $dates_input as $date ) {
 				$date = trim( $date );
 				if ( $date != '' && geodir_event_is_date( $date ) ) {
@@ -160,65 +160,61 @@ function geodir_event_parse_dates( $dates_input, $array = true ) {
 			}
 		}
 	}
-	
-	if ( !$array ) {
+
+	if ( ! $array ) {
 		$dates = implode( ',', $dates );
 	}
-	
+
 	return $dates;
 }
 
 /**
  * Event calendar date format
- *
  */
 function geodir_event_field_date_format() {
 	$date_format = geodir_get_option( 'event_field_date_format' );
-    
-    if ( empty( $date_format ) ) {
-        $date_format = 'F j, Y';
-    }
-    // if the separator is a slash (/), then the American m/d/y is assumed; whereas if the separator is a dash (-) or a dot (.), then the European d-m-y format is assumed.
-	return apply_filters( 'geodir_event_field_date_format', $date_format);
+
+	if ( empty( $date_format ) ) {
+		$date_format = 'F j, Y';
+	}
+	// if the separator is a slash (/), then the American m/d/y is assumed; whereas if the separator is a dash (-) or a dot (.), then the European d-m-y format is assumed.
+	return apply_filters( 'geodir_event_field_date_format', $date_format );
 }
 
 /**
  * Display event dates date format
- *
  */
 function geodir_event_date_format() {
 	$date_format = geodir_get_option( 'event_display_date_format' );
-    
-    if ( geodir_get_option( 'event_use_custom_format' ) ) {
-        $date_format = geodir_get_option( 'event_custom_date_format' );
-    }
-    
-    if ( empty( $date_format ) ) {
-        $date_format = get_option('date_format');
-    }
-    
-    // if the separator is a slash (/), then the American m/d/y is assumed; whereas if the separator is a dash (-) or a dot (.), then the European d-m-y format is assumed.
+
+	if ( geodir_get_option( 'event_use_custom_format' ) ) {
+		$date_format = geodir_get_option( 'event_custom_date_format' );
+	}
+
+	if ( empty( $date_format ) ) {
+		$date_format = get_option( 'date_format' );
+	}
+
+	// if the separator is a slash (/), then the American m/d/y is assumed; whereas if the separator is a dash (-) or a dot (.), then the European d-m-y format is assumed.
 	return apply_filters( 'geodir_event_date_format', $date_format );
 }
 
 /**
  * Display event dates date format
- *
  */
 function geodir_event_time_format() {
-	$time_format = get_option('time_format');
-    
+	$time_format = get_option( 'time_format' );
+
 	return apply_filters( 'geodir_event_time_format', $time_format );
 }
 
 /**
  * Display event dates date time format.
- *
  */
 function geodir_event_date_time_format() {
-    $date_time_format = geodir_event_date_format() . ', ' . geodir_event_time_format();
+	$date_time_format = geodir_event_date_format() . ', ' . geodir_event_time_format();
 
-    return apply_filters( 'geodir_event_date_time_format', $date_time_format );
+	return apply_filters( 'geodir_event_date_time_format', $date_time_format );
 }
 
 /*
@@ -236,26 +232,24 @@ function geodir_event_schema( $schema, $post ) {
 
 	$event_schema_types = geodir_event_get_schema_types();
 
-	if ( ! empty( $schema['@type']) && isset( $event_schema_types[ $schema['@type'] ] ) ) {
-		$place = array();
-		$place["@type"] = "Place";
-		$place["name"] = !empty( $schema['name'] )? $schema['name']: '';
-		$place["address"] = !empty( $schema['address'] )? $schema['address']: '';
-		$telephone = !empty( $schema['telephone'] )? $schema['telephone']: '';
+	if ( ! empty( $schema['@type'] ) && isset( $event_schema_types[ $schema['@type'] ] ) ) {
+		$place            = array();
+		$place['@type']   = 'Place';
+		$place['name']    = ! empty( $schema['name'] ) ? $schema['name'] : '';
+		$place['address'] = ! empty( $schema['address'] ) ? $schema['address'] : '';
+		$telephone        = ! empty( $schema['telephone'] ) ? $schema['telephone'] : '';
 		if ( ! empty( $telephone ) ) {
-			$place["telephone"] = $schema['telephone'];
+			$place['telephone'] = $schema['telephone'];
 		}
 
-		$place["geo"] = !empty( $schema['geo'] )? $schema['geo']: '';
+		$place['geo'] = ! empty( $schema['geo'] ) ? $schema['geo'] : '';
 
 		if ( GeoDir_Post_types::supports( $gd_post->post_type, 'events' ) ) {
 			if ( ! empty( $gd_post->recurring ) ) { // Recurring event
 				if ( ! empty( $_REQUEST['gde'] ) ) {
 					$schedule = GeoDir_Event_Schedules::get_upcoming_schedule( $gd_post->ID, sanitize_text_field( $_REQUEST['gde'] ) );
-				} else {
-					if ( ! ( $schedule = GeoDir_Event_Schedules::get_upcoming_schedule( $gd_post->ID, date_i18n( 'Y-m-d' ) ) ) ) {
+				} elseif ( ! ( $schedule = GeoDir_Event_Schedules::get_upcoming_schedule( $gd_post->ID, date_i18n( 'Y-m-d' ) ) ) ) {
 						$schedule = GeoDir_Event_Schedules::get_start_schedule( $gd_post->ID );
-					}
 				}
 			} else {
 				$schedule = GeoDir_Event_Schedules::get_start_schedule( $gd_post->ID );
@@ -267,9 +261,9 @@ function geodir_event_schema( $schema, $post ) {
 					$timezone = $gd_post->timezone_offset;
 				}
 				$startDate = $schedule->start_date;
-				$endDate = $schedule->end_date;
+				$endDate   = $schedule->end_date;
 				$startTime = ! empty( $schedule->start_time ) ? date_i18n( 'H:i', strtotime( $schedule->start_time ) ) : '00:00';
-				$endTime = ! empty( $schedule->end_time ) ? date_i18n( 'H:i', strtotime( $schedule->end_time ) ) : '00:00';
+				$endTime   = ! empty( $schedule->end_time ) ? date_i18n( 'H:i', strtotime( $schedule->end_time ) ) : '00:00';
 
 				if ( $endDate === '' ) {
 					$endDate = $startDate;
@@ -277,7 +271,7 @@ function geodir_event_schema( $schema, $post ) {
 
 				if ( ! empty( $schedule->all_day ) ) {
 					$startTime = '00:00';
-					$endTime = '23:59';
+					$endTime   = '23:59';
 				}
 
 				if ( $startDate == $endDate && $startTime == $endTime && $startTime == '00:00' ) {
@@ -285,43 +279,43 @@ function geodir_event_schema( $schema, $post ) {
 				}
 
 				$schema['startDate'] = $startDate . 'T' . $startTime . $timezone;
-				$schema['endDate'] = $endDate . 'T' . $endTime . $timezone;
+				$schema['endDate']   = $endDate . 'T' . $endTime . $timezone;
 			}
 
 			// eventAttendanceMode. If we have an address then its likely not online
 			if ( ! empty( $gd_post->city ) ) {
 				if ( isset( $gd_post->event_status ) && $gd_post->event_status == 'moved-online' ) {
-					$schema['eventAttendanceMode'] = "https://schema.org/OnlineEventAttendanceMode";
+					$schema['eventAttendanceMode'] = 'https://schema.org/OnlineEventAttendanceMode';
 				} else {
-					$schema['eventAttendanceMode'] = "https://schema.org/OfflineEventAttendanceMode";
+					$schema['eventAttendanceMode'] = 'https://schema.org/OfflineEventAttendanceMode';
 				}
 			} else {
-				$schema['eventAttendanceMode'] = "https://schema.org/OnlineEventAttendanceMode";
+				$schema['eventAttendanceMode'] = 'https://schema.org/OnlineEventAttendanceMode';
 			}
 
 			// set if online event
 			if ( $schema['eventAttendanceMode'] == 'https://schema.org/OnlineEventAttendanceMode' && ! empty( $gd_post->website ) ) {
-				$place["@type"] = "VirtualLocation";
-				$place["url"] = esc_url_raw( $gd_post->website );
+				$place['@type'] = 'VirtualLocation';
+				$place['url']   = esc_url_raw( $gd_post->website );
 
 				// The properties address & geo are not recognized by Google for an object of type VirtualLocation.
-				if ( isset( $place["address"] ) ) {
-					unset( $place["address"] );
+				if ( isset( $place['address'] ) ) {
+					unset( $place['address'] );
 				}
 
-				if ( isset( $place["geo"] ) ) {
-					unset( $place["geo"] );
+				if ( isset( $place['geo'] ) ) {
+					unset( $place['geo'] );
 				}
 			}
 
 			// eventStatus
 			if ( ! empty( $gd_post->event_status ) ) {
 				$event_statuses = array(
-					'cancelled' => 'https://schema.org/EventCancelled',
-					'postponed' => 'https://schema.org/EventPostponed',
-					'rescheduled' => 'https://schema.org/EventRescheduled',
+					'cancelled'    => 'https://schema.org/EventCancelled',
+					'postponed'    => 'https://schema.org/EventPostponed',
+					'rescheduled'  => 'https://schema.org/EventRescheduled',
 					'moved-online' => 'https://schema.org/EventMovedOnline',
-					'scheduled' => 'https://schema.org/EventScheduled',
+					'scheduled'    => 'https://schema.org/EventScheduled',
 				);
 				if ( isset( $event_statuses[ $gd_post->event_status ] ) ) {
 					$schema['eventStatus'] = $event_statuses[ $gd_post->event_status ];
@@ -332,7 +326,7 @@ function geodir_event_schema( $schema, $post ) {
 
 			// Event performer: performer
 			$performer = array(
-				'@type' => 'Person'
+				'@type' => 'Person',
 			);
 
 			// Performer name fields
@@ -379,7 +373,7 @@ function geodir_event_schema( $schema, $post ) {
 
 			// Event organizer: organizer
 			$organizer = array(
-				'@type' => 'Person'
+				'@type' => 'Person',
 			);
 
 			// Organizer name fields
@@ -429,14 +423,14 @@ function geodir_event_schema( $schema, $post ) {
 				$schema['organizer'] = $organizer;
 			}
 		}
-        $schema['location'] = $place;
+		$schema['location'] = $place;
 
-        unset($schema['telephone']);
-        unset($schema['address']);
-        unset($schema['geo']);
-    }
+		unset( $schema['telephone'] );
+		unset( $schema['address'] );
+		unset( $schema['geo'] );
+	}
 
-    return $schema;
+	return $schema;
 }
 
 /**
@@ -446,30 +440,30 @@ function geodir_event_schema( $schema, $post ) {
  */
 function geodir_event_get_schema_types() {
 	$schemas = array(
-		'Event'         => 'Event',
-		'BusinessEvent' => '- BusinessEvent',
-		'ChildrensEvent' => '- ChildrensEvent',
-		'ComedyEvent' => '- ComedyEvent',
-		'CourseInstance' => '- CourseInstance',
-		'DanceEvent' => '- DanceEvent',
-		'DeliveryEvent' => '- DeliveryEvent',
-		'EducationEvent' => '- EducationEvent',
-		'EventSeries' => '- EventSeries',
-		'ExhibitionEvent' => '- ExhibitionEvent',
-		'Festival' => '- Festival',
-		'FoodEvent' => '- FoodEvent',
-		'Hackathon' => 'Hackathon',
-		'LiteraryEvent' => '- LiteraryEvent',
-		'MusicEvent' => '- MusicEvent',
+		'Event'            => 'Event',
+		'BusinessEvent'    => '- BusinessEvent',
+		'ChildrensEvent'   => '- ChildrensEvent',
+		'ComedyEvent'      => '- ComedyEvent',
+		'CourseInstance'   => '- CourseInstance',
+		'DanceEvent'       => '- DanceEvent',
+		'DeliveryEvent'    => '- DeliveryEvent',
+		'EducationEvent'   => '- EducationEvent',
+		'EventSeries'      => '- EventSeries',
+		'ExhibitionEvent'  => '- ExhibitionEvent',
+		'Festival'         => '- Festival',
+		'FoodEvent'        => '- FoodEvent',
+		'Hackathon'        => 'Hackathon',
+		'LiteraryEvent'    => '- LiteraryEvent',
+		'MusicEvent'       => '- MusicEvent',
 		'PublicationEvent' => '- PublicationEvent',
-		'BroadcastEvent' => '- - BroadcastEvent',
-		'OnDemandEvent' => '- - OnDemandEvent',
-		'SaleEvent' => '- SaleEvent',
-		'ScreeningEvent' => '- ScreeningEvent',
-		'SocialEvent' => '- SocialEvent',
-		'SportsEvent' => '- SportsEvent',
-		'TheaterEvent' => '- TheaterEvent',
-		'VisualArtsEvent' => '- VisualArtsEvent',
+		'BroadcastEvent'   => '- - BroadcastEvent',
+		'OnDemandEvent'    => '- - OnDemandEvent',
+		'SaleEvent'        => '- SaleEvent',
+		'ScreeningEvent'   => '- ScreeningEvent',
+		'SocialEvent'      => '- SocialEvent',
+		'SportsEvent'      => '- SportsEvent',
+		'TheaterEvent'     => '- TheaterEvent',
+		'VisualArtsEvent'  => '- VisualArtsEvent',
 	);
 	return apply_filters( 'geodir_event_get_schema_types', $schemas );
 }
@@ -484,7 +478,7 @@ function geodir_event_input_date_formats() {
 		'Y-m-d',
 		'd.m.Y',
 		'j F Y',
-		'F j, Y'
+		'F j, Y',
 	);
 	return apply_filters( 'geodir_event_input_date_formats', $formats );
 }
@@ -501,40 +495,40 @@ function geodir_event_display_date_formats() {
 		'd.m.Y',
 		'j F Y',
 		'F j, Y',
-		'j M Y'
+		'j M Y',
 	);
 	return apply_filters( 'geodir_event_display_date_formats', $formats );
 }
 
 function geodir_event_date_to_ymd( $date, $from_format ) {
-	$date 		= geodir_maybe_untranslate_date( $date );
-	$temp_date 	= DateTime::createFromFormat( $from_format, $date );
-	$date 		= !empty( $temp_date ) ? $temp_date->format( 'Y-m-d') : $date;
+	$date      = geodir_maybe_untranslate_date( $date );
+	$temp_date = DateTime::createFromFormat( $from_format, $date );
+	$date      = ! empty( $temp_date ) ? $temp_date->format( 'Y-m-d' ) : $date;
 	return $date;
 }
 
 function geodir_event_array_insert( $array, $position, $insert_array ) {
-	$first_array = array_splice ( $array, 0, $position );
-	return array_merge ( $first_array, $insert_array, $array );
+	$first_array = array_splice( $array, 0, $position );
+	return array_merge( $first_array, $insert_array, $array );
 }
 
 function geodir_event_filter_options( $post_type = 'gd_event' ) {
 	$options = array(
-		'all' => wp_sprintf( _x( 'All %s', 'Event type filter', 'geodirevents' ), geodir_post_type_name( $post_type, true ) ),
-		'upcoming' => __( 'Upcoming', 'geodirevents' ),
-		'ongoing' => __( 'Ongoing', 'geodirevents' ),
+		'all'              => wp_sprintf( _x( 'All %s', 'Event type filter', 'geodirevents' ), geodir_post_type_name( $post_type, true ) ),
+		'upcoming'         => __( 'Upcoming', 'geodirevents' ),
+		'ongoing'          => __( 'Ongoing', 'geodirevents' ),
 		'ongoing_upcoming' => __( 'Ongoing + Upcoming', 'geodirevents' ),
-		'past' => __( 'Past', 'geodirevents' ),
-		'today' => __( 'Today', 'geodirevents' ),
-		'tomorrow' => __( 'Tomorrow', 'geodirevents' ),
-		'next_7_days' => __( '+7 Days', 'geodirevents' ),
-		'next_30_days' => __( '+30 Days', 'geodirevents' ),
-		'this_weekend' => __( 'This Weekend', 'geodirevents' ),
-		'this_week' => __( 'This Week', 'geodirevents' ),
-		'this_month' => __( 'This Month', 'geodirevents' ),
-		'next_month' => __( 'Next Month', 'geodirevents' ),
-		'next_week' => __( 'Next Week', 'geodirevents' ),
-		//'custom' => __( 'Custom Dates', 'geodirevents' ), // @todo implement a lightbox to select two dates for this https://github.com/AyeCode/geodir_event_manager-v2/pull/44/files#diff-d51ba513e10b94969787eb99a1aa1e72R609
+		'past'             => __( 'Past', 'geodirevents' ),
+		'today'            => __( 'Today', 'geodirevents' ),
+		'tomorrow'         => __( 'Tomorrow', 'geodirevents' ),
+		'next_7_days'      => __( '+7 Days', 'geodirevents' ),
+		'next_30_days'     => __( '+30 Days', 'geodirevents' ),
+		'this_weekend'     => __( 'This Weekend', 'geodirevents' ),
+		'this_week'        => __( 'This Week', 'geodirevents' ),
+		'this_month'       => __( 'This Month', 'geodirevents' ),
+		'next_month'       => __( 'Next Month', 'geodirevents' ),
+		'next_week'        => __( 'Next Week', 'geodirevents' ),
+		// 'custom' => __( 'Custom Dates', 'geodirevents' ), // @todo implement a lightbox to select two dates for this https://github.com/AyeCode/geodir_event_manager-v2/pull/44/files#diff-d51ba513e10b94969787eb99a1aa1e72R609
 	);
 	return apply_filters( 'geodir_event_filter_options', $options, $post_type );
 }
@@ -543,36 +537,35 @@ function geodir_event_time_options( $default = '' ) {
 	$event_times = geodir_event_get_times();
 
 	$all_times = '';
-	foreach( $event_times as $key => $times ) {
-		$selected = ''; 
-		if ( $default == $key || $default == $times || '0 '. $default == $times ) {
-			 $selected = 'selected="selected"';
+	foreach ( $event_times as $key => $times ) {
+		$selected = '';
+		if ( $default == $key || $default == $times || '0 ' . $default == $times ) {
+			$selected = 'selected="selected"';
 		}
-		$all_times.= '<option ' . $selected . ' value="' . $key . '">' . $times . '</option>'; 
+		$all_times .= '<option ' . $selected . ' value="' . $key . '">' . $times . '</option>';
 	}
 	return $all_times;
 }
 
 function geodir_event_get_times() {
-	$time_increment = apply_filters( 'geodir_event_time_increment' , 15 ) ;
-	$am = __( '%s AM', 'geodirevents' );
-	$pm = __( '%s PM', 'geodirevents' );
-
+	$time_increment = apply_filters( 'geodir_event_time_increment', 15 );
+	$am             = __( '%s AM', 'geodirevents' );
+	$pm             = __( '%s PM', 'geodirevents' );
 
 	$event_time_array = array();
 	for ( $i = 0; $i < 24; $i++ ) {
-		 for ( $j = 0; $j < 60; $j += $time_increment ) {
-		 	$time_hr_abs = $i;
-		 	$time_am_pm = $am;
+		for ( $j = 0; $j < 60; $j += $time_increment ) {
+			$time_hr_abs = $i;
+			$time_am_pm  = $am;
 
-			if ( $i >= 12) {
+			if ( $i >= 12 ) {
 				$time_am_pm = $pm;
 			}
 
 			if ( $i > 12 ) {
 				$time_hr_abs = $i - 12;
 			}
-		 	if ( $time_hr_abs < 10 ) {
+			if ( $time_hr_abs < 10 ) {
 				$time_hr = '0' . $time_hr_abs;
 			} else {
 				$time_hr = $time_hr_abs;
@@ -590,11 +583,11 @@ function geodir_event_get_times() {
 				$time_hr_index = $i;
 			}
 
-		 	$event_time_array[ $time_hr_index  . ":" . $time_min ] = wp_sprintf( $time_am_pm, $time_hr . ":" . $time_min );
-		 }
+			$event_time_array[ $time_hr_index . ':' . $time_min ] = wp_sprintf( $time_am_pm, $time_hr . ':' . $time_min );
+		}
 	}
 
-	return apply_filters( 'geodir_event_schedule_times' , $event_time_array);
+	return apply_filters( 'geodir_event_schedule_times', $event_time_array );
 }
 
 /**
@@ -637,10 +630,10 @@ function geodir_event_debug_tools( $tools = array() ) {
 	}
 
 	$tools['tool_handle_past_events'] = array(
-		'name' => __( 'Handle Past Events', 'geodirevents' ),
-		'button' => __( 'Run', 'geodirevents' ),
-		'desc' => __( 'This tool allows to unpublish / remove past events after end date. More settings are configured at Events CPT > Settings > General > Manage Past Events.', 'geodirevents' ),
-		'callback' => 'geodir_event_tool_handle_past_events'
+		'name'     => __( 'Handle Past Events', 'geodirevents' ),
+		'button'   => __( 'Run', 'geodirevents' ),
+		'desc'     => __( 'This tool allows to unpublish / remove past events after end date. More settings are configured at Events CPT > Settings > General > Manage Past Events.', 'geodirevents' ),
+		'callback' => 'geodir_event_tool_handle_past_events',
 	);
 
 	return $tools;
@@ -733,4 +726,112 @@ function geodir_event_input_time_format( $picker = false ) {
 	}
 
 	return $time_format;
+}
+
+/**
+ * Retrieve the domain of the site without the 'www.' prefix.
+ *
+ * @return string The domain of the site.
+ */
+function geodir_event_site_domain() {
+	$home_host = wp_parse_url( home_url(), PHP_URL_HOST ); // www.site.coms
+	return preg_replace( '/^www\./', '', $home_host );  // site.com
+}
+
+function geodir_event_location( $event ) {
+	$location_parts = array();
+
+	if ( ! empty( $event->street ) ) {
+		$location_parts[] = stripslashes( $event->street );
+	}
+	if ( ! empty( $event->city ) ) {
+		$location_parts[] = stripslashes( $event->city );
+	}
+	if ( ! empty( $event->region ) ) {
+		$location_parts[] = stripslashes( $event->region );
+	}
+	if ( ! empty( $event->zip ) ) {
+		$location_parts[] = stripslashes( $event->zip );
+	}
+	if ( ! empty( $event->country ) ) {
+		$location_parts[] = stripslashes( $event->country );
+	}
+
+	$location = implode( ' ', $location_parts );
+
+	return $location;
+}
+
+/**
+ * Retrieves formatted date information for an event.
+ *
+ * Processes event schedule information and returns a structured array
+ * containing start/end dates and times with timezone information.
+ *
+ * @since 2.0.0
+ *
+ * @param object $event Event object containing schedule information.
+ * @return array{
+ *     start_date: DateTime|null,
+ *     end_date: DateTime|null,
+ *     start_time: string,
+ *     end_time: string,
+ *     timezone: string
+ * } Formatted event dates and times.
+ */
+function geodir_event_get_dates( object $event ): array {
+	$timezone = geodir_gmt_offset();
+	if ( isset( $event->timezone_offset ) && ! empty( $event->timezone_offset ) ) {
+		$timezone = $event->timezone_offset;
+	}
+
+	// Get schedule information.
+	$schedule = GeoDir_Event_Schedules::get_start_schedule( $event->ID );
+	if ( empty( $schedule ) ) {
+		return array();
+	}
+
+	// Extract and format time information.
+	$start_time = '00:00';
+	if ( ! empty( $schedule->start_time ) ) {
+		$start_time = date_i18n( 'H:i', strtotime( $schedule->start_time ) );
+	}
+
+	$end_time = '00:00';
+	if ( ! empty( $schedule->end_time ) ) {
+		$end_time = date_i18n( 'H:i', strtotime( $schedule->end_time ) );
+	}
+
+	// Handle date information.
+	$start_date = $schedule->start_date;
+	$end_date   = $schedule->end_date;
+	if ( empty( $end_date ) ) {
+		$end_date = $start_date;
+	}
+
+	// Handle all-day events.
+	if ( ! empty( $schedule->all_day ) ) {
+		$start_time = '00:00';
+		$end_time   = '23:59';
+	}
+
+	// Adjust end time for same-day events.
+	if ( $start_date === $end_date && $start_time === $end_time && $start_time === '00:00' ) {
+		$end_time = '23:59';
+	}
+
+	try {
+		$start_datetime = new DateTime( sprintf( '%sT%s%s', $start_date, $start_time, $timezone ) );
+		$end_datetime   = new DateTime( sprintf( '%sT%s%s', $end_date, $end_time, $timezone ) );
+
+		return array(
+			'start_date' => $start_datetime,
+			'end_date'   => $end_datetime,
+			'start_time' => $start_time,
+			'end_time'   => $end_time,
+			'timezone'   => $timezone,
+		);
+	} catch ( Exception $e ) {
+		return array();
+	}
 }

@@ -2249,7 +2249,7 @@ class GeoDir_Event_Fields {
 		return $default_sort;
 	}
 
-	/*
+	/** 
 	 * Filter element tag text custom fields.
 	 *
 	 * @since 2.2.6
@@ -2268,7 +2268,7 @@ class GeoDir_Event_Fields {
 		return $groups;
 	}
 
-	/*
+	/** 
 	 * Render the elementor tag event field value.
 	 *
 	 * @since 2.2.6

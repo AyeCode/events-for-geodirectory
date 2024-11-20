@@ -62,9 +62,9 @@ final class GeoDir_Event_Manager {
 	 */
 	public static function instance() {
 		if ( ! isset( self::$instance ) && ! ( self::$instance instanceof GeoDir_Event_Manager ) ) {
-			self::$instance = new GeoDir_Event_Manager;
+			self::$instance = new GeoDir_Event_Manager();
 			self::$instance->setup_constants();
-			
+
 			add_action( 'plugins_loaded', array( self::$instance, 'load_textdomain' ) );
 
 			if ( version_compare( PHP_VERSION, '5.3', '<' ) ) {
@@ -78,7 +78,7 @@ final class GeoDir_Event_Manager {
 
 			do_action( 'geodir_event_manager_loaded' );
 		}
-		
+
 		return self::$instance;
 	}
 
@@ -97,7 +97,7 @@ final class GeoDir_Event_Manager {
 		} else {
 			$plugin_path = plugin_dir_path( GEODIR_EVENT_PLUGIN_FILE );
 		}
-		
+
 		$this->define( 'GEODIR_EVENT_PLUGIN_DIR', $plugin_path );
 		$this->define( 'GEODIR_EVENT_PLUGIN_URL', untrailingslashit( plugins_url( '/', GEODIR_EVENT_PLUGIN_FILE ) ) );
 		$this->define( 'GEODIR_EVENT_PLUGIN_BASENAME', plugin_basename( GEODIR_EVENT_PLUGIN_FILE ) );
@@ -117,7 +117,7 @@ final class GeoDir_Event_Manager {
 		// Determines the current locale.
 		if ( function_exists( 'determine_locale' ) ) {
 			$locale = determine_locale();
-		} else if ( function_exists( 'get_user_locale' ) ) {
+		} elseif ( function_exists( 'get_user_locale' ) ) {
 			$locale = get_user_locale();
 		} else {
 			$locale = get_locale();
@@ -161,30 +161,34 @@ final class GeoDir_Event_Manager {
 		/**
 		 * Class autoloader.
 		 */
-		include_once( GEODIR_EVENT_PLUGIN_DIR . 'includes/class-geodir-event-autoloader.php' );
-		
-		include_once( GEODIR_EVENT_PLUGIN_DIR . 'includes/class-geodir-event-post-type.php' ); // Registers post type
+		include_once GEODIR_EVENT_PLUGIN_DIR . 'includes/class-geodir-event-autoloader.php';
+		require_once GEODIR_EVENT_PLUGIN_DIR . '/includes/libraries/zapcal/zapcallib.php';
 
-		GeoDir_Event_AJAX::init();
+		include_once GEODIR_EVENT_PLUGIN_DIR . 'includes/class-geodir-event-post-type.php'; // Registers post type
+
+		GeoDir_Event_AJAX::instance();
 		GeoDir_Event_Fields::init();
 		GeoDir_Event_Schedules::init();
 		GeoDir_Event_AYI::init();
 		GeoDir_Event_Widgets::init();
+		GeoDir_Event_Ical_Importer::instance();
 
-		require_once( GEODIR_EVENT_PLUGIN_DIR . 'includes/deprecated-functions.php' );
-		require_once( GEODIR_EVENT_PLUGIN_DIR . 'includes/core-functions.php' );
-		require_once( GEODIR_EVENT_PLUGIN_DIR . 'includes/template-functions.php' );
+		require_once GEODIR_EVENT_PLUGIN_DIR . 'includes/deprecated-functions.php';
+		require_once GEODIR_EVENT_PLUGIN_DIR . 'includes/core-functions.php';
+		require_once GEODIR_EVENT_PLUGIN_DIR . 'includes/template-functions.php';
 
 		GeoDir_Event_API::init();
+		// Init the ical feed.
+		GeoDir_Event_Ical_Feed::instance();
 
 		if ( $this->is_request( 'admin' ) || $this->is_request( 'test' ) || $this->is_request( 'cli' ) ) {
 			new GeoDir_Event_Admin();
 
-			require_once( GEODIR_EVENT_PLUGIN_DIR . 'includes/admin/admin-functions.php' );
+			require_once GEODIR_EVENT_PLUGIN_DIR . 'includes/admin/admin-functions.php';
 
 			GeoDir_Event_Admin_Install::init();
 
-			require_once( GEODIR_EVENT_PLUGIN_DIR . 'upgrade.php' );
+			require_once GEODIR_EVENT_PLUGIN_DIR . 'upgrade.php';
 		}
 
 		$this->query = new GeoDir_Event_Query();
@@ -192,6 +196,7 @@ final class GeoDir_Event_Manager {
 
 	/**
 	 * Hook into actions and filters.
+	 *
 	 * @since  2.3
 	 */
 	private function init_hooks() {
@@ -224,6 +229,9 @@ final class GeoDir_Event_Manager {
 		add_filter( 'wp_super_duper_arguments', 'geodir_event_super_duper_arguments', 2, 3 );
 		add_action( 'rss_item', 'geodir_event_rss_item' );
 		add_action( 'rss2_item', 'geodir_event_rss_item' );
+
+		$ical_display = GeoDir_Event_Ical_Handler::instance();
+		add_action( 'geodir_add_listing_form_start', array( $ical_display, 'display_ical_actions' ), 10, 2 );
 	}
 
 	/**
@@ -240,7 +248,7 @@ final class GeoDir_Event_Manager {
 	/**
 	 * Define constant if not already set.
 	 *
-	 * @param  string $name
+	 * @param  string      $name
 	 * @param  string|bool $value
 	 */
 	private function define( $name, $value ) {
@@ -257,26 +265,26 @@ final class GeoDir_Event_Manager {
 	 */
 	private function is_request( $type ) {
 		switch ( $type ) {
-			case 'admin' :
+			case 'admin':
 				return is_admin();
 				break;
-			case 'ajax' :
+			case 'ajax':
 				return wp_doing_ajax();
 				break;
-			case 'cli' :
+			case 'cli':
 				return ( defined( 'WP_CLI' ) && WP_CLI );
 				break;
-			case 'cron' :
+			case 'cron':
 				return wp_doing_cron();
 				break;
-			case 'frontend' :
+			case 'frontend':
 				return ( ! is_admin() || wp_doing_ajax() ) && ! wp_doing_cron();
 				break;
-			case 'test' :
+			case 'test':
 				return defined( 'GD_TESTING_MODE' );
 				break;
 		}
-		
+
 		return null;
 	}
 
@@ -313,7 +321,7 @@ final class GeoDir_Event_Manager {
 	public function add_styles() {
 		$design_style = geodir_design_style();
 
-		if( ! $design_style ) {
+		if ( ! $design_style ) {
 			// Register admin styles
 			// YUI Calendar
 			wp_register_style( 'yui-calendar', GEODIR_EVENT_PLUGIN_URL . '/assets/yui/calendar.css', array(), '2.9.0' );
@@ -327,58 +335,102 @@ final class GeoDir_Event_Manager {
 	}
 
 	/**
-	 * Enqueue scripts.
+	 * Enqueue scripts and localize data for the GeoDirectory Events plugin.
 	 */
-	public function add_scripts() {
-		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+	public function add_scripts(): void {
+		$suffix       = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		$design_style = geodir_design_style();
+		$nonces       = GeoDir_Event_AJAX::instance()->get_nonces();
 
-		if( ! $design_style ) {
-			// Register scripts
-			// YUI Calendar
-			wp_register_script( 'yui-calendar', GEODIR_EVENT_PLUGIN_URL . '/assets/yui/calendar.min.js', array( 'jquery' ), '2.9.0' );
-			wp_register_script( 'geodir-event', GEODIR_EVENT_PLUGIN_URL . '/assets/js/common' . $suffix . '.js', array(
-				'jquery',
-				'geodir'
-			), GEODIR_EVENT_VERSION );
-			wp_register_script( 'geodir-event-widget', GEODIR_EVENT_PLUGIN_URL . '/assets/js/widget' . $suffix . '.js', array( 'jquery' ), GEODIR_EVENT_VERSION );
+		// Register common scripts used across the plugin.
+		wp_register_script( 'geodir-events-ical', sprintf( '%s/assets/js/ical%s.js', GEODIR_EVENT_PLUGIN_URL, $suffix ), array( 'jquery' ), GEODIR_EVENT_VERSION );
 
-			if ( is_page() && geodir_is_page( 'add-listing' ) ) {
-				wp_enqueue_script( 'yui-calendar' );
-				wp_localize_script( 'yui-calendar', 'cal_trans', geodir_event_yui_calendar_params() );
-			}
+		if ( is_page() && geodir_is_page( 'add-listing' ) ) {
+			$this->enqueue_add_listing_scripts( $nonces );
+		}
 
-			wp_enqueue_script( 'geodir-event' );
+		if ( ! $design_style ) {
+			$this->register_legacy_scripts( $suffix, $nonces );
 		}
 
 		$script = $design_style ? 'geodir' : 'geodir-event';
 		wp_localize_script( $script, 'geodir_event_params', geodir_event_params() );
 	}
 
-	public function add_listing_script(){
+	/**
+	 * Enqueue scripts specific to the 'add-listing' page.
+	 */
+	private function enqueue_add_listing_scripts( array $nonces ): void {
+		wp_enqueue_script( 'geodir-events-ical' );
+
+		wp_localize_script(
+			'geodir-events-ical',
+			'Geodir_Events_iCal',
+			array(
+				'ajaxUrl'     => admin_url( 'admin-ajax.php' ),
+				'maxFileSize' => wp_max_upload_size(),
+				'nonces'      => $nonces,
+				'actions'     => array(
+					'ical' => array(
+						'import'   => 'geodir_ical_run_import',
+						'progress' => 'geodir_ical_get_progress',
+					),
+				),
+			)
+		);
+	}
+
+	/**
+	 * Register scripts for legacy design style.
+	 */
+	private function register_legacy_scripts( string $suffix, array $nonces ): void {
+		wp_register_script( 'yui-calendar', GEODIR_EVENT_PLUGIN_URL . '/assets/yui/calendar.min.js', array( 'jquery' ), '2.9.0' );
+		wp_register_script( 'geodir-event', sprintf( '%s/assets/js/common%s.js', GEODIR_EVENT_PLUGIN_URL, $suffix ), array( 'jquery', 'geodir' ), GEODIR_EVENT_VERSION );
+		wp_register_script( 'geodir-events-widget', sprintf( '%s/assets/js/widget%s.js', GEODIR_EVENT_PLUGIN_URL, $suffix ), array( 'jquery' ), GEODIR_EVENT_VERSION );
+
+		wp_enqueue_script( 'geodir-events-widget' );
+		wp_localize_script(
+			'geodir-events-widget',
+			'Geodir_Events_Widget',
+			array(
+				'nonce' => $nonces['geodir_widget_post_type_field_options'],
+			)
+		);
+
+		wp_enqueue_script( 'geodir-event' );
+
+		if ( is_page() && geodir_is_page( 'add-listing' ) ) {
+			wp_enqueue_script( 'yui-calendar' );
+			wp_localize_script( 'yui-calendar', 'cal_trans', geodir_event_yui_calendar_params() );
+		}
+	}
+
+	public function add_listing_script() {
 		// add listing
 		wp_add_inline_script( 'geodir-add-listing', self::add_listing() );
 	}
 
 	public function add_listing() {
 		// Event start time
-		$timepicker_extras = array();
+		$timepicker_extras                     = array();
 		$timepicker_extras['data-enable-time'] = 'true';
 		$timepicker_extras['data-no-calendar'] = 'true';
-		$timepicker_extras['data-alt-input'] = 'true';
+		$timepicker_extras['data-alt-input']   = 'true';
 		$timepicker_extras['data-date-format'] = 'H:i';
-		$timepicker_extras['data-alt-format'] = geodir_event_input_time_format( true );
-		$timepicker_extras['data-time_24hr'] = 'false';
+		$timepicker_extras['data-alt-format']  = geodir_event_input_time_format( true );
+		$timepicker_extras['data-time_24hr']   = 'false';
 
 		$timepicker_extras = apply_filters( 'geodir_event_aui_start_end_time_attrs', $timepicker_extras );
 
 		$timepicker_attrs = '';
 		foreach ( $timepicker_extras as $_key => $_val ) {
-			$timepicker_attrs .= " " . sanitize_html_class( $_key ) . '="' . esc_attr( $_val ) . '"';
+			$timepicker_attrs .= ' ' . sanitize_html_class( $_key ) . '="' . esc_attr( $_val ) . '"';
 		}
 
 		ob_start();
-if ( 0 ) { ?><script><?php } ?>
+		if ( 0 ) {
+			?>
+			<script><?php } ?>
 jQuery(function() {
 	jQuery("#event_recurring_dates,#event_different_times").on("change", function() {
 		geodir_event_check_custom_dates();
@@ -409,14 +461,19 @@ function geodir_event_check_custom_dates(){
 					$_start_val = aDates[date][0];
 					$_end_val = aDates[date][1];
 				}
-				$row = '<div data-date="'+date+'" class="event-multiple-times row pb-1"><div class="col-2"><div class="gd-events-custom-time">'+date+'</div></div><div class="col-5"><input type="text" name="event_dates[start_times][]" placeholder="<?php esc_attr_e("Start","geodirevents"); ?>" value="'+$_start_val+'" class="form-control bg-initial" <?php echo trim( $timepicker_attrs ); ?> data-aui-init="flatpickr"></div><div class="col-5"><input type="text" name="event_dates[end_times][]" placeholder="<?php esc_attr_e("End","geodirevents"); ?>" value="'+$_end_val+'" class="form-control bg-initial" <?php echo trim( $timepicker_attrs ); ?> data-aui-init="flatpickr"></div></div>';
+				$row = '<div data-date="'+date+'" class="event-multiple-times row pb-1"><div class="col-2"><div class="gd-events-custom-time">'+date+'</div></div><div class="col-5"><input type="text" name="event_dates[start_times][]" placeholder="<?php esc_attr_e( 'Start', 'geodirevents' ); ?>" value="'+$_start_val+'" class="form-control bg-initial" <?php echo trim( $timepicker_attrs ); ?> data-aui-init="flatpickr"></div><div class="col-5"><input type="text" name="event_dates[end_times][]" placeholder="<?php esc_attr_e( 'End', 'geodirevents' ); ?>" value="'+$_end_val+'" class="form-control bg-initial" <?php echo trim( $timepicker_attrs ); ?> data-aui-init="flatpickr"></div></div>';
 				jQuery('.geodir_event_times_per_date').append($row);
 			}
 		});
 	}
 	aui_init();
 }
-<?php if ( 0 ) { ?></script><?php }
+		<?php
+		if ( 0 ) {
+			?>
+			</script>
+			<?php
+		}
 		return ob_get_clean();
 	}
 }

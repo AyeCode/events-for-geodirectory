@@ -25,14 +25,14 @@ class GeoDir_Event_Activator {
 	 *
 	 * @since    2.1.1.1
 	 *
-	 * @param bool   $network_wide Whether to enable the plugin for all sites in the network
-	 *                             or just the current site. Multisite only. Default false.
+	 * @param bool $network_wide Whether to enable the plugin for all sites in the network
+	 *                           or just the current site. Multisite only. Default false.
 	 */
 	public static function activate( $network_wide = false ) {
 		if ( is_multisite() && $network_wide ) {
 			$site_ids = get_sites(
 				array(
-					'fields' => 'ids'
+					'fields' => 'ids',
 				)
 			);
 
@@ -65,10 +65,10 @@ class GeoDir_Event_Activator {
 	}
 
 		/**
-	 * Enable event post type of plugin activate.
-	 *
-	 * @since    2.1.1.1
-	 */
+		 * Enable event post type of plugin activate.
+		 *
+		 * @since    2.1.1.1
+		 */
 	public static function enable_post_type() {
 		global $wpdb;
 
@@ -77,10 +77,10 @@ class GeoDir_Event_Activator {
 			return;
 		}
 
-		$post_type = 'gd_event';
-		$plugin_prefix = $wpdb->prefix . 'geodir_';
-		$post_types = ! empty( $geodir_settings['post_types'] ) ? $geodir_settings['post_types'] : array();
-		$taxonomies = ! empty( $geodir_settings['taxonomies'] ) ? $geodir_settings['taxonomies'] : array();
+		$post_type           = 'gd_event';
+		$plugin_prefix       = $wpdb->prefix . 'geodir_';
+		$post_types          = ! empty( $geodir_settings['post_types'] ) ? $geodir_settings['post_types'] : array();
+		$taxonomies          = ! empty( $geodir_settings['taxonomies'] ) ? $geodir_settings['taxonomies'] : array();
 		$post_types_disabled = ! empty( $geodir_settings['post_types_disabled'] ) ? $geodir_settings['post_types_disabled'] : array();
 		$taxonomies_disabled = ! empty( $geodir_settings['taxonomies_disabled'] ) ? $geodir_settings['taxonomies_disabled'] : array();
 
@@ -116,14 +116,14 @@ class GeoDir_Event_Activator {
 	 *
 	 * @since    2.1.1.1
 	 *
-	 * @param bool   $network_wide Whether to enable the plugin for all sites in the network
-	 *                             or just the current site. Multisite only. Default false.
+	 * @param bool $network_wide Whether to enable the plugin for all sites in the network
+	 *                           or just the current site. Multisite only. Default false.
 	 */
 	public static function deactivate( $network_wide = false ) {
 		if ( is_multisite() && $network_wide ) {
 			$site_ids = get_sites(
 				array(
-					'fields' => 'ids'
+					'fields' => 'ids',
 				)
 			);
 
@@ -159,7 +159,7 @@ class GeoDir_Event_Activator {
 	 * Disable event post type on plugin deactivation.
 	 *
 	 * @since    2.1.1.1
-	 
+
 	 * @global object $wpdb WordPress Database object.
 	 */
 	public static function disable_post_type() {
@@ -170,10 +170,10 @@ class GeoDir_Event_Activator {
 			return;
 		}
 
-		$post_type = 'gd_event';
-		$plugin_prefix = $wpdb->prefix . 'geodir_';
-		$post_types = ! empty( $geodir_settings['post_types'] ) ? $geodir_settings['post_types'] : array();
-		$taxonomies = ! empty( $geodir_settings['taxonomies'] ) ? $geodir_settings['taxonomies'] : array();
+		$post_type           = 'gd_event';
+		$plugin_prefix       = $wpdb->prefix . 'geodir_';
+		$post_types          = ! empty( $geodir_settings['post_types'] ) ? $geodir_settings['post_types'] : array();
+		$taxonomies          = ! empty( $geodir_settings['taxonomies'] ) ? $geodir_settings['taxonomies'] : array();
 		$post_types_disabled = ! empty( $geodir_settings['post_types_disabled'] ) ? $geodir_settings['post_types_disabled'] : array();
 		$taxonomies_disabled = ! empty( $geodir_settings['taxonomies_disabled'] ) ? $geodir_settings['taxonomies_disabled'] : array();
 

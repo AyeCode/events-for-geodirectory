@@ -5,7 +5,7 @@ Donate link: https://wpgeodirectory.com
 Requires at least: 4.9
 Tested up to: 6.6
 Requires PHP: 7.2
-Stable tag: 2.3.13
+Stable tag: 2.3.14
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -69,6 +69,9 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 3. Go to WordPress Admin -> Events -> Settings and customize behaviour as needed
 
 == Changelog ==
+
+= 2.3.14 - 2024-11-20 =
+* iCal import/export support: Added integration for iCal files and URLs - ADDED
 
 = 2.3.13 - 2024-08-20 =
 * Missing fields are not added on running Clear version numbers tool - FIXED

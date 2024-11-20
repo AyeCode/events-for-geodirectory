@@ -34,14 +34,14 @@ class GeoDir_Event_Admin {
 		add_filter( 'geodir_uninstall_options', 'geodir_event_uninstall_settings', 10, 1 );
 		add_action( 'geodir_pricing_package_settings', 'geodir_event_pricing_package_settings', 9, 2 );
 		add_action( 'geodir_pricing_process_data_for_save', 'geodir_event_pricing_process_data_for_save', 1, 3 );
-		add_filter( 'geodir_debug_tools' , 'geodir_event_debug_tools', 20, 1 );
+		add_filter( 'geodir_debug_tools', 'geodir_event_debug_tools', 20, 1 );
 
 		// Dummy data
-		add_filter( 'geodir_dummy_data_types' , array( 'GeoDir_Event_Admin_Dummy_Data', 'dummy_data_types' ), 10, 2 );
-		add_action( 'geodir_dummy_data_include_file' , array( 'GeoDir_Event_Admin_Dummy_Data', 'include_file' ), 10, 4 );
+		add_filter( 'geodir_dummy_data_types', array( 'GeoDir_Event_Admin_Dummy_Data', 'dummy_data_types' ), 10, 2 );
+		add_action( 'geodir_dummy_data_include_file', array( 'GeoDir_Event_Admin_Dummy_Data', 'include_file' ), 10, 4 );
 
 		// Add the required DB columns
-		add_filter('geodir_db_cpt_default_columns', array(__CLASS__,'add_db_columns'),10,3);
+		add_filter( 'geodir_db_cpt_default_columns', array( __CLASS__, 'add_db_columns' ), 10, 3 );
 
 		// Conditional Fields
 		add_filter( 'geodir_cf_show_conditional_fields_setting', array( $this, 'cf_show_conditional_fields_setting' ), 10, 4 );
@@ -58,9 +58,9 @@ class GeoDir_Event_Admin {
 	 */
 	public static function add_db_columns( $columns, $cpt, $post_type ) {
 		if ( $post_type == 'gd_event' || ! empty( $cpt['supports_events'] ) || GeoDir_Post_types::supports( $post_type, 'events' ) ) {
-			$columns['recurring'] = "recurring TINYINT(1) DEFAULT '0'";
-			$columns['event_dates'] = "event_dates TEXT NOT NULL";
-			$columns['rsvp_count'] = "rsvp_count INT(11) DEFAULT '0'";
+			$columns['recurring']   = "recurring TINYINT(1) DEFAULT '0'";
+			$columns['event_dates'] = 'event_dates TEXT NOT NULL';
+			$columns['rsvp_count']  = "rsvp_count INT(11) DEFAULT '0'";
 		}
 
 		return $columns;
@@ -70,8 +70,8 @@ class GeoDir_Event_Admin {
 	 * Include any classes we need within admin.
 	 */
 	public function includes() {
-		include_once( GEODIR_EVENT_PLUGIN_DIR . 'includes/admin/class-geodir-event-admin-assets.php' );
-		include_once( GEODIR_EVENT_PLUGIN_DIR . 'includes/admin/class-geodir-event-admin-import-export.php' );
+		include_once GEODIR_EVENT_PLUGIN_DIR . 'includes/admin/class-geodir-event-admin-assets.php';
+		include_once GEODIR_EVENT_PLUGIN_DIR . 'includes/admin/class-geodir-event-admin-import-export.php';
 	}
 
 	/**
@@ -101,7 +101,7 @@ class GeoDir_Event_Admin {
 	 *
 	 * @since 2.3.13
 	 */
-	public function clear_version_number(){
+	public function clear_version_number() {
 		delete_option( 'geodir_event_version' );
 	}
 
@@ -109,7 +109,7 @@ class GeoDir_Event_Admin {
 		$post_type = ! empty( $_REQUEST['post_type'] ) ? sanitize_text_field( $_REQUEST['post_type'] ) : 'gd_place';
 
 		if ( ! ( ! empty( $_REQUEST['page'] ) && sanitize_text_field( $_REQUEST['page'] ) == $post_type . '-settings' ) ) {
-			$settings_pages[] = include( GEODIR_EVENT_PLUGIN_DIR . 'includes/admin/settings/class-geodir-event-settings-events.php' );
+			$settings_pages[] = include GEODIR_EVENT_PLUGIN_DIR . 'includes/admin/settings/class-geodir-event-settings-events.php';
 		}
 
 		return $settings_pages;
@@ -149,8 +149,8 @@ class GeoDir_Event_Admin {
 
 			foreach ( $fields as $key => $title ) {
 				if ( $key == 'event_dates' ) {
-					$_fields[ 'start_date' ] = __( 'Event start date', 'geodirevents' );
-					$_fields[ 'end_date' ] = __( 'Event end date', 'geodirevents' );
+					$_fields['start_date'] = __( 'Event start date', 'geodirevents' );
+					$_fields['end_date']   = __( 'Event end date', 'geodirevents' );
 				} else {
 					$_fields[ $key ] = $title;
 				}
@@ -172,15 +172,15 @@ class GeoDir_Event_Admin {
 
 				if ( ! empty( $setting['id'] ) && $setting['id'] == 'seopress_disable' ) {
 					$new_settings[] = array(
-						'id' => 'seopress_recurring_schedules',
-						'type' => 'checkbox',
-						'name' => __( 'Recurring Schedules in Sitemap', 'geodirectory' ),
-						'desc' => __( 'Show recurring schedules for recurring event in SEOPress XML sitemaps.', 'geodirectory' ),
+						'id'      => 'seopress_recurring_schedules',
+						'type'    => 'checkbox',
+						'name'    => __( 'Recurring Schedules in Sitemap', 'geodirectory' ),
+						'desc'    => __( 'Show recurring schedules for recurring event in SEOPress XML sitemaps.', 'geodirectory' ),
 						'default' => '0',
 					);
 				}
 			}
-			
+
 			$settings = $new_settings;
 		}
 
