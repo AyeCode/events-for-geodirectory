@@ -531,6 +531,11 @@ function geodir_event_super_duper_widget_init( $options, $super_duper ) {
 	global $gd_listings_widget_js;
 
 	if ( ! $gd_listings_widget_js && ! empty( $options['base_id'] ) && $options['base_id'] == 'gd_listings' ) {
+		// Check script on call.
+		if ( ! is_admin() && function_exists( 'geodir_load_scripts_on_call' ) && geodir_load_scripts_on_call() ) {
+			return;
+		}
+
 		$gd_listings_widget_js = true;
 
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
