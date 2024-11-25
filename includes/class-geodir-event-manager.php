@@ -114,14 +114,7 @@ final class GeoDir_Event_Manager {
 	 * @return void
 	 */
 	public function load_textdomain() {
-		// Determines the current locale.
-		if ( function_exists( 'determine_locale' ) ) {
-			$locale = determine_locale();
-		} else if ( function_exists( 'get_user_locale' ) ) {
-			$locale = get_user_locale();
-		} else {
-			$locale = get_locale();
-		}
+		$locale = determine_locale();
 
 		/**
 		 * Filter the plugin locale.
@@ -131,7 +124,7 @@ final class GeoDir_Event_Manager {
 		 */
 		$locale = apply_filters( 'plugin_locale', $locale, 'geodirevents' );
 
-		unload_textdomain( 'geodirevents' );
+		unload_textdomain( 'geodirevents', true );
 		load_textdomain( 'geodirevents', WP_LANG_DIR . '/geodirevents/geodirevents-' . $locale . '.mo' );
 		load_plugin_textdomain( 'geodirevents', false, basename( dirname( GEODIR_EVENT_PLUGIN_FILE ) ) . '/languages/' );
 	}
