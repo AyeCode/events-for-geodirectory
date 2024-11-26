@@ -47,6 +47,15 @@ class GeoDir_Event_Widget_Calendar extends WP_Super_Duper {
 				'desc_tip' => true,
 				'advanced' => false,
 			),
+			'id'                    => array(
+				'type'        => 'number',
+				'title'       => __( 'Listing ID:', 'geodirevents' ),
+				'desc'        => __( 'Leave blank to use the listing being viewed.', 'geodirevents' ),
+				'placeholder' => __( 'Listing being viewed', 'geodirevents' ),
+				'default'     => '',
+				'desc_tip'    => true,
+				'advanced'    => true,
+			),
 			'post_type'             => array(
 				'title'    => __( 'Default Post Type:', 'geodirevents' ),
 				'desc'     => __( 'Select post type to filter posts on calendar.', 'geodirevents' ),
@@ -179,14 +188,39 @@ class GeoDir_Event_Widget_Calendar extends WP_Super_Duper {
 	 *                                         after_widget.
 	 * @param array $instance           The settings for the particular instance of the widget.
 	 */
-	public function output_html( $args = array(), $instance = array() ) {
-		$use_viewing_post_type = ! empty( $instance['use_viewing_post_type'] ) ? true : false;
+	public function output_html( $listing, $args = array(), $instance = array() ) {
+		global $aui_bs5, $post, $gd_post;
 
-		if ( $use_viewing_post_type ) {
-			$current_post_type = geodir_get_current_posttype();
+		// Prepare the listing.
+		if ( ! empty( $args['id'] ) ) {
+			$post_id = absint( $args['id'] );
+		} elseif ( ! empty( $post->ID ) ) {
+			$post_id = $post->ID;
+		} elseif ( ! empty( $gd_post->ID ) ) {
+			$post_id = $gd_post->ID;
+		} else {
+			return '';
+		}
 
-			if ( $current_post_type != '' && $current_post_type != $instance['post_type'] ) {
-				$instance['post_type'] = $current_post_type;
+		// Ensure this is a GD post.
+		$listing = get_post( $post_id );
+
+		if ( empty( $listing ) || 'publish' !== $listing->post_status || ! in_array( $listing->post_type, array_keys( self::post_type_options() ) ) ) {
+			return '';
+		}
+
+		if ( ! empty( $args['id'] ) && (int) $args['id'] === (int) $listing->ID ) {
+			$instance['id']        = (int) $listing->ID;
+			$instance['post_type'] = $listing->post_type;
+		} else {
+			$use_viewing_post_type = ! empty( $instance['use_viewing_post_type'] ) ? true : false;
+
+			if ( $use_viewing_post_type ) {
+				$current_post_type = geodir_get_current_posttype();
+
+				if ( $current_post_type != '' && $current_post_type != $instance['post_type'] ) {
+					$instance['post_type'] = $current_post_type;
+				}
 			}
 		}
 

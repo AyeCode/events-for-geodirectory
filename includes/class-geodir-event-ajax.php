@@ -54,12 +54,6 @@ class GeoDir_Event_AJAX {
 		'widget_post_type_field_options' => array(
 			'method' => 'POST',
 		),
-		'ical_run_import'                => array(
-			'method' => 'POST',
-		),
-		'ical_get_progress'              => array(
-			'method' => 'GET',
-		),
 	);
 
 	/**
@@ -235,104 +229,5 @@ class GeoDir_Event_AJAX {
 		} catch ( Exception $e ) {
 			wp_send_json_error( array( 'message' => $e->getMessage() ) );
 		}
-	}
-
-	/**
-	 * Handles the iCal import process.
-	 *
-	 * This method verifies the nonce, processes file or URL uploads,
-	 * and initiates the ical import.
-	 *
-	 * @since 1.0.0
-	 * @return void
-	 * @throws Exception If no file or URL is provided.
-	 */
-	public function ical_run_import() {
-		$this->verify_nonce( __FUNCTION__ );
-
-		$importer = GeoDir_Event_Ical_Importer::instance();
-		$importer->delete_ghosts();
-		$post_author = get_current_user_id();
-
-		$queue_id = uniqid( 'gdevents_ical_' );
-		if ( isset( $_FILES['import'] ) && ! empty( $_FILES['import'] ) ) {
-			// Ensure the file path is sanitized.
-			// Do not unslash $_FILES['import']['tmp_name'] to avoid issues on Windows.
-            // phpcs:ignore
-            $calendar_url = isset( $_FILES['import']['tmp_name'] ) ? sanitize_text_field( $_FILES['import']['tmp_name'] ) : '';
-			$importer->parse_calendar_upload(
-				array(
-					'queue_id'     => $queue_id,
-					'post_author'  => (int) $post_author,
-					'calendar_uri' => $calendar_url,
-				)
-			);
-		} elseif ( isset( $_POST['url'] ) && ! empty( $_POST['url'] ) ) {
-			$calendar_url = sanitize_url( $_POST['url'] );
-			$importer->parse_calendar_urls(
-				array(
-					'queue_id'     => $queue_id,
-					'post_author'  => (int) $post_author,
-					'calendar_uri' => $calendar_url,
-				)
-			);
-		} else {
-			wp_send_json_error( __( 'No file was uploaded.', 'geodirevents' ) );
-		}
-
-		wp_send_json_success(
-			array(
-				'queue_id' => $queue_id,
-			)
-		);
-	}
-
-	/**
-	 * Callback function for getting iCal upload progress.
-	 *
-	 * This function is triggered via AJAX to retrieve the progress of iCal uploads.
-	 *
-	 * @since 1.0.0
-	 */
-	public function ical_get_progress() {
-		$this->verify_nonce( __FUNCTION__ );
-
-		$queue_id     = isset( $_GET['queue_id'] ) ? sanitize_key( $_GET['queue_id'] ) : '';
-		$logs_shown   = isset( $_GET['logsShown'] ) ? absint( (int) $_GET['logsShown'] ) : 0;
-		$logs_handler = new GeoDir_Event_Ical_Logs_Handler();
-		$importer     = GeoDir_Event_Ical_Importer::instance();
-
-		$ical_stats  = new GeoDir_Event_Ical_Stats( $queue_id );
-		$ical_logger = new GeoDir_Event_Ical_Logger( $queue_id );
-
-		$stats       = $ical_stats->get_stats();
-		$logs        = $ical_logger->get_logs( $logs_shown );
-		$is_finished = ! $importer->is_in_progress();
-		$notice      = '';
-
-		// Build notice.
-		if ( $is_finished ) {
-			$notice = $logs_handler->build_notice( $stats['succeed'], $stats['failed'] );
-
-			$ical_stats->delete_queue( $queue_id );
-			$ical_logger->clear();
-		}
-
-		// Calculate new "logs_shown".
-		$logs_shown += count( $logs );
-
-		wp_send_json_success(
-			array(
-				'total'      => (int) $stats['total'],
-				'succeed'    => (int) $stats['succeed'],
-				'skipped'    => (int) $stats['skipped'],
-				'failed'     => (int) $stats['failed'],
-				'progress'   => $importer->get_progress(),
-				'logs'       => $logs_handler->logs_to_html( $logs ),
-				'logsShown'  => $logs_shown,
-				'notice'     => $notice,
-				'isFinished' => (bool) $is_finished,
-			)
-		);
 	}
 }

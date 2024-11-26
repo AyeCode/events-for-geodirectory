@@ -162,8 +162,6 @@ final class GeoDir_Event_Manager {
 		 * Class autoloader.
 		 */
 		include_once GEODIR_EVENT_PLUGIN_DIR . 'includes/class-geodir-event-autoloader.php';
-		require_once GEODIR_EVENT_PLUGIN_DIR . '/includes/libraries/zapcal/zapcallib.php';
-
 		include_once GEODIR_EVENT_PLUGIN_DIR . 'includes/class-geodir-event-post-type.php'; // Registers post type
 
 		GeoDir_Event_AJAX::instance();
@@ -171,15 +169,12 @@ final class GeoDir_Event_Manager {
 		GeoDir_Event_Schedules::init();
 		GeoDir_Event_AYI::init();
 		GeoDir_Event_Widgets::init();
-		GeoDir_Event_Ical_Importer::instance();
 
 		require_once GEODIR_EVENT_PLUGIN_DIR . 'includes/deprecated-functions.php';
 		require_once GEODIR_EVENT_PLUGIN_DIR . 'includes/core-functions.php';
 		require_once GEODIR_EVENT_PLUGIN_DIR . 'includes/template-functions.php';
 
 		GeoDir_Event_API::init();
-		// Init the ical feed.
-		GeoDir_Event_Ical_Feed::instance();
 
 		if ( $this->is_request( 'admin' ) || $this->is_request( 'test' ) || $this->is_request( 'cli' ) ) {
 			new GeoDir_Event_Admin();
@@ -229,9 +224,6 @@ final class GeoDir_Event_Manager {
 		add_filter( 'wp_super_duper_arguments', 'geodir_event_super_duper_arguments', 2, 3 );
 		add_action( 'rss_item', 'geodir_event_rss_item' );
 		add_action( 'rss2_item', 'geodir_event_rss_item' );
-
-		$ical_display = GeoDir_Event_Ical_Handler::instance();
-		add_action( 'geodir_add_listing_form_start', array( $ical_display, 'display_ical_actions' ), 10, 2 );
 	}
 
 	/**
@@ -340,69 +332,33 @@ final class GeoDir_Event_Manager {
 	public function add_scripts(): void {
 		$suffix       = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		$design_style = geodir_design_style();
-		$nonces       = GeoDir_Event_AJAX::instance()->get_nonces();
-
-		// Register common scripts used across the plugin.
-		wp_register_script( 'geodir-events-ical', sprintf( '%s/assets/js/ical%s.js', GEODIR_EVENT_PLUGIN_URL, $suffix ), array( 'jquery' ), GEODIR_EVENT_VERSION );
-
-		if ( is_page() && geodir_is_page( 'add-listing' ) ) {
-			$this->enqueue_add_listing_scripts( $nonces );
-		}
 
 		if ( ! $design_style ) {
-			$this->register_legacy_scripts( $suffix, $nonces );
+			$nonces = GeoDir_Event_AJAX::instance()->get_nonces();
+
+			wp_register_script( 'yui-calendar', GEODIR_EVENT_PLUGIN_URL . '/assets/yui/calendar.min.js', array( 'jquery' ), '2.9.0' );
+			wp_register_script( 'geodir-event', sprintf( '%s/assets/js/common%s.js', GEODIR_EVENT_PLUGIN_URL, $suffix ), array( 'jquery', 'geodir' ), GEODIR_EVENT_VERSION );
+			wp_register_script( 'geodir-events-widget', sprintf( '%s/assets/js/widget%s.js', GEODIR_EVENT_PLUGIN_URL, $suffix ), array( 'jquery' ), GEODIR_EVENT_VERSION );
+
+			wp_enqueue_script( 'geodir-events-widget' );
+			wp_localize_script(
+				'geodir-events-widget',
+				'Geodir_Events_Widget',
+				array(
+					'nonce' => $nonces['geodir_widget_post_type_field_options'],
+				)
+			);
+
+			wp_enqueue_script( 'geodir-event' );
+
+			if ( is_page() && geodir_is_page( 'add-listing' ) ) {
+				wp_enqueue_script( 'yui-calendar' );
+				wp_localize_script( 'yui-calendar', 'cal_trans', geodir_event_yui_calendar_params() );
+			}
 		}
 
 		$script = $design_style ? 'geodir' : 'geodir-event';
 		wp_localize_script( $script, 'geodir_event_params', geodir_event_params() );
-	}
-
-	/**
-	 * Enqueue scripts specific to the 'add-listing' page.
-	 */
-	private function enqueue_add_listing_scripts( array $nonces ): void {
-		wp_enqueue_script( 'geodir-events-ical' );
-
-		wp_localize_script(
-			'geodir-events-ical',
-			'Geodir_Events_iCal',
-			array(
-				'ajaxUrl'     => admin_url( 'admin-ajax.php' ),
-				'maxFileSize' => wp_max_upload_size(),
-				'nonces'      => $nonces,
-				'actions'     => array(
-					'ical' => array(
-						'import'   => 'geodir_ical_run_import',
-						'progress' => 'geodir_ical_get_progress',
-					),
-				),
-			)
-		);
-	}
-
-	/**
-	 * Register scripts for legacy design style.
-	 */
-	private function register_legacy_scripts( string $suffix, array $nonces ): void {
-		wp_register_script( 'yui-calendar', GEODIR_EVENT_PLUGIN_URL . '/assets/yui/calendar.min.js', array( 'jquery' ), '2.9.0' );
-		wp_register_script( 'geodir-event', sprintf( '%s/assets/js/common%s.js', GEODIR_EVENT_PLUGIN_URL, $suffix ), array( 'jquery', 'geodir' ), GEODIR_EVENT_VERSION );
-		wp_register_script( 'geodir-events-widget', sprintf( '%s/assets/js/widget%s.js', GEODIR_EVENT_PLUGIN_URL, $suffix ), array( 'jquery' ), GEODIR_EVENT_VERSION );
-
-		wp_enqueue_script( 'geodir-events-widget' );
-		wp_localize_script(
-			'geodir-events-widget',
-			'Geodir_Events_Widget',
-			array(
-				'nonce' => $nonces['geodir_widget_post_type_field_options'],
-			)
-		);
-
-		wp_enqueue_script( 'geodir-event' );
-
-		if ( is_page() && geodir_is_page( 'add-listing' ) ) {
-			wp_enqueue_script( 'yui-calendar' );
-			wp_localize_script( 'yui-calendar', 'cal_trans', geodir_event_yui_calendar_params() );
-		}
 	}
 
 	public function add_listing_script() {
