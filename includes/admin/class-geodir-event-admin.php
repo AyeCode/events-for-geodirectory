@@ -36,16 +36,185 @@ class GeoDir_Event_Admin {
 		add_action( 'geodir_pricing_process_data_for_save', 'geodir_event_pricing_process_data_for_save', 1, 3 );
 		add_filter( 'geodir_debug_tools', 'geodir_event_debug_tools', 20, 1 );
 
-		// Dummy data
+		// Duplicate event.
+		add_filter( 'post_row_actions', array( $this, 'add_duplicate_action' ), 10, 2 );
+		add_filter( 'page_row_actions', array( $this, 'add_duplicate_action' ), 10, 2 );
+		add_action( 'admin_post_geodirevents_duplicate', array( $this, 'duplicate_event' ) );
+
+		// Dummy data.
 		add_filter( 'geodir_dummy_data_types', array( 'GeoDir_Event_Admin_Dummy_Data', 'dummy_data_types' ), 10, 2 );
 		add_action( 'geodir_dummy_data_include_file', array( 'GeoDir_Event_Admin_Dummy_Data', 'include_file' ), 10, 4 );
 
-		// Add the required DB columns
+		// Add the required DB columns.
 		add_filter( 'geodir_db_cpt_default_columns', array( __CLASS__, 'add_db_columns' ), 10, 3 );
 
-		// Conditional Fields
+		// Conditional Fields.
 		add_filter( 'geodir_cf_show_conditional_fields_setting', array( $this, 'cf_show_conditional_fields_setting' ), 10, 4 );
 		add_filter( 'geodir_conditional_fields_options', array( $this, 'conditional_fields_options' ), 10, 2 );
+	}
+
+	/**
+	 * Add "Duplicate" action link to post row actions.
+	 *
+	 * @since 2.3.14
+	 *
+	 * @param array   $actions An array of row action links.
+	 * @param WP_Post $post    The post object.
+	 * @return array  The filtered actions array.
+	 */
+	public function add_duplicate_action( $actions, $post ) {
+		if ( 'gd_event' === $post->post_type ) {
+			$actions['duplicate'] = sprintf(
+				'<a href="%s" aria-label="%s">%s</a>',
+				wp_nonce_url( admin_url( 'admin-post.php?action=geodirevents_duplicate&post=' . $post->ID ), 'geodirevents_duplicate_' . $post->ID ),
+				esc_attr( sprintf( __( 'Duplicate &#8220;%s&#8221;', 'geodirevents' ), $post->post_title ) ),
+				__( 'Duplicate', 'geodirevents' )
+			);
+		}
+		return $actions;
+	}
+
+	/**
+	 * Create a duplicate of the event.
+	 *
+	 * @since 2.3.14
+	 *
+	 * @return void
+	 */
+	public function duplicate_event() {
+		global $wpdb, $plugin_prefix;
+
+		// Check user capabilities.
+		if ( ! current_user_can( 'edit_posts' ) ) {
+			wp_die(
+				esc_html__( 'You do not have permission to duplicate this event.', 'geodirevents' ),
+				esc_html__( 'Permission Denied', 'geodirevents' ),
+				array(
+					'response'  => 403,
+					'back_link' => true,
+				)
+			);
+		}
+
+		// Verify nonce.
+		$nonce   = isset( $_GET['_wpnonce'] ) ? sanitize_key( $_GET['_wpnonce'] ) : '';
+		$post_id = isset( $_GET['post'] ) ? absint( $_GET['post'] ) : 0;
+
+		if ( ! wp_verify_nonce( $nonce, 'geodirevents_duplicate_' . $post_id ) ) {
+			wp_die(
+				esc_html__( 'Security check failed.', 'geodirevents' ),
+				esc_html__( 'Security Error', 'geodirevents' ),
+				array(
+					'response'  => 403,
+					'back_link' => true,
+				)
+			);
+		}
+
+		// Get original event.
+		$original_event = geodir_get_post_info( $post_id );
+
+		if ( ! $original_event ) {
+			wp_die(
+				esc_html__( 'Event creation failed, could not find original event.', 'geodirevents' ),
+				esc_html__( 'Event Not Found', 'geodirevents' ),
+				array(
+					'response'  => 404,
+					'back_link' => true,
+				)
+			);
+		}
+
+		// Prepare new post data.
+		$new_post_data                = array_intersect_key(
+			(array) $original_event,
+			array_flip(
+				array(
+					'post_author',
+					'post_content',
+					'post_title',
+					'post_excerpt',
+					'post_status',
+					'comment_status',
+					'ping_status',
+					'post_password',
+					'post_name',
+					'post_content_filtered',
+					'post_parent',
+					'menu_order',
+					'post_type',
+					'post_mime_type',
+					'comment_count',
+				)
+			)
+		);
+		$new_post_data['post_title'] .= ' ' . esc_html__( '(Copy)', 'geodirevents' );
+
+		// Insert new post.
+		$new_post_id = wp_insert_post( $new_post_data, true );
+
+		if ( is_wp_error( $new_post_id ) ) {
+			wp_die(
+				esc_html( $new_post_id->get_error_message() ),
+				esc_html__( 'Duplication Error', 'geodirevents' ),
+				array(
+					'response'  => 500,
+					'back_link' => true,
+				)
+			);
+		}
+
+		// Duplicate post meta.
+		$table       = geodir_db_cpt_table( $original_event->post_type );
+		$post_detail = $wpdb->get_row(
+			$wpdb->prepare( "SELECT * FROM {$table} WHERE post_id = %d", $original_event->ID ),
+			ARRAY_A
+		);
+
+		unset( $post_detail['post_id'] );
+		$post_detail['post_category']    = $original_event->post_category;
+		$post_detail['default_category'] = $original_event->default_category;
+		$post_detail['post_tags']        = $original_event->post_tags;
+
+		// Duplicate taxonomies.
+		$taxonomies = get_object_taxonomies( $original_event->post_type );
+		foreach ( $taxonomies as $taxonomy ) {
+			$terms = wp_get_object_terms( $original_event->ID, $taxonomy, array( 'fields' => 'slugs' ) );
+			wp_set_object_terms( $new_post_id, $terms, $taxonomy );
+		}
+
+		// Duplicate featured image.
+		$post_detail['featured_image'] = $original_event->featured_image;
+		geodir_save_post_meta( $new_post_id, 'featured_image', $original_event->featured_image );
+
+		$post_images = geodir_get_images( (int) $original_event->ID, '', true, 0, array( 'post_images' ) );
+		if ( ! empty( $post_images ) ) {
+			foreach ( $post_images as $key => $image ) {
+				GeoDir_Media::insert_attachment(
+					$new_post_id,
+					'post_images',
+					$image->file,
+					( $key === 0 ) ? $original_event->post_title : '',
+					'',
+					$image->menu_order,
+					1,
+					true
+				);
+			}
+		}
+
+		// Update post details.
+		$table  = $plugin_prefix . sanitize_key( $original_event->post_type ) . '_detail';
+		$format = array_fill( 0, count( $post_detail ), '%s' );
+		$wpdb->update(
+			$table,
+			$post_detail,
+			array( 'post_id' => $new_post_id ),
+			$format
+		);
+
+		wp_safe_redirect( admin_url( "post.php?action=edit&post={$new_post_id}" ) );
+		exit;
 	}
 
 	/**

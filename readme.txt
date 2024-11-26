@@ -72,6 +72,7 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 
 = 2.3.14 - 2024-11-20 =
 * iCal import/export support: Added integration for iCal files and URLs - ADDED
+* Allow users to duplicate events - ADDED
 
 = 2.3.13 - 2024-08-20 =
 * Missing fields are not added on running Clear version numbers tool - FIXED

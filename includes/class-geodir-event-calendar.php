@@ -30,6 +30,7 @@ class GeoDir_Event_Calendar {
 
 		$id_base      = ! empty( $args['widget_id'] ) ? $args['widget_id'] : 'geodir_event_listing_calendar';
 		$design_style = geodir_design_style();
+		$post_id      = apply_filters( 'geodir_event_calendar_widget_post_id', ( isset( $instance['id'] ) && ! empty( $instance['id'] ) ) ? absint( $instance['id'] ) : 0, $instance, $id_base );
 		$post_type    = apply_filters( 'geodir_event_calendar_widget_post_type_filter', empty( $instance['post_type'] ) ? 'gd_event' : $instance['post_type'], $instance, $id_base );
 		if ( isset( $instance['week_start_day'] ) ) {
 			$week_start_day = absint( $instance['week_start_day'] );
@@ -41,6 +42,7 @@ class GeoDir_Event_Calendar {
 		$add_location_filter = apply_filters( 'geodir_event_calendar_widget_add_location_filter', empty( $instance['add_location_filter'] ) ? 0 : 1, $instance, $id_base );
 		$identifier          = str_replace( '-', '_', sanitize_html_class( $id_base ) . '_' . uniqid() );
 		$function_name       = 'geodir_event_call_calendar_' . uniqid();
+
 		if ( ! ( ! empty( $post_type ) && in_array( $post_type, GeoDir_Event_Post_Type::get_event_post_types() ) ) ) {
 			$post_type = 'gd_event';
 		}
@@ -130,12 +132,16 @@ class GeoDir_Event_Calendar {
 	if (typeof <?php echo $function_name; ?> !== 'function') {
 		window.<?php echo $function_name; ?> = function() {
 			var $container = jQuery('#gdwgt_<?php echo $identifier; ?>');
+			var post_id = '<?php echo (int) $post_id; ?>';
 			var sday = '<?php echo $week_start_day; ?>';
 			var wday = '<?php echo (int) $week_day_format; ?>';
 			var gdem_loading = jQuery('.gd_cal_nav .gdem-loading', $container);
 			var loc = '&_loc=<?php echo (int) $add_location_filter; ?>&_l=<?php echo (int) $location_id; ?><?php echo $location_params; ?>';
 			var size = '&size=<?php echo ! empty( $instance['size'] ) && $instance['size'] == 'small' ? 'small' : ''; ?>';
 			params = "&sday=" + sday + "&wday=" + wday + loc;
+			if (post_id) {
+				params += "&id=" + post_id;
+			}
 			params += '&post_type=' + jQuery('#geodir_calendar_post_type', $container).val();
 			params+= size;
 			<?php
@@ -174,6 +180,9 @@ class GeoDir_Event_Calendar {
 					mnth = 1;
 				}
 				params = "&mnth=" + mnth + "&yr=" + year + "&sday=" + sday + "&wday=" + wday + loc + size;
+				if (post_id) {
+					params += "&id=" + post_id;
+				}
 				params += '&post_type=' + jQuery('#geodir_calendar_post_type', $container).val();
 				geodir_event_get_calendar($container, params);
 			});
@@ -185,12 +194,18 @@ class GeoDir_Event_Calendar {
 					mnth = 12;
 				}
 				params = "&mnth=" + mnth + "&yr=" + year + "&sday=" + sday + "&wday=" + wday + loc + size;
+				if (post_id) {
+					params += "&id=" + post_id;
+				}
 				params += '&post_type=' + jQuery('#geodir_calendar_post_type', $container).val();
 				geodir_event_get_calendar($container, params);
 			});
 
 			jQuery("#geodir_calendar_post_type", $container).on('change', function() {
 				params = "&mnth=" + mnth + "&yr=" + year + "&sday=" + sday + "&wday=" + wday + loc + size;
+				if (post_id) {
+					params += "&id=" + post_id;
+				}
 				params += '&post_type=' + jQuery(this).val();
 				geodir_event_get_calendar($container, params);
 			});
@@ -255,6 +270,11 @@ class GeoDir_Event_Calendar {
 			'posts_per_page'    => 1,
 			'post_status'       => 'publish',
 		);
+
+		if ( isset( $_REQUEST['id'] ) && ! empty( $_REQUEST['id'] ) ) {
+			$query_args['p'] = absint( $_REQUEST['id'] );
+		}
+
 		if ( $add_location_filter && defined( 'GEODIRLOCATION_VERSION' ) ) {
 			if ( ! empty( $_REQUEST['country'] ) ) {
 				$query_args['country'] = sanitize_text_field( $_REQUEST['country'] );
