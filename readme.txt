@@ -5,7 +5,7 @@ Donate link: https://wpgeodirectory.com
 Requires at least: 4.9
 Tested up to: 6.7
 Requires PHP: 7.2
-Stable tag: 2.3.13
+Stable tag: 2.3.14
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -70,7 +70,7 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 
 == Changelog ==
 
-= 2.3.14 - TBD = 
+= 2.3.14 - 2024-11-28 = 
 * Changes for load scripts on call - CHANGED
 
 = 2.3.13 - 2024-08-20 =
