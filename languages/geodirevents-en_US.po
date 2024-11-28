@@ -1,26 +1,26 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Events for GeoDirectory 2.3.13\n"
+"Project-Id-Version: Events for GeoDirectory 2.3.14\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-20 14:14+0530\n"
-"PO-Revision-Date: 2024-08-20 14:14+0530\n"
+"POT-Creation-Date: 2024-11-28 20:04+0530\n"
+"PO-Revision-Date: 2024-11-28 20:04+0530\n"
 "Last-Translator: \n"
 "Language-Team: AyeCode Ltd <contact@ayecode.io>\n"
 "Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-KeywordsList: __;__ngettext:1,2;__ngettext_noop:1,2;_c;_e;_ex:1,2c;"
 "_n:1,2;_n_noop:1,2;_nc:4c,1,2;_nx:4c,1,2;_nx_noop:4c,1,2;_x:1,2c;esc_attr__;"
 "esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;gettext;"
 "gettext_noop\n"
 "X-Poedit-Basepath: ..\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 3.5\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: includes/admin/admin-functions.php:85 includes/template-functions.php:604
+#: includes/admin/admin-functions.php:85 includes/template-functions.php:609
 msgid "Event Date"
 msgstr ""
 
@@ -85,17 +85,17 @@ msgid "Event date"
 msgstr ""
 
 #: includes/admin/dummy-data/standard_events.php:84
-#: includes/template-functions.php:614
+#: includes/template-functions.php:619
 msgid "Newest"
 msgstr ""
 
 #: includes/admin/dummy-data/standard_events.php:96
-#: includes/template-functions.php:624
+#: includes/template-functions.php:629
 msgid "Title"
 msgstr ""
 
 #: includes/admin/dummy-data/standard_events.php:108
-#: includes/template-functions.php:634
+#: includes/template-functions.php:639
 msgid "Rating"
 msgstr ""
 
@@ -675,12 +675,12 @@ msgid ""
 msgstr ""
 
 #: includes/class-geodir-event-fields.php:468
-#: includes/class-geodir-event-manager.php:412
+#: includes/class-geodir-event-manager.php:405
 msgid "Start"
 msgstr ""
 
 #: includes/class-geodir-event-fields.php:468
-#: includes/class-geodir-event-manager.php:412
+#: includes/class-geodir-event-manager.php:405
 msgid "End"
 msgstr ""
 
@@ -1076,7 +1076,7 @@ msgstr ""
 msgid "is upcoming event (for events only)"
 msgstr ""
 
-#: includes/class-geodir-event-manager.php:148
+#: includes/class-geodir-event-manager.php:141
 msgid ""
 "Your version of PHP is below the minimum version of PHP required by Events "
 "for GeoDirectory. Please contact your host and request that your version be "
