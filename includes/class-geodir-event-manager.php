@@ -328,7 +328,7 @@ final class GeoDir_Event_Manager {
 		$design_style = geodir_design_style();
 
 		if ( ! $design_style ) {
-			$nonces = GeoDir_Event_AJAX::instance()->get_nonces();
+			$geodir_nonce = GeoDir_Event_AJAX::instance()->get_nonces( 'geodir_widget_post_type_field_options' );
 
 			// Register scripts
 			// YUI Calendar.
@@ -341,7 +341,7 @@ final class GeoDir_Event_Manager {
 				'geodir-events-widget',
 				'Geodir_Events_Widget',
 				array(
-					'nonce' => $nonces['geodir_widget_post_type_field_options'],
+					'nonce' => $geodir_nonce,
 				)
 			);
 

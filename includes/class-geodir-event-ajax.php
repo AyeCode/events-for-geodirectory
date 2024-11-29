@@ -106,12 +106,17 @@ class GeoDir_Event_AJAX {
 	/**
 	 * Retrieve nonces for AJAX actions.
 	 *
+	 * @param string $action  AJAX action name.
 	 * @return array Nonces for AJAX actions.
 	 */
-	public function get_nonces() {
+	public function get_nonces( $action = null ) {
 		$nonces = array();
 		foreach ( $this->ajax_actions as $action_name => $details ) {
 			$nonces[ $this->action_prefix . $action_name ] = wp_create_nonce( $this->action_prefix . $action_name );
+		}
+
+		if ( ! is_null( $action ) && isset( $nonces[ $action ] ) ) {
+			return $nonces[ $action ];
 		}
 
 		return $nonces;
