@@ -5,7 +5,7 @@ Donate link: https://wpgeodirectory.com
 Requires at least: 4.9
 Tested up to: 6.7
 Requires PHP: 7.2
-Stable tag: 2.3.14
+Stable tag: 2.3.15
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -69,6 +69,9 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 3. Go to WordPress Admin -> Events -> Settings and customize behaviour as needed
 
 == Changelog ==
+
+= 2.3.15 - 2025-01-31 =
+* Change to prevent possible object injection (requires POP chain not found in our plugins) - CHANGED/FIXED
 
 = 2.3.14 - 2024-11-28 = 
 * Changes for load scripts on call - CHANGED

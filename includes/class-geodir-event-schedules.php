@@ -37,7 +37,18 @@ class GeoDir_Event_Schedules {
 			return false;
 		}
 
-		$data					= maybe_unserialize( $event_data );
+
+		// prevent object injection
+		if ( is_serialized( $event_data ) ) {
+			$data = unserialize( $event_data, array( 'allowed_classes' => false ) );
+		} else {
+			$data = $event_data;
+		}
+
+		if(is_object( $data ) ) {
+			return false;
+		}
+
 		$recurring 				= ! empty( $data['recurring'] ) ? true : false;
 		$all_day 				= ! empty( $data['all_day'] ) ? true : false;
 		$start_date 			= ! empty( $data['start_date'] ) ? $data['start_date'] : '';
