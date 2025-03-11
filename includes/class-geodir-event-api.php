@@ -25,12 +25,43 @@ class GeoDir_Event_API {
 
 	public static function init() {
 		$event_post_types = GeoDir_Event_Post_Type::get_event_post_types();
+
 		foreach ( $event_post_types as $post_type ) {
+			// Categories
+			add_filter( 'rest_' . $post_type . 'category_collection_params', array( __CLASS__, 'taxonomy_collection_params' ), 11, 2 );
+			add_filter( 'rest_' . $post_type . 'category_query', array( __CLASS__, 'rest_taxonomy_query' ), 11, 2 );
+			add_filter( 'rest_prepare_' . $post_type . 'category', array( __CLASS__, 'rest_taxonomy_response' ), 11, 3 );
+			add_filter( 'geodir_rest_' . $post_type . 'category_item_links', array( __CLASS__, 'rest_taxonomy_item_links' ), 11, 3 );
+
+			// Tags
+			add_filter( 'rest_' . $post_type . '_tags_collection_params', array( __CLASS__, 'taxonomy_collection_params' ), 11, 2 );
+			add_filter( 'rest_' . $post_type . '_tags_query', array( __CLASS__, 'rest_taxonomy_query' ), 11, 2 );
+			add_filter( 'rest_prepare_' . $post_type . '_tags', array( __CLASS__, 'rest_taxonomy_response' ), 11, 3 );
+			add_filter( 'geodir_rest_' . $post_type . '_tags_item_links', array( __CLASS__, 'rest_taxonomy_item_links' ), 11, 3 );
+
 			add_filter( 'rest_' . $post_type . '_collection_params', array( __CLASS__, 'event_collection_params' ), 10, 2 );
 			add_filter( 'rest_' . $post_type . '_query', array( __CLASS__, 'event_query' ), 10, 2 );
 		}
+
 		add_filter( 'geodir_rest_post_custom_fields_schema', array( __CLASS__, 'event_feild_schema' ), 10, 6 );
 		add_filter( 'geodir_rest_get_post_data', array( __CLASS__, 'event_post_data' ), 10, 4 );
+	}
+
+	public static function taxonomy_collection_params( $params, $taxonomy ) {
+		global $geodir_event_manager;
+
+		$post_type = $geodir_event_manager->query->get_taxonomy_post_type( $taxonomy->name );
+
+		return self::event_collection_params( $params, get_post_type_object( $post_type ) );
+	}
+
+	public static function rest_taxonomy_query( $prepared_args, $request ) {
+		global $wp, $geodirectory;
+
+		$prepared_args['event_type'] = $request->get_param( 'event_type' );
+		$prepared_args['single_event'] = (bool) $request->get_param( 'single_event' );
+
+		return $prepared_args;
 	}
 
 	public static function event_collection_params( $params, $post_type_obj ) {
@@ -50,6 +81,56 @@ class GeoDir_Event_API {
 			'default'            => false,
 		);
 		return $params;
+	}
+
+	public static function rest_taxonomy_response( $response, $item, $request ) {
+		if ( ! empty( $response->data['link'] ) && ( ( $event_type = $request->get_param( 'event_type' ) ) || $request->get_param( 'id' ) ) ) {
+			$default_filter = geodir_get_option( 'event_default_filter', 'upcoming' );
+
+			if ( empty( $event_type ) ) {
+				$event_type = $default_filter;
+			}
+
+			if ( $event_type != $default_filter ) {
+				$response->data['link'] = add_query_arg( array( 'etype' => $event_type ), $response->data['link'] );
+			}
+
+			if ( $request->get_param( 'id' ) ) {
+				$response->data['count'] = (int) GeoDir_Event_Query::get_term_count( $item->term_id, $item->taxonomy, array( 'event_type' => $event_type, 'single_event' => (bool) $request->get_param( 'single_event' ) ) );
+			}
+		}
+
+		return $response;
+	}
+
+	public static function rest_taxonomy_item_links( $links, $item, $request = array() ) {
+		if ( ! empty( $request ) && ( ( $event_type = $request->get_param( 'event_type' ) ) || $request->get_param( 'id' ) ) ) {
+			$default_filter = geodir_get_option( 'event_default_filter', 'upcoming' );
+
+			if ( $event_type == $default_filter ) {
+				return $links;
+			}
+
+			if ( empty( $event_type ) ) {
+				$event_type = $default_filter;
+			}
+
+			$args = array( 'event_type' => $event_type );
+
+			if ( $request->get_param( 'single_event' ) ) {
+				$args['single_event'] = true;
+			}
+
+			if ( ! empty( $links['self']['href'] ) ) {
+				$links['self']['href'] = add_query_arg( $args, $links['self']['href'] );
+			}
+
+			if ( ! empty( $links['collection']['href'] ) ) {
+				$links['collection']['href'] = add_query_arg( $args, $links['collection']['href'] );
+			}
+		}
+
+		return $links;
 	}
 
 	public static function event_query( $args, $request ) {

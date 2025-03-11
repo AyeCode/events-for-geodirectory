@@ -37,15 +37,14 @@ class GeoDir_Event_Schedules {
 			return false;
 		}
 
-
-		// prevent object injection
+		// Prevent object injection.
 		if ( is_serialized( $event_data ) ) {
 			$data = unserialize( $event_data, array( 'allowed_classes' => false ) );
 		} else {
 			$data = $event_data;
 		}
 
-		if(is_object( $data ) ) {
+		if ( is_object( $data ) ) {
 			return false;
 		}
 
@@ -735,16 +734,30 @@ class GeoDir_Event_Schedules {
 	}
 
 	public static function location_term_counts( $sql, $term_id, $taxonomy, $post_type, $location_type, $loc, $count_type, $where ) {
-		if ( GeoDir_Post_types::supports( $post_type, 'events' )  ) {
+		global $geodir_event_query_vars;
+
+		if ( GeoDir_Post_types::supports( $post_type, 'events' ) ) {
 			$table = geodir_db_cpt_table( $post_type );
+			$event_type = geodir_get_option( 'event_default_filter', 'upcoming' );
+			$single_event = false;
+
+			if ( ! empty( $geodir_event_query_vars ) ) {
+				if ( isset( $geodir_event_query_vars['event_type'] ) ) {
+					$event_type = $geodir_event_query_vars['event_type'];
+				}
+
+				if ( isset( $geodir_event_query_vars['single_event'] ) ) {
+					$single_event = (bool) $geodir_event_query_vars['single_event'];
+				}
+			}
 
 			$join = "LEFT JOIN " . GEODIR_EVENT_SCHEDULES_TABLE . " ON " . GEODIR_EVENT_SCHEDULES_TABLE . ".event_id = post_id";
-			$condition = self::event_type_condition( 'upcoming' );
+			$condition = self::event_type_condition( $event_type );
 
 			if ( $count_type == 'review_count' ) {
 				$sql = "SELECT COALESCE(SUM(rating_count),0) FROM {$table} {$join} WHERE post_status = 'publish' $where AND FIND_IN_SET( " . $term_id . ", post_category )";
 			} else {
-				$sql = "SELECT COUNT(post_id) FROM {$table} {$join} WHERE post_status = 'publish' $where AND FIND_IN_SET( " . $term_id . ", post_category )";
+				$sql = "SELECT COUNT( " . ( $single_event ? "DISTINCT " : "" ) . "post_id ) FROM {$table} {$join} WHERE post_status = 'publish' $where AND FIND_IN_SET( " . $term_id . ", post_category )";
 			}
 
 			 $sql .= " AND {$condition}";
