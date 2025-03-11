@@ -537,7 +537,7 @@ class GeoDir_Event_Query {
 		}
 
 		foreach ( $terms as $key => $term ) {
-			if ( ! empty( $term->count ) && ! empty( $term->taxonomy ) && GeoDir_Taxonomies::supports( $term->taxonomy, 'events' ) && ( $count = self::get_term_count( $term->term_id, $term->taxonomy ) ) !== null ) {
+			if ( ! empty( $term->count ) && ! empty( $term->taxonomy ) && GeoDir_Taxonomies::supports( $term->taxonomy, 'events' ) && ( $count = self::get_term_count( $term->term_id, $term->taxonomy, $query_vars ) ) !== null ) {
 				$terms[ $key ]->count = $count;
 			}
 		}
@@ -545,8 +545,8 @@ class GeoDir_Event_Query {
 		return $terms;
 	}
 
-	public static function get_term_count( $term_id, $taxonomy ) {
-		global $wpdb;
+	public static function get_term_count( $term_id, $taxonomy, $query_vars ) {
+		global $wpdb, $geodir_event_query_vars;
 
 		$cache_key = 'geodir_event_term_count:' . $term_id;
 
@@ -555,14 +555,17 @@ class GeoDir_Event_Query {
 			return $cache;
 		}
 
+		$geodir_event_query_vars = $query_vars;
 		$count = null;
 		$post_type = self::get_taxonomy_post_type( $taxonomy );
+
 		$term_count_sql = GeoDir_Event_Schedules::location_term_counts( '', $term_id, $taxonomy, $post_type, '', array(), 'term_count', '' );
 
 		if ( $term_count_sql ) {
 			$count = (int) $wpdb->get_var( $term_count_sql );
 		}
 
+		unset( $geodir_event_query_vars );
 		wp_cache_set( $cache_key, $count );
 
 		return $count;

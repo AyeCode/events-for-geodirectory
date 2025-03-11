@@ -70,6 +70,9 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 
 == Changelog ==
 
+= 2.3.16 - TBD =
+* Events terms REST API response terms count is not consistent - CHANGED
+
 = 2.3.15 - 2025-01-31 =
 * Change to prevent possible object injection (requires POP chain not found in our plugins) - CHANGED/FIXED
 
@@ -88,7 +91,7 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 * Are You Interested widget breaks the page - FIXED
 
 = 2.3.10 - 2024-04-09 =
-* Dummy data using old CDN url which can cauSE broken images - FIXED
+* Dummy data using old CDN url which can cause broken images - FIXED
 
 = 2.3.9 - 2024-04-04 =
 * WordPress v6.5 compatibility check - CHANGED
