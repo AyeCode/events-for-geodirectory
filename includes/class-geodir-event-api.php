@@ -107,12 +107,12 @@ class GeoDir_Event_API {
 		if ( ! empty( $request ) && ( ( $event_type = $request->get_param( 'event_type' ) ) || $request->get_param( 'id' ) ) ) {
 			$default_filter = geodir_get_option( 'event_default_filter', 'upcoming' );
 
-			if ( $event_type == $default_filter ) {
-				return $links;
-			}
-
 			if ( empty( $event_type ) ) {
 				$event_type = $default_filter;
+			}
+
+			if ( $event_type == $default_filter ) {
+				return $links;
 			}
 
 			$args = array( 'event_type' => $event_type );
