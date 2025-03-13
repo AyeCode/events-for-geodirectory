@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Events for GeoDirectory 2.3.14\n"
+"Project-Id-Version: Events for GeoDirectory 2.3.16\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-28 20:04+0530\n"
-"PO-Revision-Date: 2024-11-28 20:04+0530\n"
+"POT-Creation-Date: 2025-03-13 18:09+0530\n"
+"PO-Revision-Date: 2025-03-13 18:09+0530\n"
 "Last-Translator: \n"
 "Language-Team: AyeCode Ltd <contact@ayecode.io>\n"
 "Language: en_US\n"
@@ -255,79 +255,79 @@ msgstr ""
 msgid "Distance to current post"
 msgstr ""
 
-#: includes/class-geodir-event-api.php:42
+#: includes/class-geodir-event-api.php:73
 msgid "Filter the events to show."
 msgstr ""
 
-#: includes/class-geodir-event-api.php:48
+#: includes/class-geodir-event-api.php:79
 msgid "Show single listing for recurring event."
 msgstr ""
 
-#: includes/class-geodir-event-api.php:91
+#: includes/class-geodir-event-api.php:172
 msgid "Event start date (Y-m-d)."
 msgstr ""
 
-#: includes/class-geodir-event-api.php:98
+#: includes/class-geodir-event-api.php:179
 msgid "Event end date (Y-m-d)."
 msgstr ""
 
-#: includes/class-geodir-event-api.php:105
+#: includes/class-geodir-event-api.php:186
 msgid "Event duration (days)."
 msgstr ""
 
-#: includes/class-geodir-event-api.php:111
+#: includes/class-geodir-event-api.php:192
 msgid "Recurring type."
 msgstr ""
 
-#: includes/class-geodir-event-api.php:119
+#: includes/class-geodir-event-api.php:200
 msgid "Recurring interval"
 msgstr ""
 
-#: includes/class-geodir-event-api.php:127
+#: includes/class-geodir-event-api.php:208
 msgid "Repeat on days."
 msgstr ""
 
-#: includes/class-geodir-event-api.php:134
+#: includes/class-geodir-event-api.php:215
 msgid "Repeat on weeks."
 msgstr ""
 
-#: includes/class-geodir-event-api.php:141
+#: includes/class-geodir-event-api.php:222
 msgid "Recurring end type."
 msgstr ""
 
-#: includes/class-geodir-event-api.php:149
+#: includes/class-geodir-event-api.php:230
 msgid "Max repeat."
 msgstr ""
 
-#: includes/class-geodir-event-api.php:155
+#: includes/class-geodir-event-api.php:236
 msgid "Recurring end date (Y-m-d)."
 msgstr ""
 
-#: includes/class-geodir-event-api.php:162
+#: includes/class-geodir-event-api.php:243
 msgid "Custom recurring dates."
 msgstr ""
 
-#: includes/class-geodir-event-api.php:168
+#: includes/class-geodir-event-api.php:249
 msgid "All day event?"
 msgstr ""
 
-#: includes/class-geodir-event-api.php:174
+#: includes/class-geodir-event-api.php:255
 msgid "Event start time (H:i)."
 msgstr ""
 
-#: includes/class-geodir-event-api.php:182
+#: includes/class-geodir-event-api.php:263
 msgid "Event end time (H:i)."
 msgstr ""
 
-#: includes/class-geodir-event-api.php:190
+#: includes/class-geodir-event-api.php:271
 msgid "Different event times?"
 msgstr ""
 
-#: includes/class-geodir-event-api.php:196
+#: includes/class-geodir-event-api.php:277
 msgid "Event start times (H:i)."
 msgstr ""
 
-#: includes/class-geodir-event-api.php:204
+#: includes/class-geodir-event-api.php:285
 msgid "Event end times (H:i)."
 msgstr ""
 
@@ -1325,11 +1325,11 @@ msgstr ""
 msgid " to "
 msgstr ""
 
-#: includes/class-geodir-event-schedules.php:599
+#: includes/class-geodir-event-schedules.php:609
 msgid "More"
 msgstr ""
 
-#: includes/class-geodir-event-schedules.php:599
+#: includes/class-geodir-event-schedules.php:609
 msgid "Less"
 msgstr ""
 
