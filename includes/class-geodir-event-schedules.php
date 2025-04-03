@@ -942,6 +942,10 @@ class GeoDir_Event_Schedules {
 			'{start_date} - {end_date} @ {start_time} - {end_time}',
 			'{start_date} @ {start_time} {br} {end_date} @ {end_time}',
 			'{start_date} @ {start_time}',
+			'{start_date}, {start_time} - {end_date}, {end_time}',
+			'{start_date} - {end_date}, {start_time} - {end_time}',
+			'{start_date}, {start_time} {br} {end_date}, {end_time}',
+			'{start_date}, {start_time}',
 		);
 
 		return apply_filters( 'geodir_event_get_schedule_templates', $template );

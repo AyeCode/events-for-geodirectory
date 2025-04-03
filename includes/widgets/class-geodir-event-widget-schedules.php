@@ -372,11 +372,8 @@ class GeoDir_Event_Widget_Schedules extends WP_Super_Duper {
 		$content = $template;
 		if ( ! empty( $item['has_times'] ) ) {
 			if ( empty( $item['end_date'] ) ) {
-				if ( strpos( $content, '{start_date} - {end_date} @' ) !== false ) {
-					$content = str_replace( '{start_date} - {end_date} @', '{start_date} @', $content );
-				}
-				if ( strpos( $content, '{start_date} - {end_date} ,' ) !== false ) {
-					$content = str_replace( '{start_date} - {end_date} ,', '{start_date} ,', $content );
+				if ( strpos( $content, '{start_date} - {end_date}' ) !== false ) {
+					$content = str_replace( '{start_date} - {end_date}', '{start_date}', $content );
 				}
 			}
 		}
@@ -419,7 +416,7 @@ class GeoDir_Event_Widget_Schedules extends WP_Super_Duper {
 
 		$content = trim( $content, '@-, ' );
 		$content = normalize_whitespace( $content );
-		$content = str_replace( array( '- @', '- ,', '@ -', ', -', '@ <br>', '- <br>' ), array( '-', '-', '-', '-', '<br>', '<br>' ), $content );
+		$content = str_replace( array( '- @', '- ,', '@ -', ', -', '@ <br>', ', <br>', '- <br>' ), array( '-', '-', '-', '-', '<br>', '<br>', '<br>' ), $content );
 		foreach( $custom_vars as $var ) {
 			if ( isset( $item[ $var ] ) && $item[ $var ] === substr( $content, -1 * strlen( $item[ $var ] ) ) ) {
 				$content = substr( $content, 0, -1 * strlen( $item[ $var ] ) );
