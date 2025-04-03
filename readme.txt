@@ -5,7 +5,7 @@ Donate link: https://wpgeodirectory.com
 Requires at least: 4.9
 Tested up to: 6.7
 Requires PHP: 7.2
-Stable tag: 2.3.16
+Stable tag: 2.3.17
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -70,8 +70,9 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 
 == Changelog ==
 
-= 2.3.17 - TBD =
+= 2.3.17 - 2025-04-03 =
 * AJAX search looses the event calendar filter on search action - FIXED
+* GD > Event Shcedules new date templates added - ADDED
 
 = 2.3.16 - 2025-03-13 =
 * Events terms REST API response terms count is not consistent - CHANGED
