@@ -63,6 +63,7 @@ class GeoDir_Event_Fields {
 		add_filter( 'geodir_search_cpt_search_setting_field', array( __CLASS__, 'cpt_search_setting_field' ), 10, 2 );
 		add_filter( 'geodir_search_output_to_main_event', array( __CLASS__, 'search_bar_output_event' ), 10, 3 );
 		add_filter( 'geodir_search_filter_field_output_event', array( __CLASS__, 'search_output_event' ), 10, 3 );
+		add_action( 'geodir_before_search_form', array( __CLASS__, 'search_form_inputs' ), 10, 1 );
 
 		// Post meta custom fields
 		add_action( 'geodir_post_meta_standard_fields', array( __CLASS__, 'post_meta_standard_fields' ), 10, 2 );
@@ -2290,5 +2291,18 @@ class GeoDir_Event_Fields {
 		}
 
 		return $value;
+	}
+
+	/**
+	 * Search form inputs.
+	 *
+	 * @since 2.3.17
+	 *
+	 * @param array $args Input args.
+	 */
+	public static function search_form_inputs( $args ) {
+		if ( ! empty( $_REQUEST['event_calendar'] ) && geodir_is_page( 'search' ) ) {
+			echo '<input type="hidden" name="event_calendar" value="' . esc_attr( $_REQUEST['event_calendar'] ) . '">';
+		}
 	}
 }
