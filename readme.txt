@@ -70,6 +70,9 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 
 == Changelog ==
 
+= 2.3.17 - TBD =
+* AJAX search looses the event calendar filter on search action - FIXED
+
 = 2.3.16 - 2025-03-13 =
 * Events terms REST API response terms count is not consistent - CHANGED
 
