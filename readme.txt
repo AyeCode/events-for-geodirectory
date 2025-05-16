@@ -70,6 +70,9 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 
 == Changelog ==
 
+= 2.3.19 - 2025-05-TBD =
+* Event Calendar previous month action is not working - FIXED
+
 = 2.3.18 - 2025-04-17 =
 * WordPress v6.8 compatibility check - CHANGED
 
