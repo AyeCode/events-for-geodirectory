@@ -70,6 +70,9 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 
 == Changelog ==
 
+= 2.3.20 - 2025-06-TBD =
+* Add nofollow attribute to event filter dropdown links - CHANGED
+
 = 2.3.19 - 2025-05-22 =
 * Event Calendar previous month action is not working - FIXED
 
