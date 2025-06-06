@@ -14,7 +14,7 @@
  * happen. When this occurs the version of the template file will be bumped and
  * the readme will list any important changes.
  *
- * @see        https://docs.wpgeodirectory.com/article/346-customizing-templates/
+ * @see        https://wpgeodirectory.com/documentation/article/how-tos/customizing-templates/
  * @package    GeoDir_Event_Manager
  * @version    2.3.20
  */
