@@ -30,6 +30,7 @@ class GeoDir_Event_Schedules {
 		add_action( 'delete_post', array( __CLASS__, 'delete_schedules' ), 10, 1 );
 		add_filter( 'geodir_location_count_reviews_by_term_sql', array( __CLASS__, 'location_term_counts' ), 10, 8 );
 		add_filter( 'seopress_sitemaps_single_url', array( __CLASS__, 'seopress_sitemaps_single_url' ), 10, 2 );
+		add_filter( 'geodir_elementor_tag_url_render_value', array( __CLASS__, 'elementor_tag_url_render_value' ), 10, 3 );
 	}
 
 	public static function save_schedules( $event_data, $post_id ) {
@@ -972,5 +973,25 @@ class GeoDir_Event_Schedules {
 		}
 
 		return $seopress_url;
+	}
+
+	/*
+	 * Append event recurring schedule date to url.
+	 *
+	 * @since 2.3.20
+	 *
+	 * @param mixed  $value Tag value.
+	 * @param string $key Tag key.
+	 * @param object $ele_tag Tag object.
+	 * @return string Filtered url.
+	 */
+	public static function elementor_tag_url_render_value( $value, $key, $ele_tag ) {
+		global $gd_post;
+
+		if ( $key == 'post_url' && $value && ! empty( $gd_post->post_type ) && ! empty( $gd_post->recurring ) && ! empty( $gd_post->start_date ) && GeoDir_Post_types::supports( $gd_post->post_type, 'events' ) ) {
+			$value = add_query_arg( 'gde', $gd_post->start_date, $value );
+		}
+
+		return $value;
 	}
 }

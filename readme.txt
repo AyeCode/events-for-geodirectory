@@ -72,6 +72,7 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 
 = 2.3.20 - 2025-06-TBD =
 * Add nofollow attribute to event filter dropdown links - CHANGED
+* Add schedule date for recurring event url in elementor tag post_url - CHANGED
 
 = 2.3.19 - 2025-05-22 =
 * Event Calendar previous month action is not working - FIXED
