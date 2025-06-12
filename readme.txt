@@ -5,7 +5,7 @@ Donate link: https://wpgeodirectory.com
 Requires at least: 5.0
 Tested up to: 6.8
 Requires PHP: 7.2
-Stable tag: 2.3.19
+Stable tag: 2.3.20
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -70,7 +70,7 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 
 == Changelog ==
 
-= 2.3.20 - 2025-06-TBD =
+= 2.3.20 - 2025-06-12 =
 * Add nofollow attribute to event filter dropdown links - CHANGED
 * Add schedule date for recurring event url in elementor tag post_url - CHANGED
 
