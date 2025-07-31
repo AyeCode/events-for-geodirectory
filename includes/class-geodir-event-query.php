@@ -43,6 +43,7 @@ class GeoDir_Event_Query {
 		add_filter( 'geodir_filter_widget_listings_groupby', array( __CLASS__, 'widget_posts_groupby' ), 1, 2 );
 		add_filter( 'geodir_filter_widget_listings_orderby', array( __CLASS__, 'widget_posts_orderby' ), 1, 3 );
 		add_filter( 'geodir_custom_key_orderby', array( __CLASS__, 'custom_key_orderby' ), 20, 7 );
+		add_filter( 'geodir_advanced_search_autocomplete_script_posts_request', array( __CLASS__, 'search_autocomplete_set_single_event' ) );
 
 		// Events map markers
 		add_filter( 'geodir_rest_markers_query_join', array( __CLASS__, 'rest_markers_query_join' ), 9, 2 );
@@ -703,5 +704,22 @@ class GeoDir_Event_Query {
 		}
 
 		return $clauses;
+	}
+
+	/**
+	 * Set single event parameter for autocomplete event search.
+	 *
+	 * @since 2.3.21
+	 *
+	 * @return mixed.
+	 */
+	public static function search_autocomplete_set_single_event() {
+		$post_types = geodir_get_posttypes( 'object' );
+
+		foreach ( $post_types as $post_type => $data ) {
+			if ( GeoDir_Post_types::supports( $post_type, 'events' ) ) {
+				echo ' if("' . esc_attr( esc_js( $post_type ) ) . '"==post_type' . ( ! empty( $data->rewrite->slug ) ? '||"' . esc_attr( esc_js( $data->rewrite->slug ) ) . '"==post_type_slug' : '' ) . '){request_url+="&single_event=1";} ';
+			}
+		}
 	}
 }

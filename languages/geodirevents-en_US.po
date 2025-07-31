@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Events for GeoDirectory 2.3.20\n"
+"Project-Id-Version: Events for GeoDirectory 2.3.21\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-12 19:05+0530\n"
-"PO-Revision-Date: 2025-06-12 19:05+0530\n"
+"POT-Creation-Date: 2025-07-31 20:38+0530\n"
+"PO-Revision-Date: 2025-07-31 20:38+0530\n"
 "Last-Translator: \n"
 "Language-Team: AyeCode Ltd <contact@ayecode.io>\n"
 "Language: en_US\n"
@@ -1319,8 +1319,8 @@ msgctxt "Listing status"
 msgid "Delete Permanently"
 msgstr ""
 
-#: includes/class-geodir-event-query.php:255
 #: includes/class-geodir-event-query.php:256
+#: includes/class-geodir-event-query.php:257
 #: includes/template-functions.php:334 includes/template-functions.php:335
 msgid " to "
 msgstr ""
