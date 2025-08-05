@@ -1213,15 +1213,16 @@ if ( ! class_exists( 'TGM_Plugin_Activation' ) ) {
 						$last_plugin    = array_pop( $linked_plugins ); // Pop off last name to prep for readability.
 						$imploded       = empty( $linked_plugins ) ? $last_plugin : ( implode( ', ', $linked_plugins ) . ' ' . esc_html_x( 'and', 'plugin A *and* plugin B', 'tgmpa' ) . ' ' . $last_plugin );
 
-						$rendered .= sprintf(
-							$line_template,
-							sprintf(
-								translate_nooped_plural( $this->strings[ $type ], $count, 'tgmpa' ),
-								$imploded,
-								$count
-							)
-						);
-
+						if ( ! empty( $this->strings[ $type ] ) ) {
+							$rendered .= sprintf(
+								$line_template,
+								sprintf(
+									translate_nooped_plural( $this->strings[ $type ], $count, 'tgmpa' ),
+									$imploded,
+									$count
+								)
+							);
+						}
 					}
 					unset( $type, $plugin_group, $linked_plugins, $count, $last_plugin, $imploded );
 

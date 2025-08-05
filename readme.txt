@@ -70,6 +70,9 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 
 == Changelog ==
 
+= 2.3.22 - 2025-08-TBD =
+* Conflicts with TGM_Plugin_Activation class - FIXED
+
 = 2.3.21 - 2025-07-31 =
 * Show single events in search autocompleter results - CHANGED
 
