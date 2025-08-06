@@ -735,7 +735,7 @@ class GeoDir_Event_Schedules {
 	}
 
 	public static function location_term_counts( $sql, $term_id, $taxonomy, $post_type, $location_type, $loc, $count_type, $where ) {
-		global $geodir_event_query_vars;
+		global $wpdb, $geodir_event_query_vars;
 
 		if ( GeoDir_Post_types::supports( $post_type, 'events' ) ) {
 			$table = geodir_db_cpt_table( $post_type );
@@ -756,12 +756,24 @@ class GeoDir_Event_Schedules {
 			$condition = self::event_type_condition( $event_type );
 
 			if ( $count_type == 'review_count' ) {
-				$sql = "SELECT COALESCE(SUM(rating_count),0) FROM {$table} {$join} WHERE post_status = 'publish' $where AND FIND_IN_SET( " . $term_id . ", post_category )";
+				$sql = "SELECT COALESCE(SUM(rating_count),0) FROM {$table} {$join} WHERE post_status = 'publish' $where";
 			} else {
-				$sql = "SELECT COUNT( " . ( $single_event ? "DISTINCT " : "" ) . "post_id ) FROM {$table} {$join} WHERE post_status = 'publish' $where AND FIND_IN_SET( " . $term_id . ", post_category )";
+				$sql = "SELECT COUNT( " . ( $single_event ? "DISTINCT " : "" ) . "post_id ) FROM {$table} {$join} WHERE post_status = 'publish' $where";
 			}
 
-			 $sql .= " AND {$condition}";
+			if ( geodir_taxonomy_type( $taxonomy ) == 'tag' ) {
+				$term = get_term( (int) $term_id, $taxonomy );
+
+				if ( ! empty( $term ) && ! is_wp_error( $term ) ) {
+					$sql .= $wpdb->prepare( "AND FIND_IN_SET( %s, post_tags )", array( $term->name ) );
+				} else {
+					$sql .= $wpdb->prepare( "AND FIND_IN_SET( %d, post_tags )", array( $term_id ) );
+				}
+			} else {
+				$sql .= $wpdb->prepare( "AND FIND_IN_SET( %d, post_category )", array( $term_id ) );
+			}
+
+			$sql .= " AND {$condition}";
 		}
 
 		return $sql;
