@@ -1,16 +1,17 @@
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Events for GeoDirectory 2.3.22\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-08-07 12:34+0530\n"
-"PO-Revision-Date: 2025-08-07 12:34+0530\n"
-"Last-Translator: \n"
+"PO-Revision-Date: 2025-08-07 12:29+0530\n"
+"Last-Translator: AyeCode Ltd <contact@ayecode.io>\n"
 "Language-Team: AyeCode Ltd <contact@ayecode.io>\n"
 "Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "X-Poedit-KeywordsList: __;__ngettext:1,2;__ngettext_noop:1,2;_c;_e;_ex:1,2c;"
 "_n:1,2;_n_noop:1,2;_nc:4c,1,2;_nx:4c,1,2;_nx_noop:4c,1,2;_x:1,2c;esc_attr__;"
 "esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;gettext;"
@@ -201,8 +202,8 @@ msgstr ""
 
 #: includes/admin/settings/class-geodir-event-settings-events.php:211
 msgid ""
-"Sometimes people set the end date like 50 years from now and it creates like "
-"50 extra pages of events. This will help to limit max number of event "
+"Sometimes people set the end date like 50 years from now and it creates "
+"like 50 extra pages of events. This will help to limit max number of event "
 "occurrences for the event. Leave blank or use 0 to allow all possible "
 "occurrences."
 msgstr ""
@@ -927,8 +928,9 @@ msgstr ""
 
 #: includes/class-geodir-event-fields.php:916
 msgid ""
-"Click on each day your event will be held. You may choose more than one day. "
-"Selected dates appear in blue and can be unselected by clicking on them."
+"Click on each day your event will be held. You may choose more than one "
+"day. Selected dates appear in blue and can be unselected by clicking on "
+"them."
 msgstr ""
 
 #: includes/class-geodir-event-fields.php:917
@@ -1847,8 +1849,8 @@ msgstr ""
 
 #: includes/libraries/class-tgm-plugin-activation.php:3601
 msgid ""
-"The installation and activation process is starting. This process may take a "
-"while on some hosts, so please be patient."
+"The installation and activation process is starting. This process may take "
+"a while on some hosts, so please be patient."
 msgstr ""
 
 #: includes/libraries/class-tgm-plugin-activation.php:3603
