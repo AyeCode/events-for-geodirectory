@@ -210,6 +210,7 @@ class GeoDir_Event_AYI {
 					var type = jQuery(this).attr('data-type');
 					var postid = jQuery(this).attr('data-postid');
 					var gde = jQuery(this).attr('data-gde');
+					jQuery(this).addClass('disabled');
 					var data = {
 						'action': 'geodir_ayi_action',
 						'geodir_ayi_nonce': '<?php echo $ajax_nonce; ?>',
@@ -220,6 +221,7 @@ class GeoDir_Event_AYI {
 					};
 
 					jQuery.post('<?php echo admin_url('admin-ajax.php'); ?>', data, function (response) {
+						jQuery(this).removeClass('disabled');
 						container.html(response);
 						<?php
 						if(geodir_design_style()){
@@ -305,8 +307,12 @@ class GeoDir_Event_AYI {
 		$users = get_post_meta( $rsvp_args['post_id'], $rsvp_args['type'], true );
 		$gde = ! empty( $rsvp_args['gde'] ) ? sanitize_text_field( strip_tags( $rsvp_args['gde'] ) ) : false;
 
+		if ( ! is_array( $users ) ) {
+			$users = array();
+		}
+
 		if ( $rsvp_args['action'] == 'add' ) {
-			$gde_users = $users;
+			$gde_users = is_array( $users ) ? $users : array();
 
 			if ( ! empty( $gde ) ) {
 				$users = isset( $users[$gde] ) ? $users[$gde] : false;
@@ -326,7 +332,6 @@ class GeoDir_Event_AYI {
 			update_post_meta( $rsvp_args['post_id'], $rsvp_args['type'], $users );
 
 			$posts = get_user_meta( $current_user->ID, $rsvp_args['type'], true );
-
 			$gde_posts = $posts;
 
 			if ( ! empty( $gde ) ) {
@@ -385,28 +390,35 @@ class GeoDir_Event_AYI {
 		do_action( 'geodir_event_ayi_interested_updated', $rsvp_args['post_id'], $current_user->ID, $rsvp_args['type'], $rsvp_args['action'], $rsvp_args['gde'] );
 	}
 
-	public static function geodir_ayi_rsvp_users_for_a_post($post_id, $type = "event_rsvp_yes", $limit = 10, $gde = '' )
-	{
-		$ids = get_post_meta($post_id, $type, true);
+	public static function geodir_ayi_rsvp_users_for_a_post( $post_id, $type = "event_rsvp_yes", $limit = 10, $gde = '' ) {
+		$ids = get_post_meta( $post_id, $type, true );
 
 		if ( ! empty( $gde ) ) {
-			$ids = isset( $ids[$gde] ) ? $ids[$gde] : false;
+			$ids = isset( $ids[ $gde ] ) ? $ids[ $gde ] : false;
 		}
 
 
-		if (!is_array($ids)) {
+		if ( ! is_array( $ids ) ) {
 			return;
 		}
+
 		$count = 1;
-		foreach ($ids as $id) {
-			if($count > $limit) {
+
+		foreach ( $ids as $id ) {
+			if ( $count > $limit ) {
 				break;
 			}
-			$user = get_user_by('id', $id);
-			self::geodir_ayi_rsvp_user_avatar($user);
+
+			$user = get_user_by( 'id', $id );
+
+			if ( empty( $user ) ) {
+				continue;
+			}
+
+			self::geodir_ayi_rsvp_user_avatar( $user );
+
 			$count++;
-		} ?>
-		<?php
+		}
 	}
 
 	public static function geodir_ayi_rsvp_user_avatar($user, $class='') {

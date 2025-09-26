@@ -70,6 +70,9 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 
 == Changelog ==
 
+= 2.3.23 - 2025-09-TBD =
+* GD > AYI sometimes shows PHP notice on recurring events - FIXED
+
 = 2.3.22 - 2025-08-07 =
 * Conflicts with TGM_Plugin_Activation class - FIXED
 * GD > Tags always shows count zero for events - FIXED
