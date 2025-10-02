@@ -1,9 +1,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Events for GeoDirectory 2.3.22\n"
+"Project-Id-Version: Events for GeoDirectory 2.3.23\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-07 12:34+0530\n"
+"POT-Creation-Date: 2025-10-02 19:21+0530\n"
 "PO-Revision-Date: 2025-08-07 12:29+0530\n"
 "Last-Translator: AyeCode Ltd <contact@ayecode.io>\n"
 "Language-Team: AyeCode Ltd <contact@ayecode.io>\n"
@@ -332,28 +332,28 @@ msgstr ""
 msgid "Event end times (H:i)."
 msgstr ""
 
-#: includes/class-geodir-event-ayi.php:497
+#: includes/class-geodir-event-ayi.php:509
 msgid "Submitted by"
 msgstr ""
 
-#: includes/class-geodir-event-ayi.php:526
-#: includes/class-geodir-event-ayi.php:531
+#: includes/class-geodir-event-ayi.php:538
+#: includes/class-geodir-event-ayi.php:543
 msgid "is interested"
 msgstr ""
 
-#: includes/class-geodir-event-ayi.php:526
-#: includes/class-geodir-event-ayi.php:531
+#: includes/class-geodir-event-ayi.php:538
+#: includes/class-geodir-event-ayi.php:543
 msgid "are interested"
 msgstr ""
 
-#: includes/class-geodir-event-ayi.php:565
+#: includes/class-geodir-event-ayi.php:577
 #: includes/class-geodir-event-calendar.php:314
 #: includes/template-functions.php:74
 #: includes/widgets/class-geodir-event-widget-calendar.php:65
 msgid "Sunday"
 msgstr ""
 
-#: includes/class-geodir-event-ayi.php:565
+#: includes/class-geodir-event-ayi.php:577
 #: includes/class-geodir-event-calendar.php:308
 #: includes/template-functions.php:75
 #: includes/widgets/class-geodir-event-widget-calendar.php:66
@@ -361,35 +361,35 @@ msgstr ""
 msgid "Monday"
 msgstr ""
 
-#: includes/class-geodir-event-ayi.php:565
+#: includes/class-geodir-event-ayi.php:577
 #: includes/class-geodir-event-calendar.php:309
 #: includes/template-functions.php:76
 #: includes/widgets/class-geodir-event-widget-calendar.php:67
 msgid "Tuesday"
 msgstr ""
 
-#: includes/class-geodir-event-ayi.php:565
+#: includes/class-geodir-event-ayi.php:577
 #: includes/class-geodir-event-calendar.php:310
 #: includes/template-functions.php:77
 #: includes/widgets/class-geodir-event-widget-calendar.php:68
 msgid "Wednesday"
 msgstr ""
 
-#: includes/class-geodir-event-ayi.php:565
+#: includes/class-geodir-event-ayi.php:577
 #: includes/class-geodir-event-calendar.php:311
 #: includes/template-functions.php:78
 #: includes/widgets/class-geodir-event-widget-calendar.php:69
 msgid "Thursday"
 msgstr ""
 
-#: includes/class-geodir-event-ayi.php:565
+#: includes/class-geodir-event-ayi.php:577
 #: includes/class-geodir-event-calendar.php:312
 #: includes/template-functions.php:79
 #: includes/widgets/class-geodir-event-widget-calendar.php:70
 msgid "Friday"
 msgstr ""
 
-#: includes/class-geodir-event-ayi.php:565
+#: includes/class-geodir-event-ayi.php:577
 #: includes/class-geodir-event-calendar.php:313
 #: includes/template-functions.php:80
 #: includes/widgets/class-geodir-event-widget-calendar.php:71
