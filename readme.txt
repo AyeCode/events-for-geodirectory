@@ -3,9 +3,9 @@ Contributors: stiofansisland, paoltaia, ayecode
 Tags: events, calendar, event, schedule, organizer, geodirectory, event listings, events directory, event manager, events calendar
 Donate link: https://wpgeodirectory.com
 Requires at least: 5.0
-Tested up to: 6.8
+Tested up to: 6.9
 Requires PHP: 7.2
-Stable tag: 2.3.23
+Stable tag: 2.3.24
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -69,6 +69,9 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 3. Go to WordPress Admin -> Events -> Settings and customize behaviour as needed
 
 == Changelog ==
+
+= 2.3.24 - 2025-12-04 =
+* WordPress 6.9 compatibility check - COMPATIBILITY
 
 = 2.3.23 - 2025-10-02 =
 * GD > AYI sometimes shows PHP notice on recurring events - FIXED
