@@ -567,6 +567,10 @@ class GeoDir_Event_AYI {
 		} else {
 			$event_details = maybe_unserialize($post->event_dates);
 
+			if ( ! is_array( $event_details ) ) {
+				$event_details = array();
+			}
+
 			$event_start_date = isset($event_details['event_start']) ? date('l, F j, Y', strtotime($event_details['event_start'])) : '';
 			$event_start_time = isset($event_details['starttime']) ? date('g:i a', strtotime($event_details['starttime'])) : '';
 

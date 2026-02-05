@@ -512,7 +512,7 @@ class GeoDir_Event_Schedules {
 		return $schedule;
 	}
 
-	public static function get_schedules_html( $schedules, $link = true ) {
+	public static function get_schedules_html( $schedules, $link = true, $_gd_post = array() ) {
 		global $schedule_links, $aui_bs5;
 
 		if ( empty( $schedules ) ) {
@@ -529,7 +529,14 @@ class GeoDir_Event_Schedules {
 		$time_format		= geodir_event_time_format();
 		$sep_class = $design_style ? 'd-inline-block px-1' : '';
 		$schedule_seperator = apply_filters( 'geodir_event_schedule_start_end_seperator', '<div class="geodir-schedule-sep '.$sep_class.'">-</div>' );
-		$gmt_offset			= geodir_gmt_offset();
+		$tz_offset			= ! empty( $gd_post->timezone_offset ) ? $gd_post->timezone_offset : geodir_gmt_offset();
+		$timezone_offset	= apply_filters( 'geodir_event_schedule_timezone_offset', '', $tz_offset, $_gd_post );
+		$tz_offset_html		= '';
+		if ( $timezone_offset ) {
+			$format_timezone = $timezone_offset == '+0' ? "" : str_replace( ":00", "", $timezone_offset );
+			$tz_offset_html = '<div class="geodir-tz-offset text-muted d-inline-block ps-1 pl-1">GMT' . $format_timezone . '</div>';
+			$tz_offset_html	= apply_filters( 'geodir_event_schedule_timezone_offset_html', $tz_offset_html, $format_timezone, $timezone_offset, $_gd_post );
+		}
 		$current			= ! empty( $_REQUEST['gde'] ) ? sanitize_text_field( $_REQUEST['gde'] ) : '';
 		$count = 0;
 
@@ -576,6 +583,7 @@ class GeoDir_Event_Schedules {
 					$meta_startDate = $start_date . 'T00:00:00';
 				}
 				$schedule .= '</div>';
+				$schedule .= $tz_offset_html;
 
 				if ( $link ) {
 					// Don't show link for preview.
@@ -599,7 +607,7 @@ class GeoDir_Event_Schedules {
 
 				$class = $current == $start_date ? ' geodir-schedule-current' : '';
 				$class .= $count > 5 && $design_style ? ' collapse' : '';
-				$html .= '<div class="geodir-schedule' . $class . '"><meta itemprop="startDate" content="' . $meta_startDate . $gmt_offset . '"><meta itemprop="endDate" content="' . $meta_endDate . $gmt_offset . '">' . $schedule . '</div>';
+				$html .= '<div class="geodir-schedule' . $class . '"><meta itemprop="startDate" content="' . esc_attr( $meta_startDate . $tz_offset ) . '"><meta itemprop="endDate" content="' . esc_attr( $meta_endDate . $tz_offset ) . '">' . $schedule . '</div>';
 			}
 		}
 		if ( ! empty( $html ) ) {

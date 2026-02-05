@@ -310,6 +310,10 @@ class GeoDir_Event_API {
 
 			$data['event_dates'] = maybe_unserialize( $gd_post->event_dates );
 
+			if ( is_object( $data['event_dates'] ) ) {
+				$data['event_dates'] = array();
+			}
+
 			$event_data = self::prepare_schedule_response( $gd_post );
 
 			$schedules 	= GeoDir_Event_Schedules::get_schedules( $gd_post->ID, $event_type );
