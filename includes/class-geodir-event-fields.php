@@ -382,6 +382,10 @@ class GeoDir_Event_Fields {
 		$event_data 			= geodir_get_cf_value( $field );
 		$event_data 			= maybe_unserialize( $event_data );
 
+		if ( ! is_array( $event_data ) ) {
+			$event_data = array();
+		}
+
 		// v1 event data
 		if ( ! empty( $event_data ) && isset( $event_data['event_recurring_dates'] ) && isset( $event_data['event_start'] ) && empty( $event_data['recurring_dates'] ) && empty( $event_data['start_date'] ) ) {
 			$event_data['start_date'] = $event_data['event_start'];
@@ -1117,6 +1121,8 @@ class GeoDir_Event_Fields {
 				$event_data['repeat_weeks'] 	= $repeat_weeks;
 
 				$value = maybe_serialize( $event_data );
+			} else if ( is_object( $value ) ) {
+				$value = '';
 			}
 		}
 
@@ -1272,7 +1278,7 @@ class GeoDir_Event_Fields {
 			if ( $event_type == 'upcoming' && empty( $schedules ) ) {
 				$schedules 	= GeoDir_Event_Schedules::get_schedules( $the_post->ID, 'all', $count ); // Show all schedules for past events
 			}
-			$schedules_html = GeoDir_Event_Schedules::get_schedules_html( $schedules, ! empty( $the_post->recurring ) );
+			$schedules_html = GeoDir_Event_Schedules::get_schedules_html( $schedules, ! empty( $the_post->recurring ), $the_post );
 
 			$output = geodir_field_output_process( $output );
 			if ( ! empty( $output ) && isset( $output['raw'] ) ) {
@@ -1334,7 +1340,7 @@ class GeoDir_Event_Fields {
 			}
 
 			if ( ! empty( $schedule->start_date ) ) {
-				$value = GeoDir_Event_Schedules::get_schedules_html( array( (object)$schedule ), false );
+				$value = GeoDir_Event_Schedules::get_schedules_html( array( (object)$schedule ), false, $event_post );
 
 				$field_icon = geodir_field_icon_proccess( $cf );
 				$output = geodir_field_output_process( $output );

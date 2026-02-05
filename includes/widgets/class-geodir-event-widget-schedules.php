@@ -245,7 +245,7 @@ class GeoDir_Event_Widget_Schedules extends WP_Super_Duper {
 			return $output;
 		}
 
-		$output = self::get_schedules_html( $schedules, $template, $date_format, $time_format );
+		$output = self::get_schedules_html( $schedules, $template, $date_format, $time_format, $gd_post );
 
 		return $output;
 	}
@@ -283,7 +283,7 @@ class GeoDir_Event_Widget_Schedules extends WP_Super_Duper {
 	 *
 	 * @return string
 	 */
-	public static function get_schedules_html( $schedules, $template = '', $date_format = '', $time_format = '' ) {
+	public static function get_schedules_html( $schedules, $template = '', $date_format = '', $time_format = '', $gd_post = array() ) {
 		if ( empty( $schedules ) ) {
 			return NULL;
 		}
@@ -335,8 +335,16 @@ class GeoDir_Event_Widget_Schedules extends WP_Super_Duper {
 
 			$row_class = $design_style ? 'list-group-item px-0 py-2' : '';
 			$schedule_row = self::schedule_parse_template( $_schedule, $row, $template, $date_format, $time_format );
+			$timezone_offset = ! empty( $gd_post->timezone_offset ) ? $gd_post->timezone_offset : geodir_gmt_offset();
+			$timezone_offset = apply_filters( 'geodir_event_schedule_timezone_offset', '', $timezone_offset, $gd_post );
+			if ( $timezone_offset ) {
+				$format_timezone = $timezone_offset == '+0' ? "" : str_replace( ":00", "", $timezone_offset );
+				$tz_offset_html  = '<div class="geodir-tz-offset text-muted d-inline-block ps-1 pl-1">GMT' . $format_timezone . '</div>';
+				$tz_offset_html  = apply_filters( 'geodir_event_schedule_timezone_offset_html', $tz_offset_html, $format_timezone, $timezone_offset, $gd_post );
+				$schedule_row    .= ' ' . trim( strip_tags( $tz_offset_html ) );
+			}
 			$schedule_row = '<div class="geodir-schedule-row '.$row_class.'">' . $schedule_row . '</div>';
-			$schedule_row = apply_filters( 'geodir_event_widget_schedule_html', $schedule_row, $row, $template, $date_format, $time_format );
+			$schedule_row = apply_filters( 'geodir_event_widget_schedule_html', $schedule_row, $row, $template, $date_format, $time_format, $timezone_offset );
 
 			if ( ! empty( $schedule_row ) ) {
 				$_schedules[] = $schedule_row;

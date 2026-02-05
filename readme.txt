@@ -70,6 +70,9 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 
 == Changelog ==
 
+= 2.3.25 - 2026-02-TBD =
+* Extra sanitation to event data before save schedules - CHANGED
+
 = 2.3.24 - 2025-12-04 =
 * WordPress 6.9 compatibility check - COMPATIBILITY
 

@@ -235,6 +235,10 @@ class GeoDir_Event_Admin_Import_Export {
 			foreach ( $results as $key => $row ) {
 				$event_data = ! empty( $row['event_dates'] ) ? maybe_unserialize( $row['event_dates'] ) : array();
 
+				if ( ! is_array( $event_data ) ) {
+					$event_data = array();
+				}
+
 				// v1 event data
 				if ( ! empty( $event_data ) && isset( $event_data['event_recurring_dates'] ) && isset( $event_data['event_start'] ) && ! isset( $event_data['recurring_dates'] ) ) {
 					$event_data['start_date'] = $event_data['event_start'];
