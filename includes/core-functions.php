@@ -734,3 +734,41 @@ function geodir_event_input_time_format( $picker = false ) {
 
 	return $time_format;
 }
+
+/**
+ * Checks if a string contains a serialized PHP object.
+ *
+ * @since 2.3.26
+ *
+ * @param string $data The string to inspect.
+ * @return bool        True if an object pattern is found.
+ */
+function geodir_event_is_serialized_object( $data ) {
+	if ( ! is_string( $data ) || empty( $data ) ) {
+		return false;
+	}
+
+	$pattern = '/[OC]:[0-9]+:(\\\\"|")[^"]+(\\\\"|"):[0-9]+:[\{|:]/';
+
+	return (bool) preg_match( $pattern, $data );
+}
+
+/**
+ * Unserializes data only if it was serialized.
+ *
+ * @since 2.3.26
+ *
+ * @param string $data Data that might be unserialized.
+ * @return mixed Unserialized data can be any type.
+ */
+function geodir_event_maybe_unserialize( $data, $allowed_classes = false ) {
+	if ( is_serialized( $data ) ) { // Don't attempt to unserialize data that wasn't serialized going in.
+		if ( $allowed_classes !== null ) {
+			return @unserialize( trim( $data ), array( 'allowed_classes' => $allowed_classes ) );
+		} else {
+			return @unserialize( trim( $data ) );
+		}
+	}
+
+	return $data;
+}

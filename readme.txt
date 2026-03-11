@@ -5,7 +5,7 @@ Donate link: https://wpgeodirectory.com
 Requires at least: 5.0
 Tested up to: 6.9
 Requires PHP: 7.2
-Stable tag: 2.3.25
+Stable tag: 2.3.26
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -69,6 +69,9 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 3. Go to WordPress Admin -> Events -> Settings and customize behaviour as needed
 
 == Changelog ==
+
+= 2.3.26 - 2026-02-TBD =
+* Validate sanitized event date before save - FIXED
 
 = 2.3.25 - 2026-02-05 =
 * Extra sanitation to event data before save schedules - CHANGED
