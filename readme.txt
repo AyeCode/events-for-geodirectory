@@ -70,7 +70,7 @@ Get your hands on all the Events Calendar for GeoDirectory premium add-ons and t
 
 == Changelog ==
 
-= 2.3.26 - 2026-02-TBD =
+= 2.3.26 - 2026-03-11 =
 * Validate sanitized event date before save - FIXED
 
 = 2.3.25 - 2026-02-05 =

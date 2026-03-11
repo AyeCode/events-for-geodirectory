@@ -1,9 +1,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Events for GeoDirectory 2.3.25\n"
+"Project-Id-Version: Events for GeoDirectory 2.3.26\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-05 21:30+0530\n"
+"POT-Creation-Date: 2026-03-11 19:37+0530\n"
 "PO-Revision-Date: 2025-08-07 12:29+0530\n"
 "Last-Translator: AyeCode Ltd <contact@ayecode.io>\n"
 "Language-Team: AyeCode Ltd <contact@ayecode.io>\n"
@@ -949,132 +949,132 @@ msgstr ""
 msgid "Ends at"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1293
+#: includes/class-geodir-event-fields.php:1298
 msgid "Date"
 msgid_plural "Dates"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-geodir-event-fields.php:1461
-#: includes/class-geodir-event-fields.php:1628
+#: includes/class-geodir-event-fields.php:1466
+#: includes/class-geodir-event-fields.php:1633
 #, php-format
 msgid "From: %s"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1461
-#: includes/class-geodir-event-fields.php:1628
+#: includes/class-geodir-event-fields.php:1466
+#: includes/class-geodir-event-fields.php:1633
 #, php-format
 msgid "%s Start Date"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1462
-#: includes/class-geodir-event-fields.php:1629
+#: includes/class-geodir-event-fields.php:1467
+#: includes/class-geodir-event-fields.php:1634
 #, php-format
 msgid "To: %s"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1462
-#: includes/class-geodir-event-fields.php:1629
+#: includes/class-geodir-event-fields.php:1467
+#: includes/class-geodir-event-fields.php:1634
 #, php-format
 msgid "%s End Date"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1473
-#: includes/class-geodir-event-fields.php:1544
-#: includes/class-geodir-event-fields.php:1644
-#: includes/class-geodir-event-fields.php:1722
+#: includes/class-geodir-event-fields.php:1478
+#: includes/class-geodir-event-fields.php:1549
+#: includes/class-geodir-event-fields.php:1649
+#: includes/class-geodir-event-fields.php:1727
 #, php-format
 msgid "%s Date"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1510
-#: includes/class-geodir-event-fields.php:1626
-#: includes/class-geodir-event-fields.php:1689
+#: includes/class-geodir-event-fields.php:1515
+#: includes/class-geodir-event-fields.php:1631
+#: includes/class-geodir-event-fields.php:1694
 #, php-format
 msgid "%s Dates"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1774
+#: includes/class-geodir-event-fields.php:1779
 msgid "Event Start Date"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1785
+#: includes/class-geodir-event-fields.php:1790
 msgid "Event Start Time"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1796
+#: includes/class-geodir-event-fields.php:1801
 msgid "Event Starts On"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1807
+#: includes/class-geodir-event-fields.php:1812
 msgid "Event End Date"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1818
+#: includes/class-geodir-event-fields.php:1823
 msgid "Event End Time"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1829
+#: includes/class-geodir-event-fields.php:1834
 msgid "Event Ends On"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1840
+#: includes/class-geodir-event-fields.php:1845
 msgid "First Schedule Start Date"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1851
+#: includes/class-geodir-event-fields.php:1856
 msgid "First Schedule Start Time"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1862
+#: includes/class-geodir-event-fields.php:1867
 msgid "First Schedule Starts On"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1873
+#: includes/class-geodir-event-fields.php:1878
 msgid "First Schedule End Date"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1884
+#: includes/class-geodir-event-fields.php:1889
 msgid "First Schedule End Time"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1895
+#: includes/class-geodir-event-fields.php:1900
 msgid "First Schedule Ends On"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1906
+#: includes/class-geodir-event-fields.php:1911
 msgid "Last Schedule Start Date"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1917
+#: includes/class-geodir-event-fields.php:1922
 msgid "Last Schedule Start Time"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1928
+#: includes/class-geodir-event-fields.php:1933
 msgid "Last Schedule Starts On"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1939
+#: includes/class-geodir-event-fields.php:1944
 msgid "Last Schedule End Date"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1950
+#: includes/class-geodir-event-fields.php:1955
 msgid "Last Schedule End Time"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:1961
+#: includes/class-geodir-event-fields.php:1966
 msgid "Last Schedule Ends On"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:2154
+#: includes/class-geodir-event-fields.php:2159
 msgid "is past event (for events only)"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:2155
+#: includes/class-geodir-event-fields.php:2160
 msgid "is ongoing event (for events only)"
 msgstr ""
 
-#: includes/class-geodir-event-fields.php:2156
+#: includes/class-geodir-event-fields.php:2161
 msgid "is upcoming event (for events only)"
 msgstr ""
 
