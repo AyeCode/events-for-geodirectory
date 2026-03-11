@@ -565,7 +565,7 @@ class GeoDir_Event_AYI {
 			$event_end_date = $post->event_end ? date('l, F j, Y', strtotime($post->event_end)) : '';
 			$event_end_time = $post->endtime ? date('g:i a', strtotime($post->endtime)) : '';
 		} else {
-			$event_details = maybe_unserialize($post->event_dates);
+			$event_details = geodir_event_maybe_unserialize($post->event_dates);
 
 			if ( ! is_array( $event_details ) ) {
 				$event_details = array();

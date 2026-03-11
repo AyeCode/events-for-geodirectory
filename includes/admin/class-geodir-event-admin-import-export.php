@@ -233,7 +233,7 @@ class GeoDir_Event_Admin_Import_Export {
 			$week_day_nos 			= self::week_days();
 
 			foreach ( $results as $key => $row ) {
-				$event_data = ! empty( $row['event_dates'] ) ? maybe_unserialize( $row['event_dates'] ) : array();
+				$event_data = ! empty( $row['event_dates'] ) ? geodir_event_maybe_unserialize( $row['event_dates'] ) : array();
 
 				if ( ! is_array( $event_data ) ) {
 					$event_data = array();

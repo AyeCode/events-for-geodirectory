@@ -380,7 +380,7 @@ class GeoDir_Event_Fields {
 		$htmlvar_name 			= $field['htmlvar_name'];
 		$description			= $field['desc'] != '' ? __( $field['desc'], 'geodirectory' ) : '';
 		$event_data 			= geodir_get_cf_value( $field );
-		$event_data 			= maybe_unserialize( $event_data );
+		$event_data 			= geodir_event_maybe_unserialize( $event_data );
 
 		if ( ! is_array( $event_data ) ) {
 			$event_data = array();
@@ -1123,6 +1123,11 @@ class GeoDir_Event_Fields {
 				$value = maybe_serialize( $event_data );
 			} else if ( is_object( $value ) ) {
 				$value = '';
+			} else if ( is_serialized( $value ) ) {
+				// Checks if a string contains PHP object.
+				if ( geodir_event_is_serialized_object( $value ) ) {
+					$value = '';
+				}
 			}
 		}
 
@@ -1149,8 +1154,8 @@ class GeoDir_Event_Fields {
 			return $value;
 		}
 
-		$event_data = maybe_unserialize( $value );
-		$event_data = maybe_unserialize( $event_data ); // includes\post_functions.php#296
+		$event_data = geodir_event_maybe_unserialize( $value );
+		$event_data = geodir_event_maybe_unserialize( $event_data ); // includes\post_functions.php#296
 
 		if ( isset( $gd_post->recurring ) ) {
 			$recurring = ! empty( $gd_post->recurring ) ? true : false;

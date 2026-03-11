@@ -308,7 +308,7 @@ class GeoDir_Event_API {
 
 			$event_type = geodir_get_option( 'event_hide_past_dates' ) ? 'upcoming' : 'all';
 
-			$data['event_dates'] = maybe_unserialize( $gd_post->event_dates );
+			$data['event_dates'] = geodir_event_maybe_unserialize( $gd_post->event_dates );
 
 			if ( is_object( $data['event_dates'] ) ) {
 				$data['event_dates'] = array();
