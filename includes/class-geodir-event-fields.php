@@ -664,6 +664,7 @@ class GeoDir_Event_Fields {
 						'3'      =>  esc_html__( '3rd week', 'geodirevents' ),
 						'4'      =>  esc_html__( '4th week', 'geodirevents' ),
 						'5'      =>  esc_html__( '5th week', 'geodirevents' ),
+						'-1'     =>  esc_html__( 'Last week', 'geodirevents' ),
 					),
 					'multiple'          => true,
 					'select2'           => true,
@@ -882,6 +883,7 @@ class GeoDir_Event_Fields {
 					<option value="3" <?php selected( true, in_array( 3, $repeat_weeks ) ); ?>><?php _e( '3rd week', 'geodirevents' ); ?></option>
 					<option value="4" <?php selected( true, in_array( 4, $repeat_weeks ) ); ?>><?php _e( '4th week', 'geodirevents' ); ?></option>
 					<option value="5" <?php selected( true, in_array( 5, $repeat_weeks ) ); ?>><?php _e( '5th week', 'geodirevents' ); ?></option>
+					<option value="-1" <?php selected( true, in_array( -1, $repeat_weeks ) ); ?>><?php _e( 'Last week', 'geodirevents' ); ?></option>
 				</select>
 	        </div>
 			<div id="geodir_event_recurring_ends_row" class="geodir_form_row clearfix gd-fieldset-details geodir-event-field <?php echo $recurring_class; ?>">

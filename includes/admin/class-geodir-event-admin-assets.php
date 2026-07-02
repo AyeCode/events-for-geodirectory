@@ -32,13 +32,14 @@ class GeoDir_Event_Admin_Assets {
 	 */
 	public function admin_styles() {
 		global $post, $pagenow;
+		$suffix         = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		$screen         = get_current_screen();
 		$screen_id      = $screen ? $screen->id : '';
 
 		// Register admin styles
 		// YUI Calendar
 		wp_register_style( 'yui-calendar', GEODIR_EVENT_PLUGIN_URL . '/assets/yui/calendar.css', array(), '2.9.0' );
-		wp_register_style( 'geodir-event-admin', GEODIR_EVENT_PLUGIN_URL . '/assets/css/admin.css', array(), GEODIR_EVENT_VERSION );
+		wp_register_style( 'geodir-event-admin', GEODIR_EVENT_PLUGIN_URL . '/assets/css/admin' . $suffix . '.css', array(), GEODIR_EVENT_VERSION );
 
 		// Admin styles for GD pages only
 		if ( in_array( $screen_id, geodir_get_screen_ids() ) ) {

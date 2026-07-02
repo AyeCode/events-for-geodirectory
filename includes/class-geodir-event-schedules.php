@@ -234,13 +234,13 @@ class GeoDir_Event_Schedules {
 								$week_diff = ( $recurr_time - strtotime( $year . '-' . $month . '-01' ) );
 								$week_num = $week_diff > 0 ? (int)( $week_diff / ( DAY_IN_SECONDS * 7 ) ) : 0;
 								$week_num++;
+								$is_last_week_day = ( $d + 7 ) > $month_days;
 
 								if ( $recurr_time >= $start_time && $recurr_time <= $end_time ) {
-									if ( empty( $repeat_days ) && !empty( $repeat_weeks ) && in_array( $week_num, $repeat_weeks ) ) {
-										$dates[] = date_i18n( 'Y-m-d', $recurr_time );
-									} else if ( !empty( $repeat_days ) && empty( $repeat_weeks ) && in_array( $week_day, $repeat_days ) ) {
-										$dates[] = date_i18n( 'Y-m-d', $recurr_time );
-									} else if ( !empty( $repeat_weeks ) && in_array( $week_num, $repeat_weeks ) && !empty( $repeat_days ) && in_array( $week_day, $repeat_days ) ) {
+									$day_match = empty( $repeat_days ) || in_array( $week_day, $repeat_days );
+									$week_match = empty( $repeat_weeks ) || in_array( $week_num, $repeat_weeks ) || ( $is_last_week_day && in_array( -1, $repeat_weeks ) );
+
+									if ( $day_match && $week_match ) {
 										$dates[] = date_i18n( 'Y-m-d', $recurr_time );
 									}
 								}
@@ -270,17 +270,15 @@ class GeoDir_Event_Schedules {
 									$week_diff = ( $recurr_time - strtotime( $year . '-' . $month . '-01' ) );
 									$week_num = $week_diff > 0 ? (int)( $week_diff / ( DAY_IN_SECONDS * 7 ) ) : 0;
 									$week_num++;
+									$is_last_week_day = ( $d + 7 ) > $month_days;
 
 									if ( $recurr_time >= $start_time && in_array( $week_day, $repeat_days ) ) {
 										$week_date = '';
 
-										if ( empty( $repeat_days ) && !empty( $repeat_weeks ) && in_array( $week_num, $repeat_weeks ) ) {
-											$week_date = date_i18n( 'Y-m-d', $recurr_time );
-										} else if ( !empty( $repeat_days ) && empty( $repeat_weeks ) && in_array( $week_day, $repeat_days ) ) {
-											$week_date = date_i18n( 'Y-m-d', $recurr_time );
-										} else if ( !empty( $repeat_weeks ) && in_array( $week_num, $repeat_weeks ) && !empty( $repeat_days ) && in_array( $week_day, $repeat_days ) ) {
+										if ( empty( $repeat_weeks ) || in_array( $week_num, $repeat_weeks ) || ( $is_last_week_day && in_array( -1, $repeat_weeks ) ) ) {
 											$week_date = date_i18n( 'Y-m-d', $recurr_time );
 										}
+										
 										if ( $week_date != '' ) {
 											$dates[] = $week_date;
 											$days_limit++;

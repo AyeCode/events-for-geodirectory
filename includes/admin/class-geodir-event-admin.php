@@ -46,6 +46,12 @@ class GeoDir_Event_Admin {
 		// Conditional Fields
 		add_filter( 'geodir_cf_show_conditional_fields_setting', array( $this, 'cf_show_conditional_fields_setting' ), 10, 4 );
 		add_filter( 'geodir_conditional_fields_options', array( $this, 'conditional_fields_options' ), 10, 2 );
+
+		// Events admin list table: Start date column + sorting.
+		add_action( 'admin_init', array( __CLASS__, 'register_event_sortable_columns' ) );
+		add_filter( 'manage_posts_columns', array( __CLASS__, 'event_list_columns' ), 20, 2 );
+		add_action( 'manage_posts_custom_column', array( __CLASS__, 'event_list_column_content' ), 10, 2 );
+		add_action( 'pre_get_posts', array( __CLASS__, 'event_list_orderby' ) );
 	}
 
 	/**
@@ -64,6 +70,137 @@ class GeoDir_Event_Admin {
 		}
 
 		return $columns;
+	}
+
+	/**
+	 * Register the Start date column as sortable for event post types.
+	 *
+	 * @since 2.3.31
+	 */
+	public static function register_event_sortable_columns() {
+		foreach ( GeoDir_Event_Post_Type::get_event_post_types() as $post_type ) {
+			add_filter( "manage_edit-{$post_type}_sortable_columns", array( __CLASS__, 'event_sortable_columns' ) );
+		}
+	}
+
+	/**
+	 * Mark the Start date column as sortable.
+	 *
+	 * @since 2.3.31
+	 *
+	 * @param array $columns Sortable columns.
+	 * @return array
+	 */
+	public static function event_sortable_columns( $columns ) {
+		$columns['event_start'] = 'event_start';
+
+		return $columns;
+	}
+
+	/**
+	 * Add a Start date column to the events admin list table.
+	 *
+	 * @since 2.3.31
+	 *
+	 * @param array  $columns   Existing columns.
+	 * @param string $post_type Current post type.
+	 * @return array
+	 */
+	public static function event_list_columns( $columns, $post_type ) {
+		if ( ! GeoDir_Post_types::supports( $post_type, 'events' ) ) {
+			return $columns;
+		}
+
+		// Insert before the Date column.
+		$new_columns = array();
+		foreach ( $columns as $key => $label ) {
+			if ( $key === 'date' && ! isset( $new_columns['event_start'] ) ) {
+				$new_columns['event_start'] = __( 'Start date', 'geodirevents' );
+			}
+			$new_columns[ $key ] = $label;
+		}
+
+		if ( ! isset( $new_columns['event_start'] ) ) {
+			$new_columns['event_start'] = __( 'Start date', 'geodirevents' );
+		}
+
+		return $new_columns;
+	}
+
+	/**
+	 * Render the Start date column content.
+	 *
+	 * @since 2.3.31
+	 *
+	 * @param string $column  Column key.
+	 * @param int    $post_id Post ID.
+	 */
+	public static function event_list_column_content( $column, $post_id ) {
+		if ( $column !== 'event_start' ) {
+			return;
+		}
+
+		// Same source as the sort, so display and ordering match.
+		$schedule = GeoDir_Event_Schedules::get_start_schedule( $post_id );
+
+		if ( empty( $schedule ) || empty( $schedule->start_date ) || $schedule->start_date === '0000-00-00' ) {
+			echo '&mdash;';
+			return;
+		}
+
+		$output = date_i18n( get_option( 'date_format' ), strtotime( $schedule->start_date ) );
+
+		if ( empty( $schedule->all_day ) && ! empty( $schedule->start_time ) && $schedule->start_time !== '00:00:00' ) {
+			$output .= ' ' . date_i18n( get_option( 'time_format' ), strtotime( $schedule->start_time ) );
+		}
+
+		echo esc_html( $output );
+	}
+
+	/**
+	 * Sort the events admin list by event start date.
+	 *
+	 * @since 2.3.31
+	 *
+	 * @param WP_Query $query Query object.
+	 */
+	public static function event_list_orderby( $query ) {
+		if ( ! is_admin() || ! $query->is_main_query() ) {
+			return;
+		}
+
+		if ( $query->get( 'orderby' ) !== 'event_start' ) {
+			return;
+		}
+
+		if ( ! GeoDir_Post_types::supports( $query->get( 'post_type' ), 'events' ) ) {
+			return;
+		}
+
+		add_filter( 'posts_clauses', array( __CLASS__, 'event_list_orderby_clauses' ), 10, 2 );
+	}
+
+	/**
+	 * Order the events admin query by the earliest schedule start date.
+	 *
+	 * @since 2.3.31
+	 *
+	 * @param array    $clauses Query clauses.
+	 * @param WP_Query $query   Query object.
+	 * @return array
+	 */
+	public static function event_list_orderby_clauses( $clauses, $query ) {
+		global $wpdb;
+
+		// Apply to the events query only, once.
+		remove_filter( 'posts_clauses', array( __CLASS__, 'event_list_orderby_clauses' ), 10 );
+
+		$order = strtoupper( (string) $query->get( 'order' ) ) === 'ASC' ? 'ASC' : 'DESC';
+		$table = GEODIR_EVENT_SCHEDULES_TABLE;
+
+		$clauses['orderby'] = "(SELECT MIN(es.start_date) FROM {$table} es WHERE es.event_id = {$wpdb->posts}.ID) {$order}";
+
+		return $clauses;
 	}
 
 	/**

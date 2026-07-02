@@ -1,0 +1,41 @@
+.gd-event-countdown {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	justify-content: center;
+	margin: 20px 0;
+}
+
+.gd-event-countdown__unit {
+	background: var(--gd-countdown-bg, #f44336);
+	color: var(--gd-countdown-color, #fff);
+	padding: 15px 20px;
+	border-radius: 8px;
+	text-align: center;
+	min-width: 64px;
+}
+
+.gd-event-countdown__number {
+	display: block;
+	font-size: 24px;
+	font-weight: 700;
+	line-height: 1.2;
+	font-variant-numeric: tabular-nums;
+}
+
+.gd-event-countdown__label {
+	display: block;
+	font-size: 12px;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+}
+
+.gd-event-countdown__finished {
+	display: inline-block;
+	padding: 15px 20px;
+	border-radius: 8px;
+	background: var(--gd-countdown-bg, #f44336);
+	color: var(--gd-countdown-color, #fff);
+	font-size: 20px;
+	font-weight: 700;
+}

@@ -23,6 +23,7 @@ function goedir_event_register_widgets( $widgets ) {
 		$widgets[] = 'GeoDir_Event_Widget_AYI';
 		$widgets[] = 'GeoDir_Event_Widget_Calendar';
 		$widgets[] = 'GeoDir_Event_Widget_Schedules';
+		$widgets[] = 'GeoDir_Event_Widget_Countdown';
 	}
 
 	return $widgets;
@@ -261,11 +262,18 @@ function geodir_event_schema( $schema, $post ) {
 				$schedule = GeoDir_Event_Schedules::get_start_schedule( $gd_post->ID );
 			}
 
+			// Fall back to the post's own event dates when no schedule row exists.
+			if ( empty( $schedule ) ) {
+				$schedule = geodir_event_schedule_from_post( $gd_post );
+			}
+
 			if ( ! empty( $schedule ) ) {
 				$timezone = geodir_gmt_offset();
 				if ( ! empty( $gd_post->timezone_offset ) ) {
 					$timezone = $gd_post->timezone_offset;
 				}
+				// Normalize to a valid ISO 8601 offset (e.g. "-5:00" => "-05:00").
+				$timezone = geodir_event_normalize_tz_offset( $timezone );
 				$startDate = $schedule->start_date;
 				$endDate = $schedule->end_date;
 				$startTime = ! empty( $schedule->start_time ) ? date_i18n( 'H:i', strtotime( $schedule->start_time ) ) : '00:00';
@@ -372,6 +380,20 @@ function geodir_event_schema( $schema, $post ) {
 				}
 			}
 
+			// Fall back to the listing author when no performer field is set.
+			if ( empty( $performer['name'] ) && apply_filters( 'geodir_event_schema_performer_use_author', true, $gd_post, $schema ) ) {
+				$author_name = geodir_get_client_name( $gd_post->post_author );
+
+				if ( ! empty( $author_name ) ) {
+					$performer['name'] = $author_name;
+
+					$author_url = get_author_posts_url( $gd_post->post_author );
+					if ( ! empty( $author_url ) ) {
+						$performer['url'] = $author_url;
+					}
+				}
+			}
+
 			$performer = apply_filters( 'geodir_event_schema_performer', $performer, $gd_post, $schema );
 			if ( is_array( $performer ) && ! empty( $performer['name'] ) ) {
 				$schema['performer'] = $performer;
@@ -424,9 +446,61 @@ function geodir_event_schema( $schema, $post ) {
 				}
 			}
 
+			// Fall back to the author posts URL when no organizer URL field is set.
+			if ( ! empty( $organizer['name'] ) && empty( $organizer['url'] ) && apply_filters( 'geodir_event_schema_organizer_use_author_url', true, $gd_post, $schema ) ) {
+				$author_url = get_author_posts_url( $gd_post->post_author );
+				if ( ! empty( $author_url ) ) {
+					$organizer['url'] = $author_url;
+				}
+			}
+
 			$organizer = apply_filters( 'geodir_event_schema_organizer', $organizer, $gd_post, $schema );
 			if ( is_array( $organizer ) && ! empty( $organizer['name'] ) ) {
 				$schema['organizer'] = $organizer;
+			}
+
+			// Event offers: offers
+			$offers = array();
+
+			// Use an existing price/cost field when available, otherwise treat the event as free.
+			$offer_price_fields = apply_filters( 'geodir_event_schema_offer_price_fields', array( 'event_price', 'eventprice', 'event_cost', 'eventcost', 'price', 'cost', 'ticket_price', 'ticketprice' ), $gd_post, $schema );
+
+			$offer_price = '';
+			if ( ! empty( $offer_price_fields ) ) {
+				foreach ( $offer_price_fields as $_field ) {
+					if ( isset( $gd_post->{$_field} ) && $gd_post->{$_field} !== '' ) {
+						// Keep digits and decimal point only.
+						$_price = preg_replace( '/[^0-9\.]/', '', (string) $gd_post->{$_field} );
+
+						if ( $_price !== '' && is_numeric( $_price ) ) {
+							$offer_price = $_price;
+							break;
+						}
+					}
+				}
+			}
+
+			if ( $offer_price === '' ) {
+				$offer_price = '0';
+			}
+
+			$offers = array(
+				'@type'         => 'Offer',
+				'url'           => get_permalink( $gd_post->ID ),
+				'price'         => $offer_price,
+				'priceCurrency' => apply_filters( 'geodir_event_schema_offer_currency', 'USD', $gd_post, $schema ),
+				'availability'  => 'https://schema.org/InStock',
+				'validFrom'     => ! empty( $gd_post->post_date ) ? date( 'c', strtotime( $gd_post->post_date ) ) : '',
+			);
+
+			$offers = apply_filters( 'geodir_event_schema_offers', $offers, $gd_post, $schema );
+			if ( ! empty( $offers ) ) {
+				$schema['offers'] = $offers;
+			}
+
+			// Ensure the event URL is always present.
+			if ( empty( $schema['url'] ) ) {
+				$schema['url'] = get_permalink( $gd_post->ID );
 			}
 		}
         $schema['location'] = $place;
@@ -434,9 +508,69 @@ function geodir_event_schema( $schema, $post ) {
         unset($schema['telephone']);
         unset($schema['address']);
         unset($schema['geo']);
+
+        // Drop empty values that should be objects/arrays when present.
+        if ( empty( $schema['review'] ) ) {
+            unset( $schema['review'] );
+        }
+        if ( empty( $schema['sameAs'] ) ) {
+            unset( $schema['sameAs'] );
+        }
     }
 
     return $schema;
+}
+
+/**
+ * Build a schedule object from a post's saved event dates.
+ *
+ * Used as a schema fallback when the event has no row in the schedules table.
+ *
+ * @since 2.3.31
+ *
+ * @param object $gd_post Event post object.
+ * @return object|false Schedule-like object, or false when no start date.
+ */
+function geodir_event_schedule_from_post( $gd_post ) {
+	if ( empty( $gd_post->event_dates ) ) {
+		return false;
+	}
+
+	$dates = geodir_event_maybe_unserialize( $gd_post->event_dates );
+
+	if ( empty( $dates['start_date'] ) ) {
+		return false;
+	}
+
+	return (object) array(
+		'start_date' => $dates['start_date'],
+		'end_date'   => ! empty( $dates['end_date'] ) ? $dates['end_date'] : $dates['start_date'],
+		'start_time' => ! empty( $dates['start_time'] ) ? $dates['start_time'] : '',
+		'end_time'   => ! empty( $dates['end_time'] ) ? $dates['end_time'] : '',
+		'all_day'    => ! empty( $dates['all_day'] ) ? 1 : 0,
+	);
+}
+
+/**
+ * Pad a timezone offset to a valid ISO 8601 form (e.g. "-5:00" => "-05:00").
+ *
+ * @since 2.3.31
+ *
+ * @param string $offset Raw offset string.
+ * @return string Normalized offset, or trimmed input when unrecognized.
+ */
+function geodir_event_normalize_tz_offset( $offset ) {
+	$offset = trim( (string) $offset );
+
+	if ( $offset === '' || strtoupper( $offset ) === 'Z' ) {
+		return $offset;
+	}
+
+	if ( preg_match( '/^([+-])(\d{1,2}):?(\d{2})$/', $offset, $m ) ) {
+		return sprintf( '%s%02d:%02d', $m[1], (int) $m[2], (int) $m[3] );
+	}
+
+	return $offset;
 }
 
 /**

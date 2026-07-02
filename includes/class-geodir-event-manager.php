@@ -304,6 +304,7 @@ final class GeoDir_Event_Manager {
 	 * Enqueue styles.
 	 */
 	public function add_styles() {
+		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		$design_style = geodir_design_style();
 
 		if( ! $design_style ) {
@@ -317,6 +318,9 @@ final class GeoDir_Event_Manager {
 			}
 			wp_enqueue_style( 'geodir-event' );
 		}
+
+		// Countdown widget style.
+		wp_register_style( 'geodir-event-countdown', GEODIR_EVENT_PLUGIN_URL . '/assets/css/countdown' . $suffix . '.css', array(), GEODIR_EVENT_VERSION );
 	}
 
 	/**
@@ -346,6 +350,9 @@ final class GeoDir_Event_Manager {
 
 		$script = $design_style ? 'geodir' : 'geodir-event';
 		wp_localize_script( $script, 'geodir_event_params', geodir_event_params() );
+
+		// Countdown widget script.
+		wp_register_script( 'geodir-event-countdown', GEODIR_EVENT_PLUGIN_URL . '/assets/js/countdown' . $suffix . '.js', array( 'jquery' ), GEODIR_EVENT_VERSION, true );
 	}
 
 	public function add_listing_script(){
