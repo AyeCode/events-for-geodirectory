@@ -1,9 +1,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Events for GeoDirectory 2.3.32\n"
+"Project-Id-Version: Events for GeoDirectory 2.3.33\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-02 20:05+0530\n"
+"POT-Creation-Date: 2026-10-07 19:07+0530\n"
 "PO-Revision-Date: 2025-08-07 12:29+0530\n"
 "Last-Translator: AyeCode Ltd <contact@ayecode.io>\n"
 "Language-Team: AyeCode Ltd <contact@ayecode.io>\n"
@@ -21,31 +21,31 @@ msgstr ""
 "X-Generator: Poedit 3.5\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: includes/admin/admin-functions.php:85 includes/template-functions.php:609
+#: includes/admin/admin-functions.php:87 includes/template-functions.php:613
 msgid "Event Date"
 msgstr ""
 
-#: includes/admin/admin-functions.php:88
+#: includes/admin/admin-functions.php:90
 msgid "Sort by event date"
 msgstr ""
 
-#: includes/admin/admin-functions.php:107
+#: includes/admin/admin-functions.php:109
 #: includes/admin/settings/class-geodir-event-settings-events.php:27
 #: includes/class-geodir-event-post-type.php:156
 msgid "Events"
 msgstr ""
 
-#: includes/admin/admin-functions.php:108
+#: includes/admin/admin-functions.php:110
 msgid ""
 "Check this box if you would like to completely remove all of its data when "
 "Events is deleted."
 msgstr ""
 
-#: includes/admin/admin-functions.php:132
+#: includes/admin/admin-functions.php:134
 msgid "Disable Recurring Events?"
 msgstr ""
 
-#: includes/admin/admin-functions.php:133
+#: includes/admin/admin-functions.php:135
 msgid ""
 "Tick to disable recurring events for this package(for events supported post "
 "type only)."
@@ -60,49 +60,53 @@ msgstr ""
 msgid "With Recurring Events"
 msgstr ""
 
+#: includes/admin/class-geodir-event-admin-install.php:82
+msgid "You do not have permission to run the Events updater."
+msgstr ""
+
 #: includes/admin/class-geodir-event-admin.php:118
 #: includes/admin/class-geodir-event-admin.php:124
 #: includes/class-geodir-event-fields.php:546
 msgid "Start date"
 msgstr ""
 
-#: includes/admin/class-geodir-event-admin.php:289
+#: includes/admin/class-geodir-event-admin.php:300
 #: includes/class-geodir-event-fields.php:543
 #: includes/class-geodir-event-fields.php:832
 msgid "Event start date"
 msgstr ""
 
-#: includes/admin/class-geodir-event-admin.php:290
+#: includes/admin/class-geodir-event-admin.php:301
 #: includes/class-geodir-event-fields.php:562
 #: includes/class-geodir-event-fields.php:837
 msgid "Event end date"
 msgstr ""
 
-#: includes/admin/class-geodir-event-admin.php:314
+#: includes/admin/class-geodir-event-admin.php:325
 msgid "Recurring Schedules in Sitemap"
 msgstr ""
 
-#: includes/admin/class-geodir-event-admin.php:315
+#: includes/admin/class-geodir-event-admin.php:326
 msgid "Show recurring schedules for recurring event in SEOPress XML sitemaps."
 msgstr ""
 
-#: includes/admin/dummy-data/standard_events.php:72
-#: includes/template-functions.php:302
+#: includes/admin/dummy-data/standard_events.php:74
+#: includes/template-functions.php:304
 msgid "Event date"
 msgstr ""
 
-#: includes/admin/dummy-data/standard_events.php:84
-#: includes/template-functions.php:619
+#: includes/admin/dummy-data/standard_events.php:86
+#: includes/template-functions.php:623
 msgid "Newest"
 msgstr ""
 
-#: includes/admin/dummy-data/standard_events.php:96
-#: includes/template-functions.php:629
+#: includes/admin/dummy-data/standard_events.php:98
+#: includes/template-functions.php:633
 msgid "Title"
 msgstr ""
 
-#: includes/admin/dummy-data/standard_events.php:108
-#: includes/template-functions.php:639
+#: includes/admin/dummy-data/standard_events.php:110
+#: includes/template-functions.php:643
 msgid "Rating"
 msgstr ""
 
@@ -338,76 +342,84 @@ msgstr ""
 msgid "Event end times (H:i)."
 msgstr ""
 
-#: includes/class-geodir-event-ayi.php:164
+#: includes/class-geodir-event-ayi.php:159
+msgid "You must be logged in to do that."
+msgstr ""
+
+#: includes/class-geodir-event-ayi.php:172
+msgid "Invalid event."
+msgstr ""
+
+#: includes/class-geodir-event-ayi.php:177
 msgid "Invalid date provided."
 msgstr ""
 
-#: includes/class-geodir-event-ayi.php:531
+#: includes/class-geodir-event-ayi.php:544
 msgid "Submitted by"
 msgstr ""
 
-#: includes/class-geodir-event-ayi.php:560
-#: includes/class-geodir-event-ayi.php:565
+#: includes/class-geodir-event-ayi.php:573
+#: includes/class-geodir-event-ayi.php:578
 msgid "is interested"
 msgstr ""
 
-#: includes/class-geodir-event-ayi.php:560
-#: includes/class-geodir-event-ayi.php:565
+#: includes/class-geodir-event-ayi.php:573
+#: includes/class-geodir-event-ayi.php:578
 msgid "are interested"
 msgstr ""
 
-#: includes/class-geodir-event-ayi.php:603
-#: includes/class-geodir-event-calendar.php:314
-#: includes/template-functions.php:74
-#: includes/widgets/class-geodir-event-widget-calendar.php:65
+#: includes/class-geodir-event-ayi.php:616
+#: includes/class-geodir-event-calendar.php:322
+#: includes/template-functions.php:76
+#: includes/widgets/class-geodir-event-widget-calendar.php:68
 msgid "Sunday"
 msgstr ""
 
-#: includes/class-geodir-event-ayi.php:603
-#: includes/class-geodir-event-calendar.php:308
-#: includes/template-functions.php:75
-#: includes/widgets/class-geodir-event-widget-calendar.php:66
-#: includes/widgets/class-geodir-event-widget-calendar.php:85
+#: includes/class-geodir-event-ayi.php:616
+#: includes/class-geodir-event-calendar.php:316
+#: includes/template-functions.php:77
+#: includes/widgets/class-geodir-event-widget-calendar.php:69
+#: includes/widgets/class-geodir-event-widget-calendar.php:88
 msgid "Monday"
 msgstr ""
 
-#: includes/class-geodir-event-ayi.php:603
-#: includes/class-geodir-event-calendar.php:309
-#: includes/template-functions.php:76
-#: includes/widgets/class-geodir-event-widget-calendar.php:67
+#: includes/class-geodir-event-ayi.php:616
+#: includes/class-geodir-event-calendar.php:317
+#: includes/template-functions.php:78
+#: includes/widgets/class-geodir-event-widget-calendar.php:70
 msgid "Tuesday"
 msgstr ""
 
-#: includes/class-geodir-event-ayi.php:603
-#: includes/class-geodir-event-calendar.php:310
-#: includes/template-functions.php:77
-#: includes/widgets/class-geodir-event-widget-calendar.php:68
+#: includes/class-geodir-event-ayi.php:616
+#: includes/class-geodir-event-calendar.php:318
+#: includes/template-functions.php:79
+#: includes/widgets/class-geodir-event-widget-calendar.php:71
 msgid "Wednesday"
 msgstr ""
 
-#: includes/class-geodir-event-ayi.php:603
-#: includes/class-geodir-event-calendar.php:311
-#: includes/template-functions.php:78
-#: includes/widgets/class-geodir-event-widget-calendar.php:69
+#: includes/class-geodir-event-ayi.php:616
+#: includes/class-geodir-event-calendar.php:319
+#: includes/template-functions.php:80
+#: includes/widgets/class-geodir-event-widget-calendar.php:72
 msgid "Thursday"
 msgstr ""
 
-#: includes/class-geodir-event-ayi.php:603
-#: includes/class-geodir-event-calendar.php:312
-#: includes/template-functions.php:79
-#: includes/widgets/class-geodir-event-widget-calendar.php:70
+#: includes/class-geodir-event-ayi.php:616
+#: includes/class-geodir-event-calendar.php:320
+#: includes/template-functions.php:81
+#: includes/widgets/class-geodir-event-widget-calendar.php:73
 msgid "Friday"
 msgstr ""
 
-#: includes/class-geodir-event-ayi.php:603
-#: includes/class-geodir-event-calendar.php:313
-#: includes/template-functions.php:80
-#: includes/widgets/class-geodir-event-widget-calendar.php:71
+#: includes/class-geodir-event-ayi.php:616
+#: includes/class-geodir-event-calendar.php:321
+#: includes/template-functions.php:82
+#: includes/widgets/class-geodir-event-widget-calendar.php:74
 msgid "Saturday"
 msgstr ""
 
 #: includes/class-geodir-event-calendar.php:94
-#: includes/class-geodir-event-calendar.php:278
+#: includes/class-geodir-event-calendar.php:286
 msgid "Loading..."
 msgstr ""
 
@@ -419,193 +431,193 @@ msgstr ""
 msgid "next"
 msgstr ""
 
-#: includes/class-geodir-event-calendar.php:230
-#: includes/template-functions.php:20 includes/template-functions.php:29
+#: includes/class-geodir-event-calendar.php:231
+#: includes/template-functions.php:22 includes/template-functions.php:31
 msgid "January"
 msgstr ""
 
-#: includes/class-geodir-event-calendar.php:230
-#: includes/template-functions.php:20 includes/template-functions.php:30
+#: includes/class-geodir-event-calendar.php:231
+#: includes/template-functions.php:22 includes/template-functions.php:32
 msgid "February"
 msgstr ""
 
-#: includes/class-geodir-event-calendar.php:230
-#: includes/template-functions.php:20 includes/template-functions.php:31
+#: includes/class-geodir-event-calendar.php:231
+#: includes/template-functions.php:22 includes/template-functions.php:33
 msgid "March"
 msgstr ""
 
-#: includes/class-geodir-event-calendar.php:230
-#: includes/template-functions.php:20 includes/template-functions.php:32
+#: includes/class-geodir-event-calendar.php:231
+#: includes/template-functions.php:22 includes/template-functions.php:34
 msgid "April"
 msgstr ""
 
-#: includes/class-geodir-event-calendar.php:230
-#: includes/template-functions.php:20 includes/template-functions.php:33
+#: includes/class-geodir-event-calendar.php:231
+#: includes/template-functions.php:22 includes/template-functions.php:35
 msgid "May"
 msgstr ""
 
-#: includes/class-geodir-event-calendar.php:230
-#: includes/template-functions.php:20 includes/template-functions.php:34
+#: includes/class-geodir-event-calendar.php:231
+#: includes/template-functions.php:22 includes/template-functions.php:36
 msgid "June"
 msgstr ""
 
-#: includes/class-geodir-event-calendar.php:230
-#: includes/template-functions.php:20 includes/template-functions.php:35
+#: includes/class-geodir-event-calendar.php:231
+#: includes/template-functions.php:22 includes/template-functions.php:37
 msgid "July"
 msgstr ""
 
-#: includes/class-geodir-event-calendar.php:230
-#: includes/template-functions.php:20 includes/template-functions.php:36
+#: includes/class-geodir-event-calendar.php:231
+#: includes/template-functions.php:22 includes/template-functions.php:38
 msgid "August"
 msgstr ""
 
-#: includes/class-geodir-event-calendar.php:230
-#: includes/template-functions.php:20 includes/template-functions.php:37
+#: includes/class-geodir-event-calendar.php:231
+#: includes/template-functions.php:22 includes/template-functions.php:39
 msgid "September"
 msgstr ""
 
-#: includes/class-geodir-event-calendar.php:230
-#: includes/template-functions.php:20 includes/template-functions.php:38
+#: includes/class-geodir-event-calendar.php:231
+#: includes/template-functions.php:22 includes/template-functions.php:40
 msgid "October"
 msgstr ""
 
-#: includes/class-geodir-event-calendar.php:230
-#: includes/template-functions.php:20 includes/template-functions.php:39
+#: includes/class-geodir-event-calendar.php:231
+#: includes/template-functions.php:22 includes/template-functions.php:41
 msgid "November"
 msgstr ""
 
-#: includes/class-geodir-event-calendar.php:230
-#: includes/template-functions.php:20 includes/template-functions.php:40
+#: includes/class-geodir-event-calendar.php:231
+#: includes/template-functions.php:22 includes/template-functions.php:42
 msgid "December"
 msgstr ""
 
-#: includes/class-geodir-event-calendar.php:290
-#: includes/template-functions.php:61
-#: includes/widgets/class-geodir-event-widget-calendar.php:83
+#: includes/class-geodir-event-calendar.php:298
+#: includes/template-functions.php:63
+#: includes/widgets/class-geodir-event-widget-calendar.php:86
 msgid "Mo"
 msgstr ""
 
-#: includes/class-geodir-event-calendar.php:291
-#: includes/template-functions.php:62
+#: includes/class-geodir-event-calendar.php:299
+#: includes/template-functions.php:64
 msgid "Tu"
 msgstr ""
 
-#: includes/class-geodir-event-calendar.php:292
-#: includes/template-functions.php:63
+#: includes/class-geodir-event-calendar.php:300
+#: includes/template-functions.php:65
 msgid "We"
 msgstr ""
 
-#: includes/class-geodir-event-calendar.php:293
-#: includes/template-functions.php:64
+#: includes/class-geodir-event-calendar.php:301
+#: includes/template-functions.php:66
 msgid "Th"
 msgstr ""
 
-#: includes/class-geodir-event-calendar.php:294
-#: includes/template-functions.php:65
+#: includes/class-geodir-event-calendar.php:302
+#: includes/template-functions.php:67
 msgid "Fr"
 msgstr ""
 
-#: includes/class-geodir-event-calendar.php:295
-#: includes/template-functions.php:66
+#: includes/class-geodir-event-calendar.php:303
+#: includes/template-functions.php:68
 msgid "Sa"
 msgstr ""
 
-#: includes/class-geodir-event-calendar.php:296
-#: includes/template-functions.php:60
+#: includes/class-geodir-event-calendar.php:304
+#: includes/template-functions.php:62
 msgid "Su"
 msgstr ""
 
-#: includes/class-geodir-event-calendar.php:299
+#: includes/class-geodir-event-calendar.php:307
 #: includes/class-geodir-event-fields.php:638
 #: includes/class-geodir-event-fields.php:869
-#: includes/template-functions.php:68
-#: includes/widgets/class-geodir-event-widget-calendar.php:84
+#: includes/template-functions.php:70
+#: includes/widgets/class-geodir-event-widget-calendar.php:87
 msgid "Mon"
 msgstr ""
 
-#: includes/class-geodir-event-calendar.php:300
+#: includes/class-geodir-event-calendar.php:308
 #: includes/class-geodir-event-fields.php:639
 #: includes/class-geodir-event-fields.php:870
-#: includes/template-functions.php:69
+#: includes/template-functions.php:71
 msgid "Tue"
 msgstr ""
 
-#: includes/class-geodir-event-calendar.php:301
+#: includes/class-geodir-event-calendar.php:309
 #: includes/class-geodir-event-fields.php:640
 #: includes/class-geodir-event-fields.php:871
-#: includes/template-functions.php:70
+#: includes/template-functions.php:72
 msgid "Wed"
 msgstr ""
 
-#: includes/class-geodir-event-calendar.php:302
+#: includes/class-geodir-event-calendar.php:310
 #: includes/class-geodir-event-fields.php:641
 #: includes/class-geodir-event-fields.php:872
-#: includes/template-functions.php:71
+#: includes/template-functions.php:73
 msgid "Thu"
 msgstr ""
 
-#: includes/class-geodir-event-calendar.php:303
+#: includes/class-geodir-event-calendar.php:311
 #: includes/class-geodir-event-fields.php:642
 #: includes/class-geodir-event-fields.php:873
-#: includes/template-functions.php:72
+#: includes/template-functions.php:74
 msgid "Fri"
 msgstr ""
 
-#: includes/class-geodir-event-calendar.php:304
+#: includes/class-geodir-event-calendar.php:312
 #: includes/class-geodir-event-fields.php:643
 #: includes/class-geodir-event-fields.php:874
-#: includes/template-functions.php:73
+#: includes/template-functions.php:75
 msgid "Sat"
 msgstr ""
 
-#: includes/class-geodir-event-calendar.php:305
+#: includes/class-geodir-event-calendar.php:313
 #: includes/class-geodir-event-fields.php:644
 #: includes/class-geodir-event-fields.php:875
-#: includes/template-functions.php:67
+#: includes/template-functions.php:69
 msgid "Sun"
 msgstr ""
 
-#: includes/class-geodir-event-calendar.php:318
-#: includes/template-functions.php:54
+#: includes/class-geodir-event-calendar.php:326
+#: includes/template-functions.php:56
 msgctxt "Monday initial"
 msgid "M"
 msgstr ""
 
-#: includes/class-geodir-event-calendar.php:319
-#: includes/template-functions.php:55
+#: includes/class-geodir-event-calendar.php:327
+#: includes/template-functions.php:57
 msgctxt "Tuesday initial"
 msgid "T"
 msgstr ""
 
-#: includes/class-geodir-event-calendar.php:320
-#: includes/template-functions.php:56
+#: includes/class-geodir-event-calendar.php:328
+#: includes/template-functions.php:58
 msgctxt "Wednesday initial"
 msgid "W"
 msgstr ""
 
-#: includes/class-geodir-event-calendar.php:321
+#: includes/class-geodir-event-calendar.php:329
 msgctxt "Thursday initial"
 msgid "T"
 msgstr ""
 
-#: includes/class-geodir-event-calendar.php:322
+#: includes/class-geodir-event-calendar.php:330
 msgctxt "Friday initial"
 msgid "F"
 msgstr ""
 
-#: includes/class-geodir-event-calendar.php:323
-#: includes/template-functions.php:59
+#: includes/class-geodir-event-calendar.php:331
+#: includes/template-functions.php:61
 msgctxt "Saturday initial"
 msgid "S"
 msgstr ""
 
-#: includes/class-geodir-event-calendar.php:324
-#: includes/template-functions.php:53
+#: includes/class-geodir-event-calendar.php:332
+#: includes/template-functions.php:55
 msgctxt "Sunday initial"
 msgid "S"
 msgstr ""
 
-#: includes/class-geodir-event-calendar.php:427
+#: includes/class-geodir-event-calendar.php:439
 msgid "View events on this date"
 msgstr ""
 
@@ -686,17 +698,17 @@ msgid ""
 msgstr ""
 
 #: includes/class-geodir-event-fields.php:473
-#: includes/class-geodir-event-manager.php:412
+#: includes/class-geodir-event-manager.php:414
 msgid "Start"
 msgstr ""
 
 #: includes/class-geodir-event-fields.php:473
-#: includes/class-geodir-event-manager.php:412
+#: includes/class-geodir-event-manager.php:414
 msgid "End"
 msgstr ""
 
 #: includes/class-geodir-event-fields.php:476
-#: includes/template-functions.php:15 includes/template-functions.php:255
+#: includes/template-functions.php:17 includes/template-functions.php:257
 msgid "to"
 msgstr ""
 
@@ -1090,7 +1102,7 @@ msgstr ""
 msgid "is upcoming event (for events only)"
 msgstr ""
 
-#: includes/class-geodir-event-manager.php:141
+#: includes/class-geodir-event-manager.php:143
 msgid ""
 "Your version of PHP is below the minimum version of PHP required by Events "
 "for GeoDirectory. Please contact your host and request that your version be "
@@ -1333,17 +1345,17 @@ msgctxt "Listing status"
 msgid "Delete Permanently"
 msgstr ""
 
-#: includes/class-geodir-event-query.php:249
-#: includes/class-geodir-event-query.php:250
-#: includes/template-functions.php:334 includes/template-functions.php:335
+#: includes/class-geodir-event-query.php:257
+#: includes/class-geodir-event-query.php:258
+#: includes/template-functions.php:336 includes/template-functions.php:337
 msgid " to "
 msgstr ""
 
-#: includes/class-geodir-event-schedules.php:646
+#: includes/class-geodir-event-schedules.php:724
 msgid "More"
 msgstr ""
 
-#: includes/class-geodir-event-schedules.php:646
+#: includes/class-geodir-event-schedules.php:724
 msgid "Less"
 msgstr ""
 
@@ -1368,124 +1380,124 @@ msgstr ""
 msgid "Show single listing for recurring event?"
 msgstr ""
 
-#: includes/core-functions.php:657
+#: includes/core-functions.php:750
 #, php-format
 msgctxt "Event type filter"
 msgid "All %s"
 msgstr ""
 
-#: includes/core-functions.php:658 templates/bootstrap/loop/filter.php:29
+#: includes/core-functions.php:751 templates/bootstrap/loop/filter.php:29
 msgid "Upcoming"
 msgstr ""
 
-#: includes/core-functions.php:659
+#: includes/core-functions.php:752
 msgid "Ongoing"
 msgstr ""
 
-#: includes/core-functions.php:660
+#: includes/core-functions.php:753
 msgid "Ongoing + Upcoming"
 msgstr ""
 
-#: includes/core-functions.php:661
+#: includes/core-functions.php:754
 msgid "Past"
 msgstr ""
 
-#: includes/core-functions.php:662
+#: includes/core-functions.php:755
 msgid "Today"
 msgstr ""
 
-#: includes/core-functions.php:663
+#: includes/core-functions.php:756
 msgid "Tomorrow"
 msgstr ""
 
-#: includes/core-functions.php:664
+#: includes/core-functions.php:757
 msgid "+7 Days"
 msgstr ""
 
-#: includes/core-functions.php:665
+#: includes/core-functions.php:758
 msgid "+30 Days"
 msgstr ""
 
-#: includes/core-functions.php:666
+#: includes/core-functions.php:759
 msgid "This Weekend"
 msgstr ""
 
-#: includes/core-functions.php:667
+#: includes/core-functions.php:760
 msgid "This Week"
 msgstr ""
 
-#: includes/core-functions.php:668
+#: includes/core-functions.php:761
 msgid "This Month"
 msgstr ""
 
-#: includes/core-functions.php:669 includes/template-functions.php:82
+#: includes/core-functions.php:762 includes/template-functions.php:84
 msgid "Next Month"
 msgstr ""
 
-#: includes/core-functions.php:670
+#: includes/core-functions.php:763
 msgid "Next Week"
 msgstr ""
 
-#: includes/core-functions.php:692
+#: includes/core-functions.php:785
 #, php-format
 msgid "%s AM"
 msgstr ""
 
-#: includes/core-functions.php:693
+#: includes/core-functions.php:786
 #, php-format
 msgid "%s PM"
 msgstr ""
 
-#: includes/core-functions.php:774
+#: includes/core-functions.php:867
 msgid "Handle Past Events"
 msgstr ""
 
-#: includes/core-functions.php:775
+#: includes/core-functions.php:868
 msgid "Run"
 msgstr ""
 
-#: includes/core-functions.php:776
+#: includes/core-functions.php:869
 msgid ""
 "This tool allows to unpublish / remove past events after end date. More "
 "settings are configured at Events CPT > Settings > General > Manage Past "
 "Events."
 msgstr ""
 
-#: includes/core-functions.php:818
+#: includes/core-functions.php:911
 #, php-format
 msgid "%d past item processed."
 msgid_plural "%d past items processed."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/core-functions.php:820
+#: includes/core-functions.php:913
 msgid "No past items found."
 msgstr ""
 
 #: includes/libraries/class-tgm-plugin-activation.php:334
-#: includes/tgm-register-plugin.php:98
+#: includes/tgm-register-plugin.php:100
 msgid "Install Required Plugins"
 msgstr ""
 
 #: includes/libraries/class-tgm-plugin-activation.php:335
-#: includes/tgm-register-plugin.php:99
+#: includes/tgm-register-plugin.php:101
 msgid "Install Plugins"
 msgstr ""
 
 #: includes/libraries/class-tgm-plugin-activation.php:337
-#: includes/tgm-register-plugin.php:101
+#: includes/tgm-register-plugin.php:103
 #, php-format
 msgid "Installing Plugin: %s"
 msgstr ""
 
 #: includes/libraries/class-tgm-plugin-activation.php:339
-#: includes/tgm-register-plugin.php:103
+#: includes/tgm-register-plugin.php:105
 #, php-format
 msgid "Updating Plugin: %s"
 msgstr ""
 
 #: includes/libraries/class-tgm-plugin-activation.php:340
-#: includes/tgm-register-plugin.php:104
+#: includes/tgm-register-plugin.php:106
 msgid "Something went wrong with the plugin API."
 msgstr ""
 
@@ -1515,7 +1527,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: includes/libraries/class-tgm-plugin-activation.php:361
-#: includes/tgm-register-plugin.php:125
+#: includes/tgm-register-plugin.php:127
 #, php-format
 msgid "There is an update available for: %1$s."
 msgid_plural "There are updates available for the following plugins: %1$s."
@@ -1523,7 +1535,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: includes/libraries/class-tgm-plugin-activation.php:367
-#: includes/tgm-register-plugin.php:131
+#: includes/tgm-register-plugin.php:133
 #, php-format
 msgid "The following required plugin is currently inactive: %1$s."
 msgid_plural "The following required plugins are currently inactive: %1$s."
@@ -1531,7 +1543,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: includes/libraries/class-tgm-plugin-activation.php:373
-#: includes/tgm-register-plugin.php:137
+#: includes/tgm-register-plugin.php:139
 #, php-format
 msgid "The following recommended plugin is currently inactive: %1$s."
 msgid_plural "The following recommended plugins are currently inactive: %1$s."
@@ -1539,28 +1551,28 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: includes/libraries/class-tgm-plugin-activation.php:378
-#: includes/tgm-register-plugin.php:142
+#: includes/tgm-register-plugin.php:144
 msgid "Begin installing plugin"
 msgid_plural "Begin installing plugins"
 msgstr[0] ""
 msgstr[1] ""
 
 #: includes/libraries/class-tgm-plugin-activation.php:383
-#: includes/tgm-register-plugin.php:147
+#: includes/tgm-register-plugin.php:149
 msgid "Begin updating plugin"
 msgid_plural "Begin updating plugins"
 msgstr[0] ""
 msgstr[1] ""
 
 #: includes/libraries/class-tgm-plugin-activation.php:388
-#: includes/tgm-register-plugin.php:152
+#: includes/tgm-register-plugin.php:154
 msgid "Begin activating plugin"
 msgid_plural "Begin activating plugins"
 msgstr[0] ""
 msgstr[1] ""
 
 #: includes/libraries/class-tgm-plugin-activation.php:392
-#: includes/tgm-register-plugin.php:156
+#: includes/tgm-register-plugin.php:158
 msgid "Return to Required Plugins Installer"
 msgstr ""
 
@@ -1573,18 +1585,18 @@ msgstr ""
 
 #: includes/libraries/class-tgm-plugin-activation.php:394
 #: includes/libraries/class-tgm-plugin-activation.php:3253
-#: includes/tgm-register-plugin.php:157
+#: includes/tgm-register-plugin.php:159
 msgid "Plugin activated successfully."
 msgstr ""
 
 #: includes/libraries/class-tgm-plugin-activation.php:395
 #: includes/libraries/class-tgm-plugin-activation.php:3046
-#: includes/tgm-register-plugin.php:158
+#: includes/tgm-register-plugin.php:160
 msgid "The following plugin was activated successfully:"
 msgstr ""
 
 #: includes/libraries/class-tgm-plugin-activation.php:397
-#: includes/tgm-register-plugin.php:160
+#: includes/tgm-register-plugin.php:162
 #, php-format
 msgid "No action taken. Plugin %1$s was already active."
 msgstr ""
@@ -1597,25 +1609,25 @@ msgid ""
 msgstr ""
 
 #: includes/libraries/class-tgm-plugin-activation.php:401
-#: includes/tgm-register-plugin.php:164
+#: includes/tgm-register-plugin.php:166
 #, php-format
 msgid "All plugins installed and activated successfully. %1$s"
 msgstr ""
 
 #: includes/libraries/class-tgm-plugin-activation.php:402
-#: includes/tgm-register-plugin.php:165
+#: includes/tgm-register-plugin.php:167
 msgid "Dismiss this notice"
 msgstr ""
 
 #: includes/libraries/class-tgm-plugin-activation.php:403
-#: includes/tgm-register-plugin.php:166
+#: includes/tgm-register-plugin.php:168
 msgid ""
 "There are one or more required or recommended plugins to install, update or "
 "activate."
 msgstr ""
 
 #: includes/libraries/class-tgm-plugin-activation.php:404
-#: includes/tgm-register-plugin.php:167
+#: includes/tgm-register-plugin.php:169
 msgid "Please contact the administrator of this site for help."
 msgstr ""
 
@@ -1909,170 +1921,170 @@ msgstr ""
 msgid "Installing Plugin %1$s (%2$d/%3$d)"
 msgstr ""
 
-#: includes/template-functions.php:41
+#: includes/template-functions.php:43
 msgctxt "January abbreviation"
 msgid "Jan"
 msgstr ""
 
-#: includes/template-functions.php:42
+#: includes/template-functions.php:44
 msgctxt "February abbreviation"
 msgid "Feb"
 msgstr ""
 
-#: includes/template-functions.php:43
+#: includes/template-functions.php:45
 msgctxt "March abbreviation"
 msgid "Mar"
 msgstr ""
 
-#: includes/template-functions.php:44
+#: includes/template-functions.php:46
 msgctxt "April abbreviation"
 msgid "Apr"
 msgstr ""
 
-#: includes/template-functions.php:45
+#: includes/template-functions.php:47
 msgctxt "May abbreviation"
 msgid "May"
 msgstr ""
 
-#: includes/template-functions.php:46
+#: includes/template-functions.php:48
 msgctxt "June abbreviation"
 msgid "Jun"
 msgstr ""
 
-#: includes/template-functions.php:47
+#: includes/template-functions.php:49
 msgctxt "July abbreviation"
 msgid "Jul"
 msgstr ""
 
-#: includes/template-functions.php:48
+#: includes/template-functions.php:50
 msgctxt "August abbreviation"
 msgid "Aug"
 msgstr ""
 
-#: includes/template-functions.php:49
+#: includes/template-functions.php:51
 msgctxt "September abbreviation"
 msgid "Sep"
 msgstr ""
 
-#: includes/template-functions.php:50
+#: includes/template-functions.php:52
 msgctxt "October abbreviation"
 msgid "Oct"
 msgstr ""
 
-#: includes/template-functions.php:51
+#: includes/template-functions.php:53
 msgctxt "November abbreviation"
 msgid "Nov"
 msgstr ""
 
-#: includes/template-functions.php:52
+#: includes/template-functions.php:54
 msgctxt "December abbreviation"
 msgid "Dec"
 msgstr ""
 
-#: includes/template-functions.php:57
+#: includes/template-functions.php:59
 msgctxt "Friday initial"
 msgid "T"
 msgstr ""
 
-#: includes/template-functions.php:58
+#: includes/template-functions.php:60
 msgctxt "Thursday initial"
 msgid "F"
 msgstr ""
 
-#: includes/template-functions.php:81
+#: includes/template-functions.php:83
 msgid "Previous Month"
 msgstr ""
 
-#: includes/template-functions.php:83
+#: includes/template-functions.php:85
 msgid "Close"
 msgstr ""
 
-#: includes/template-functions.php:124
+#: includes/template-functions.php:126
 msgid "Event type. Eg: Past, Today, Upcoming"
-msgstr ""
-
-#: includes/template-functions.php:142
-#, php-format
-msgid "Event start date. Eg: %s"
-msgstr ""
-
-#: includes/template-functions.php:143
-#, php-format
-msgid "Event past date. Eg: %s"
 msgstr ""
 
 #: includes/template-functions.php:144
 #, php-format
-msgid "Event start time. Eg: %s"
+msgid "Event start date. Eg: %s"
 msgstr ""
 
 #: includes/template-functions.php:145
 #, php-format
-msgid "Event end time. Eg: %s"
+msgid "Event past date. Eg: %s"
 msgstr ""
 
 #: includes/template-functions.php:146
 #, php-format
-msgid "Event start date - end date. Eg: %s"
+msgid "Event start time. Eg: %s"
 msgstr ""
 
 #: includes/template-functions.php:147
 #, php-format
-msgid "Event start time - end time. Eg: %s"
+msgid "Event end time. Eg: %s"
 msgstr ""
 
 #: includes/template-functions.php:148
 #, php-format
-msgid "Event start date (Y-m-d). Eg: %s"
+msgid "Event start date - end date. Eg: %s"
 msgstr ""
 
 #: includes/template-functions.php:149
 #, php-format
-msgid "Event past date (Y-m-d). Eg: %s"
+msgid "Event start time - end time. Eg: %s"
 msgstr ""
 
 #: includes/template-functions.php:150
 #, php-format
-msgid "Event start time (H:i:s). Eg: %s"
+msgid "Event start date (Y-m-d). Eg: %s"
 msgstr ""
 
 #: includes/template-functions.php:151
 #, php-format
+msgid "Event past date (Y-m-d). Eg: %s"
+msgstr ""
+
+#: includes/template-functions.php:152
+#, php-format
+msgid "Event start time (H:i:s). Eg: %s"
+msgstr ""
+
+#: includes/template-functions.php:153
+#, php-format
 msgid "Event end time (H:i:s). Eg: %s"
 msgstr ""
 
-#: includes/template-functions.php:152 includes/template-functions.php:153
+#: includes/template-functions.php:154 includes/template-functions.php:155
 #, php-format
 msgid "Event start time (ISO). Eg: %s"
 msgstr ""
 
-#: includes/template-functions.php:154
+#: includes/template-functions.php:156
 #, php-format
 msgid "Event Timezone Offset. Eg: %s"
 msgstr ""
 
-#: includes/template-functions.php:356
+#: includes/template-functions.php:358
 #, php-format
 msgid "from %s"
 msgstr ""
 
-#: includes/template-functions.php:358
+#: includes/template-functions.php:360
 #, php-format
 msgid "to %s"
 msgstr ""
 
-#: includes/template-functions.php:360
+#: includes/template-functions.php:362
 #, php-format
 msgid "%s to %s"
 msgstr ""
 
-#: includes/template-functions.php:453 includes/template-functions.php:455
-#: includes/template-functions.php:459
+#: includes/template-functions.php:455 includes/template-functions.php:457
+#: includes/template-functions.php:463
 #, php-format
 msgid "- %s"
 msgstr ""
 
-#: includes/tgm-register-plugin.php:107
+#: includes/tgm-register-plugin.php:109
 #, php-format
 msgid "Events for GeoDirectory plugin requires the following plugin: %1$s."
 msgid_plural ""
@@ -2080,7 +2092,7 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/tgm-register-plugin.php:113
+#: includes/tgm-register-plugin.php:115
 #, php-format
 msgid "Events for GeoDirectory plugin recommends the following plugin: %1$s."
 msgid_plural ""
@@ -2088,7 +2100,7 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/tgm-register-plugin.php:119
+#: includes/tgm-register-plugin.php:121
 #, php-format
 msgid ""
 "The following plugin needs to be updated to its latest version to ensure "
@@ -2099,96 +2111,96 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/tgm-register-plugin.php:162
+#: includes/tgm-register-plugin.php:164
 #, php-format
 msgid ""
 "Plugin not activated. A higher version of %s is needed for this plugin. "
 "Please update the plugin."
 msgstr ""
 
-#: includes/widgets/class-geodir-event-widget-ayi.php:24
+#: includes/widgets/class-geodir-event-widget-ayi.php:27
 msgid "GD > Are You Interested?"
 msgstr ""
 
-#: includes/widgets/class-geodir-event-widget-ayi.php:27
+#: includes/widgets/class-geodir-event-widget-ayi.php:30
 msgid "Displays \"Are You Interested?\" widget on front end."
 msgstr ""
 
-#: includes/widgets/class-geodir-event-widget-ayi.php:44
-#: includes/widgets/class-geodir-event-widget-calendar.php:44
+#: includes/widgets/class-geodir-event-widget-ayi.php:47
+#: includes/widgets/class-geodir-event-widget-calendar.php:47
 #: includes/widgets/class-geodir-event-widget-countdown.php:53
-#: includes/widgets/class-geodir-event-widget-schedules.php:55
+#: includes/widgets/class-geodir-event-widget-schedules.php:57
 msgid "Title:"
 msgstr ""
 
-#: includes/widgets/class-geodir-event-widget-ayi.php:45
-#: includes/widgets/class-geodir-event-widget-calendar.php:45
+#: includes/widgets/class-geodir-event-widget-ayi.php:48
+#: includes/widgets/class-geodir-event-widget-calendar.php:48
 #: includes/widgets/class-geodir-event-widget-countdown.php:54
-#: includes/widgets/class-geodir-event-widget-schedules.php:56
+#: includes/widgets/class-geodir-event-widget-schedules.php:58
 msgid "The widget title."
 msgstr ""
 
-#: includes/widgets/class-geodir-event-widget-calendar.php:23
+#: includes/widgets/class-geodir-event-widget-calendar.php:26
 msgid "GD > Events Calendar"
 msgstr ""
 
-#: includes/widgets/class-geodir-event-widget-calendar.php:26
+#: includes/widgets/class-geodir-event-widget-calendar.php:29
 msgid "Displays the events calendar for event post type."
 msgstr ""
 
-#: includes/widgets/class-geodir-event-widget-calendar.php:52
+#: includes/widgets/class-geodir-event-widget-calendar.php:55
 msgid "Default Post Type:"
 msgstr ""
 
-#: includes/widgets/class-geodir-event-widget-calendar.php:53
+#: includes/widgets/class-geodir-event-widget-calendar.php:56
 msgid "Select post type to filter posts on calendar."
 msgstr ""
 
-#: includes/widgets/class-geodir-event-widget-calendar.php:62
+#: includes/widgets/class-geodir-event-widget-calendar.php:65
 msgid "Week start day:"
 msgstr ""
 
-#: includes/widgets/class-geodir-event-widget-calendar.php:63
+#: includes/widgets/class-geodir-event-widget-calendar.php:66
 msgid "Week start day of the calendar."
 msgstr ""
 
-#: includes/widgets/class-geodir-event-widget-calendar.php:79
+#: includes/widgets/class-geodir-event-widget-calendar.php:82
 msgid "Start day:"
 msgstr ""
 
-#: includes/widgets/class-geodir-event-widget-calendar.php:80
+#: includes/widgets/class-geodir-event-widget-calendar.php:83
 msgid "Start day of the calendar."
 msgstr ""
 
-#: includes/widgets/class-geodir-event-widget-calendar.php:82
+#: includes/widgets/class-geodir-event-widget-calendar.php:85
 msgid "M"
 msgstr ""
 
-#: includes/widgets/class-geodir-event-widget-calendar.php:92
+#: includes/widgets/class-geodir-event-widget-calendar.php:95
 msgid "Use current viewing post type?"
 msgstr ""
 
-#: includes/widgets/class-geodir-event-widget-calendar.php:100
+#: includes/widgets/class-geodir-event-widget-calendar.php:103
 msgid "Enable location filter?"
 msgstr ""
 
-#: includes/widgets/class-geodir-event-widget-calendar.php:112
+#: includes/widgets/class-geodir-event-widget-calendar.php:115
 msgid "Calendar Size"
 msgstr ""
 
-#: includes/widgets/class-geodir-event-widget-calendar.php:113
+#: includes/widgets/class-geodir-event-widget-calendar.php:116
 msgid "Small is best used in sidebars and small spaces."
 msgstr ""
 
-#: includes/widgets/class-geodir-event-widget-calendar.php:115
+#: includes/widgets/class-geodir-event-widget-calendar.php:118
 msgid "Small"
 msgstr ""
 
-#: includes/widgets/class-geodir-event-widget-calendar.php:116
+#: includes/widgets/class-geodir-event-widget-calendar.php:119
 msgid "Medium"
 msgstr ""
 
-#: includes/widgets/class-geodir-event-widget-calendar.php:124
+#: includes/widgets/class-geodir-event-widget-calendar.php:127
 msgid "Disable Lazyload"
 msgstr ""
 
@@ -2201,7 +2213,7 @@ msgid "Displays a live countdown to the event start date."
 msgstr ""
 
 #: includes/widgets/class-geodir-event-widget-countdown.php:61
-#: includes/widgets/class-geodir-event-widget-schedules.php:63
+#: includes/widgets/class-geodir-event-widget-schedules.php:65
 msgid "Post ID:"
 msgstr ""
 
@@ -2272,70 +2284,70 @@ msgstr ""
 msgid "Seconds"
 msgstr ""
 
-#: includes/widgets/class-geodir-event-widget-schedules.php:34
+#: includes/widgets/class-geodir-event-widget-schedules.php:36
 msgid "GD > Event Schedules"
 msgstr ""
 
-#: includes/widgets/class-geodir-event-widget-schedules.php:37
+#: includes/widgets/class-geodir-event-widget-schedules.php:39
 msgid "Displays the event schedules."
 msgstr ""
 
-#: includes/widgets/class-geodir-event-widget-schedules.php:64
 #: includes/widgets/class-geodir-event-widget-schedules.php:66
+#: includes/widgets/class-geodir-event-widget-schedules.php:68
 msgid "Leave blank to use current post id."
 msgstr ""
 
-#: includes/widgets/class-geodir-event-widget-schedules.php:72
+#: includes/widgets/class-geodir-event-widget-schedules.php:74
 msgid "Event Type:"
 msgstr ""
 
-#: includes/widgets/class-geodir-event-widget-schedules.php:73
+#: includes/widgets/class-geodir-event-widget-schedules.php:75
 msgid "Select event type to show schedules."
 msgstr ""
 
-#: includes/widgets/class-geodir-event-widget-schedules.php:81
+#: includes/widgets/class-geodir-event-widget-schedules.php:83
 msgid "Number of schedules to show:"
 msgstr ""
 
-#: includes/widgets/class-geodir-event-widget-schedules.php:82
+#: includes/widgets/class-geodir-event-widget-schedules.php:84
 msgid "Set number of schedules to show. Default: 5"
 msgstr ""
 
-#: includes/widgets/class-geodir-event-widget-schedules.php:90
+#: includes/widgets/class-geodir-event-widget-schedules.php:92
 msgid "Show past schedules when no upcoming schedule."
 msgstr ""
 
-#: includes/widgets/class-geodir-event-widget-schedules.php:99
+#: includes/widgets/class-geodir-event-widget-schedules.php:101
 msgid "Date Format:"
 msgstr ""
 
-#: includes/widgets/class-geodir-event-widget-schedules.php:100
+#: includes/widgets/class-geodir-event-widget-schedules.php:102
 msgid "Set the date format. Leave blank to use default date format."
 msgstr ""
 
-#: includes/widgets/class-geodir-event-widget-schedules.php:108
+#: includes/widgets/class-geodir-event-widget-schedules.php:110
 msgid "Time Format:"
 msgstr ""
 
-#: includes/widgets/class-geodir-event-widget-schedules.php:109
+#: includes/widgets/class-geodir-event-widget-schedules.php:111
 msgid "Set the time format. Leave blank to use default time format."
 msgstr ""
 
-#: includes/widgets/class-geodir-event-widget-schedules.php:117
+#: includes/widgets/class-geodir-event-widget-schedules.php:119
 msgid "Schedule Template:"
 msgstr ""
 
-#: includes/widgets/class-geodir-event-widget-schedules.php:118
+#: includes/widgets/class-geodir-event-widget-schedules.php:120
 msgid "Select the template to show schedules."
 msgstr ""
 
-#: includes/widgets/class-geodir-event-widget-schedules.php:126
+#: includes/widgets/class-geodir-event-widget-schedules.php:128
 msgid ""
 "Tick to use current schedule date to get schedules if schedule is already "
 "set on event listings."
 msgstr ""
 
-#: includes/widgets/class-geodir-event-widget-schedules.php:134
+#: includes/widgets/class-geodir-event-widget-schedules.php:136
 msgid "Tick to hide current schedule date in schedules on event listings."
 msgstr ""
 

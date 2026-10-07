@@ -5,7 +5,7 @@ Donate link: https://wpgeodirectory.com
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.2
-Stable tag: 2.3.32
+Stable tag: 2.3.33
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -73,7 +73,7 @@ To report a security vulnerability, please review our [vulnerability disclosure 
 
 == Changelog ==
 
-= 2.3.33 - 2026-09-TBD =
+= 2.3.33 - 2026-10-07 =
 * Better sanitation and escaping for event calendar, search and AYI widget - FIXED/SECURITY
 
 = 2.3.32 - 2026-09-02 =
