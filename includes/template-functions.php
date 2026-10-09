@@ -405,12 +405,20 @@ function geodir_event_category_term_link( $term_link, $term_id, $post_type ) {
 	return $term_link;
 }
 
-// add date to title for recurring event
+/**
+ * Appends the event date to the title of a recurring event.
+ *
+ * @global WP_Post $post    The current post object.
+ * @global object  $gd_post The current GeoDirectory post object.
+ *
+ * @param string   $title   The post title.
+ * @param int|null $post_id Optional. The ID of the post the title belongs to. Default null.
+ * @return string The post title, with the event date appended when applicable.
+ */
 function geodir_event_title_recurring_event( $title, $post_id = null ) {
 	global $post, $gd_post;
 
-    $post_type = ! empty( $post->post_type ) ? $post->post_type : '';
-    if ( ! GeoDir_Post_types::supports( $post_type, 'events' ) ) {
+	if ( empty( $post_id ) ) {
 		return $title;
 	}
 
@@ -420,50 +428,78 @@ function geodir_event_title_recurring_event( $title, $post_id = null ) {
 		$event_post = $post;
 	}
 
+	// Only the title of the current event post gets a date.
+	if ( empty( $event_post->ID ) || (int) $event_post->ID !== (int) $post_id ) {
+		return $title;
+	}
+
+	if ( empty( $event_post->recurring ) || ! GeoDir_Post_types::supports( get_post_type( $post_id ), 'events' ) ) {
+		return $title;
+	}
+
 	$remove_date = geodir_get_option( 'event_remove_title_date' ) ? true : false;
 
 	/**
-	 * Remove date form recurring event schedule title.
+	 * Remove date from recurring event schedule title.
 	 *
 	 * @since 2.1.1.8
 	 *
-	 * @param bool $remove_date True to remove date from title.
-	 * @param object $event_post Event post object.
+	 * @param bool   $remove_date True to remove date from title.
+	 * @param object $event_post  Event post object.
 	 */
 	$remove_date = apply_filters( 'geodir_event_remove_title_recurring_date', $remove_date, $event_post );
 
-	if ( $remove_date ) {
+	if ( $remove_date || ! geodir_event_recurring_pkg( $event_post ) ) {
 		return $title;
 	}
 
-	// Check recurring enabled
-	$recurring_pkg = geodir_event_recurring_pkg( $event_post );
-	if ( ! $recurring_pkg ) {
-		return $title;
-	}
+	$geodir_date_format = geodir_event_date_format();
+	$current_time       = strtotime( current_time( 'Y-m-d' ) );
+	$event_start_time   = 0;
+	$event_end_time     = 0;
+	$event_date_title   = '';
 
-	if ( isset($event_post->ID ) && $event_post->ID == $post_id && !empty( $event_post->recurring ) ) {
-		$geodir_date_format = geodir_event_date_format();
-		$current_date = date_i18n( 'Y-m-d', current_time( 'timestamp' ));
-		$current_time = strtotime( $current_date );
-		
-		if ( !empty( $event_post->start_date ) && geodir_event_is_date( $event_post->start_date ) ) {
-			$event_start_time = strtotime( date_i18n( 'Y-m-d', strtotime( $event_post->start_date ) ) );
-			$event_end_time = isset( $event_post->end_date ) && geodir_event_is_date( $event_post->end_date ) ? strtotime( $event_post->end_date ) : 0;
-			
-			if ($event_end_time > $event_start_time && $event_start_time <= $current_time && $event_end_time >= $current_time) {
-				$title .= "<span class='gd-date-in-title'> " . wp_sprintf( __( '- %s', 'geodirevents' ), date_i18n( $geodir_date_format, $current_time ) ) . "</span>";
-			} else {
-				$title .= "<span class='gd-date-in-title'> " . wp_sprintf( __( '- %s', 'geodirevents' ), date_i18n( $geodir_date_format, strtotime( $event_post->start_date ) ) ) . "</span>";
-			}
+	if ( ! empty( $event_post->start_date ) && geodir_event_is_date( $event_post->start_date ) ) {
+		$event_start_time = strtotime( date_i18n( 'Y-m-d', strtotime( $event_post->start_date ) ) );
+		$event_end_time   = isset( $event_post->end_date ) && geodir_event_is_date( $event_post->end_date ) ? strtotime( date_i18n( 'Y-m-d', strtotime( $event_post->end_date ) ) ) : 0;
+
+		// Multi-day occurrence running today shows today's date, otherwise the start date.
+		if ( $event_end_time > $event_start_time && $event_start_time <= $current_time && $event_end_time >= $current_time ) {
+			$date_time = $current_time;
 		} else {
-			$gde = geodir_event_get_gde();
+			$date_time = $event_start_time;
+		}
 
-			if ( is_single() && $gde !== '' && GeoDir_Event_Schedules::has_schedule( $post_id, $gde ) ) {
-				$title .= "<span class='gd-date-in-title'> " . wp_sprintf( __( '- %s', 'geodirevents' ), esc_html( date_i18n( $geodir_date_format, strtotime( $gde ) ) ) ) . "</span>";
-			}
+		$event_date_title = wp_sprintf( __( '- %s', 'geodirevents' ), date_i18n( $geodir_date_format, $date_time ) );
+	} else {
+		$gde = geodir_event_get_gde();
+
+		if ( is_single() && '' !== $gde && GeoDir_Event_Schedules::has_schedule( $post_id, $gde ) ) {
+			$event_start_time = strtotime( $gde );
+			$event_date_title = wp_sprintf( __( '- %s', 'geodirevents' ), date_i18n( $geodir_date_format, $event_start_time ) );
 		}
 	}
+
+	if ( $event_date_title ) {
+		$event_date_title = ' ' . esc_html( $event_date_title );
+
+		/**
+		 * Filter event date displayed in event title.
+		 *
+		 * The returned value is appended to the post title and may contain HTML.
+		 *
+		 * @since 2.3.34
+		 *
+		 * @param string $event_date_title The event date, with a leading space.
+		 * @param object $event_post       The event post object.
+		 * @param int    $event_start_time Event start timestamp.
+		 * @param int    $event_end_time   Event end timestamp.
+		 */
+		$event_date_title = apply_filters( 'geodir_event_date_in_title', $event_date_title, $event_post, $event_start_time, $event_end_time );
+
+		$title .= $event_date_title;
+	}
+
 	return $title;
 }
 
