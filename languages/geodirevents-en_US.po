@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Events for GeoDirectory 2.3.33\n"
+"Project-Id-Version: Events for GeoDirectory 2.3.34\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-07 19:07+0530\n"
-"PO-Revision-Date: 2026-10-07 19:07+0530\n"
+"POT-Creation-Date: 2026-10-14 20:17+0530\n"
+"PO-Revision-Date: 2026-10-14 20:17+0530\n"
 "Last-Translator: \n"
 "Language-Team: AyeCode Ltd <contact@ayecode.io>\n"
 "Language: en_US\n"
@@ -20,7 +20,7 @@ msgstr ""
 "X-Generator: Poedit 3.5\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: includes/admin/admin-functions.php:87 includes/template-functions.php:613
+#: includes/admin/admin-functions.php:87 includes/template-functions.php:649
 msgid "Event Date"
 msgstr ""
 
@@ -95,17 +95,17 @@ msgid "Event date"
 msgstr ""
 
 #: includes/admin/dummy-data/standard_events.php:86
-#: includes/template-functions.php:623
+#: includes/template-functions.php:659
 msgid "Newest"
 msgstr ""
 
 #: includes/admin/dummy-data/standard_events.php:98
-#: includes/template-functions.php:633
+#: includes/template-functions.php:669
 msgid "Title"
 msgstr ""
 
 #: includes/admin/dummy-data/standard_events.php:110
-#: includes/template-functions.php:643
+#: includes/template-functions.php:679
 msgid "Rating"
 msgstr ""
 
@@ -2076,8 +2076,7 @@ msgstr ""
 msgid "%s to %s"
 msgstr ""
 
-#: includes/template-functions.php:455 includes/template-functions.php:457
-#: includes/template-functions.php:463
+#: includes/template-functions.php:473 includes/template-functions.php:479
 #, php-format
 msgid "- %s"
 msgstr ""
